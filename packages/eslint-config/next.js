@@ -16,7 +16,6 @@ module.exports = {
   },
   env: {
     node: true,
-    browser: true,
   },
   plugins: ["only-warn"],
   settings: {
@@ -31,5 +30,13 @@ module.exports = {
     ".*.js",
     "node_modules/",
   ],
-  overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  overrides: [
+    { files: ["*.js?(x)", "*.ts?(x)"] },
+    {
+      files: ["*.ts", "*.tsx"],
+      rules: {
+        "no-undef": "off",
+      },
+    },
+  ],
 };

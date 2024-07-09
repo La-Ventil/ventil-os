@@ -1,0 +1,1 @@
+# Isomorphic logger (a small wrapper around console.log)
