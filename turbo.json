@@ -1,35 +1,15 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "https://turborepo.com/schema.json",
   "tasks": {
-    "db:generate": {
-      "cache": false
-    },
-    "db:push": {
-      "cache": false
-    },
-    "db:migrate": {
-      "cache": false
-    },
-
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
-      "dependsOn": ["db:generate", "^build"],
-      "env": ["NEXT_PUBLIC_API_HOST"]
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
     },
-    "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": []
-    },
-    "lint": {
-      "dependsOn": ["^build"]
+    "check-types": {
+      "dependsOn": ["^check-types"]
     },
     "dev": {
-      "dependsOn": ["^db:generate"],
-      "cache": false,
-      "persistent": true
-    },
-    "clean": {
+      "persistent": true,
       "cache": false
     }
   }

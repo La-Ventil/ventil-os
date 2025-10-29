@@ -14,13 +14,13 @@
     "@playwright/test": "^1.45.1",
     "@types/node": "^20.14.10",
     "prettier": "^3.2.5",
-    "turbo": "^2.0.6",
+    "turbo": "^2.5.8",
     "typescript": "^5.4.5"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.5.0",
+  "packageManager": "pnpm@10.18.0",
   "workspaces": [
     "apps/*",
     "packages/*"

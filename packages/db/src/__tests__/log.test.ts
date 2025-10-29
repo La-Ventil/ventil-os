@@ -1,4 +1,3 @@
 describe("@repo/db", () => {
-  it("prints a message", () => {
-  });
+  it("prints a message", () => {});
 });

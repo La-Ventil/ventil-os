@@ -13,13 +13,140 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Utilisateur {
-  id     Int     @id @default(autoincrement())
-  numero String  @unique
-  nom    String?
-}
-
 model Message {
   id      Int    @id @default(autoincrement())
   contenu String
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // custom
+  kcSub  String @unique // identifiant stable Keycloak (claim `sub`)
+  pseudo String @unique
+  prenom String
+  nom    String
+
+  profil            Profil
+  // sous-profil exclusif et conditionnel au profil :
+  sousProfilEleve   SousProfilEleve? // si profil = eleve
+  sousProfilExterne SousProfilExterne? // si profil = personne_externe
+
+  // libellé texte issu d’une liste de config (stats uniquement)
+  niveauScolaire String? // ex: "Seconde", "BTS 1ère année"
+
+  // rôles d’administration (reflètent les realm roles KC pour confort côté app)
+  adminPedagogique Boolean @default(false)
+  adminGlobal      Boolean @default(false)
+
+  // statut de compte
+  bloque Boolean @default(false)
+
+  // Consentements de l'utilisateur (RGPD, CGU, etc.)
+  consentements ConsentementUtilisateur[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+// ---------- Consentement par utilisateur ----------
+model ConsentementUtilisateur {
+  id            String           @id @default(cuid())
+  utilisateurId String
+  type          ConsentementType
+  accepte       Boolean          @default(false) // état actuel (pas l’historique complet)
+  accepteAt     DateTime?
+  retireAt      DateTime?
+
+  utilisateur User @relation(fields: [utilisateurId], references: [id])
+
+  // 1 ligne par (utilisateur, type) -> état courant (on garde simple)
+  @@unique([utilisateurId, type])
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+enum ConsentementType {
+  cgu
+}
+
+enum Profil {
+  eleve
+  enseignantcontrecontre
+  personneExterne
+}
+
+enum SousProfilEleve {
+  visiteur
+  ventilacteur
+  alumni
+}
+
+enum SousProfilExterne {
+  intervenant
+  visiteur
 }

@@ -1,0 +1,34 @@
+{
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "profil": {
+    "screen": {
+      "title": "Profil d’utilisation",
+      "subtitle": "Sélectionnez le profil correspondant à votre usage du lieu"
+    },
+    "option": {
+      "ventilacteur": {
+        "label": "Ventil’acteur",
+        "description": "J’apprends et je participe chaque semaine au projet de La-Ventil"
+      },
+      "eleve_lycee": {
+        "label": "Élève du lycée",
+        "description": "Je veux profiter de La-Ventil en dehors des heures de cours"
+      },
+      "enseignant": {
+        "label": "Enseignant",
+        "description": "Je travaille au sein de l’établissement et utilise La-Ventil"
+      },
+      "intervenant": {
+        "label": "Intervenants",
+        "description": "J’anime des ateliers et intervient au sein de La-Ventil"
+      },
+      "visiteur": {
+        "label": "Visiteur",
+        "description": "Je viens à La-Ventil pour participer à un évènement"
+      }
+    },
+    "accept_terms": "J’accepte les conditions générales d’utilisation de l’application"
+  }
+}

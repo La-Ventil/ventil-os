@@ -1,7 +1,9 @@
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-}
+"use client";
 
-export const Button = ({ children, ...rest }: ButtonProps) => {
-  return <button {...rest}>{children}</button>;
-};
+import * as React from "react";
+import MuiButton, { ButtonProps as MuiButtonProps } from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+
+export const Button = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
+  color: theme.palette.success.main,
+}));

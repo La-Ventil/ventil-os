@@ -1,2 +1,1 @@
 # Jest configurations
-

@@ -1,0 +1,156 @@
+{
+  "realm": "ventilos-dev",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "verifyEmail": false,
+  "sslRequired": "none",
+  "attributes": {
+    "frontendUrl": "http://localhost:3000"
+  },
+
+  "roles": {
+    "realm": [
+      { "name": "admin_global", "description": "Administrateur global" },
+      { "name": "admin_pedagogique", "description": "Administrateur pédagogique" },
+      { "name": "formateur", "description": "Peut attribuer des open badges" }
+    ]
+  },
+
+  "clients": [
+    {
+      "clientId": "ventilos-app",
+      "name": "VentilOS App (front)",
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "https://os.la-ventil.org/*"
+      ],
+      "webOrigins": ["*"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": ["web-origins", "profile", "email", "roles"],
+      "optionalClientScopes": ["address", "phone"]
+    }
+  ],
+
+  "users": [
+    {
+      "username": "admin.global",
+      "email": "admin.global@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "Global",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "realmRoles": ["admin_global"],
+      "attributes": {
+        "profil": ["enseignant"],
+        "sous_profil": [""]
+      }
+    },
+    {
+      "username": "enseignant.adminpedago",
+      "email": "enseignant.pedago@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Fabien",
+      "lastName": "Tora",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "realmRoles": ["admin_pedagogique"],
+      "attributes": {
+        "profil": ["enseignant"],
+        "sous_profil": [""]
+      }
+    },
+    {
+      "username": "eleve.ventilacteur",
+      "email": "eleve.ventilacteur@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Lucie",
+      "lastName": "Ventil",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "attributes": {
+        "profil": ["eleve"],
+        "sous_profil": ["ventilacteur"]
+      }
+    },
+    {
+      "username": "eleve.visiteur",
+      "email": "eleve.visiteur@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Hugo",
+      "lastName": "Visiteur",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "attributes": {
+        "profil": ["eleve"],
+        "sous_profil": ["visiteur"]
+      }
+    },
+    {
+      "username": "externe.intervenant",
+      "email": "externe.intervenant@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Loïc",
+      "lastName": "Intervenant",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "realmRoles": ["formateur"],
+      "attributes": {
+        "profil": ["personne_externe"],
+        "sous_profil": ["intervenant"]
+      }
+    },
+    {
+      "username": "externe.visiteur",
+      "email": "externe.visiteur@la-ventil.org",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Marc",
+      "lastName": "Visiteur",
+      "credentials": [{ "type": "password", "value": "dev123", "temporary": false }],
+      "attributes": {
+        "profil": ["personne_externe"],
+        "sous_profil": ["visiteur"]
+      }
+    }
+  ],
+
+  "components": {
+    "org.keycloak.protocol.oidc.mappers.OIDCProtocolMapper": [
+      {
+        "name": "profil",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-usermodel-attribute-mapper",
+        "consentRequired": false,
+        "config": {
+          "user.attribute": "profil",
+          "claim.name": "app.profil",
+          "id.token.claim": "true",
+          "access.token.claim": "true",
+          "userinfo.token.claim": "true"
+        }
+      },
+      {
+        "name": "sous_profil",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-usermodel-attribute-mapper",
+        "consentRequired": false,
+        "config": {
+          "user.attribute": "sous_profil",
+          "claim.name": "app.sous_profil",
+          "id.token.claim": "true",
+          "access.token.claim": "true",
+          "userinfo.token.claim": "true"
+        }
+      }
+    ]
+  }
+}

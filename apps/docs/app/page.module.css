@@ -3,8 +3,8 @@
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
   --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+  --bottomNavigation-primary-hover: #383838;
+  --bottomNavigation-secondary-hover: #f2f2f2;
 
   display: grid;
   grid-template-rows: 20px 1fr 20px;
@@ -22,8 +22,8 @@
     --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
     --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
+    --bottomNavigation-primary-hover: #ccc;
+    --bottomNavigation-secondary-hover: #1a1a1a;
   }
 }
 
@@ -90,6 +90,27 @@ a.secondary {
   min-width: 180px;
 }
 
+bottomNavigation.secondary {
+  appearance: none;
+  border-radius: 128px;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  font-family: var(--font-geist-sans);
+  border: 1px solid transparent;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  background: transparent;
+  border-color: var(--gray-alpha-200);
+  min-width: 180px;
+}
+
 .footer {
   font-family: var(--font-geist-sans);
   grid-row-start: 3;
@@ -110,12 +131,12 @@ a.secondary {
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
-    background: var(--button-primary-hover);
+    background: var(--bottomNavigation-primary-hover);
     border-color: transparent;
   }
 
   a.secondary:hover {
-    background: var(--button-secondary-hover);
+    background: var(--bottomNavigation-secondary-hover);
     border-color: transparent;
   }
 
