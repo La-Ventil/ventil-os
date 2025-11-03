@@ -32,8 +32,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // security
+  password         String
+  salt             String
+  iterations       Int
+  resetToken       String?
+  resetTokenExpiry DateTime?
+
   // custom
-  kcSub  String @unique // identifiant stable Keycloak (claim `sub`)
   pseudo String @unique
   prenom String
   nom    String

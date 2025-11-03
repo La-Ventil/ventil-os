@@ -6,10 +6,12 @@ import MuiBottomNavigation, {
 } from "@mui/material/BottomNavigation";
 import { styled } from "@mui/material/styles";
 import { BottomNavigationAction, Paper } from "@mui/material";
-import FolderIcon from "@mui/icons-material/Folder";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Image from "next/image";
+import {MachineIcon} from "./icons/machine-icon";
+import {OpenBadgeIcon} from "./icons/open-badge-icon";
+import {EventIcon} from "./icons/event-icon";
+import MenuIcon from '@mui/icons-material/Menu';
+import BottomSlot from "./bottom-slot";
 
 const StyledBottomNavigation = styled(
   MuiBottomNavigation,
@@ -25,36 +27,46 @@ export default function BottomNavigation() {
   };
 
   return (
-    <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-      elevation={3}
-    >
+    <BottomSlot>
       <StyledBottomNavigation
         sx={{ width: 500 }}
         value={value}
         onChange={handleChange}
       >
         <BottomNavigationAction
-          label="Recents"
-          value="recents"
-          icon={<RestoreIcon />}
+          label="Profil"
+          value="profil"
+          icon={<Image
+                      src="/avatar.svg"
+                      alt={'profilUtilisateur.email'}
+                      layout="fill"
+                      objectFit="contain"
+                  />}
         />
         <BottomNavigationAction
-          label="Favorites"
-          value="favorites"
-          icon={<FavoriteIcon />}
+          label="Machines"
+          value="machines"
+          icon={<MachineIcon />}
+          disabled
         />
         <BottomNavigationAction
-          label="Nearby"
-          value="nearby"
-          icon={<LocationOnIcon />}
+          label="Open Badges"
+          value="open-badges"
+          icon={<OpenBadgeIcon />}
+          disabled
         />
         <BottomNavigationAction
-          label="Folder"
-          value="folder"
-          icon={<FolderIcon />}
+          label="Evénements"
+          value="evenements"
+          icon={<EventIcon />}
+          disabled
         />
+          <BottomNavigationAction
+              label="Paramètres"
+              value="parametres"
+              icon={<MenuIcon />}
+          />
       </StyledBottomNavigation>
-    </Paper>
+    </BottomSlot>
   );
 }

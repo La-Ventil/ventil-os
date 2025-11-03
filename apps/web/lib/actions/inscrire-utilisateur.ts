@@ -1,36 +1,31 @@
 'use server';
 
 import { nanoid } from 'nanoid';
-import {keycloakClient} from "@repo/keycloak/keycloak-client";
 import {prismaClient,Prisma, Profil, ConsentementType } from "@repo/db";
-import {InscriptionFormData, inscriptionFormDataSchema} from "../inscription-form-data";
+import {InscriptionFormData, inscriptionFormDataSchema} from "../models/inscription-form-data";
 import {isValidationError, zodErrorToMessage} from "../validation";
+import {hashSecret} from "../security";
 
 export async function inscrireUtilisateur(previousState, formData: FormData) {
+    const values= {
+        email: formData.get('email'),
+        motDePasse:  formData.get('motDePasse'),
+    }
     try {
         console.log(formData);
         console.log(formData.get('prenom'));
         const inscriptionFormData: InscriptionFormData = inscriptionFormDataSchema.parse(formData);
 
-        const { id: kcSub } = await keycloakClient.creerUtilisateur({
-            email: inscriptionFormData.email,
-            firstName: inscriptionFormData.prenom,
-            lastName: inscriptionFormData.nom,
-            username: inscriptionFormData.email,
-            attributs: {
-                profil: [inscriptionFormData.profil],
-            },
-            emailVerified: false,
-        });
-        await keycloakClient.definirMotDePasse(kcSub, inscriptionFormData.motDePasse)
-
+        const { salt, hashedSecret, iterations } = await hashSecret(inscriptionFormData.motDePasse);
         let userCreateInput: Prisma.UserCreateInput = {
             name: inscriptionFormData.nom,
             email: inscriptionFormData.email,
-            kcSub,
             pseudo: `${inscriptionFormData.prenom}${inscriptionFormData.nom}#${nanoid()}`,
             prenom: inscriptionFormData.prenom,
             nom: inscriptionFormData.nom,
+            password: hashedSecret,
+            salt,
+            iterations,
             profil: Profil.eleve,
             // sousProfilEleve?: $Enums.SousProfilEleve | null
             // sousProfilExterne?: $Enums.SousProfilExterne | null
@@ -48,9 +43,7 @@ export async function inscrireUtilisateur(previousState, formData: FormData) {
         });
 
         return {
-            values: {
-                kcSub
-            },
+            values,
             message: 'Inscription réussie !',
             isValid: true,
             fieldErrors: [],
@@ -62,6 +55,6 @@ export async function inscrireUtilisateur(previousState, formData: FormData) {
             message = zodErrorToMessage(e);
         }
 
-        return { message, isValid: false, fieldErrors: [], values: {} };
+        return { message, isValid: false, fieldErrors: [], values };
     }
 }

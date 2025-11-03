@@ -1,6 +1,6 @@
 'use client'
 
-import {useActionState} from "react";
+import {useActionState, useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
@@ -11,7 +11,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import ProfilRadioGroup from "@repo/ui/profil-radio-group";
-import {inscrireUtilisateur} from "../../../lib/actions/action";
+import {inscrireUtilisateur} from "../../../lib/actions/inscrire-utilisateur";
+import { signIn } from "next-auth/react";
+import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function Page() {
     const [formState, formAction, pending] = useActionState(inscrireUtilisateur, {
@@ -27,6 +30,22 @@ export default function Page() {
         },
         isValid: undefined,
     });
+    const router = useRouter();
+
+    useEffect(() => {
+        if (formState?.isValid) {
+            async function signInAndRedirect() {
+                await signIn("credentials", {
+                    redirect: false,
+                    email: formState.values.email,
+                    password: formState.values.motDePasse
+                });
+                router.push("/hub/profil");
+            }
+
+            signInAndRedirect()
+        }
+    }, [formState]);
 
     return (
         <Box>
@@ -80,10 +99,9 @@ export default function Page() {
                 </Stack>
                 <Grid container spacing={2} >
                     <Grid>
-                        <Button variant="outlined" color="secondary">Retour</Button>
+                        <Button variant="outlined" color="secondary" component={Link} href="/">Retour</Button>
                     </Grid>
                     <Grid>
-                        {formState?.message && <p aria-live="polite">{formState?.message}</p>}
                         <Button variant="contained" type="submit" disabled={pending}>S'inscrire</Button>
                     </Grid>
                 </Grid>
