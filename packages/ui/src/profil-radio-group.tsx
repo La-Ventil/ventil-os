@@ -36,12 +36,8 @@ export const StyledRadioGroup = styled(MuiRadioGroup)<MuiRadioGroupProps>(
 );
 
 export default function ProfilRadioGroup() {
-    const [value, setValue] = React.useState("recents");
-    const t = useTranslations("recents");
-
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue);
-    };
+    const [value, setValue] = React.useState(ProfilType.Ventilacteur);
+    const t = useTranslations("profil");
 
     return (
         <FormGroup>
@@ -49,15 +45,14 @@ export default function ProfilRadioGroup() {
             <Typography variant="body1">Sélectionnez le profil correspondant à votre usage du lieu</Typography>
             <StyledRadioGroup
                 aria-labelledby="profil-label"
-                defaultValue="ventilacteur"
+                defaultValue={ProfilType.Ventilacteur}
                 name="profil"
             >
-                {Object.keys(ProfilType).map((key) => {
+                {Object.values(ProfilType).map((key) => {
                     const label = t(`option.${key}.label`);
                     const description = t(`option.${key}.description`);
-                    const active = value === key;
 
-                    return (<ProfilRadio key={key} label={label} value="ventilacteur" caption={description} />)
+                    return (<ProfilRadio key={key} label={label} value={key} caption={description} />)
                 })}
             </StyledRadioGroup>
         </FormGroup>
