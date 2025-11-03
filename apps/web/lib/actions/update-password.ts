@@ -5,37 +5,39 @@ import {prismaClient} from "@repo/db";
 import {isValidationError, zodErrorToMessage} from "../validation";
 import {hashSecret} from "../security";
 
-const invalidTokenError = new Error(`Ce token n'existe pas ou n'est plus valide.`);
-
 export async function updatePassword(previousState, formData: FormData) {
        try {
+
+           console.log(previousState);
             const updatePasswordFormData: UpdatePasswordFormData = updatePasswordFormDataSchema.parse(formData);
             const user = await prismaClient.user.findFirst({
                 where: {
                     resetToken: {
                         equals: previousState.token,
                     },
+                    resetTokenExpiry: {
+                        gte: new Date(),
+                    }
                 }
             });
-            if (!user || user.resetTokenExpiry >= Date.now()) {
-                throw invalidTokenError;
+
+            if (!user) {
+                throw new Error(`Ce token n'existe pas ou n'est plus valide.`);
             }
 
-           if (user) {
-               const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.motDePasse);
-               prismaClient.user.update({
-                   data: {
-                       resetToken: null,
-                       resetTokenExpiry: null,
-                       password: hashedSecret,
-                       salt,
-                       iterations,
-                   },
-                   where: {
-                       id: user.id,
-                   }
-               })
-           }
+           const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.motDePasse);
+           prismaClient.user.update({
+               data: {
+                   resetToken: null,
+                   resetTokenExpiry: null,
+                   password: hashedSecret,
+                   salt,
+                   iterations,
+               },
+               where: {
+                   id: user.id,
+               }
+           })
 
             return {
                 token: previousState.token,

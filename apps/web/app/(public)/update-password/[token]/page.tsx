@@ -8,13 +8,14 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {signInAndRedirect} from "../../../../lib/auth";
 import {updatePassword} from "../../../../lib/actions/update-password";
 
 export default function Page() {
+    const { token } = useParams<{ token: string }>()
     const [formState, formAction, pending] = useActionState(updatePassword, {
-        token: 'caca',
+        token,
         message: undefined,
         fieldErrors: [],
         values: {
@@ -63,7 +64,6 @@ export default function Page() {
                         <Button variant="outlined" color="secondary">Retour</Button>
                     </Grid>
                     <Grid>
-                        {formState?.message && <p aria-live="polite">{formState?.message}</p>}
                         <Button variant="contained" type="submit" disabled={pending}>Changer mon mot de passe</Button>
                     </Grid>
                 </Grid>

@@ -18,7 +18,7 @@ export async function resetPassword(previousState, formData: FormData) {
         });
 
         if (user) {
-            prismaClient.user.update({
+            await prismaClient.user.update({
                 data: {
                     resetToken,
                     resetTokenExpiry,
@@ -41,17 +41,9 @@ export async function resetPassword(previousState, formData: FormData) {
             message.sender = { name: process.env.APP_NAME, email: "no-reply@laventil.org" };
             message.to = [{ email: user.email, name: `${user.prenom} ${user.name}` }];
 
-            console.log(emailAPI)
-            console.log(message)
-            emailAPI
-                .sendTransacEmail(message)
-                .then((res) => {
-                    console.log(JSON.stringify(res.body));
-                })
-                .catch((err) => {
-                    console.error("Error sending email:", err);
-                    console.error("Error sending email:", err.response);
-                });
+            console.log(message);
+            const { body } = await emailAPI.sendTransacEmail(message);
+            console.log(JSON.stringify(body));
         }
 
         return {
