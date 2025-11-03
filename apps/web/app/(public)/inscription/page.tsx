@@ -76,18 +76,21 @@ export default function Page() {
                     />
                     <TextField
                         name={'email'}
+                        type={'email'}
                         label={'Email'}
                         placeholder="email@email.com"
                         required
                     />
                     <TextField
                         name={'motDePasse'}
+                        type={'password'}
                         label={'Mot de passe'}
                         placeholder="minimum 5 caractères"
                         required
                     />
                     <TextField
                         name={'confirmationMotDePasse'}
+                        type={'password'}
                         label={'Confirmation du mot de passe'}
                         placeholder="même mot de passe que le champ précédent"
                         required
