@@ -6,12 +6,12 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
 import ProfilRadioGroup from '@repo/ui/inputs/profil-radio-group';
 import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
 import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
 import { FormActionStateTuple } from '../form-action-state';
+import {TextField} from "../text-field";
 
 export interface InscriptionFormProps {
   actionState: FormActionStateTuple<InscriptionFormData>;
