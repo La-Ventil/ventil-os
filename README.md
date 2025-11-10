@@ -14,7 +14,7 @@ Elle permet de :
 
 Cette première version du logiciel est une PWA (Progressive Web App) basée sur **Next.js**, **Prisma**, **Material UI** et **PostgreSQL**.
 
----
+--- 
 
 ## ⚙️ Prérequis
 
@@ -53,16 +53,16 @@ DATABASE_URL="postgresql://ventilos:ventilos@localhost:5433/ventilos?schema=publ
 pnpm install
 
 # Démarrer la base de données PostgreSQL
-docker compose up -d
-
-# Générer le client Prisma
-pnpm --filter=db db:generate
+docker compose up
 
 # Appliquer les migrations Prisma
 pnpm --filter @repo/db db:deploy
 
+# Générer le client Prisma
+pnpm --filter=db db:generate
+
 # Lancer le front Next.js
-pnpm dev --filter web
+pnpm --filter=web dev
 ```
 
 ➡️ Application : [http://localhost:3000](http://localhost:3000)  
