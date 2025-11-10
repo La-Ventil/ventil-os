@@ -10,6 +10,7 @@ export const inscriptionFormDataSchema = zfd.formData({
     confirmationMotDePasse: z.string().min(1, 'Veuillez décrire votre projet.'),
     profil: z.string().min(1, 'Veuillez décrire votre projet.'),
     cgu: z.string().min(1, 'Veuillez décrire votre projet.'),
+    niveauScolaire: z.string().min(1, 'Veuillez décrire votre projet.'),
 }).refine(({ motDePasse, confirmationMotDePasse}) => motDePasse === confirmationMotDePasse, {
     message: 'passwordMismatchErrorMessage',
     path: ['confirmPassword'],

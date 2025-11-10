@@ -1,106 +1,110 @@
-import type {
-    GetServerSidePropsContext,
-    NextApiRequest,
-    NextApiResponse,
-} from "next"
-import type {NextAuthOptions} from "next-auth"
-import { getServerSession as getNextAuthServerSession } from "next-auth"
-import {PrismaAdapter} from "@auth/prisma-adapter";
-import {prismaClient, utilisateurRepository} from "@repo/db";
+import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import type { NextAuthOptions } from 'next-auth';
+import { getServerSession as getNextAuthServerSession } from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prismaClient, utilisateurRepository } from '@repo/db';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { type PrismaClient, Prisma } from '@prisma/client';
-import {verifySecret} from "./security";
-import {signIn} from "next-auth/react";
-import type  {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { verifySecret } from './security';
+import { signIn } from 'next-auth/react';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
 export const authOptions: NextAuthOptions = {
-    session: {
-        strategy: 'jwt',
-    },
-    adapter: PrismaAdapter(prismaClient),
-    providers: [
-        CredentialsProvider({
-            credentials: {
-                email: { label: "Email", type: "email", placeholder: "email@email.com" },
-                password: { label: "Mot de passe", type: "password" }
-            },
-            authorize: authorize(prismaClient),
-        }),
-    ],
-    secret: process.env.NEXTAUTH_SECRET,
-}
-
+  session: {
+    strategy: 'jwt'
+  },
+  adapter: PrismaAdapter(prismaClient),
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'email@email.com' },
+        password: { label: 'Mot de passe', type: 'password' }
+      },
+      authorize: authorize(prismaClient)
+    })
+  ],
+  secret: process.env.NEXTAUTH_SECRET
+};
 
 function authorize(prisma: PrismaClient) {
-    return async (credentials: Partial<Record<'email' | 'password', unknown>> | undefined, req): Promise<UserProfile | null> => {
+  return async (
+    credentials: Partial<Record<'email' | 'password', unknown>> | undefined,
+    req
+  ): Promise<UserProfile | null> => {
+    console.log('credentials', credentials);
+    if (!credentials) {
+      throw new Error('Missing credentials');
+    }
 
-        console.log('credentials', credentials);
-        if (!credentials) {
-            throw new Error('Missing credentials');
-        }
+    if (typeof credentials.email !== 'string') {
+      throw new Error('"email" is required in credentials');
+    }
 
-        if (typeof credentials.email !== 'string') {
-            throw new Error('"email" is required in credentials');
-        }
+    if (typeof credentials.password !== 'string') {
+      throw new Error('"password" is required in credentials');
+    }
+    const maybeUser = await prisma.user.findFirst({
+      where: { email: credentials.email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        salt: true,
+        iterations: true,
+        profil: true,
+        pseudo: true,
+        niveauScolaire: true,
+        adminPedagogique: true,
+        adminGlobal: true,
+        nom: true,
+        prenom: true
+      }
+    });
+    if (!maybeUser?.password) return null;
+    // verify the input password with stored hash
+    const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);
 
-        if (typeof credentials.password !== 'string') {
-            throw new Error('"password" is required in credentials');
-        }
-        const maybeUser = await prisma.user.findFirst({
-            where: { email: credentials.email },
-            select: { id: true, email: true, password: true, salt: true, iterations: true, profil: true, pseudo: true, niveauScolaire: true, adminPedagogique: true, adminGlobal: true, nom: true, prenom: true },
-        });
-        if (!maybeUser?.password) return null;
-        // verify the input password with stored hash
-        const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);
-
-        if (!isValid) return null;
-        console.log('maybeUser', maybeUser);
-        return {
-            id: maybeUser.id,
-            email: maybeUser.email,
-            nom: maybeUser.nom,
-            prenom: maybeUser.prenom,
-            profil: maybeUser.profil,
-            pseudo: maybeUser.pseudo,
-            niveauScolaire: maybeUser.niveauScolaire,
-            adminGlobal: maybeUser.adminGlobal,
-            adminPedagogique: maybeUser.adminPedagogique,
-        };
+    if (!isValid) return null;
+    console.log('maybeUser', maybeUser);
+    return {
+      id: maybeUser.id,
+      email: maybeUser.email,
+      nom: maybeUser.nom,
+      prenom: maybeUser.prenom,
+      profil: maybeUser.profil,
+      pseudo: maybeUser.pseudo,
+      niveauScolaire: maybeUser.niveauScolaire,
+      adminGlobal: maybeUser.adminGlobal,
+      adminPedagogique: maybeUser.adminPedagogique
     };
+  };
 }
 
 // Use it in server contexts
 export async function getServerSession(
-    ...args:
-        | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
-        | [NextApiRequest, NextApiResponse]
-        | []
+  ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
-    console.log('getServerSession', await getNextAuthServerSession(...args, authOptions));
-    return getNextAuthServerSession(...args, authOptions)
+  console.log('getServerSession', await getNextAuthServerSession(...args, authOptions));
+  return getNextAuthServerSession(...args, authOptions);
 }
 
 export async function getProfilUtilisateurFromSession(
-    ...args:
-        | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
-        | [NextApiRequest, NextApiResponse]
-        | []
+  ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
-    const session = await getServerSession();
-    console.log('session', session)
-    return utilisateurRepository.getProfilUtilisateurByEmail(session.user.email);
+  const session = await getServerSession();
+  console.log('session', session);
+  return utilisateurRepository.getProfilUtilisateurByEmail(session.user.email);
 }
 
 export function signInAndRedirect(router: AppRouterInstance) {
-    return async (email: string, password: string): Promise<void> => {
-        await signIn("credentials", {
-            redirect: false,
-            email,
-            password
-        });
-        router.push("/hub/profil");
-    }
+  return async (email: string, password: string): Promise<void> => {
+    await signIn('credentials', {
+      redirect: false,
+      email,
+      password
+    });
+    router.push('/hub/profil');
+  };
 }

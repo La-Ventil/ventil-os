@@ -1,26 +1,23 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import MuiBottomNavigation, {
-  BottomNavigationProps as MuiBottomNavigationProps,
-} from "@mui/material/BottomNavigation";
-import { styled } from "@mui/material/styles";
-import { BottomNavigationAction, Paper } from "@mui/material";
-import Image from "next/image";
-import {MachineIcon} from "./icons/machine-icon";
-import {OpenBadgeIcon} from "./icons/open-badge-icon";
-import {EventIcon} from "./icons/event-icon";
+import * as React from 'react';
+import MuiBottomNavigation, { BottomNavigationProps as MuiBottomNavigationProps } from '@mui/material/BottomNavigation';
+import { styled } from '@mui/material/styles';
+import { BottomNavigationAction } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import BottomSlot from "./bottom-slot";
+import Image from 'next/image';
+import Link from 'next/link';
+import { MachineIcon } from './icons/machine-icon';
+import { OpenBadgeIcon } from './icons/open-badge-icon';
+import { EventIcon } from './icons/event-icon';
+import BottomSlot from './bottom-slot';
 
-const StyledBottomNavigation = styled(
-  MuiBottomNavigation,
-)<MuiBottomNavigationProps>(({ theme }) => ({
-  color: theme.palette.success.main,
+const StyledBottomNavigation = styled(MuiBottomNavigation)<MuiBottomNavigationProps>(({ theme }) => ({
+  color: theme.palette.success.main
 }));
 
 export default function BottomNavigation() {
-  const [value, setValue] = React.useState("recents");
+  const [value, setValue] = React.useState('recents');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -28,44 +25,22 @@ export default function BottomNavigation() {
 
   return (
     <BottomSlot>
-      <StyledBottomNavigation
-        sx={{ width: 500 }}
-        value={value}
-        onChange={handleChange}
-      >
+      <StyledBottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange}>
         <BottomNavigationAction
           label="Profil"
           value="profil"
-          icon={<Image
-                      src="/avatar.svg"
-                      alt={'profilUtilisateur.email'}
-                      layout="fill"
-                      objectFit="contain"
-                  />}
+          icon={<Image src="/avatar.svg" alt={'profilUtilisateur.email'} layout="fill" objectFit="contain" />}
         />
+        <BottomNavigationAction label="Machines" value="machines" icon={<MachineIcon />} disabled />
+        <BottomNavigationAction label="Open Badges" value="open-badges" icon={<OpenBadgeIcon />} disabled />
+        <BottomNavigationAction label="Evénements" value="evenements" icon={<EventIcon />} disabled />
         <BottomNavigationAction
-          label="Machines"
-          value="machines"
-          icon={<MachineIcon />}
-          disabled
+          component={Link}
+          label="Paramètres"
+          value="parametres"
+          icon={<MenuIcon />}
+          href={'/hub/parametres'}
         />
-        <BottomNavigationAction
-          label="Open Badges"
-          value="open-badges"
-          icon={<OpenBadgeIcon />}
-          disabled
-        />
-        <BottomNavigationAction
-          label="Evénements"
-          value="evenements"
-          icon={<EventIcon />}
-          disabled
-        />
-          <BottomNavigationAction
-              label="Paramètres"
-              value="parametres"
-              icon={<MenuIcon />}
-          />
       </StyledBottomNavigation>
     </BottomSlot>
   );

@@ -1,6 +1,6 @@
 {
-  "HomePage": {
-    "title": "Hello world!"
+  "home": {
+    "message_bienvenue": "Bienvenue sur l’application de La-Ventil."
   },
   "profil": {
     "screen": {
@@ -30,5 +30,21 @@
       }
     },
     "accept_terms": "J’accepte les conditions générales d’utilisation de l’application"
+  },
+  "niveau_scolaire": {
+    "option": {
+      "seconde": {
+        "label": "Seconde"
+      },
+      "premiere": {
+        "label": "Première"
+      },
+      "terminal": {
+        "label": "Terminale"
+      },
+      "bts": {
+        "label": "BTS"
+      }
+    }
   }
 }

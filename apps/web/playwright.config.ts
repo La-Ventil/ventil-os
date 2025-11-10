@@ -1,8 +1,8 @@
-import { defineConfig, devices } from "@playwright/test";
-import path from "path";
-import dotenv from "dotenv";
+import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
+import dotenv from 'dotenv';
 
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Use process.env.PORT by default and fallback to port 3000
 const PORT = process.env.PORT || 3000;
@@ -15,11 +15,11 @@ export default defineConfig({
   // Timeout per test
   timeout: 30 * 1000,
   // Test directory
-  testDir: path.join(__dirname, "e2e"),
+  testDir: path.join(__dirname, 'e2e'),
   // If a test fails, retry it additional 2 times
   retries: process.env.CI ? 2 : 0,
   // Artifacts folder where screenshots, videos, and traces are stored.
-  outputDir: "test-results/",
+  outputDir: 'test-results/',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -28,15 +28,15 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: 'html',
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
-    command: "npm run dev",
+    command: 'npm run dev',
     url: baseURL,
     timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !process.env.CI
   },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -45,25 +45,25 @@ export default defineConfig({
     baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: 'on-first-retry'
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "setup db",
+      name: 'setup db',
       testMatch: /global\.setup\.ts/,
-      teardown: "cleanup db",
+      teardown: 'cleanup db'
     },
     {
-      name: "cleanup db",
-      testMatch: /global\.teardown\.ts/,
+      name: 'cleanup db',
+      testMatch: /global\.teardown\.ts/
     },
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-      dependencies: ["setup db"],
-    },
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup db']
+    }
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
@@ -86,5 +86,5 @@ export default defineConfig({
     //   use: devices["iPhone 12"],
     //   dependencies: ['setup db'],
     // },
-  ],
+  ]
 });

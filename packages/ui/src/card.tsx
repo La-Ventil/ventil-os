@@ -1,10 +1,10 @@
-import { type JSX } from "react";
+import { type JSX } from 'react';
 
 export function Card({
   className,
   title,
   children,
-  href,
+  href
 }: {
   className?: string;
   title: string;
@@ -14,7 +14,7 @@ export function Card({
   return (
     <a
       className={className}
-      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
+      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo`}
       rel="noopener noreferrer"
       target="_blank"
     >

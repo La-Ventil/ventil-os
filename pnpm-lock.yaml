@@ -334,7 +334,7 @@ importers:
   packages/db:
     dependencies:
       '@prisma/client':
-        specifier: ^5.16.1
+        specifier: ^5.22.0
         version: 5.22.0(prisma@5.22.0)
       '@repo/domain':
         specifier: workspace:*
@@ -374,7 +374,14 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/domain: {}
+  packages/domain:
+    dependencies:
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.12
+      zod-form-data:
+        specifier: ^3.0.1
+        version: 3.0.1(zod@4.1.12)
 
   packages/eslint-config:
     devDependencies:
@@ -473,6 +480,12 @@ importers:
       '@repo/domain':
         specifier: workspace:*
         version: link:../domain
+      next:
+        specifier: ^15.5.4
+        version: 15.5.4(@playwright/test@1.55.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next-auth:
+        specifier: ^4.24.11
+        version: 4.24.11(next@15.5.4(@playwright/test@1.55.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       next-intl:
         specifier: ^4.3.11
         version: 4.3.11(next@15.5.4(@playwright/test@1.55.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)(typescript@5.9.2)

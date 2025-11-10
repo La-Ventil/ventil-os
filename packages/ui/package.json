@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "prettier": "prettier . --write"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -25,6 +26,8 @@
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
     "@repo/domain": "workspace:*",
+    "next": "^15.5.4",
+    "next-auth": "^4.24.11",
     "next-intl": "^4.3.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
