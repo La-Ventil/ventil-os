@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Typography } from '@mui/material';
+import Link from '@repo/ui/link';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

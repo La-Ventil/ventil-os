@@ -1,7 +1,6 @@
 'use client';
 
 import { use } from 'react';
-import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
@@ -12,6 +11,7 @@ import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
 import { ProfilFormData } from '@repo/domain/models/forms/profil-form-data';
 import { FormAction } from '../form-action-state';
 import { useFormActionState } from '../hooks';
+import Link from '../link';
 
 export interface ProfilFormProps {
   profilUtilisateurPromise: Promise<ProfilUtilisateur>;

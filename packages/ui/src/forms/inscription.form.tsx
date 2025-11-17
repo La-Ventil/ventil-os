@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -11,7 +10,8 @@ import ProfilRadioGroup from '@repo/ui/inputs/profil-radio-group';
 import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
 import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
 import { FormActionStateTuple } from '../form-action-state';
-import {TextField} from "../text-field";
+import { TextField } from '../text-field';
+import Link from '../link';
 
 export interface InscriptionFormProps {
   actionState: FormActionStateTuple<InscriptionFormData>;

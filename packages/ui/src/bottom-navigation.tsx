@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import { BottomNavigationAction } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from './link';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { EventIcon } from './icons/event-icon';

@@ -6,9 +6,9 @@ import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from '../link';
 
 export default function ConnexionForm() {
   const [email, setEmail] = useState('');
