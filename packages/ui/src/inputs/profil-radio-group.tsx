@@ -2,11 +2,29 @@
 
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
-import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material/styles';
-import { FormControlLabel, FormControlLabelProps, FormGroup, FormLabel, Typography } from '@mui/material';
+import { FormControlLabel, FormControlLabelProps } from '@mui/material';
+import FormGroup, { FormGroupProps as MuiFormGroupProps } from '@mui/material/FormGroup';
 import { ProfilType } from '@repo/domain/profil-type';
+import { FormLabel } from '../form-label';
+import { Typography } from '../typography';
+import { RadioGroup } from '../radio-group';
+
+const ProfilRadioContainer = styled(FormControlLabel)<FormControlLabelProps>(
+  ({ theme }) => `
+  color: DarkGoldenRod;
+  
+  ${Typography} {
+    &.MuiTypography-body1 {
+      color: DarkCyan;
+    }
+    &.MuiTypography-caption {
+      color: DarkGreen;
+    }
+  }
+`
+);
 
 export interface ProfilRadioProps extends Omit<FormControlLabelProps, 'control'> {
   label: string;
@@ -15,7 +33,7 @@ export interface ProfilRadioProps extends Omit<FormControlLabelProps, 'control'>
 
 export function ProfilRadio({ label, caption, value, ...props }: ProfilRadioProps) {
   return (
-    <FormControlLabel
+    <ProfilRadioContainer
       {...props}
       value={value}
       control={<Radio />}
@@ -30,26 +48,43 @@ export function ProfilRadio({ label, caption, value, ...props }: ProfilRadioProp
   );
 }
 
-export const StyledRadioGroup = styled(MuiRadioGroup)<MuiRadioGroupProps>(({ theme }) => ({
-  color: theme.palette.success.main
-}));
+const ProfilRadioGroupContainer = styled(FormGroup)<MuiFormGroupProps>(
+  ({ theme }) => `
+  color: Chartreuse;
+
+  ${FormLabel} {
+    border: 1px solid Coral;
+    color: Coral;
+  }
+  
+  ${Typography} {
+    border: 1px solid Crimson;
+    color: Crimson;
+  }
+  
+  ${RadioGroup} {
+    border: 1px solid DarkGoldenRod;
+    color: DarkGoldenRod;
+  }
+`
+);
 
 export default function ProfilRadioGroup() {
   const [value, setValue] = React.useState(ProfilType.Ventilacteur);
   const t = useTranslations('profil');
 
   return (
-    <FormGroup>
+    <ProfilRadioGroupContainer>
       <FormLabel id="profil-label">Profil d’utilisation</FormLabel>
       <Typography variant="body1">Sélectionnez le profil correspondant à votre usage du lieu</Typography>
-      <StyledRadioGroup aria-labelledby="profil-label" defaultValue={ProfilType.Ventilacteur} name="profil">
+      <RadioGroup aria-labelledby="profil-label" defaultValue={ProfilType.Ventilacteur} name="profil">
         {Object.values(ProfilType).map((key) => {
           const label = t(`option.${key}.label`);
           const description = t(`option.${key}.description`);
 
           return <ProfilRadio key={key} label={label} value={key} caption={description} />;
         })}
-      </StyledRadioGroup>
-    </FormGroup>
+      </RadioGroup>
+    </ProfilRadioGroupContainer>
   );
 }

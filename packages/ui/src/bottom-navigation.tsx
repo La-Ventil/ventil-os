@@ -12,9 +12,11 @@ import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { EventIcon } from './icons/event-icon';
 import BottomSlot from './bottom-slot';
 
-const StyledBottomNavigation = styled(MuiBottomNavigation)<MuiBottomNavigationProps>(({ theme }) => ({
-  color: theme.palette.success.main
-}));
+const StyledBottomNavigation = styled(MuiBottomNavigation)<MuiBottomNavigationProps>(
+  ({ theme }) => `
+  color: ${theme.palette.success.main}
+`
+);
 
 export default function BottomNavigation() {
   const [value, setValue] = React.useState('recents');

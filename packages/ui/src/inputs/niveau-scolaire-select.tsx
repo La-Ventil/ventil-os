@@ -1,11 +1,18 @@
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { NiveauScolaire } from '@repo/domain/niveau-scolaire';
+import Box, { BoxProps } from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+
+const NiveauScolaireSelectContainer = styled(Box)<BoxProps>(
+  ({ theme }) => `
+  border: 1px solid Coral;
+`
+);
 
 export default function NiveauScolaireSelect() {
   const t = useTranslations('niveau_scolaire');
@@ -16,7 +23,7 @@ export default function NiveauScolaireSelect() {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <NiveauScolaireSelectContainer sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id="niveau-scolaire-select-label">Niveau scolaire</InputLabel>
         <Select
@@ -39,6 +46,6 @@ export default function NiveauScolaireSelect() {
           })}
         </Select>
       </FormControl>
-    </Box>
+    </NiveauScolaireSelectContainer>
   );
 }
