@@ -5,18 +5,70 @@ export let theme = createTheme({
   // @see https://mui.com/material-ui/customization/color/#picking-colors
   palette: {
     primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#002884',
-      contrastText: '#fff'
+      main: '#212636',
+      contrastText: '#FFFFFF'
     },
     secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000'
+      fabLab: {
+        light: '#CFD5E9',
+        main: '#9DA5BF',
+        dark: '#747FA4'
+      },
+      openBadge: {
+        light: '#988EFF',
+        main: '#6D61EB',
+        dark: '#4D41D2'
+      },
+      event: {
+        light: '#6C5DFF',
+        main: '#4D3EE5',
+        dark: '#2313C7'
+      },
+      user: {
+        light: '#70A5FB',
+        main: '#317BF4',
+        dark: '#1B63D8'
+      },
+      support: {
+        light: '#74736F',
+        main: '#2F2D28',
+        dark: '#22201B'
+      },
+      admin: {
+        light: '#48506B',
+        main: '#191E2D',
+        dark: '#080B14'
+      },
+      repair: {
+        light: '#FFAC87',
+        main: '#FF7233',
+        dark: '#E95818'
+      }
+    },
+    ui: {
+      disabled: '#646774',
+      disabledbackground: '#F2F3F5',
+      separator: '#D3D6E0',
+      gridLine: '#F5F5F8',
+      free: '#53E3B8',
+      occupied: '#FF671B',
+      brand: '#317BF4',
+    },
+    userType: {
+        intern: '#317BF4',
+        extern: '#499F95',
+        visitor: '#D16636',
+        contributor: '#EABF0A',
+    },
+    background: {
+        light: '#FFFFFF',
+        main: '#F0F2F8',
+        dark: '#D3D6E0'
     }
-  }
+  },
+  shape: {
+    borderRadius: 9,
+  },
 });
 
 theme = createTheme(theme, {
@@ -26,15 +78,50 @@ theme = createTheme(theme, {
     }
   },
   typography: {
-    fontFamily: 'Raleway, Arial',
-    h3: {
-      fontSize: '1.2rem',
-      '@media (min-width:600px)': {
-        fontSize: '1.5rem'
+    fontFamily: "var(--font-nunito), Arial, sans-serif",
+    allVariants: {
+      fontFamily: "var(--font-nunito), Arial, sans-serif",
+    },
+    h1: {
+      fontFamily: "var(--font-vg5000)",
+      fontWeight: 400,
+    },
+    h2: {
+      fontFamily: "var(--font-vg5000)",
+      fontWeight: 400,
+    },
+  },
+  MuiCssBaseline: {
+    styleOverrides: {
+      body: {
+        fontFamily: "var(--font-nunito), Arial, sans-serif",
       },
-      [theme.breakpoints.up('md')]: {
-        fontSize: '2.4rem'
-      }
-    }
-  }
+    },
+  },
+  MuiButtonBase: {
+    styleOverrides: {
+      root: { fontFamily: "var(--font-nunito), Arial, sans-serif" },
+    },
+  },
+  MuiInputBase: {
+    styleOverrides: {
+      root: { fontFamily: "var(--font-nunito), Arial, sans-serif" },
+      input: { fontFamily: "inherit" },
+    },
+  },
+  MuiTypography: {
+    styleOverrides: {
+      root: { fontFamily: "var(--font-nunito), Arial, sans-serif" },
+    },
+  },
+  MuiFormLabel: {
+    styleOverrides: {
+      root: { fontFamily: "var(--font-nunito), Arial, sans-serif" },
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: { fontFamily: "var(--font-nunito), Arial, sans-serif" },
+    },
+  },
 });

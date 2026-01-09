@@ -58,8 +58,6 @@ const ProfilRadioGroupContainer = styled(FormGroup)<MuiFormGroupProps>(
   }
   
   ${Typography} {
-    border: 1px solid Crimson;
-    color: Crimson;
   }
   
   ${RadioGroup} {
