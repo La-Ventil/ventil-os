@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { useTranslations } from 'next-intl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { NiveauScolaire } from '@repo/domain/niveau-scolaire';
 import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
@@ -14,27 +13,25 @@ const NiveauScolaireSelectContainer = styled(Box)<BoxProps>(
 `
 );
 
-export default function NiveauScolaireSelect() {
-  const t = useTranslations('niveau_scolaire');
-  const [value, setValue] = React.useState('');
+export interface NiveauScolaireSelectProps {
+  defaultValue?: string;
+}
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-  };
+export default function NiveauScolaireSelect({ defaultValue }: NiveauScolaireSelectProps) {
+  const t = useTranslations('niveauScolaire');
 
   return (
     <NiveauScolaireSelectContainer sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="niveau-scolaire-select-label">Niveau scolaire</InputLabel>
+        <InputLabel id="niveau-scolaire-select-label">{t('label')}</InputLabel>
         <Select
           name="niveauScolaire"
           labelId="niveau-scolaire-select-label"
           id="niveau-scolaire-select"
-          value={value}
-          label="Niveau scolaire"
-          onChange={handleChange}
+          defaultValue={defaultValue ?? ''}
+          label={t('label')}
         >
-          <MenuItem value={''}>(Niveau scolaire)</MenuItem>
+          <MenuItem value={''}>{t('placeholder')}</MenuItem>
           {Object.values(NiveauScolaire).map((value) => {
             const label = t(`option.${value}.label`);
 

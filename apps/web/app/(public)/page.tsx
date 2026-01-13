@@ -9,21 +9,22 @@ import Link from '@repo/ui/link';
 
 export default function Home() {
   const t = useTranslations('home');
+  const tHome = useTranslations('pages.public.home');
   return (
     <Box>
       <Stack spacing={2}>
-        <Typography variant="body1">{t('message_bienvenue')}</Typography>
+        <Typography variant="body1">{t('messageBienvenue')}</Typography>
       </Stack>
       <BottomSlot>
         <Grid container spacing={2}>
           <Grid>
             <Button variant="outlined" component={Link} href="/inscription">
-              M'inscrire
+              {tHome('ctaSignup')}
             </Button>
           </Grid>
           <Grid>
             <Button variant="contained" component={Link} href="/connexion">
-              Se connecter
+              {tHome('ctaSignin')}
             </Button>
           </Grid>
         </Grid>

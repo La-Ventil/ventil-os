@@ -1,21 +1,34 @@
 'use server';
 
 import { nanoid } from 'nanoid';
+import { getTranslations } from 'next-intl/server';
 import { prismaClient, Prisma, Profil, ConsentementType } from '@repo/db';
 import { InscriptionFormData, inscriptionFormDataSchema } from '@repo/domain/models/forms/inscription-form-data';
-import { isValidationError, zodErrorToMessage } from '../validation';
+import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { hashSecret } from '../security';
+import { FormState } from '@repo/ui/form-state';
 
-export async function inscrireUtilisateur(previousState, formData: FormData) {
-  const values = {
-    email: formData.get('email'),
-    motDePasse: formData.get('motDePasse')
-  };
+export async function inscrireUtilisateur(
+  previousState: FormState<InscriptionFormData>,
+  formData: FormData
+): Promise<FormState<InscriptionFormData>> {
+  const t = await getTranslations();
+  const { success, data, error } = inscriptionFormDataSchema.safeParse(formData);
+  const values = Object.fromEntries(formData) as unknown as InscriptionFormData;
   try {
-    console.log(formData);
-    console.log(formData.get('prenom'));
-    const inscriptionFormData: InscriptionFormData = inscriptionFormDataSchema.parse(formData);
+    if (!success) {
+      const fieldErrors = zodErrorToFieldErrors(error, t);
+      return {
+        message: fieldErrorsToSingleMessage(fieldErrors),
+        isValid: false,
+        fieldErrors,
+        values
+      };
+    }
 
+console.log(data);
+
+    const inscriptionFormData: InscriptionFormData = data;
     const { salt, hashedSecret, iterations } = await hashSecret(inscriptionFormData.motDePasse);
     let userCreateInput: Prisma.UserCreateInput = {
       name: inscriptionFormData.nom,
@@ -45,17 +58,34 @@ export async function inscrireUtilisateur(previousState, formData: FormData) {
 
     return {
       values,
-      message: 'Inscription réussie !',
+      message: t('inscription.success'),
       isValid: true,
-      fieldErrors: []
+      fieldErrors: {}
     };
   } catch (e) {
-    console.error(e);
-    let message = 'Une erreur inattendu est survenue :(';
-    if (isValidationError(e)) {
-      message = zodErrorToMessage(e);
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+      const fieldErrors = {
+        email: [
+          t('validation.emailAlreadyUsed', {
+            defaultMessage: 'Cette adresse email est déjà utilisée.'
+          })
+        ]
+      };
+
+      return {
+        message: fieldErrorsToSingleMessage(fieldErrors),
+        isValid: false,
+        fieldErrors,
+        values
+      };
     }
 
-    return { message, isValid: false, fieldErrors: [], values };
+    console.error(e);
+    return {
+      message: t('inscription.error'),
+      isValid: false,
+      fieldErrors: {},
+      values
+    };
   }
 }

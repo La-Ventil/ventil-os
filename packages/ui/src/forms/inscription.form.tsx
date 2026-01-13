@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Alert from '@mui/material/Alert';
+import { useTranslations } from 'next-intl';
 import ProfilRadioGroup from '@repo/ui/inputs/profil-radio-group';
 import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
 import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
@@ -18,48 +19,72 @@ export interface InscriptionFormProps {
 }
 
 export default function InscriptionForm({ actionState: [state, action, isPending] }: InscriptionFormProps) {
+  const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
+
   return (
     <form action={action}>
       <Stack spacing={2}>
         {state?.message && !isPending && (
           <Alert severity={state?.isValid ? 'success' : 'error'}>{state?.message}</Alert>
         )}
-        <TextField name={'prenom'} label={'Prénom'} placeholder="mon prénom" required />
-        <TextField name={'nom'} label={'Nom'} placeholder="mon nom" required />
-        <NiveauScolaireSelect />
-        <TextField name={'email'} type={'email'} label={'Email'} placeholder="email@email.com" required />
+        <TextField
+          name={'prenom'}
+          defaultValue={state.values.prenom}
+          label={t('fields.prenom')}
+          placeholder={t('placeholders.prenom')}
+          required
+        />
+        <TextField
+          name={'nom'}
+          defaultValue={state.values.nom}
+          label={t('fields.nom')}
+          placeholder={t('placeholders.nom')}
+          required
+        />
+        <NiveauScolaireSelect defaultValue={state.values.niveauScolaire} />
+        <TextField
+          name={'email'}
+          type={'email'}
+          defaultValue={state.values.email}
+          label={t('fields.email')}
+          placeholder={t('placeholders.email')}
+          required
+        />
         <TextField
           name={'motDePasse'}
           type={'password'}
-          label={'Mot de passe'}
-          placeholder="minimum 5 caractères"
+          defaultValue={state.values.motDePasse}
+          label={t('fields.motDePasse')}
+          placeholder={t('placeholders.motDePasse')}
           required
         />
         <TextField
           name={'confirmationMotDePasse'}
           type={'password'}
-          label={'Confirmation du mot de passe'}
-          placeholder="même mot de passe que le champ précédent"
+          defaultValue={state.values.confirmationMotDePasse}
+          label={t('fields.confirmationMotDePasse')}
+          placeholder={t('placeholders.confirmationMotDePasse')}
           required
         />
 
-        <ProfilRadioGroup />
+        <ProfilRadioGroup defaultValue={state.values.profil} />
 
         <FormControlLabel
           required
-          control={<Checkbox name={'cgu'} />}
-          label="J’accepte les conditions générales d’utilisation de l’application"
+          control={<Checkbox name={'cgu'} defaultChecked={state.values.cgu === 'on'} />}
+          label={t('fields.cgu')}
         />
       </Stack>
       <Grid container spacing={2}>
         <Grid>
           <Button variant="outlined" color="secondary" component={Link} href="/">
-            Retour
+            {tCommon('actions.back')}
           </Button>
         </Grid>
         <Grid>
           <Button variant="contained" type="submit" disabled={isPending}>
-            S'inscrire
+            {t('actions.submitInscription')}
           </Button>
         </Grid>
       </Grid>

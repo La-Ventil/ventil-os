@@ -3,62 +3,79 @@
 import { nanoid } from 'nanoid';
 import { prismaClient } from '@repo/db';
 import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
-import { isValidationError, zodErrorToMessage } from '../validation';
-import { ResetPasswordFormData, resetPasswordFormDataSchema } from '@repo/domain/models/forms/reset-password-form-data';
+import { getTranslations } from 'next-intl/server';
+import {
+  ResetPasswordFormData,
+  resetPasswordFormDataSchema
+} from '@repo/domain/models/forms/reset-password-form-data';
+import { FormState } from '@repo/ui/form-state';
+import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
-export async function resetPassword(previousState, formData: FormData) {
+export async function resetPassword(
+  previousState: FormState<ResetPasswordFormData>,
+  formData: FormData
+): Promise<FormState<ResetPasswordFormData>> {
+  const t = await getTranslations();
+  const { success, data, error } = resetPasswordFormDataSchema.safeParse(formData);
+
   try {
-    const resetPasswordFormData: ResetPasswordFormData = resetPasswordFormDataSchema.parse(formData);
-    const resetToken = nanoid() as string;
-    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour expiry
+    if (!success) {
+      const fieldErrors = zodErrorToFieldErrors(error, t);
+      const values = Object.fromEntries(formData) as unknown as ResetPasswordFormData;
+      return {
+        message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+        isValid: false,
+        fieldErrors,
+        values
+      };
+    }
+
+    const { email } = data;
     const user = await prismaClient.user.findUnique({
-      where: {
-        email: resetPasswordFormData.email
-      }
+      where: { email }
     });
 
-    if (user) {
-      await prismaClient.user.update({
-        data: {
-          resetToken,
-          resetTokenExpiry
-        },
-        where: {
-          id: user.id
-        }
-      });
+    const okMessage = t('resetPassword.success');
 
-      const emailAPI = new TransactionalEmailsApi();
-      (emailAPI as any).authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
-      emailAPI.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
-
-      const message = new SendSmtpEmail();
-      message.subject = `[${process.env.APP_NAME}] Réinitialisation de votre mot de passe`;
-      message.textContent = `Bonjour ${user.prenom}!
-    Voici le lien permettant de mettre à jour votre mot de passe :
-    ${new URL(`/update-password/${resetToken}`, process.env.BASE_URL).toString()}
-    `;
-      message.sender = { name: process.env.APP_NAME, email: 'no-reply@laventil.org' };
-      message.to = [{ email: user.email, name: `${user.prenom} ${user.name}` }];
-
-      console.log(message);
-      const { body } = await emailAPI.sendTransacEmail(message);
-      console.log(JSON.stringify(body));
+    if (!user) {
+      return { message: okMessage, isValid: true, fieldErrors: {}, values: { email } };
     }
 
-    return {
-      message:
-        'Si votre email existe dans notre base de donnée, un email permettant de changer de mot de passe vous a été envoyé.',
-      isValid: true,
-      fieldErrors: []
+    const resetToken = nanoid();
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1h
+
+    await prismaClient.user.update({
+      where: { id: user.id },
+      data: { resetToken, resetTokenExpiry }
+    });
+
+    const emailAPI = new TransactionalEmailsApi();
+    emailAPI.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY!);
+
+    const resetUrl = new URL(`/update-password/${resetToken}`, process.env.BASE_URL).toString();
+
+    const message = new SendSmtpEmail();
+    const appName = process.env.APP_NAME!;
+
+    message.subject = t('resetPassword.emailSubject', { appName });
+    message.textContent = t('resetPassword.emailText', { name: user.prenom, resetUrl });
+    message.sender = {
+      name: appName,
+      email: 'no-reply@laventil.org'
     };
-  } catch (e) {
-    console.error(e);
-    let message = 'Une erreur inattendu est survenue :(';
-    if (isValidationError(e)) {
-      message = zodErrorToMessage(e);
-    }
+    message.to = [
+      {
+        email: user.email,
+        name: `${user.prenom} ${user.name}`
+      }
+    ];
 
-    return { message, isValid: false, fieldErrors: [] };
+    await emailAPI.sendTransacEmail(message);
+
+    return { message: okMessage, isValid: true, fieldErrors: {}, values: { email } };
+  } catch (err) {
+    console.error(err);
+
+    return { message: t('validation.genericError'), isValid: false, fieldErrors: {}, values: previousState.values };
   }
 }

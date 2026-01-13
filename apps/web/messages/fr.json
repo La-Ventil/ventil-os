@@ -1,6 +1,14 @@
 {
   "home": {
-    "message_bienvenue": "Bienvenue sur l’application de La-Ventil."
+    "messageBienvenue": "Bienvenue sur l’application de La-Ventil."
+  },
+  "common": {
+    "actions": {
+      "back": "Retour"
+    },
+    "status": {
+      "loading": "Chargement..."
+    }
   },
   "profil": {
     "screen": {
@@ -12,7 +20,7 @@
         "label": "Ventil’acteur",
         "description": "J’apprends et je participe chaque semaine au projet de La-Ventil"
       },
-      "eleve_lycee": {
+      "eleveLycee": {
         "label": "Élève du lycée",
         "description": "Je veux profiter de La-Ventil en dehors des heures de cours"
       },
@@ -29,9 +37,11 @@
         "description": "Je viens à La-Ventil pour participer à un évènement"
       }
     },
-    "accept_terms": "J’accepte les conditions générales d’utilisation de l’application"
+    "acceptTerms": "J’accepte les conditions générales d’utilisation de l’application"
   },
-  "niveau_scolaire": {
+  "niveauScolaire": {
+    "label": "Niveau scolaire",
+    "placeholder": "(Niveau scolaire)",
     "option": {
       "seconde": {
         "label": "Seconde"
@@ -44,6 +54,139 @@
       },
       "bts": {
         "label": "BTS"
+      }
+    }
+  },
+  "validation": {
+    "emailRequired": "Veuillez renseigner votre adresse email.",
+    "emailInvalid": "L'adresse email n'est pas valide.",
+    "genericError": "Une erreur inattendue est survenue :(",
+    "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
+
+    "password": {
+      "minLength": "Votre mot de passe doit contenir au moins 6 caractères.",
+      "maxLength": "Votre mot de passe ne peut pas dépasser 20 caractères.",
+      "uppercaseRequired": "Votre mot de passe doit contenir au moins une lettre majuscule.",
+      "lowercaseRequired": "Votre mot de passe doit contenir au moins une lettre minuscule.",
+      "numberRequired": "Votre mot de passe doit contenir au moins un chiffre.",
+      "specialCharacterRequired": "Votre mot de passe doit contenir au moins un caractère spécial (!@#$%^&*).",
+      "confirmationRequired": "Veuillez confirmer votre mot de passe.",
+      "confirmationMismatch": "Les mots de passe ne correspondent pas."
+    },
+
+    "inscription": {
+      "prenomRequired": "Veuillez renseigner votre prénom.",
+      "nomRequired": "Veuillez renseigner votre nom.",
+      "profilRequired": "Veuillez sélectionner un profil.",
+      "cguRequired": "Vous devez accepter les conditions générales d’utilisation.",
+      "niveauScolaireRequired": "Veuillez sélectionner un niveau scolaire."
+    },
+
+    "profil": {
+      "prenomRequired": "Veuillez renseigner votre prénom.",
+      "nomRequired": "Veuillez renseigner votre nom.",
+      "profilRequired": "Veuillez sélectionner un profil.",
+      "cguRequired": "Vous devez accepter les conditions générales d’utilisation.",
+      "niveauScolaireRequired": "Veuillez sélectionner un niveau scolaire."
+    }
+  },
+  "resetPassword": {
+    "success": "Si votre email existe dans notre base de donnée, un email permettant de changer de mot de passe vous a été envoyé.",
+    "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
+    "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
+  },
+  "inscription": {
+    "success": "Inscription réussie !",
+    "error": "Une erreur inattendu est survenue :("
+  },
+  "forms": {
+    "fields": {
+      "prenom": "Prénom",
+      "nom": "Nom",
+      "email": "Email",
+      "motDePasse": "Mot de passe",
+      "confirmationMotDePasse": "Confirmation du mot de passe",
+      "niveauScolaire": "Niveau scolaire",
+      "profil": "Profil d’utilisation",
+      "cgu": "J’accepte les conditions générales d’utilisation de l’application"
+    },
+    "placeholders": {
+      "prenom": "mon prénom",
+      "nom": "mon nom",
+      "email": "email@email.com",
+      "motDePasse": "minimum 5 caractères",
+      "confirmationMotDePasse": "même mot de passe que le champ précédent"
+    },
+    "actions": {
+      "submitInscription": "S'inscrire",
+      "submitConnexion": "Se connecter",
+      "submitResetPassword": "Envoyer le lien de réinitialisation.",
+      "submitUpdatePassword": "Changer mon mot de passe",
+      "updateProfile": "Modifier"
+    },
+    "messages": {
+      "signInSuccess": "Connexion réussie.",
+      "signInFailed": "Identifiants invalides.",
+      "profileUpdated": "Votre profil a été mis à jour."
+    }
+  },
+  "pages": {
+    "public": {
+      "home": {
+        "ctaSignup": "M'inscrire",
+        "ctaSignin": "Connexion"
+      },
+      "inscription": {
+        "title": "Inscription",
+        "subtitle": "Information",
+        "intro": "Bienvenue sur l’application de La-Ventil. Pour commencer l’aventure, merci de saisir les informations ci-dessous."
+      },
+      "connexion": {
+        "title": "Connexion",
+        "subtitle": "Connexion",
+        "intro": "Connexion",
+        "forgotPassword": "J'ai oublié mon mot de passe."
+      },
+      "forgotPassword": {
+        "title": "J'ai oublié mon mot de passe",
+        "intro": "Renseigner l'email utilisé lors de l'inscription."
+      },
+      "updatePassword": {
+        "title": "Mettre à jour mon mot de passe",
+        "intro": "Mettre à jour mon mot de passe"
+      }
+    },
+    "hub": {
+      "navigation": {
+        "profile": "Profil",
+        "machines": "Machines",
+        "openBadges": "Open badges",
+        "events": "Évènements",
+        "settings": "Paramètres"
+      },
+      "settings": {
+        "title": "Paramètres",
+        "subtitle": "Information",
+        "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous.",
+        "profileLink": "Information du profil",
+        "avatarLink": "Avatar"
+      },
+      "profile": {
+        "subtitle": "Information",
+        "intro": "Retrouvez toutes informations liées à votre compte ci-dessous",
+        "stats": {
+          "events": "Évènement participé",
+          "openBadge": "Open badge",
+          "machine": "Machine utilisée"
+        }
+      },
+      "profileSettings": {
+        "title": "Profil utilisateur",
+        "subtitle": "Information",
+        "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous."
+      },
+      "home": {
+        "title": "Hub"
       }
     }
   }

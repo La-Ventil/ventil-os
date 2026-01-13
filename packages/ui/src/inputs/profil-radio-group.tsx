@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { useTranslations } from 'next-intl';
 import Radio from '@mui/material/Radio';
 import { styled } from '@mui/material/styles';
@@ -69,18 +68,29 @@ const ProfilRadioGroupContainer = styled(FormGroup)<MuiFormGroupProps>(
 `
 );
 
-export default function ProfilRadioGroup() {
-  const [value, setValue] = React.useState(ProfilType.Ventilacteur);
+export interface ProfilRadioGroupProps {
+  defaultValue?: string;
+}
+
+export default function ProfilRadioGroup({ defaultValue }: ProfilRadioGroupProps) {
   const t = useTranslations('profil');
+  const optionKeyMap: Record<string, string> = {
+    eleve_lycee: 'eleveLycee'
+  };
 
   return (
     <ProfilRadioGroupContainer>
-      <FormLabel id="profil-label">Profil d’utilisation</FormLabel>
-      <Typography variant="body1">Sélectionnez le profil correspondant à votre usage du lieu</Typography>
-      <RadioGroup aria-labelledby="profil-label" defaultValue={ProfilType.Ventilacteur} name="profil">
+      <FormLabel id="profil-label">{t('screen.title')}</FormLabel>
+      <Typography variant="body1">{t('screen.subtitle')}</Typography>
+      <RadioGroup
+        aria-labelledby="profil-label"
+        defaultValue={defaultValue ?? ProfilType.Ventilacteur}
+        name="profil"
+      >
         {Object.values(ProfilType).map((key) => {
-          const label = t(`option.${key}.label`);
-          const description = t(`option.${key}.description`);
+          const optionKey = optionKeyMap[key] ?? key;
+          const label = t(`option.${optionKey}.label`);
+          const description = t(`option.${optionKey}.description`);
 
           return <ProfilRadio key={key} label={label} value={key} caption={description} />;
         })}

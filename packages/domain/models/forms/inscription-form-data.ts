@@ -1,19 +1,22 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import {passwordSchema} from "./password";
+import { passwordConfirmationSchema, passwordSchema } from './password';
+import { emailSchema } from './email';
 
-export const inscriptionFormDataSchema = zfd.formData({
-    prenom: z.string().min(1, 'Impossible de trouver un projet sans son identifiant.'),
-    nom: z.string().min(1, 'Veuillez décrire votre projet.'),
-    email: z.string().min(1, 'Veuillez décrire votre projet.'),
+export const inscriptionFormDataSchema = zfd
+  .formData({
+    prenom: z.string().min(1, { message: 'validation.inscription.prenomRequired' }),
+    nom: z.string().min(1, { message: 'validation.inscription.nomRequired' }),
+    email: emailSchema,
     motDePasse: passwordSchema,
-    confirmationMotDePasse: z.string().min(1, 'Veuillez décrire votre projet.'),
-    profil: z.string().min(1, 'Veuillez décrire votre projet.'),
-    cgu: z.string().min(1, 'Veuillez décrire votre projet.'),
-    niveauScolaire: z.string().min(1, 'Veuillez décrire votre projet.'),
-}).refine(({ motDePasse, confirmationMotDePasse}) => motDePasse === confirmationMotDePasse, {
-    message: 'passwordMismatchErrorMessage',
-    path: ['confirmPassword'],
-});
+    confirmationMotDePasse: passwordConfirmationSchema,
+    profil: z.string().min(1, { message: 'validation.inscription.profilRequired' }),
+    cgu: z.string().min(1, { message: 'validation.inscription.cguRequired' }),
+    niveauScolaire: z.string().min(1, { message: 'validation.inscription.niveauScolaireRequired' })
+  })
+  .refine(({ motDePasse, confirmationMotDePasse }) => motDePasse === confirmationMotDePasse, {
+    message: 'validation.password.confirmationMismatch',
+    path: ['confirmationMotDePasse']
+  });
 
 export type InscriptionFormData = z.infer<typeof inscriptionFormDataSchema>;

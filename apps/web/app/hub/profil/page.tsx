@@ -15,14 +15,16 @@ import { getProfilUtilisateurFromSession } from '../../../lib/auth';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Page() {
   const profilUtilisateur = await getProfilUtilisateurFromSession();
+  const t = await getTranslations('pages.hub.profile');
   return (
     <Stack spacing={2}>
       <Typography variant="h2">{profilUtilisateur.pseudo}</Typography>
-      <Typography variant="h3">Information</Typography>
-      <Typography variant="body1">Retrouvez toutes informations liées à votre compte ci-dessous</Typography>
+      <Typography variant="h3">{t('subtitle')}</Typography>
+      <Typography variant="body1">{t('intro')}</Typography>
       <Card sx={{ display: 'flex' }}>
         <CardMedia title={profilUtilisateur.email} sx={{ width: 104 }}>
           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -48,7 +50,7 @@ export default async function Page() {
               <EventIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="ÉVÈNEMENT PARTICIPÉ" secondary="00" />
+          <ListItemText primary={t('stats.events')} secondary="00" />
         </ListItem>
         <ListItem>
           <ListItemAvatar>
@@ -56,7 +58,7 @@ export default async function Page() {
               <OpenBadgeIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="OPEN BADGE" secondary="00" />
+          <ListItemText primary={t('stats.openBadge')} secondary="00" />
         </ListItem>
         <ListItem>
           <ListItemAvatar>
@@ -64,7 +66,7 @@ export default async function Page() {
               <MachineIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="MACHINE UTILISÉE" secondary="00" />
+          <ListItemText primary={t('stats.machine')} secondary="00" />
         </ListItem>
       </List>
     </Stack>

@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
+import { emailSchema } from './email';
 
 export const connexionFormDataSchema = zfd.formData({
-    email: z.string().min(1, 'Vous devez renseigner l\'email utilisé lors de l\'inscription.'),
+  email: emailSchema
 });
 
 export type ConnexionFormData = z.infer<typeof connexionFormDataSchema>;

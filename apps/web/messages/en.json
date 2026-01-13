@@ -1,5 +1,193 @@
 {
   "HomePage": {
     "title": "Hello world!"
+  },
+  "home": {
+    "messageBienvenue": "Welcome to the La-Ventil app."
+  },
+  "common": {
+    "actions": {
+      "back": "Back"
+    },
+    "status": {
+      "loading": "Loading..."
+    }
+  },
+  "profil": {
+    "screen": {
+      "title": "Usage profile",
+      "subtitle": "Select the profile that matches how you use the place"
+    },
+    "option": {
+      "ventilacteur": {
+        "label": "Ventil'acteur",
+        "description": "I learn and participate weekly in the La-Ventil project"
+      },
+      "eleveLycee": {
+        "label": "High school student",
+        "description": "I want to use La-Ventil outside class hours"
+      },
+      "enseignant": {
+        "label": "Teacher",
+        "description": "I work at the school and use La-Ventil"
+      },
+      "intervenant": {
+        "label": "Guest speaker",
+        "description": "I run workshops and work within La-Ventil"
+      },
+      "visiteur": {
+        "label": "Visitor",
+        "description": "I come to La-Ventil to attend an event"
+      }
+    },
+    "acceptTerms": "I accept the application's terms and conditions"
+  },
+  "niveauScolaire": {
+    "label": "School level",
+    "placeholder": "(School level)",
+    "option": {
+      "seconde": {
+        "label": "10th grade"
+      },
+      "premiere": {
+        "label": "11th grade"
+      },
+      "terminal": {
+        "label": "12th grade"
+      },
+      "bts": {
+        "label": "BTS"
+      }
+    }
+  },
+  "validation": {
+    "genericError": "An unexpected error occurred :(",
+    "emailAlreadyUsed": "This email address is already in use.",
+    "emailRequired": "Please enter your email address.",
+    "emailInvalid": "The email address is not valid.",
+    "password": {
+      "minLength": "Your password must be at least 6 characters.",
+      "maxLength": "Your password must be at most 20 characters.",
+      "uppercaseRequired": "Your password must include at least one uppercase letter.",
+      "lowercaseRequired": "Your password must include at least one lowercase letter.",
+      "numberRequired": "Your password must include at least one number.",
+      "specialCharacterRequired": "Your password must include at least one special character (!@#$%^&*).",
+      "confirmationRequired": "Please confirm your password.",
+      "confirmationMismatch": "Passwords do not match."
+    },
+    "inscription": {
+      "prenomRequired": "Please enter your first name.",
+      "nomRequired": "Please enter your last name.",
+      "profilRequired": "Please select a profile.",
+      "cguRequired": "You must accept the terms and conditions.",
+      "niveauScolaireRequired": "Please select a school level."
+    },
+    "profil": {
+      "prenomRequired": "Please enter your first name.",
+      "nomRequired": "Please enter your last name.",
+      "profilRequired": "Please select a profile.",
+      "cguRequired": "You must accept the terms and conditions.",
+      "niveauScolaireRequired": "Please select a school level."
+    }
+  },
+  "resetPassword": {
+    "success": "If your email exists in our database, a password reset link has been sent to you.",
+    "emailSubject": "[{appName}] Reset your password",
+    "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
+  },
+  "inscription": {
+    "success": "Registration successful!",
+    "error": "An unexpected error occurred :("
+  },
+  "forms": {
+    "fields": {
+      "prenom": "First name",
+      "nom": "Last name",
+      "email": "Email",
+      "motDePasse": "Password",
+      "confirmationMotDePasse": "Confirm password",
+      "niveauScolaire": "School level",
+      "profil": "Usage profile",
+      "cgu": "I accept the application's terms and conditions"
+    },
+    "placeholders": {
+      "prenom": "my first name",
+      "nom": "my last name",
+      "email": "email@email.com",
+      "motDePasse": "minimum 5 characters",
+      "confirmationMotDePasse": "same password as the previous field"
+    },
+    "actions": {
+      "submitInscription": "Sign up",
+      "submitConnexion": "Sign in",
+      "submitResetPassword": "Send reset link",
+      "submitUpdatePassword": "Change my password",
+      "updateProfile": "Update"
+    },
+    "messages": {
+      "signInSuccess": "Signed in successfully.",
+      "signInFailed": "Sign-in failed.",
+      "profileUpdated": "Your profile has been updated."
+    }
+  },
+  "pages": {
+    "public": {
+      "home": {
+        "ctaSignup": "Sign up",
+        "ctaSignin": "Sign in"
+      },
+      "inscription": {
+        "title": "Sign up",
+        "subtitle": "Information",
+        "intro": "Welcome to the La-Ventil app. To get started, please fill in the information below."
+      },
+      "connexion": {
+        "title": "Sign in",
+        "subtitle": "Sign in",
+        "intro": "Sign in",
+        "forgotPassword": "I forgot my password."
+      },
+      "forgotPassword": {
+        "title": "I forgot my password",
+        "intro": "Enter the email you used to sign up."
+      },
+      "updatePassword": {
+        "title": "Update my password",
+        "intro": "Update my password"
+      }
+    },
+    "hub": {
+      "navigation": {
+        "profile": "Profile",
+        "machines": "Machines",
+        "openBadges": "Open badges",
+        "events": "Events",
+        "settings": "Settings"
+      },
+      "settings": {
+        "title": "Settings",
+        "subtitle": "Information",
+        "intro": "Update your account information with the sections below.",
+        "profileLink": "Profile information",
+        "avatarLink": "Avatar"
+      },
+      "profile": {
+        "subtitle": "Information",
+        "intro": "Find all the information related to your account below",
+        "stats": {
+          "events": "Events attended",
+          "openBadge": "Open badge",
+          "machine": "Machines used"
+        }
+      },
+      "profileSettings": {
+        "title": "User profile",
+        "subtitle": "Information",
+        "intro": "Update your account information with the sections below."
+      },
+      "home": {
+        "title": "Hub"
+      }
+    }
   }
 }

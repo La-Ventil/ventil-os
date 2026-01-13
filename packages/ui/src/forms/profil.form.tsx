@@ -6,11 +6,12 @@ import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { useTranslations } from 'next-intl';
 import { ProfilUtilisateur } from '@repo/domain/profil-utilisateur';
 import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
 import { ProfilFormData } from '@repo/domain/models/forms/profil-form-data';
 import { FormAction } from '../form-action-state';
-import { useFormActionState } from '../hooks';
+import { useFormActionStateWithValues } from '../hooks';
 import Link from '../link';
 
 export interface ProfilFormProps {
@@ -19,11 +20,17 @@ export interface ProfilFormProps {
 }
 
 export default function ProfilForm({ profilUtilisateurPromise, handleSubmit }: ProfilFormProps) {
+  const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
   const profilUtilisateur = use(profilUtilisateurPromise);
-  const [formState, formAction, pending] = useFormActionState<ProfilFormData>(handleSubmit, {
-    message: undefined,
-    fieldErrors: [],
-    values: profilUtilisateur,
+  const [formState, formAction, pending] = useFormActionStateWithValues<ProfilFormData>(handleSubmit, {
+    message: '',
+    fieldErrors: {},
+    values: {
+      prenom: profilUtilisateur.prenom ?? '',
+      nom: profilUtilisateur.nom ?? '',
+      niveauScolaire: profilUtilisateur.niveauScolaire ?? ''
+    },
     isValid: undefined
   });
 
@@ -33,19 +40,31 @@ export default function ProfilForm({ profilUtilisateurPromise, handleSubmit }: P
         {formState?.message && !pending && (
           <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>
         )}
-        <TextField name={'prenom'} value={formState.values.prenom} label={'Prénom'} placeholder="mon prénom" required />
-        <TextField name={'nom'} value={formState.values.nom} label={'Nom'} placeholder="mon nom" required />
-        <NiveauScolaireSelect />
+        <TextField
+          name={'prenom'}
+          defaultValue={formState.values.prenom}
+          label={t('fields.prenom')}
+          placeholder={t('placeholders.prenom')}
+          required
+        />
+        <TextField
+          name={'nom'}
+          defaultValue={formState.values.nom}
+          label={t('fields.nom')}
+          placeholder={t('placeholders.nom')}
+          required
+        />
+        <NiveauScolaireSelect defaultValue={formState.values.niveauScolaire} />
       </Stack>
       <Grid container spacing={2}>
         <Grid>
           <Button variant="outlined" color="secondary" component={Link} href="/">
-            Retour
+            {tCommon('actions.back')}
           </Button>
         </Grid>
         <Grid>
           <Button variant="contained" type="submit" disabled={pending}>
-            Modifier
+            {t('actions.updateProfile')}
           </Button>
         </Grid>
       </Grid>

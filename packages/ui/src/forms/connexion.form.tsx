@@ -6,11 +6,14 @@ import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { useTranslations } from 'next-intl';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from '../link';
 
 export default function ConnexionForm() {
+  const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formState, setFormState] = useState({
@@ -29,14 +32,14 @@ export default function ConnexionForm() {
 
     if (result?.ok) {
       setFormState({
-        message: 'success',
+        message: t('messages.signInSuccess'),
         isValid: true
       });
       router.push('/hub/profil');
     } else {
       setFormState({
-        message: 'Signin failed',
-        isValid: true
+        message: t('messages.signInFailed'),
+        isValid: false
       });
     }
   }
@@ -49,28 +52,28 @@ export default function ConnexionForm() {
           name={'email'}
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
-          label={'Email'}
-          placeholder="email@email.com"
+          label={t('fields.email')}
+          placeholder={t('placeholders.email')}
           required
         />
         <TextField
           name={'motDePasse'}
-          label={'Mot de passe'}
+          label={t('fields.motDePasse')}
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
-          placeholder="minimum 5 caractères"
+          placeholder={t('placeholders.motDePasse')}
           required
         />
       </Stack>
       <Grid container spacing={2}>
         <Grid>
           <Button variant="outlined" color="secondary" component={Link} href="/">
-            Retour
+            {tCommon('actions.back')}
           </Button>
         </Grid>
         <Grid>
           <Button variant="contained" type="submit">
-            Sign me in
+            {t('actions.submitConnexion')}
           </Button>
         </Grid>
       </Grid>
