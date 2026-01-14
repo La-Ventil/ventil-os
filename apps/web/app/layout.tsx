@@ -1,9 +1,11 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import { nunito, vg5000 } from '@repo/ui/fonts';
 import { theme } from '@repo/ui/theme';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: `La-Ventil ${process.env.APP_NAME}`,
@@ -21,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html className={`${nunito.variable} ${vg5000.variable}`}>
       <body>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>

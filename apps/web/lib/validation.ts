@@ -1,5 +1,5 @@
-import { ZodError } from 'zod';
 import type { TranslationValues } from 'next-intl';
+import { ZodError } from 'zod';
 
 export function isValidationError(err: unknown): err is ZodError {
   return Boolean(err && (err instanceof ZodError || (err as ZodError).name === 'ZodError'));

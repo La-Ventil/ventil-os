@@ -1,5 +1,5 @@
-import {ProfilUtilisateur} from "@repo/domain/profil-utilisateur";
 import type {PrismaClient} from "@prisma/client";
+import {ProfilUtilisateur} from "@repo/domain/profil-utilisateur";
 
 export class UtilisateurRepository {
     constructor(private prisma: PrismaClient) {

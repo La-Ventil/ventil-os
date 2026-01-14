@@ -1,14 +1,14 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import Radio from '@mui/material/Radio';
-import { styled } from '@mui/material/styles';
 import { FormControlLabel, FormControlLabelProps } from '@mui/material';
 import FormGroup, { FormGroupProps as MuiFormGroupProps } from '@mui/material/FormGroup';
+import Radio from '@mui/material/Radio';
+import { styled } from '@mui/material/styles';
 import { ProfilType } from '@repo/domain/profil-type';
 import { FormLabel } from '../form-label';
-import { Typography } from '../typography';
 import { RadioGroup } from '../radio-group';
+import { Typography } from '../typography';
 
 const ProfilRadioContainer = styled(FormControlLabel)<FormControlLabelProps>(
   ({ theme }) => `
@@ -57,8 +57,6 @@ const ProfilRadioGroupContainer = styled(FormGroup)<MuiFormGroupProps>(
   }
   
   ${Typography} {
-    border: 1px solid Crimson;
-    color: Crimson;
   }
   
   ${RadioGroup} {
@@ -82,11 +80,7 @@ export default function ProfilRadioGroup({ defaultValue }: ProfilRadioGroupProps
     <ProfilRadioGroupContainer>
       <FormLabel id="profil-label">{t('screen.title')}</FormLabel>
       <Typography variant="body1">{t('screen.subtitle')}</Typography>
-      <RadioGroup
-        aria-labelledby="profil-label"
-        defaultValue={defaultValue ?? ProfilType.Ventilacteur}
-        name="profil"
-      >
+      <RadioGroup aria-labelledby="profil-label" defaultValue={defaultValue ?? ProfilType.Ventilacteur} name="profil">
         {Object.values(ProfilType).map((key) => {
           const optionKey = optionKeyMap[key] ?? key;
           const label = t(`option.${optionKey}.label`);

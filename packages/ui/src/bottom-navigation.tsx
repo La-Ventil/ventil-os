@@ -1,21 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import MuiBottomNavigation, { BottomNavigationProps as MuiBottomNavigationProps } from '@mui/material/BottomNavigation';
-import { styled } from '@mui/material/styles';
-import { BottomNavigationAction } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import Link from './link';
+import MenuIcon from '@mui/icons-material/Menu';
+import { BottomNavigationAction } from '@mui/material';
+import MuiBottomNavigation, { BottomNavigationProps as MuiBottomNavigationProps } from '@mui/material/BottomNavigation';
+import { styled } from '@mui/material/styles';
+import BottomSlot from './bottom-slot';
+import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
-import { EventIcon } from './icons/event-icon';
-import BottomSlot from './bottom-slot';
+import Link from './link';
 
 const StyledBottomNavigation = styled(MuiBottomNavigation)<MuiBottomNavigationProps>(
   ({ theme }) => `
-  color: ${theme.palette.success.main}
+  width: 500px;
+  color: ${theme.palette.success.main};
 `
 );
 
@@ -29,7 +30,7 @@ export default function BottomNavigation() {
 
   return (
     <BottomSlot>
-      <StyledBottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange}>
+      <StyledBottomNavigation value={value} onChange={handleChange}>
         <BottomNavigationAction
           label={t('profile')}
           value="profil"

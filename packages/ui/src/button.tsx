@@ -5,6 +5,6 @@ import { styled } from '@mui/material/styles';
 
 export const Button = styled(MuiButton)<MuiButtonProps>(
   ({ theme }) => `
-  color: ${theme.palette.success.main}
+  color: ${theme.palette.primary.light};
 `
 );

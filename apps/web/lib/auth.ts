@@ -1,13 +1,13 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import type { NextAuthOptions } from 'next-auth';
 import { getServerSession as getNextAuthServerSession } from 'next-auth';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { prismaClient, utilisateurRepository } from '@repo/db';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { type PrismaClient, Prisma } from '@prisma/client';
-import { verifySecret } from './security';
 import { signIn } from 'next-auth/react';
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { type PrismaClient, Prisma } from '@prisma/client';
+import { prismaClient, utilisateurRepository } from '@repo/db';
+import { verifySecret } from './security';
 
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`

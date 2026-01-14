@@ -1,6 +1,6 @@
 import { useActionState } from 'react';
-import { FormState } from './form-state';
 import { FormActionStateParameters } from './form-action-state';
+import { FormState } from './form-state';
 
 export function useFormActionState<State, Payload = FormData>(
   action: FormActionStateParameters<State, Payload>[0],

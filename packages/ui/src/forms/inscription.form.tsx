@@ -1,18 +1,18 @@
 'use client';
 
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
+import { useTranslations } from 'next-intl';
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Alert from '@mui/material/Alert';
-import { useTranslations } from 'next-intl';
-import ProfilRadioGroup from '@repo/ui/inputs/profil-radio-group';
-import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
+import NiveauScolaireSelect from '@repo/ui/inputs/niveau-scolaire-select';
+import ProfilRadioGroup from '@repo/ui/inputs/profil-radio-group';
 import { FormActionStateTuple } from '../form-action-state';
-import { TextField } from '../text-field';
 import Link from '../link';
+import { TextField } from '../text-field';
 
 export interface InscriptionFormProps {
   actionState: FormActionStateTuple<InscriptionFormData>;

@@ -1,13 +1,13 @@
 'use server';
 
 import { Suspense } from 'react';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import ProfilForm from '@repo/ui/forms/profil.form';
-import { getProfilUtilisateurFromSession } from '../../../../lib/auth';
-import { modifierProfil } from '../../../../lib/actions/modifier-profil';
 import { getTranslations } from 'next-intl/server';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import ProfilForm from '@repo/ui/forms/profil.form';
+import { modifierProfil } from '../../../../lib/actions/modifier-profil';
+import { getProfilUtilisateurFromSession } from '../../../../lib/auth';
 
 export default async function Page() {
   const profilUtilisateurPromise = getProfilUtilisateurFromSession();

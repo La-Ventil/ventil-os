@@ -1,12 +1,12 @@
 'use server';
 
-import { nanoid } from 'nanoid';
 import { getTranslations } from 'next-intl/server';
+import { nanoid } from 'nanoid';
 import { prismaClient, Prisma, Profil, ConsentementType } from '@repo/db';
 import { InscriptionFormData, inscriptionFormDataSchema } from '@repo/domain/models/forms/inscription-form-data';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
-import { hashSecret } from '../security';
 import { FormState } from '@repo/ui/form-state';
+import { hashSecret } from '../security';
+import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
 export async function inscrireUtilisateur(
   previousState: FormState<InscriptionFormData>,

@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect } from 'react';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Alert from '@mui/material/Alert';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { signInAndRedirect } from '../../../../lib/auth';
-import { updatePassword, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useFormActionState } from '@repo/ui/hooks';
+import { updatePassword, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
+import { signInAndRedirect } from '../../../../lib/auth';
 
 export default function Page() {
   const t = useTranslations('pages.public.updatePassword');

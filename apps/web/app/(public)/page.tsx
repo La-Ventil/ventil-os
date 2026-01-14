@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import BottomSlot from '@repo/ui/bottom-slot';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import Link from '@repo/ui/link';
 
 export default function Home() {

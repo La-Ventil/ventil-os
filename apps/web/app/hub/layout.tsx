@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import BottomNavigation from '@repo/ui/bottom-navigation';
 import { getServerSession } from '../../lib/auth';
-import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

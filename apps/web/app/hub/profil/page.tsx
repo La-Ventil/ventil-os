@@ -1,5 +1,6 @@
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,15 +8,52 @@ import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Image from 'next/image';
-import { getProfilUtilisateurFromSession } from '../../../lib/auth';
+import ListItemText from '@mui/material/ListItemText';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 import { EventIcon } from '@repo/ui/icons/event-icon';
-import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
-import { getTranslations } from 'next-intl/server';
+import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
+import { getProfilUtilisateurFromSession } from '../../../lib/auth';
+
+const ProfileCard = styled(Card)`
+  display: flex;
+`;
+
+const ProfileCardMedia = styled(CardMedia)`
+  width: 104px;
+`;
+
+const ProfileCardColumn = styled(Box)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProfileCardContent = styled(CardContent)`
+  flex: 1 0 auto;
+`;
+
+const ProfileImageWrapper = styled('div')`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
+
+const SecondaryText = styled(Typography)(
+  ({ theme }) => `
+  color: ${theme.palette.text.secondary};
+`
+);
+
+const StatsList = styled(List)(
+  ({ theme }) => `
+  width: 100%;
+  max-width: 360px;
+  background-color: ${theme.palette.background.paper};
+`
+);
 
 export default async function Page() {
   const profilUtilisateur = await getProfilUtilisateurFromSession();
@@ -25,25 +63,25 @@ export default async function Page() {
       <Typography variant="h2">{profilUtilisateur.pseudo}</Typography>
       <Typography variant="h3">{t('subtitle')}</Typography>
       <Typography variant="body1">{t('intro')}</Typography>
-      <Card sx={{ display: 'flex' }}>
-        <CardMedia title={profilUtilisateur.email} sx={{ width: 104 }}>
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <ProfileCard>
+        <ProfileCardMedia title={profilUtilisateur.email}>
+          <ProfileImageWrapper>
             <Image src="/avatar.svg" alt={profilUtilisateur.email} layout="fill" objectFit="contain" />
-          </div>
-        </CardMedia>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <CardContent sx={{ flex: '1 0 auto' }}>
+          </ProfileImageWrapper>
+        </ProfileCardMedia>
+        <ProfileCardColumn>
+          <ProfileCardContent>
             <Typography component="div" variant="h5">
               {profilUtilisateur.prenom} {profilUtilisateur.nom}
             </Typography>
-            <Typography variant="subtitle1" component="div" sx={{ color: 'text.secondary' }}>
+            <SecondaryText variant="subtitle1" component="div">
               {profilUtilisateur.pseudo}
-            </Typography>
+            </SecondaryText>
             <Chip label={profilUtilisateur.profil} />
-          </CardContent>
-        </Box>
-      </Card>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          </ProfileCardContent>
+        </ProfileCardColumn>
+      </ProfileCard>
+      <StatsList>
         <ListItem>
           <ListItemAvatar>
             <Avatar>
@@ -68,7 +106,7 @@ export default async function Page() {
           </ListItemAvatar>
           <ListItemText primary={t('stats.machine')} secondary="00" />
         </ListItem>
-      </List>
+      </StatsList>
     </Stack>
-  );
+  );  
 }

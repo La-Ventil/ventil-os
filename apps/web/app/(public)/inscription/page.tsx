@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { inscrireUtilisateur } from '../../../lib/actions/inscrire-utilisateur';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
 import InscriptionForm from '@repo/ui/forms/inscription.form';
 import { useFormActionStateWithValues } from '@repo/ui/hooks';
-import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-data';
+import { inscrireUtilisateur } from '../../../lib/actions/inscrire-utilisateur';
 
 export default function Page() {
   const t = useTranslations('pages.public.inscription');

@@ -1,9 +1,9 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
+import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import { nanoid } from 'nanoid';
 import { prismaClient } from '@repo/db';
-import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
-import { getTranslations } from 'next-intl/server';
 import {
   ResetPasswordFormData,
   resetPasswordFormDataSchema

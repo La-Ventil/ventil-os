@@ -8,8 +8,8 @@
 //   log(`api running on ${port}`);
 // });
 
-import { SerialPort } from "serialport";
 import { config } from "dotenv";
+import { SerialPort } from "serialport";
 
 config();
 

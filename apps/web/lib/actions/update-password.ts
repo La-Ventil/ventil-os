@@ -7,8 +7,8 @@ import {
   updatePasswordFormDataSchema
 } from '@repo/domain/models/forms/update-password-form-data';
 import { FormState } from '@repo/ui/form-state';
-import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 import { hashSecret } from '../security';
+import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
 export type UpdatePasswordActionState = FormState<UpdatePasswordFormData> & {
   token: string;

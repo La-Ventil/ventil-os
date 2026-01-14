@@ -1,9 +1,9 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import { useTranslations } from 'next-intl';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import ResetPasswordForm from '@repo/ui/forms/reset-password.form';
 import { resetPassword } from '../../../lib/actions/reset-password';
 

@@ -1,10 +1,10 @@
 'use client';
 
 import type { NextPage } from 'next';
+import { useTranslations } from 'next-intl';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { useTranslations } from 'next-intl';
 import ConnexionForm from '@repo/ui/forms/connexion.form';
 import Link from '@repo/ui/link';
 

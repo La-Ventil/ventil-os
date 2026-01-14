@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { passwordConfirmationSchema, passwordSchema } from './password';
 import { emailSchema } from './email';
+import { passwordConfirmationSchema, passwordSchema } from './password';
 
 export const inscriptionFormDataSchema = zfd
   .formData({

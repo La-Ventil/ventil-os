@@ -1,15 +1,16 @@
 import { useTranslations } from 'next-intl';
+import Box, { BoxProps } from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { NiveauScolaire } from '@repo/domain/niveau-scolaire';
-import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { NiveauScolaire } from '@repo/domain/niveau-scolaire';
 
 const NiveauScolaireSelectContainer = styled(Box)<BoxProps>(
   ({ theme }) => `
-  border: 1px solid Coral;
+  min-width: 120px;
+  border: 1px solid ${theme.palette.divider};
 `
 );
 
@@ -21,7 +22,7 @@ export default function NiveauScolaireSelect({ defaultValue }: NiveauScolaireSel
   const t = useTranslations('niveauScolaire');
 
   return (
-    <NiveauScolaireSelectContainer sx={{ minWidth: 120 }}>
+    <NiveauScolaireSelectContainer>
       <FormControl fullWidth>
         <InputLabel id="niveau-scolaire-select-label">{t('label')}</InputLabel>
         <Select

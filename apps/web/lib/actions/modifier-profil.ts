@@ -1,11 +1,11 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import { prismaClient, Prisma } from '@repo/db';
 import { ProfilFormData, profilFormDataSchema } from '@repo/domain/models/forms/profil-form-data';
-import { getTranslations } from 'next-intl/server';
 import { FormState } from '@repo/ui/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getProfilUtilisateurFromSession } from '../auth';
+import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
 export async function modifierProfil(
   previousState: FormState<ProfilFormData>,
