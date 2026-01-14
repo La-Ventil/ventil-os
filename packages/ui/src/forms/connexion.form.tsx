@@ -42,8 +42,8 @@ export default function ConnexionForm() {
   }
 
   return (
-    <form onSubmit={(e) => void onSignin(e)}>
-      <Stack spacing={2}>
+    <form onSubmit={(e) => void onSignin(e)} >
+      <Stack spacing={2} sx={{ p: 2 }} maxWidth="sm">
         {formState?.message && <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>}
         <TextField
           name={'email'}
@@ -58,7 +58,7 @@ export default function ConnexionForm() {
           label={'Mot de passe'}
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
-          placeholder="minimum 5 caractères"
+          placeholder="minimum 5 caractères"           
           required
         />
       </Stack>

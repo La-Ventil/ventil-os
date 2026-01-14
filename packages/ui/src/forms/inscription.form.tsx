@@ -12,6 +12,8 @@ import { InscriptionFormData } from '@repo/domain/models/forms/inscription-form-
 import { FormActionStateTuple } from '../form-action-state';
 import { TextField } from '../text-field';
 import { EventIcon } from '@repo/ui/icons/event-icon';
+import { MachineIcon } from '@repo/ui/icons/machine-icon';
+import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import Link from '../link';
 
 export interface InscriptionFormProps {
@@ -20,14 +22,16 @@ export interface InscriptionFormProps {
 
 export default function InscriptionForm({ actionState: [state, action, isPending] }: InscriptionFormProps) {
   return (
-    <form action={action}>
-      <Stack spacing={2}>
+    <form action={action} >
+      <Stack  spacing={2}>
         {state?.message && !isPending && (
           <Alert severity={state?.isValid ? 'success' : 'error'}>{state?.message}</Alert>
         )}
         <TextField name={'prenom'} label={'Prénom'} placeholder="mon prénom" required />
         <TextField name={'nom'} label={'Nom'} placeholder="mon nom" required />
         <EventIcon color="primary" />
+        <MachineIcon color="primary" />
+        <OpenBadgeIcon color="primary" />
         <NiveauScolaireSelect />
         <TextField name={'email'} type={'email'} label={'Email'} placeholder="email@email.com" required />
         <TextField
