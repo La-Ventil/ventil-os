@@ -25,7 +25,6 @@
     "@prisma/client": "^5.22.0",
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
-    "@repo/keycloak": "workspace:*",
     "@repo/ui": "workspace:*",
     "nanoid": "^5.1.6",
     "next": "^16.0.3",

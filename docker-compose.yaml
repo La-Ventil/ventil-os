@@ -12,45 +12,5 @@ services:
     ports:
       - 5433:5432
 
-#  keycloak_postgres:
-#    image: postgres:18.0
-#    volumes:
-#      - postgres_data_keycloak:/var/lib/postgresql/data
-#    environment:
-#      POSTGRES_DB: keycloak
-#      POSTGRES_USER: keycloak
-#      POSTGRES_PASSWORD: password
-#    ports:
-#      - 5432:5432
-#
-#  keycloak_web:
-#    image: quay.io/keycloak/keycloak:26.4
-#    volumes:
-#      - ./etc/keycloak/data/import:/opt/keycloak/data/import
-#    environment:
-#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-#      KC_BOOTSTRAP_ADMIN_PASSWORD: change_me
-#
-#      KC_DB: postgres
-#      KC_DB_URL: jdbc:postgresql://keycloak_postgres:5432/keycloak
-#      KC_DB_USERNAME: keycloak
-#      KC_DB_PASSWORD: password
-#
-#      KC_HOSTNAME: localhost
-#      KC_HOSTNAME_STRICT: false
-#      KC_HOSTNAME_STRICT_HTTPS: false
-#
-#      KC_LOG_LEVEL: info
-#      KC_METRICS_ENABLED: true
-#      KC_HEALTH_ENABLED: true
-#      KEYCLOAK_ADMIN: admin
-#      KEYCLOAK_ADMIN_PASSWORD: admin
-#    command: start-dev --import-realm
-#    depends_on:
-#      - keycloak_postgres
-#    ports:
-#      - 8080:8080
-
 volumes:
   postgres_data_ventilos:
-#  postgres_data_keycloak:
