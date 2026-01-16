@@ -1,11 +1,14 @@
-import Chip from '@mui/material/Chip';
+'use client';
+
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import OpenBadgeCard, { OpenBadgeCardData } from '@repo/ui/open-badge-card';
 import SectionTitle from '@repo/ui/section-title';
+import OpenBadgeDetailsModal from './open-badge-details-modal';
 import styles from './page.module.css';
 
 const badges: OpenBadgeCardData[] = [
@@ -30,8 +33,10 @@ const badges: OpenBadgeCardData[] = [
 ];
 
 export default function Page() {
+  const [selectedBadge, setSelectedBadge] = useState<OpenBadgeCardData | null>(null);
+
   return (
-    <Stack spacing={2.5}>        
+    <Stack spacing={2.5}>
       <SectionTitle icon={<OpenBadgeIcon />}>Open Badge</SectionTitle>
       <Typography variant="h3">Information</Typography>
       <Typography variant="body1">Retrouvez les Open badges disponibles et obtenus ci-dessous.</Typography>
@@ -43,9 +48,15 @@ export default function Page() {
 
       <Stack spacing={2}>
         {badges.map((badge) => (
-          <OpenBadgeCard key={badge.id} badge={badge} />
+          <OpenBadgeCard key={badge.id} badge={badge} onClick={() => setSelectedBadge(badge)} />
         ))}
       </Stack>
+
+      <OpenBadgeDetailsModal
+        badge={selectedBadge}
+        open={Boolean(selectedBadge)}
+        onClose={() => setSelectedBadge(null)}
+      />
     </Stack>
   );
 }

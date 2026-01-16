@@ -20,12 +20,29 @@ export type OpenBadgeCardData = {
 
 export type OpenBadgeCardProps = {
   badge: OpenBadgeCardData;
+  onClick?: () => void;
 };
 
-export default function OpenBadgeCard({ badge }: OpenBadgeCardProps) {
-  // for levels ? https://mui.com/material-ui/react-chip/
+export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
+  const isInteractive = Boolean(onClick);
+
   return (
-    <Card className={styles.card}>
+    <Card
+      className={isInteractive ? `${styles.card} ${styles.cardInteractive}` : styles.card}
+      onClick={onClick}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      onKeyDown={(event) => {
+        if (!isInteractive) {
+          return;
+        }
+
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
       <CardContent>
         <Stack spacing={2}>
           <div className={styles.header}>
