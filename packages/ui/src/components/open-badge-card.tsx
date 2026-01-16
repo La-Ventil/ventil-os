@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import styles from './open-badge-card.module.css';
 
@@ -22,6 +23,7 @@ export type OpenBadgeCardProps = {
 };
 
 export default function OpenBadgeCard({ badge }: OpenBadgeCardProps) {
+  // for levels ? https://mui.com/material-ui/react-chip/
   return (
     <Card className={styles.card}>
       <CardContent>
@@ -42,13 +44,9 @@ export default function OpenBadgeCard({ badge }: OpenBadgeCardProps) {
               <div className={styles.levelRow}>
                 {badge.levels.map((level) =>
                   level === badge.activeLevel ? (
-                    <div className={styles.levelDotActive} key={`${badge.id}-level-${level}`}>
-                      {level}
-                    </div>
+                    <Chip className={styles.levelDotActive} label={level} size="small" key={`${badge.id}-level-${level}`} />
                   ) : (
-                    <div className={styles.levelDotInactive} key={`${badge.id}-level-${level}`}>
-                      {level}
-                    </div>
+                    <Chip className={styles.levelDotInactive} label={level} size="small" key={`${badge.id}-level-${level}`} />
                   )
                 )}
               </div>

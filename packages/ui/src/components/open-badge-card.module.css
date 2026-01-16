@@ -30,25 +30,11 @@
 }
 
 .levelDotActive {
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
   background: var(--mui-palette-primary-main);
   color: var(--mui-palette-primary-contrastText);
 }
 
 .levelDotInactive {
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  font-size: 0.75rem;
-  font-weight: 600;
   background: var(--mui-palette-action-disabledBackground);
   color: var(--mui-palette-text-disabled);
 }
