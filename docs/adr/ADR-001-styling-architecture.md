@@ -192,14 +192,10 @@ Règles :
 
 ---
 
-### 7. Composants UI — Styled
+### 7. Composants UI — CSS Modules
 
 Décision :
-- Les composants applicatifs DOIVENT être stylés via styled
-
-Options autorisées :
-- Option A (préférée) : styled de MUI
-- Option B (acceptable) : styled-components (avec configuration Next.js)
+- Les composants applicatifs DOIVENT être stylés via CSS Modules
 
 Responsabilités :
 - Styles locaux uniquement
@@ -211,6 +207,15 @@ Interdit :
 - createGlobalStyle
 - styled(body) ou styled(html)
 - Changement de thème dans les composants
+
+Bonnes pratiques CSS Modules :
+- Un fichier `.module.css` par composant, au même niveau que le fichier TSX
+- Si le composant devient complexe (sous-composants, tests, assets), passer à un dossier par composant
+- Classes nommées par slot (`root`, `label`, `caption`, `group`, etc.) plutôt que par intention visuelle
+- Préférer `className` sur les slots aux sélecteurs globaux MUI
+- Utiliser `:global(...)` uniquement pour cibler des classes 3rd-party
+- Limiter la profondeur des sélecteurs (1 à 2 niveaux max)
+- Ordre recommandé : container → children → states/variants
 
 ---
 

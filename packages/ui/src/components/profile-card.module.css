@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+}
+
+.media {
+  width: 104px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.secondaryText {
+  color: var(--mui-palette-text-secondary);
+}

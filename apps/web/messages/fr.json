@@ -10,11 +10,9 @@
       "loading": "Chargement..."
     }
   },
-  "profil": {
-    "screen": {
-      "title": "Profil d’utilisation",
-      "subtitle": "Sélectionnez le profil correspondant à votre usage du lieu"
-    },
+  "profil_selector": {
+    "title": "Profil d’utilisation",
+    "subtitle": "Sélectionnez le profil correspondant à votre usage du lieu",
     "option": {
       "ventilacteur": {
         "label": "Ventil’acteur",
@@ -36,8 +34,7 @@
         "label": "Visiteur",
         "description": "Je viens à La-Ventil pour participer à un évènement"
       }
-    },
-    "acceptTerms": "J’accepte les conditions générales d’utilisation de l’application"
+    }
   },
   "niveauScolaire": {
     "label": "Niveau scolaire",

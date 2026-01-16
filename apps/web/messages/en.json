@@ -13,11 +13,9 @@
       "loading": "Loading..."
     }
   },
-  "profil": {
-    "screen": {
-      "title": "Usage profile",
-      "subtitle": "Select the profile that matches how you use the place"
-    },
+  "profil_selector": {
+    "title": "Usage profile",
+    "subtitle": "Select the profile that matches how you use the place",
     "option": {
       "ventilacteur": {
         "label": "Ventil'acteur",
@@ -39,8 +37,7 @@
         "label": "Visitor",
         "description": "I come to La-Ventil to attend an event"
       }
-    },
-    "acceptTerms": "I accept the application's terms and conditions"
+    }
   },
   "niveauScolaire": {
     "label": "School level",

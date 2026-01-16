@@ -1,10 +1,9 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
-import { ThemeProvider } from '@mui/material';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import { getLocale, getMessages } from 'next-intl/server';
 import { nunito, vg5000 } from '@repo/ui/fonts';
-import { theme } from '@repo/ui/theme';
+import Providers from './providers';
+import '@mui/material-pigment-css/styles.css';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,19 +16,20 @@ export const viewport: Viewport = {
   width: 'device-width'
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html className={`${nunito.variable} ${vg5000.variable}`}>
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <NextIntlClientProvider>{children}</NextIntlClientProvider>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

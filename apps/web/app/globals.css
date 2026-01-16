@@ -29,3 +29,11 @@ a {
   color: var(--mui-palette-primary-main);
   text-decoration: none;
 }
+
+.MuiTextField-root label {
+  color: var(--mui-palette-primary-dark);
+}
+
+.MuiCard-root {
+  border-radius: 16px;
+}

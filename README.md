@@ -148,8 +148,8 @@ import { GlobalStyles } from "@mui/material";
 
 ### Modifier ou ajouter un composant
 
-- `packages/ui/src/` → composants réutilisables (`button.tsx`, `checkbox.tsx`, etc.)
-- `packages/ui/src/forms/` → formulaires standards (`inscription.form.tsx`, `profil.form.tsx`, etc.)
+- `packages/ui/src/components/` → composants réutilisables (`button.tsx`, `checkbox.tsx`, etc.)
+- `packages/ui/src/components/forms/` → formulaires standards (`inscription.form.tsx`, `profil.form.tsx`, etc.)
 
 📚 Références utiles :
 - [Theming MUI](https://mui.com/material-ui/customization/theming/)
@@ -213,7 +213,7 @@ export default function ProfilPage() {
 }
 ```
 
-🧠 Clé complète → `"profil.screen.title"`  
+🧠 Clé complète → `"profil_selector.title"`  
 Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/latest/formats.html#json).
 
 ---

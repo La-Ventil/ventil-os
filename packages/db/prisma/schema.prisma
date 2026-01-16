@@ -60,7 +60,15 @@ model User {
   bloque Boolean @default(false)
 
   // Consentements de l'utilisateur (RGPD, CGU, etc.)
-  consentements ConsentementUtilisateur[]
+  consentements      ConsentementUtilisateur[]
+  evenement          Evenement?                @relation(fields: [evenementId], references: [id])
+  evenementId        String?
+  evenements         Evenement[]
+  templateEvenements TemplateEvenement[]
+  openBadges         OpenBadge[]
+  openBadge          OpenBadge?                @relation(fields: [openBadgeId], references: [id])
+  openBadgeId        String?
+  machines           Machine[]
 }
 
 model Account {
@@ -142,7 +150,7 @@ enum ConsentementType {
 
 enum Profil {
   eleve
-  enseignantcontrecontre
+  enseignant
   personneExterne
 }
 
@@ -155,4 +163,118 @@ enum SousProfilEleve {
 enum SousProfilExterne {
   intervenant
   visiteur
+}
+
+// ============================================================
+// DOMAIN MODELS (V0.1)
+// ============================================================
+model Evenement {
+  id            String   @id @default(cuid())
+  dateDebut     DateTime
+  dateFin       DateTime
+  heureDebut    DateTime
+  heureFin      DateTime
+  listeInscrits User[]
+  createurId    String
+  createur      User     @relation(fields: [createurId], references: [id])
+
+  pieceId String?
+  piece   Piece?  @relation(fields: [pieceId], references: [id])
+
+  templateId String?
+  template   TemplateEvenement? @relation(fields: [templateId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TemplateEvenement {
+  id                    String   @id @default(cuid())
+  nom                   String
+  type                  String
+  nombreMaxParticipants Int?
+  description           String
+  profilsConcernes      Profil[]
+  valeurPoint           Boolean  @default(false)
+  createurId            String
+  createur              User     @relation(fields: [createurId], references: [id])
+
+  evenements Evenement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OpenBadge {
+  id              String         @id @default(cuid())
+  nombreNiveau    Int
+  nom             String
+  intituleCourt   String
+  imageCouverture String?
+  pdfAttribue     String?
+  statut          StatutActivite @default(actif)
+  valeurPoint     Boolean        @default(false)
+  categorie       String
+
+  createurId String
+  createur   User   @relation(fields: [createurId], references: [id])
+
+  formateurs User[]
+
+  machineId String?
+  machine   Machine? @relation(fields: [machineId], references: [id])
+
+  niveaux OpenBadgeNiveau[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OpenBadgeNiveau {
+  id          String    @id @default(cuid())
+  ordre       Int
+  contenu     String
+  openBadgeId String
+  openBadge   OpenBadge @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
+}
+
+model Machine {
+  id                    String         @id @default(cuid())
+  nom                   String
+  pieceId               String?
+  piece                 Piece?         @relation(fields: [pieceId], references: [id])
+  besoinOpenBadge       Boolean        @default(false)
+  openBadgeId           String?
+  openBadge             OpenBadge?     @relation(fields: [openBadgeId], references: [id])
+  openBadgeNiveau       Int?
+  calendrierReservation String?
+  statut                StatutActivite @default(actif)
+  valeurPoint           Boolean        @default(false)
+  createurId            String
+  createur              User           @relation(fields: [createurId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lieu {
+  id     String  @id @default(cuid())
+  nom    String
+  pieces Piece[]
+}
+
+model Piece {
+  id                  String      @id @default(cuid())
+  nom                 String
+  numero              Int
+  calendrierEvenement String?
+  lieuId              String?
+  lieu                Lieu?       @relation(fields: [lieuId], references: [id])
+  evenements          Evenement[]
+  machines            Machine[]
+}
+
+enum StatutActivite {
+  actif
+  desactive
 }

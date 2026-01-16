@@ -1,0 +1,54 @@
+.card {
+  border: 1px solid var(--mui-palette-divider);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: var(--mui-palette-action-hover);
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: var(--mui-palette-text-secondary);
+  text-align: center;
+  padding: 8px;
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.levelDotActive {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--mui-palette-primary-main);
+  color: var(--mui-palette-primary-contrastText);
+}
+
+.levelDotInactive {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--mui-palette-action-disabledBackground);
+  color: var(--mui-palette-text-disabled);
+}
