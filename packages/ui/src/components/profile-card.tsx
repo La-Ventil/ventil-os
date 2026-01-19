@@ -26,7 +26,7 @@ export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg
       </CardMedia>
       <div className={styles.column}>
         <CardContent className={styles.content}>
-          <Typography component="div" variant="h5">
+          <Typography component="div" variant="h4">
             {fullName}
           </Typography>
           <Typography className={styles.secondaryText} variant="subtitle1" component="div">

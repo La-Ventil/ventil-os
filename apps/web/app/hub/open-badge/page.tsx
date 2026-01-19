@@ -8,10 +8,10 @@ import { useState } from 'react';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import type { OpenBadge } from '@repo/domain/open-badge';
 import OpenBadgeCard from '@repo/ui/open-badge-card';
+import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import OpenBadgeDetailsModal from './open-badge-details-modal';
-import styles from './page.module.css';
 
 const badgeLevels = [
   {
@@ -57,27 +57,29 @@ export default function Page() {
   const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadge | null>(null);
 
   return (
-    <Stack spacing={2.5}>
-      <SectionTitle icon={<OpenBadgeIcon />}>Open Badge</SectionTitle>
-      <SectionSubtitle>Information</SectionSubtitle>
-      <Typography variant="body1">Retrouvez les Open badges disponibles et obtenus ci-dessous.</Typography>
+    <>
+      <Section>
+          <SectionTitle icon={<OpenBadgeIcon />}>Open Badge</SectionTitle>
+          <SectionSubtitle>Information</SectionSubtitle>
+          <Typography variant="body1">Retrouvez les Open badges disponibles et obtenus ci-dessous.</Typography>
+      </Section>
 
       <Tabs value={0} variant="fullWidth" aria-label="Filtrer les open badges">
         <Tab label="Tous les open badges" />
         <Tab label="Mes open badges" />
       </Tabs>
 
-      <Stack spacing={2}>
-        {badges.map((badge) => (
-          <OpenBadgeCard key={badge.id} badge={badge} onClick={() => setSelectedOpenBadge(badge)} />
-        ))}
-      </Stack>
+      <Section>
+          {badges.map((badge) => (
+            <OpenBadgeCard key={badge.id} badge={badge} onClick={() => setSelectedOpenBadge(badge)} />
+          ))}
+      </Section>
 
       <OpenBadgeDetailsModal
         openBadge={selectedOpenBadge}
         open={Boolean(selectedOpenBadge)}
         onClose={() => setSelectedOpenBadge(null)}
       />
-    </Stack>
+    </>
   );
 }

@@ -1,6 +1,5 @@
 .drawer {
   border-radius: 0 16px 16px 0;
-  padding: 20px;
   width: min(320px, 90vw);
 }
 

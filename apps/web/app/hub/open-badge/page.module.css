@@ -1,9 +1,3 @@
-.sectionSubtitle {
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  color: var(--mui-palette-primary-main);
-}
 
 .badgeHeader {
   display: flex;
@@ -24,8 +18,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-left: 4px solid var(--mui-palette-primary-main);
-  padding-left: 16px;
 }
 
 .modalTitle {

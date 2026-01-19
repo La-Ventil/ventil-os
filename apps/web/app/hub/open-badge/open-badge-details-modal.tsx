@@ -16,6 +16,7 @@ import { useTranslations } from 'next-intl';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import LevelChip from '@repo/ui/level-chip';
 import type { OpenBadge } from '@repo/domain/open-badge';
+import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import styles from './page.module.css';
@@ -34,7 +35,7 @@ export default function OpenBadgeDetailsModal({
   if (!openBadge) {
     return null;
   }
-const t = useTranslations('pages.hub.openBadges');
+  const t = useTranslations('pages.hub.openBadges');
   const levels = openBadge.levels.map((levelEntry) => ({
     level: levelEntry.level,
     title: levelEntry.title ?? `Niveau ${levelEntry.level}`,
@@ -44,35 +45,31 @@ const t = useTranslations('pages.hub.openBadges');
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" PaperProps={{ className: styles.modal }}>
       <DialogContent className={styles.modalContent}>
-        <Stack spacing={2.5}>
-          <Box className={styles.modalHeader}>
+        <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
+          <CloseIcon fontSize="small" />
+        </IconButton>
+        <Section>
             <SectionTitle icon={<OpenBadgeIcon />}>{openBadge.title}</SectionTitle>
-            <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Box>
+            <div className={styles.modalIllustration}>{t('detailsModal.illustrationPlaceholder')}</div>
+                        <SectionSubtitle className={styles.sectionSubtitle}>
+                {t('detailsModal.sectionSubtitle')}
+              </SectionSubtitle>
 
-          <div className={styles.modalIllustration}>{t('detailsModal.illustrationPlaceholder')}</div>
+              <Typography variant="body1">
+                {openBadge.description}
+              </Typography>
+        </Section>
 
-          <div>
-            <SectionSubtitle className={styles.sectionSubtitle}>
-              {t('detailsModal.sectionSubtitle')}
-            </SectionSubtitle>
-            <Typography variant="body2" color="text.secondary">
-              {openBadge.description}
-            </Typography>
-          </div>
-
-          <Stack spacing={1.5} className={styles.modalActions}>
+        <Section className={styles.modalActions}>
             <Button variant="contained" size="large" fullWidth>
               {t('detailsModal.actions.assign')}
             </Button>
             <Button variant="contained" size="large" fullWidth>
               {t('detailsModal.actions.download')}
             </Button>
-          </Stack>
+        </Section>
 
-          <Stack spacing={1.5} className={styles.levelList}>
+        <Section className={styles.levelList}>
             {levels.map((level) => (
               <Accordion
                 key={`${openBadge.id}-detail-${level.level}`}
@@ -95,8 +92,7 @@ const t = useTranslations('pages.hub.openBadges');
                 </AccordionDetails>
               </Accordion>
             ))}
-          </Stack>
-        </Stack>
+        </Section>
       </DialogContent>
     </Dialog>
   );

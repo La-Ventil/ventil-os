@@ -1,11 +1,12 @@
 import { getTranslations } from 'next-intl/server';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import ProfileCard from '@repo/ui/profile-card';
+import Section from '@repo/ui/section';
 import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle';
 import StatsList, { StatsListEntry } from '@repo/ui/stats-list';
 import { getProfilUtilisateurFromSession } from '../../../lib/auth';
 
@@ -19,12 +20,16 @@ export default async function Page() {
   ];
 
   return (
-    <Stack spacing={2}>
-      <SectionTitle>{profilUtilisateur.pseudo}</SectionTitle>
-      <Typography variant="h3">{t('subtitle')}</Typography>
-      <Typography variant="body1">{t('intro')}</Typography>
+    <>
+      <Section>
+        <SectionTitle>{profilUtilisateur.pseudo}</SectionTitle>
+        <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        <Typography variant="body1">{t('intro')}</Typography>
+      </Section>
       <ProfileCard profilUtilisateur={profilUtilisateur} />
-      <StatsList stats={stats} />
-    </Stack>
-  );  
+      <Section>
+        <StatsList stats={stats} />
+      </Section>
+    </>
+  );
 }

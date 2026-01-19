@@ -9,6 +9,7 @@ import { useState } from 'react';
 import type { Machine } from '@repo/domain/machine';
 import MachineCard from '@repo/ui/machine-card';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
+import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import styles from './page.module.css';
@@ -54,10 +55,12 @@ export default function Page() {
   ];
 
   return (
-    <Stack spacing={2.5} className={styles.root}>
-      <SectionTitle icon={<MachineIcon />}>{t('title')}</SectionTitle>
-      <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
-      <Typography variant="body1">{t('intro')}</Typography>
+    <>
+      <Section className={styles.root}>
+        <SectionTitle icon={<MachineIcon />}>{t('title')}</SectionTitle>
+        <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        <Typography variant="body1">{t('intro')}</Typography>
+      </Section>
 
       <Tabs
         value={tabValue}
@@ -69,11 +72,11 @@ export default function Page() {
         <Tab label={t('tabs.reservations')} />
       </Tabs>
 
-      <Stack spacing={2}>
+      <Section>
         {machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}
-      </Stack>
-    </Stack>
+      </Section>
+    </>
   );
 }

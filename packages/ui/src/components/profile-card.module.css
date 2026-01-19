@@ -4,6 +4,9 @@
 
 .media {
   width: 104px;
+  background-color: var(--mui-palette-background-paper);
+  border-radius: 15px;
+  box-shadow: 0 1px 10px #c5cdde25;
 }
 
 .column {

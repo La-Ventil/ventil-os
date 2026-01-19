@@ -13,7 +13,7 @@ export default function SectionTitle({ icon, children }: SectionTitleProps) {
   return (
     <Box className={styles.root}>
       {icon}
-      <Typography variant="h2">{children}</Typography>
+      <Typography variant="h1">{children}</Typography>
     </Box>
   );
 }
