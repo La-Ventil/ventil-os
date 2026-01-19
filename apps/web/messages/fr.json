@@ -156,7 +156,7 @@
     "hub": {
       "navigation": {
         "profile": "Profil",
-        "machines": "Machines",
+        "fabLab": "Fab lab",
         "openBadges": "Open badges",
         "events": "Évènements",
         "settings": "Paramètres"
@@ -181,6 +181,42 @@
         "title": "Profil utilisateur",
         "subtitle": "Information",
         "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous."
+      },
+      "fabLab": {
+        "title": "Fab lab",
+        "subtitle": "Information",
+        "intro": "Retrouvez toutes les machines disponibles à La-Ventil",
+        "tabs": {
+          "ariaLabel": "Filtrer les machines",
+          "available": "Machines disponibles",
+          "reservations": "Mes réservations"
+        },
+        "card": {
+          "category": "Machine",
+          "title": "Nom de la machine",
+          "description": "La machine permet d'imprimer par dépôt de fil polymère fondu des pièces en 3D",
+          "illustrationPlaceholder": "Illustration en cours"
+        },
+        "status": {
+          "available": "Libre",
+          "reservedToday": "Réservé aujourd'hui",
+          "occupied": "Occupé"
+        }
+      },
+      "debug": {
+        "title": "Debug",
+        "subtitle": "Information",
+        "intro": "Aidez-nous à améliorer l'application de La-Ventil !",
+        "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marlexi@gmail.com",
+        "illustrationPlaceholder": "Illustration en cours",
+        "guidelines": {
+          "title": "Notez plusieurs éléments dans votre message :",
+          "items": {
+            "subject": "notez dans l'intitulé Ventil O.S. - bug",
+            "details": "détaillez le problème le plus possible. Quelle section de l'application ? Quel bouton ?",
+            "device": "notez le modèle de mobile et le navigateur que vous utilisez pour consulter Ventil O.S."
+          }
+        }
       },
       "openBadges": {
         "detailsModal": {

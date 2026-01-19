@@ -6,7 +6,8 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
-import OpenBadgeCard, { OpenBadgeCardData } from '@repo/ui/open-badge-card';
+import type { OpenBadge } from '@repo/domain/open-badge';
+import OpenBadgeCard from '@repo/ui/open-badge-card';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import OpenBadgeDetailsModal from './open-badge-details-modal';
@@ -31,7 +32,7 @@ const badgeLevels = [
   }
 ];
 
-const badges: OpenBadgeCardData[] = [
+const badges: OpenBadge[] = [
   {
     id: 'badge-1',
     type: 'Type de badge',
@@ -53,7 +54,7 @@ const badges: OpenBadgeCardData[] = [
 ];
 
 export default function Page() {
-  const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadgeCardData | null>(null);
+  const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadge | null>(null);
 
   return (
     <Stack spacing={2.5}>

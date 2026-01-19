@@ -15,13 +15,13 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import LevelChip from '@repo/ui/level-chip';
-import { OpenBadgeCardData } from '@repo/ui/open-badge-card';
+import type { OpenBadge } from '@repo/domain/open-badge';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import styles from './page.module.css';
 
 type OpenBadgeDetailsModalProps = {
-  openBadge: OpenBadgeCardData | null;
+  openBadge: OpenBadge | null;
   open: boolean;
   onClose: () => void;
 };
@@ -34,9 +34,7 @@ export default function OpenBadgeDetailsModal({
   if (!openBadge) {
     return null;
   }
-
-  const t = useTranslations('pages.hub.openBadges');
-
+const t = useTranslations('pages.hub.openBadges');
   const levels = openBadge.levels.map((levelEntry) => ({
     level: levelEntry.level,
     title: levelEntry.title ?? `Niveau ${levelEntry.level}`,

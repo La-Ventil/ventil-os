@@ -1,0 +1,29 @@
+.root {
+  min-height: 100%;
+}
+
+.illustration {
+  width: 100%;
+  height: 160px;
+  border-radius: 16px;
+  background: var(--mui-palette-action-hover);
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--mui-palette-text-secondary);
+}
+
+.guidelines {
+  display: grid;
+  gap: 12px;
+}
+
+.guidelineList {
+  padding-left: 20px;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+  color: var(--mui-palette-text-secondary);
+}

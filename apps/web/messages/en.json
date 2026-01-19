@@ -156,7 +156,7 @@
     "hub": {
       "navigation": {
         "profile": "Profile",
-        "machines": "Machines",
+        "fabLab": "Fab lab",
         "openBadges": "Open badges",
         "events": "Events",
         "settings": "Settings"
@@ -181,6 +181,42 @@
         "title": "User profile",
         "subtitle": "Information",
         "intro": "Update your account information with the sections below."
+      },
+      "fabLab": {
+        "title": "Fab lab",
+        "subtitle": "Information",
+        "intro": "Find all the machines available at La-Ventil",
+        "tabs": {
+          "ariaLabel": "Filter machines",
+          "available": "Available machines",
+          "reservations": "My reservations"
+        },
+        "card": {
+          "category": "Machine",
+          "title": "Machine name",
+          "description": "The machine prints 3D parts by depositing melted polymer filament.",
+          "illustrationPlaceholder": "Illustration in progress"
+        },
+        "status": {
+          "available": "Available",
+          "reservedToday": "Reserved today",
+          "occupied": "Occupied"
+        }
+      },
+      "debug": {
+        "title": "Debug",
+        "subtitle": "Information",
+        "intro": "Help us improve the La-Ventil app!",
+        "contact": "Found a bug? Send an email to loic.marlexi@gmail.com",
+        "illustrationPlaceholder": "Illustration in progress",
+        "guidelines": {
+          "title": "Include several details in your message:",
+          "items": {
+            "subject": "use the subject Ventil O.S. - bug",
+            "details": "describe the issue as precisely as possible. Which section of the app? Which button?",
+            "device": "include your phone model and the browser you used to access Ventil O.S."
+          }
+        }
       },
       "openBadges": {
         "detailsModal": {

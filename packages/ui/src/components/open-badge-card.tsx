@@ -5,24 +5,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import type { OpenBadge, OpenBadgeLevel as DomainOpenBadgeLevel } from '@repo/domain/open-badge';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import LevelChip from './level-chip';
 import styles from './open-badge-card.module.css';
 
-export type OpenBadgeLevel = {
-  level: number;
-  title?: string;
-  body?: string;
-};
-
-export type OpenBadgeCardData = {
-  id: string;
-  type: string;
-  title: string;
-  description: string;
-  levels: OpenBadgeLevel[];
-  activeLevel: number;
-};
+export type OpenBadgeLevel = DomainOpenBadgeLevel;
+export type OpenBadgeCardData = OpenBadge;
 
 export type OpenBadgeCardProps = {
   badge: OpenBadgeCardData;
@@ -34,7 +24,7 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
 
   return (
     <Card
-      className={isInteractive ? `${styles.card} ${styles.cardInteractive}` : styles.card}
+      className={clsx(styles.card, isInteractive && styles.cardInteractive)}
       onClick={onClick}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}

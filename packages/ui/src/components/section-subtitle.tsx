@@ -1,6 +1,7 @@
 'use client';
 
 import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
 import styles from './section-subtitle.module.css';
 
 export type SectionSubtitleProps = {
@@ -10,7 +11,7 @@ export type SectionSubtitleProps = {
 
 export default function SectionSubtitle({ children, className }: SectionSubtitleProps) {
   return (
-    <Typography variant="h3" className={`${styles.root}${className ? ` ${className}` : ''}`}>
+    <Typography variant="h3" className={clsx(styles.root, className)}>
       {children}
     </Typography>
   );

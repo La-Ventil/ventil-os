@@ -1,0 +1,68 @@
+.card {
+  border: 1px solid var(--mui-palette-divider);
+}
+
+.cardInteractive {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cardInteractive:hover {
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+  transform: translateY(-1px);
+}
+
+.cardInteractive:focus-visible {
+  outline: 2px solid var(--mui-palette-primary-main);
+  outline-offset: 2px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: var(--mui-palette-action-hover);
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: var(--mui-palette-text-secondary);
+  text-align: center;
+  padding: 8px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.statusDotAvailable {
+  background: var(--mui-palette-success-main);
+}
+
+.statusDotReserved {
+  background: var(--mui-palette-warning-main);
+}
+
+.statusDotOccupied {
+  background: var(--mui-palette-error-main);
+}
