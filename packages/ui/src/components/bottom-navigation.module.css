@@ -1,4 +1,12 @@
 .root {
-  width: 500px;
-  color: var(--mui-palette-success-main);
+  .MuiPaper-root {
+     width: 500px;
+  }
+  button {
+    svg {
+      width: 55px;
+      height: 55px;
+    }
+  }
 }
+

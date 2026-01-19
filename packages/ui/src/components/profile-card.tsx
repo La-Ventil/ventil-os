@@ -18,7 +18,7 @@ export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg
   const fullName = [profilUtilisateur.prenom, profilUtilisateur.nom].filter(Boolean).join(' ');
 
   return (
-    <Card className={styles.card}>
+    <section className={styles.card}>
       <CardMedia className={styles.media} title={profilUtilisateur.email}>
         <div className={styles.imageWrapper}>
           <Image src={imageSrc} alt={profilUtilisateur.email} layout="fill" objectFit="contain" />
@@ -26,15 +26,15 @@ export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg
       </CardMedia>
       <div className={styles.column}>
         <CardContent className={styles.content}>
-          <Typography component="div" variant="h5">
+          <Typography component="div" variant="h4">
             {fullName}
           </Typography>
-          <Typography className={styles.secondaryText} variant="subtitle1" component="div">
+          <Typography className={styles.content} variant="subtitle1" component="div">
             {profilUtilisateur.pseudo}
           </Typography>
           <Chip label={profilUtilisateur.profil} />
         </CardContent>
       </div>
-    </Card>
+    </section>
   );
 }

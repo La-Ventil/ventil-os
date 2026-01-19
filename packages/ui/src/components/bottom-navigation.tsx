@@ -22,8 +22,8 @@ export default function BottomNavigation() {
   };
 
   return (
-    <BottomSlot>
-      <MuiBottomNavigation className={styles.root} value={value} onChange={handleChange}>
+    <BottomSlot className={styles.root}>
+      <MuiBottomNavigation value={value} onChange={handleChange}>
         <BottomNavigationAction
           label={t('profile')}
           value="profil"

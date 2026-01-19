@@ -28,7 +28,7 @@ export const theme = createTheme({
     },
     background: {
       default: '#F0F2F8',
-      paper: '#D3D6E0'
+      paper: '#FFFFFF'
     },
     text: {
       primary: '#212636',
@@ -45,14 +45,32 @@ export const theme = createTheme({
     fontFamily: 'var(--font-nunito), Arial, sans-serif',
     h1: {
       fontFamily: 'var(--font-vg5000), Arial, sans-serif',
-      fontWeight: 400
+      fontWeight: 400,
+      fontSize: '1.9rem'
     },
     h2: {
       fontFamily: 'var(--font-vg5000), Arial, sans-serif',
       fontWeight: 400
     },
     h3: {
-      fontSize: '1.2rem'
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      letterSpacing: '0.1rem'
+    },
+    h4: {
+      fontSize: '1.8rem',
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      letterSpacing: '0.05rem'
+    },
+    subtitle1: {
+      fontSize: '1.2rem',
+      letterSpacing: '0.05rem'
+    },
+    body1: {
+      fontSize: '1.5rem',
+      letterSpacing: '0.5px'
     }
   }
 });

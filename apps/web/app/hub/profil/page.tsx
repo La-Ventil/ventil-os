@@ -19,12 +19,20 @@ export default async function Page() {
   ];
 
   return (
-    <Stack spacing={2}>
+    <Stack>
       <SectionTitle>{profilUtilisateur.pseudo}</SectionTitle>
-      <Typography variant="h3">{t('subtitle')}</Typography>
-      <Typography variant="body1">{t('intro')}</Typography>
-      <ProfileCard profilUtilisateur={profilUtilisateur} />
-      <StatsList stats={stats} />
+      <section>
+        <Stack sx={{p : 2}}>
+          <Typography   sx={{mb: 0.5}} variant="h3">{t('subtitle')}</Typography>
+          <Typography  variant="body1">{t('intro')}</Typography>
+        </Stack>
+        <Stack sx={{px : 2}}>
+          <ProfileCard profilUtilisateur={profilUtilisateur} />
+        </Stack>
+        <Stack sx={{p : 2}}>
+          <StatsList stats={stats} />
+        </Stack>
+      </section>
     </Stack>
   );  
 }
