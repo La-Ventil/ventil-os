@@ -1,27 +1,9 @@
-
-.badgeHeader {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .modal {
   border-radius: 24px;
 }
 
 .modalContent {
   padding: 24px;
-}
-
-.modalHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.modalTitle {
-  font-weight: 600;
 }
 
 .modalIllustration {

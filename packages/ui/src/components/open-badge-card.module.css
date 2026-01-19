@@ -56,13 +56,3 @@
 .levelChip :global(.MuiChip-label) {
   padding: 0 8px;
 }
-
-.levelDotActive {
-  background: var(--mui-palette-primary-main);
-  color: var(--mui-palette-primary-contrastText);
-}
-
-.levelDotInactive {
-  background: var(--mui-palette-action-disabledBackground);
-  color: var(--mui-palette-text-disabled);
-}
