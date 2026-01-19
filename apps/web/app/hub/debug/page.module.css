@@ -15,15 +15,18 @@
   color: var(--mui-palette-text-secondary);
 }
 
-.guidelines {
-  display: grid;
-  gap: 12px;
-}
-
 .guidelineList {
   padding-left: 20px;
   margin: 0;
   display: grid;
   gap: 8px;
   color: var(--mui-palette-text-secondary);
+}
+
+.sessionBlock {
+  background: var(--mui-palette-action-hover);
+  border-radius: 12px;
+  padding: 16px;
+  overflow: auto;
+  font-size: 0.8rem;
 }

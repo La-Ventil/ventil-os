@@ -13,6 +13,7 @@ export type HubNavigationItem = {
   href?: string;
   icon: ReactNode;
   disabled?: boolean;
+  action?: 'drawer';
 };
 
 export const hubNavigationItems: HubNavigationItem[] = [
@@ -43,7 +44,7 @@ export const hubNavigationItems: HubNavigationItem[] = [
   {
     labelKey: 'settings',
     value: 'parametres',
-    href: '/hub/parametres',
-    icon: <MenuIcon />
+    icon: <MenuIcon />,
+    action: 'drawer'
   }
 ];

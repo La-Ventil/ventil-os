@@ -9,11 +9,18 @@ export type SettingsListItemProps = {
   label: React.ReactNode;
   href: string;
   linkComponent: React.ElementType;
+  onClick?: () => void;
 };
 
-export default function SettingsListItem({ icon, label, href, linkComponent }: SettingsListItemProps) {
+export default function SettingsListItem({
+  icon,
+  label,
+  href,
+  linkComponent,
+  onClick
+}: SettingsListItemProps) {
   return (
-    <ListItemButton component={linkComponent} href={href}>
+    <ListItemButton component={linkComponent} href={href} onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={label} />
     </ListItemButton>

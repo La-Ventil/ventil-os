@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import BottomNavigation from '@repo/ui/bottom-navigation';
 import { getServerSession } from '../../lib/auth';
+import styles from './layout.module.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,8 +21,7 @@ export default async function RootLayout({
 
   return (
     <>
-      <main>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
+      <main className={styles.main}>
         {children}
       </main>
       <footer>

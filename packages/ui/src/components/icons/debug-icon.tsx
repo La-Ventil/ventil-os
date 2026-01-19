@@ -11,7 +11,7 @@ function DebugIconSvg(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function debugIcon(props: SvgIconProps) {
+export function DebugIcon(props: SvgIconProps) {
   return (
     <SvgIcon viewBox="0 0 55 55" {...props}>
       <DebugIconSvg />

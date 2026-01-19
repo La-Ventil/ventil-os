@@ -166,7 +166,13 @@
         "subtitle": "Information",
         "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous.",
         "profileLink": "Information du profil",
-        "avatarLink": "Avatar"
+        "avatarLink": "Avatar",
+        "debugLink": "Debug",
+        "drawer": {
+          "open": "Ouvrir le menu",
+          "title": "Paramètres",
+          "closeLabel": "Fermer"
+        }
       },
       "profile": {
         "subtitle": "Information",
@@ -209,6 +215,9 @@
         "intro": "Aidez-nous à améliorer l'application de La-Ventil !",
         "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marlexi@gmail.com",
         "illustrationPlaceholder": "Illustration en cours",
+        "session": {
+          "title": "Informations de session"
+        },
         "guidelines": {
           "title": "Notez plusieurs éléments dans votre message :",
           "items": {

@@ -8,11 +8,13 @@ import MuiBottomNavigation from '@mui/material/BottomNavigation';
 import BottomSlot from './bottom-slot';
 import { hubNavigationItems } from './hub-navigation';
 import Link from './link';
+import ParametersDrawer from './parameters-drawer';
 import styles from './bottom-navigation.module.css';
 
 export default function BottomNavigation() {
   const t = useTranslations('pages.hub.navigation');
   const pathname = usePathname();
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const currentValue =
     hubNavigationItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ??
@@ -30,9 +32,15 @@ export default function BottomNavigation() {
             icon={item.icon}
             href={item.href}
             disabled={item.disabled}
+            onClick={() => {
+              if (item.action === 'drawer') {
+                setDrawerOpen(true);
+              }
+            }}
           />
         ))}
       </MuiBottomNavigation>
+      <ParametersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </BottomSlot>
   );
 }

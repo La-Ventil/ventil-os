@@ -1,0 +1,21 @@
+.drawer {
+  border-radius: 0 16px 16px 0;
+  padding: 20px;
+  width: min(320px, 90vw);
+}
+
+.drawerContent {
+  padding-bottom: 12px;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawerTitle {
+  display: grid;
+  gap: 8px;
+}
