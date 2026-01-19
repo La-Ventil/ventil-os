@@ -44,12 +44,15 @@
   gap: 8px;
 }
 
-.levelDotActive {
-  background: var(--mui-palette-primary-main);
-  color: var(--mui-palette-primary-contrastText);
+.levelChip {
+  height: 28px;
+  min-width: 28px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  justify-content: center;
 }
 
-.levelDotInactive {
-  background: var(--mui-palette-action-disabledBackground);
-  color: var(--mui-palette-text-disabled);
+.levelChip :global(.MuiChip-label) {
+  padding: 0 8px;
 }

@@ -5,16 +5,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
+import LevelChip from './level-chip';
 import styles from './open-badge-card.module.css';
+
+export type OpenBadgeLevel = {
+  level: number;
+  title?: string;
+  body?: string;
+};
 
 export type OpenBadgeCardData = {
   id: string;
   type: string;
   title: string;
   description: string;
-  levels: number[];
+  levels: OpenBadgeLevel[];
   activeLevel: number;
 };
 
@@ -59,13 +65,14 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
             <div className={styles.illustration}>Illustration en cours</div>
             <Stack spacing={1} flex={1}>
               <div className={styles.levelRow}>
-                {badge.levels.map((level) =>
-                  level === badge.activeLevel ? (
-                    <Chip className={styles.levelDotActive} label={level} size="small" key={`${badge.id}-level-${level}`} />
-                  ) : (
-                    <Chip className={styles.levelDotInactive} label={level} size="small" key={`${badge.id}-level-${level}`} />
-                  )
-                )}
+                {badge.levels.map((levelEntry) => (
+                  <LevelChip
+                    key={`${badge.id}-level-${levelEntry.level}`}
+                    level={levelEntry.level}
+                    isActive={levelEntry.level === badge.activeLevel}
+                    className={styles.levelChip}
+                  />
+                ))}
               </div>
               <Typography variant="body2" color="text.secondary">
                 {badge.description}

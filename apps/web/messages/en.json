@@ -182,6 +182,17 @@
         "subtitle": "Information",
         "intro": "Update your account information with the sections below."
       },
+      "openBadges": {
+        "detailsModal": {
+          "closeLabel": "Close",
+          "illustrationPlaceholder": "Illustration in progress",
+          "sectionSubtitle": "Description",
+          "actions": {
+            "assign": "Assign the open badge",
+            "download": "Download my open badge"
+          }
+        }
+      },
       "home": {
         "title": "Hub"
       }

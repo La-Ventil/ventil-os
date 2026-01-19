@@ -182,6 +182,17 @@
         "subtitle": "Information",
         "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous."
       },
+      "openBadges": {
+        "detailsModal": {
+          "closeLabel": "Fermer",
+          "illustrationPlaceholder": "Illustration en cours",
+          "sectionSubtitle": "Description",
+          "actions": {
+            "assign": "Attribuer l'open badge",
+            "download": "Télécharger mon open badge"
+          }
+        }
+      },
       "home": {
         "title": "Hub"
       }
