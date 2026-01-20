@@ -15,7 +15,7 @@ type ProvidersProps = {
 
 export default function Providers({ children, locale, messages }: ProvidersProps) {
   return (
-    <AppRouterCacheProvider>
+    <AppRouterCacheProvider options={{ key: 'mui', prepend: true }}>
       <ThemeProvider theme={theme}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}

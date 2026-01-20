@@ -42,3 +42,19 @@ a {
 .MuiCard-root {
   border-radius: 16px;
 }
+
+.MuiSvgIcon-root {
+  font-size: 5.5rem;
+}
+
+.MuiSvgIcon-fontSizeSmall {
+  font-size: 2.5rem;
+}
+
+.MuiSvgIcon-fontSizeMedium {
+  font-size: 5.5rem;
+}
+
+.MuiSvgIcon-fontSizeLarge {
+  font-size: 10rem;
+}

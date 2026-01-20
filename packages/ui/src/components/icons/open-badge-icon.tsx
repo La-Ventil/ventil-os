@@ -22,7 +22,7 @@ function OpenBadgeIconSvg(props: SVGProps<SVGSVGElement>) {
 
 export function OpenBadgeIcon(props: SvgIconProps) {
   return (
-    <SvgIcon viewBox="0 0 55 55" {...props}>
+    <SvgIcon {...props}>
       <OpenBadgeIconSvg />
     </SvgIcon>
   );

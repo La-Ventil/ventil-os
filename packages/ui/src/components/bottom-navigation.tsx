@@ -27,7 +27,7 @@ export default function BottomNavigation() {
           <BottomNavigationAction
             key={item.value}
             component={item.href ? Link : 'button'}
-            label={t(item.labelKey)}
+            aria-label={t(item.labelKey)}
             value={item.value}
             icon={item.icon}
             href={item.href}
@@ -37,6 +37,7 @@ export default function BottomNavigation() {
                 setDrawerOpen(true);
               }
             }}
+            showLabel={false}
           />
         ))}
       </MuiBottomNavigation>
