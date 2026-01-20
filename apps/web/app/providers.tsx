@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { ThemeProvider } from '@mui/material';
+import { GlobalStyles, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { NextIntlClientProvider } from 'next-intl';
 import type { AbstractIntlMessages } from 'next-intl';
-import { theme } from '@repo/ui/theme';
+import { ThemeSection, sectionPalettes, theme } from '@repo/ui/theme';
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -13,10 +13,23 @@ type ProvidersProps = {
   messages: AbstractIntlMessages;
 };
 
+const sectionThemeStyles = Object.fromEntries(
+  (Object.values(ThemeSection) as ThemeSection[]).map((section) => [
+    `.sectionTheme-${section}`,
+    {
+      '--mui-palette-secondary-light': sectionPalettes[section].light,
+      '--mui-palette-secondary-main': sectionPalettes[section].main,
+      '--mui-palette-secondary-dark': sectionPalettes[section].dark,
+      '--mui-palette-secondary-contrastText': sectionPalettes[section].contrastText
+    }
+  ])
+);
+
 export default function Providers({ children, locale, messages }: ProvidersProps) {
   return (
     <AppRouterCacheProvider options={{ key: 'mui', prepend: true }}>
       <ThemeProvider theme={theme}>
+        <GlobalStyles styles={sectionThemeStyles} />
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
