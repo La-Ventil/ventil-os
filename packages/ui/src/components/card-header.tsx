@@ -20,11 +20,11 @@ export default function CardHeader({ icon, overline, title, className, overlineC
       title={
         <div>
           {overline ? (
-            <Typography variant="caption" color="secondary" className={overlineClassName}>
+            <Typography variant="h5" color="secondary" className={overlineClassName}>
               {overline}
             </Typography>
           ) : null}
-          <Typography variant="subtitle1" color="primary">{title}</Typography>
+          <Typography variant="subtitle1" color="primary" >{title}</Typography>
         </div>
       }
       className={clsx(styles.root, className)}
