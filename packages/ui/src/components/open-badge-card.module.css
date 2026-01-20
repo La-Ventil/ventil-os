@@ -35,10 +35,28 @@
 .levelRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  padding-bottom: 5px;
+  
+.levelChip {
+  &:after {
+    content:"";
+    position: absolute;
+    width: 7px;
+    height: 2px;
+    background-color: red;
+    right: -9px;
+  }
+  &:last-of-type {
+    &:after {
+      display: none;
+    }
+  }
+}
 }
 
 .levelChip {
+  position: relative;
   min-height: 28px;
   height: 28px;
   min-width: 28px;
@@ -46,6 +64,7 @@
   font-weight: 600;
   justify-content: center;
   span {
+    font-weight: bold;
     font-size: 1.2rem;
   }
 }
