@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
+import { ProfilIcon } from '@repo/ui/icons/profil-icon';
 import ProfileCard from '@repo/ui/profile-card';
 import Section from '@repo/ui/section';
 import SectionTitle from '@repo/ui/section-title';
@@ -21,8 +22,8 @@ export default async function Page() {
 
   return (
     <>
+      <SectionTitle icon={<ProfilIcon />}>{profilUtilisateur.pseudo}</SectionTitle>
       <Section>
-        <SectionTitle>{profilUtilisateur.pseudo}</SectionTitle>
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>

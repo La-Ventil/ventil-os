@@ -22,7 +22,7 @@ export default function BottomNavigation() {
 
   return (
     <BottomSlot>
-      <MuiBottomNavigation className={styles.root} value={currentValue}>
+      <MuiBottomNavigation className={styles.root} value={currentValue} showLabels={false}>
         {hubNavigationItems.map((item) => (
           <BottomNavigationAction
             key={item.value}

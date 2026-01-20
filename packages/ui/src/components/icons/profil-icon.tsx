@@ -28,7 +28,7 @@ function ProfilIconSvg(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function profilIcon(props: SvgIconProps) {
+export function ProfilIcon(props: SvgIconProps) {
   return (
     <SvgIcon {...props}>
       <ProfilIconSvg />
