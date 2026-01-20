@@ -40,5 +40,9 @@ a {
 }
 
 .MuiCard-root {
-  border-radius: 16px;
+  border-radius: 10px;
+}
+
+.MuiCardContent-root {
+  padding: 0px;
 }

@@ -1,5 +1,5 @@
 .card {
-  border: 1px solid var(--mui-palette-divider);
+  margin-bottom: 20px;
 }
 
 .cardInteractive {
@@ -39,12 +39,15 @@
 }
 
 .levelChip {
+  min-height: 28px;
   height: 28px;
   min-width: 28px;
   border-radius: 999px;
-  font-size: 0.75rem;
   font-weight: 600;
   justify-content: center;
+  span {
+    font-size: 1.2rem;
+  }
 }
 
 .levelChip :global(.MuiChip-label) {

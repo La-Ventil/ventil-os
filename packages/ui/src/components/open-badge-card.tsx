@@ -42,13 +42,13 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
       }}
     >
       <CardHeader icon={<OpenBadgeIcon />} overline={badge.type} title={badge.title} />
-      <CardContent>
-        <Stack spacing={2}>
+      <CardContent >
+        <Stack>
           <Box display="flex" gap={2}>
             <CardMedia className={styles.illustration} component="div">
               Illustration en cours
             </CardMedia>
-            <Stack spacing={1} flex={1}>
+            <Stack flex={1}>
               <div className={styles.levelRow}>
                 {badge.levels.map((levelEntry) => (
                   <LevelChip
@@ -59,7 +59,7 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
                   />
                 ))}
               </div>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="primary">
                 {badge.description}
               </Typography>
             </Stack>

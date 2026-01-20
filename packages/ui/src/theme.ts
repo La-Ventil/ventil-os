@@ -27,7 +27,8 @@ export const theme = createTheme({
       contrastText: '#FFFFFF'
     },
     background: {
-      default: '#F0F2F8',
+      default: '#FBFBFC',
+      card: '#F0F2F8',
       paper: '#FFFFFF'
     },
     text: {
@@ -64,12 +65,24 @@ export const theme = createTheme({
       textTransform: 'capitalize',
       letterSpacing: '0.05rem'
     },
+    h5: {
+      fontSize: '0.9rem',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      letterSpacing: '0.1rem'
+    },
     subtitle1: {
       fontSize: '1.2rem',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
       letterSpacing: '0.05rem'
     },
     body1: {
       fontSize: '1.5rem',
+      letterSpacing: '0.5px'
+    },
+    body2: {
+      fontSize: '1.2rem',
       letterSpacing: '0.5px'
     }
   }
