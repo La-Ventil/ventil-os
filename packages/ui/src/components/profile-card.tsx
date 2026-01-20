@@ -6,22 +6,22 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import { ProfilUtilisateur } from '@repo/domain/profil-utilisateur';
+import { UserProfile } from '@repo/domain/user-profile';
 import styles from './profile-card.module.css';
 
 export type ProfileCardProps = {
-  profilUtilisateur: ProfilUtilisateur;
+  profile: UserProfile;
   imageSrc?: string;
 };
 
-export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg' }: ProfileCardProps) {
-  const fullName = [profilUtilisateur.prenom, profilUtilisateur.nom].filter(Boolean).join(' ');
+export default function ProfileCard({ profile, imageSrc = '/avatar.svg' }: ProfileCardProps) {
+  const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(' ');
 
   return (
     <Card className={styles.card}>
-      <CardMedia className={styles.media} title={profilUtilisateur.email}>
+      <CardMedia className={styles.media} title={profile.email}>
         <div className={styles.imageWrapper}>
-          <Image src={imageSrc} alt={profilUtilisateur.email} layout="fill" objectFit="contain" />
+          <Image src={imageSrc} alt={profile.email} layout="fill" objectFit="contain" />
         </div>
       </CardMedia>
       <div className={styles.column}>
@@ -30,9 +30,9 @@ export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg
             {fullName}
           </Typography>
           <Typography className={styles.secondaryText} variant="subtitle1" component="div">
-            {profilUtilisateur.pseudo}
+            {profile.username}
           </Typography>
-          <Chip className={styles.profile} label={profilUtilisateur.profil} />
+          <Chip className={styles.profile} label={profile.profile} />
         </CardContent>
       </div>
     </Card>

@@ -19,9 +19,9 @@ export type HubNavigationItem = {
 export const hubNavigationItems: HubNavigationItem[] = [
   {
     labelKey: 'profile',
-    value: 'profil',
-    href: '/hub/profil',
-    icon: <Image src="/avatar.svg" alt={'profilUtilisateur.email'} layout="fill" objectFit="contain" />
+    value: 'profile',
+    href: '/hub/profile',
+    icon: <Image src="/avatar.svg" alt={'profile.email'} layout="fill" objectFit="contain" />
   },
   {
     labelKey: 'fabLab',
@@ -37,13 +37,13 @@ export const hubNavigationItems: HubNavigationItem[] = [
   },
   {
     labelKey: 'events',
-    value: 'evenements',
-    href: '/hub/evenements',
+    value: 'events',
+    href: '/hub/events',
     icon: <EventIcon />
   },
   {
     labelKey: 'settings',
-    value: 'parametres',
+    value: 'settings',
     icon: <MenuIcon />,
     action: 'drawer'
   }

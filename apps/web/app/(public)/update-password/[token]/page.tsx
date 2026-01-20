@@ -25,8 +25,8 @@ export default function Page() {
     fieldErrors: {},
     values: {
       email: '',
-      motDePasse: '',
-      confirmationMotDePasse: ''
+      password: '',
+      passwordConfirmation: ''
     },
     isValid: undefined
   };
@@ -35,7 +35,7 @@ export default function Page() {
 
   useEffect(() => {
     if (formState?.isValid) {
-      signInAndRedirect(router)(formState.values.email, formState.values.motDePasse);
+      signInAndRedirect(router)(formState.values.email, formState.values.password);
     }
   }, [formState]);
 
@@ -52,17 +52,17 @@ export default function Page() {
         <input type="hidden" name="email" defaultValue={formState.values.email} />
         <Stack spacing={2}>
           <TextField
-            name={'motDePasse'}
-            defaultValue={formState.values.motDePasse}
-            label={tForms('fields.motDePasse')}
-            placeholder={tForms('placeholders.motDePasse')}
+            name="password"
+            defaultValue={formState.values.password}
+            label={tForms('fields.password')}
+            placeholder={tForms('placeholders.password')}
             required
           />
           <TextField
-            name={'confirmationMotDePasse'}
-            defaultValue={formState.values.confirmationMotDePasse}
-            label={tForms('fields.confirmationMotDePasse')}
-            placeholder={tForms('placeholders.confirmationMotDePasse')}
+            name="passwordConfirmation"
+            defaultValue={formState.values.passwordConfirmation}
+            label={tForms('fields.passwordConfirmation')}
+            placeholder={tForms('placeholders.passwordConfirmation')}
             required
           />
         </Stack>

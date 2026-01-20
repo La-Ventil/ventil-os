@@ -53,8 +53,8 @@ export default function OpenBadgeDetailsModal({ openBadge, open, onClose }: Open
         <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
           <CloseIcon fontSize="small" />
         </IconButton>
+        <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.title}</SectionTitle>
         <Section>
-          <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.title}</SectionTitle>
           <div className={styles.modalIllustration}>{t('detailsModal.illustrationPlaceholder')}</div>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('detailsModal.sectionSubtitle')}</SectionSubtitle>
 

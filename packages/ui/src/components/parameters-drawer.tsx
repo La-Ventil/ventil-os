@@ -47,21 +47,21 @@ export default function ParametersDrawer({ open, onClose }: ParametersDrawerProp
         <SettingsListItem
           icon={<SendIcon />}
           label={tSettings('profileLink')}
-          href="/hub/parametres/profil"
+          href="/hub/settings/profile"
           linkComponent={Link}
           onClick={onClose}
         />
         <SettingsListItem
           icon={<DraftsIcon />}
           label={tSettings('avatarLink')}
-          href="/hub/parametres/avatar"
+          href="/hub/settings/avatar"
           linkComponent={Link}
           onClick={onClose}
         />
         <SettingsListItem
           icon={<BugReportIcon />}
-          label={tSettings('debugLink')}
-          href="/hub/debug"
+          label={tSettings('supportLink')}
+          href="/hub/support"
           linkComponent={Link}
           onClick={onClose}
         />

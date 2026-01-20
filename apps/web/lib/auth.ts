@@ -6,7 +6,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type PrismaClient, Prisma } from '@prisma/client';
-import { prismaClient, utilisateurRepository } from '@repo/db';
+import { prismaClient, userRepository } from '@repo/db';
+import type { UserProfile } from '@repo/domain/user-profile';
 import { verifySecret } from './security';
 
 // You'll need to import and pass this
@@ -71,13 +72,13 @@ function authorize(prisma: PrismaClient) {
     return {
       id: maybeUser.id,
       email: maybeUser.email,
-      nom: maybeUser.nom,
-      prenom: maybeUser.prenom,
-      profil: maybeUser.profil,
-      pseudo: maybeUser.pseudo,
-      niveauScolaire: maybeUser.niveauScolaire,
-      adminGlobal: maybeUser.adminGlobal,
-      adminPedagogique: maybeUser.adminPedagogique
+      lastName: maybeUser.nom,
+      firstName: maybeUser.prenom,
+      profile: maybeUser.profil,
+      username: maybeUser.pseudo,
+      educationLevel: maybeUser.niveauScolaire,
+      isAdminGlobal: maybeUser.adminGlobal,
+      isAdminPedagogical: maybeUser.adminPedagogique
     };
   };
 }
@@ -90,12 +91,12 @@ export async function getServerSession(
   return getNextAuthServerSession(...args, authOptions);
 }
 
-export async function getProfilUtilisateurFromSession(
+export async function getUserProfileFromSession(
   ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
   const session = await getServerSession();
   console.log('session', session);
-  return utilisateurRepository.getProfilUtilisateurByEmail(session.user.email);
+  return userRepository.getUserProfileByEmail(session.user.email);
 }
 
 export function signInAndRedirect(router: AppRouterInstance) {
@@ -105,6 +106,6 @@ export function signInAndRedirect(router: AppRouterInstance) {
       email,
       password
     });
-    router.push('/hub/profil');
+    router.push('/hub/profile');
   };
 }

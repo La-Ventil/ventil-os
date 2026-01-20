@@ -47,8 +47,8 @@ export default function Page() {
 
   return (
     <>
+      <SectionTitle icon={<MachineIcon color="secondary" />}>{t('title')}</SectionTitle>
       <Section className={styles.root}>
-        <SectionTitle icon={<MachineIcon color="secondary" />}>{t('title')}</SectionTitle>
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>

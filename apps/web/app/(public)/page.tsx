@@ -18,14 +18,14 @@ export default function Home() {
       <BottomSlot>
         <Grid container spacing={2}>
           <Grid>
-            <Button variant="outlined" component={Link} href="/inscription">
-              {tHome('ctaSignup')}
-            </Button>
+          <Button variant="outlined" component={Link} href="/signup">
+            {tHome('ctaSignup')}
+          </Button>
           </Grid>
           <Grid>
-            <Button variant="contained" component={Link} href="/connexion">
-              {tHome('ctaSignin')}
-            </Button>
+          <Button variant="contained" component={Link} href="/login">
+            {tHome('ctaSignin')}
+          </Button>
           </Grid>
         </Grid>
       </BottomSlot>

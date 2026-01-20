@@ -4,12 +4,12 @@ import { passwordConfirmationSchema, passwordSchema } from './password';
 
 export const updatePasswordFormDataSchema = zfd
   .formData({
-    motDePasse: passwordSchema,
-    confirmationMotDePasse: passwordConfirmationSchema
+    password: passwordSchema,
+    passwordConfirmation: passwordConfirmationSchema
   })
-  .refine(({ motDePasse, confirmationMotDePasse }) => motDePasse === confirmationMotDePasse, {
+  .refine(({ password, passwordConfirmation }) => password === passwordConfirmation, {
     message: 'validation.password.confirmationMismatch',
-    path: ['confirmationMotDePasse']
+    path: ['passwordConfirmation']
   });
 
 export type UpdatePasswordFormData = z.infer<typeof updatePasswordFormDataSchema>;

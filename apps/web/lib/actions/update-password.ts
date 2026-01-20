@@ -55,7 +55,7 @@ export async function updatePassword(
       };
     }
 
-    const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.motDePasse);
+    const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.password);
 
     await prismaClient.user.update({
       where: { id: user.id },
@@ -77,8 +77,8 @@ export async function updatePassword(
       fieldErrors: {},
       values: {
         email: user.email,
-        motDePasse: '',
-        confirmationMotDePasse: ''
+        password: '',
+        passwordConfirmation: ''
       }
     };
   } catch (err) {

@@ -13,50 +13,6 @@
       "loading": "Loading..."
     }
   },
-  "profil_selector": {
-    "title": "Usage profile",
-    "subtitle": "Select the profile that matches how you use the place",
-    "option": {
-      "ventilacteur": {
-        "label": "Ventil'acteur",
-        "description": "I learn and participate weekly in the La-Ventil project"
-      },
-      "eleveLycee": {
-        "label": "High school student",
-        "description": "I want to use La-Ventil outside class hours"
-      },
-      "enseignant": {
-        "label": "Teacher",
-        "description": "I work at the school and use La-Ventil"
-      },
-      "intervenant": {
-        "label": "Guest speaker",
-        "description": "I run workshops and work within La-Ventil"
-      },
-      "visiteur": {
-        "label": "Visitor",
-        "description": "I come to La-Ventil to attend an event"
-      }
-    }
-  },
-  "niveauScolaire": {
-    "label": "School level",
-    "placeholder": "(School level)",
-    "option": {
-      "seconde": {
-        "label": "10th grade"
-      },
-      "premiere": {
-        "label": "11th grade"
-      },
-      "terminal": {
-        "label": "12th grade"
-      },
-      "bts": {
-        "label": "BTS"
-      }
-    }
-  },
   "validation": {
     "genericError": "An unexpected error occurred :(",
     "emailAlreadyUsed": "This email address is already in use.",
@@ -72,19 +28,19 @@
       "confirmationRequired": "Please confirm your password.",
       "confirmationMismatch": "Passwords do not match."
     },
-    "inscription": {
-      "prenomRequired": "Please enter your first name.",
-      "nomRequired": "Please enter your last name.",
-      "profilRequired": "Please select a profile.",
-      "cguRequired": "You must accept the terms and conditions.",
-      "niveauScolaireRequired": "Please select a school level."
+    "signup": {
+      "firstNameRequired": "Please enter your first name.",
+      "lastNameRequired": "Please enter your last name.",
+      "profileRequired": "Please select a profile.",
+      "termsRequired": "You must accept the terms and conditions.",
+      "educationLevelRequired": "Please select a school level."
     },
-    "profil": {
-      "prenomRequired": "Please enter your first name.",
-      "nomRequired": "Please enter your last name.",
-      "profilRequired": "Please select a profile.",
-      "cguRequired": "You must accept the terms and conditions.",
-      "niveauScolaireRequired": "Please select a school level."
+    "profile": {
+      "firstNameRequired": "Please enter your first name.",
+      "lastNameRequired": "Please enter your last name.",
+      "profileRequired": "Please select a profile.",
+      "termsRequired": "You must accept the terms and conditions.",
+      "educationLevelRequired": "Please select a school level."
     }
   },
   "resetPassword": {
@@ -92,34 +48,30 @@
     "emailSubject": "[{appName}] Reset your password",
     "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
   },
-  "inscription": {
-    "success": "Registration successful!",
-    "error": "An unexpected error occurred :("
-  },
   "forms": {
     "fields": {
-      "prenom": "First name",
-      "nom": "Last name",
       "email": "Email",
-      "motDePasse": "Password",
-      "confirmationMotDePasse": "Confirm password",
-      "niveauScolaire": "School level",
-      "profil": "Usage profile",
-      "cgu": "I accept the application's terms and conditions"
+      "firstName": "First name",
+      "lastName": "Last name",
+      "password": "Password",
+      "passwordConfirmation": "Confirm password",
+      "educationLevel": "School level",
+      "profile": "Usage profile",
+      "terms": "I accept the application's terms and conditions"
     },
     "placeholders": {
-      "prenom": "my first name",
-      "nom": "my last name",
       "email": "email@email.com",
-      "motDePasse": "minimum 5 characters",
-      "confirmationMotDePasse": "same password as the previous field"
+      "firstName": "my first name",
+      "lastName": "my last name",
+      "password": "minimum 5 characters",
+      "passwordConfirmation": "same password as the previous field"
     },
     "actions": {
-      "submitInscription": "Sign up",
-      "submitConnexion": "Sign in",
       "submitResetPassword": "Send reset link",
       "submitUpdatePassword": "Change my password",
-      "updateProfile": "Update"
+      "updateProfile": "Update",
+      "submitSignup": "Sign up",
+      "submitLogin": "Sign in"
     },
     "messages": {
       "signInSuccess": "Signed in successfully.",
@@ -133,17 +85,6 @@
         "ctaSignup": "Sign up",
         "ctaSignin": "Sign in"
       },
-      "inscription": {
-        "title": "Sign up",
-        "subtitle": "Information",
-        "intro": "Welcome to the La-Ventil app. To get started, please fill in the information below."
-      },
-      "connexion": {
-        "title": "Sign in",
-        "subtitle": "Sign in",
-        "intro": "Sign in",
-        "forgotPassword": "I forgot my password."
-      },
       "forgotPassword": {
         "title": "I forgot my password",
         "intro": "Enter the email you used to sign up."
@@ -151,6 +92,17 @@
       "updatePassword": {
         "title": "Update my password",
         "intro": "Update my password"
+      },
+      "signup": {
+        "title": "Sign up",
+        "subtitle": "Information",
+        "intro": "Welcome to the La-Ventil app. To get started, please fill in the information below."
+      },
+      "login": {
+        "title": "Sign in",
+        "subtitle": "Sign in",
+        "intro": "Sign in",
+        "forgotPassword": "I forgot my password."
       }
     },
     "hub": {
@@ -167,12 +119,12 @@
         "intro": "Update your account information with the sections below.",
         "profileLink": "Profile information",
         "avatarLink": "Avatar",
-        "debugLink": "Debug",
         "drawer": {
           "open": "Open menu",
           "title": "Settings",
           "closeLabel": "Close"
-        }
+        },
+        "supportLink": "Support"
       },
       "profile": {
         "subtitle": "Information",
@@ -210,24 +162,6 @@
           "occupied": "Occupied"
         }
       },
-      "debug": {
-        "title": "Debug",
-        "subtitle": "Information",
-        "intro": "Help us improve the La-Ventil app!",
-        "contact": "Found a bug? Send an email to loic.marlexi@gmail.com",
-        "illustrationPlaceholder": "Illustration in progress",
-        "session": {
-          "title": "Session information"
-        },
-        "guidelines": {
-          "title": "Include several details in your message:",
-          "items": {
-            "subject": "use the subject Ventil O.S. - bug",
-            "details": "describe the issue as precisely as possible. Which section of the app? Which button?",
-            "device": "include your phone model and the browser you used to access Ventil O.S."
-          }
-        }
-      },
       "openBadges": {
         "detailsModal": {
           "closeLabel": "Close",
@@ -259,7 +193,73 @@
       },
       "home": {
         "title": "Hub"
+      },
+      "support": {
+        "title": "Support",
+        "subtitle": "Information",
+        "intro": "Help us improve the La-Ventil app!",
+        "contact": "Found a bug? Send an email to loic.marlexi@gmail.com",
+        "illustrationPlaceholder": "Illustration in progress",
+        "session": {
+          "title": "Session information"
+        },
+        "guidelines": {
+          "title": "Include several details in your message:",
+          "items": {
+            "subject": "use the subject Ventil O.S. - bug",
+            "details": "describe the issue as precisely as possible. Which section of the app? Which button?",
+            "device": "include your phone model and the browser you used to access Ventil O.S."
+          }
+        }
       }
     }
+  },
+  "profileSelector": {
+    "title": "Usage profile",
+    "subtitle": "Select the profile that matches how you use the place",
+    "option": {
+      "ventilacteur": {
+        "label": "Ventil'acteur",
+        "description": "I learn and participate weekly in the La-Ventil project"
+      },
+      "eleveLycee": {
+        "label": "High school student",
+        "description": "I want to use La-Ventil outside class hours"
+      },
+      "enseignant": {
+        "label": "Teacher",
+        "description": "I work at the school and use La-Ventil"
+      },
+      "intervenant": {
+        "label": "Guest speaker",
+        "description": "I run workshops and work within La-Ventil"
+      },
+      "visiteur": {
+        "label": "Visitor",
+        "description": "I come to La-Ventil to attend an event"
+      }
+    }
+  },
+  "educationLevel": {
+    "label": "School level",
+    "placeholder": "(School level)",
+    "option": {
+      "seconde": {
+        "label": "10th grade"
+      },
+      "premiere": {
+        "label": "11th grade"
+      },
+      "terminal": {
+        "label": "12th grade"
+      },
+      "bts": {
+        "label": "BTS"
+      }
+    }
+  },
+  "signup": {
+    "success": "Registration successful!",
+    "error": "An unexpected error occurred :("
   }
 }
