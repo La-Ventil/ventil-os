@@ -1,5 +1,5 @@
 .root {
-  border-left: 5px solid var(--mui-palette-primary-main);
+  border-left: 5px solid var(--mui-palette-secondary-main);
   height: 60px;
   background-color:white;
   display: flex;

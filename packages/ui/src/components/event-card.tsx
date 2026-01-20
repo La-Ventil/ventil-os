@@ -43,9 +43,7 @@ export default function EventCard({ event, t }: EventCardProps) {
     <Card className={styles.card}>
       <CardHeader
         icon={
-          <div className={styles.icon}>
-            <EventIcon />
-          </div>
+          <EventIcon color="secondary" />
         }
         overline={event.type}
         title={event.title}

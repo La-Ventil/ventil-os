@@ -22,7 +22,7 @@ export default async function Page() {
 
   return (
     <>
-      <SectionTitle icon={<ProfilIcon />}>{profilUtilisateur.pseudo}</SectionTitle>
+      <SectionTitle icon={<ProfilIcon color="secondary" />}>{profilUtilisateur.pseudo}</SectionTitle>
       <Section>
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>

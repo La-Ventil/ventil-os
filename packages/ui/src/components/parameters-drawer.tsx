@@ -14,6 +14,7 @@ import SectionSubtitle from './section-subtitle';
 import SectionTitle from './section-title';
 import SettingsList, { SettingsListItem } from './settings-list';
 import styles from './parameters-drawer.module.css';
+import { ThemeSection } from '../theme';
 
 export type ParametersDrawerProps = {
   open: boolean;
@@ -24,7 +25,16 @@ export default function ParametersDrawer({ open, onClose }: ParametersDrawerProp
   const tSettings = useTranslations('pages.hub.settings');
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose} PaperProps={{ className: styles.drawer }}>
+    <Drawer
+      anchor="left"
+      open={open}
+      onClose={onClose}
+      slotProps={{
+        paper: {
+          className: `${styles.drawer} sectionTheme-${ThemeSection.User}`
+        }
+      }}
+    >
         <IconButton aria-label={tSettings('drawer.closeLabel')} onClick={onClose} size="small">
           <CloseIcon fontSize="small" />
         </IconButton>

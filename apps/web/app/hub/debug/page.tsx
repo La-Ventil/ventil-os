@@ -21,7 +21,7 @@ export default async function Page(): Promise<ReactElement> {
   return (
     <>
       <Section className={styles.root}>
-          <SectionTitle icon={<DebugIcon />}>{t('title')}</SectionTitle>
+          <SectionTitle icon={<DebugIcon color="secondary" />}>{t('title')}</SectionTitle>
           <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
           <Typography variant="body1">{t('intro')}</Typography>
           <Typography variant="body1">{t('contact')}</Typography>

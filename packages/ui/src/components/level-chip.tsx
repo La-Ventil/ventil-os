@@ -13,8 +13,8 @@ export default function LevelChip({ level, isActive = false, className }: LevelC
     <Chip
       label={level}
       size="small"
-      variant={isActive ? 'filled' : 'outlined'}
-      color={isActive ? 'primary' : 'default'}
+      variant="filled"
+      color={isActive ? 'secondary' : 'default'}
       className={className}
     />
   );

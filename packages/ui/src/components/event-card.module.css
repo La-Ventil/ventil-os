@@ -3,17 +3,6 @@
   border-radius: 16px;
 }
 
-.icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: var(--mui-palette-action-hover);
-  color: var(--mui-palette-primary-main);
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-}
-
 .metaLabel {
   text-transform: uppercase;
   letter-spacing: 0.08em;

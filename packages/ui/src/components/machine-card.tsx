@@ -57,7 +57,7 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
       }}
     >
       <CardHeader
-        icon={<MachineIcon />}
+        icon={<MachineIcon color="secondary" />}
         overline={machine.category}
         overlineClassName={styles.category}
         title={machine.title}

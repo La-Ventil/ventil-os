@@ -59,7 +59,7 @@ export default function Page() {
   return (
     <>
       <Section>
-          <SectionTitle icon={<OpenBadgeIcon />}>Open Badge</SectionTitle>
+          <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>Open Badge</SectionTitle>
           <SectionSubtitle>Information</SectionSubtitle>
           <Typography variant="body1">Retrouvez les Open badges disponibles et obtenus ci-dessous.</Typography>
       </Section>

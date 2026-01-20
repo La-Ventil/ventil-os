@@ -41,7 +41,7 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
         }
       }}
     >
-      <CardHeader icon={<OpenBadgeIcon />} overline={badge.type} title={badge.title} />
+      <CardHeader icon={<OpenBadgeIcon color="secondary" />} overline={badge.type} title={badge.title} />
       <CardContent>
         <Stack spacing={2}>
           <Box display="flex" gap={2}>

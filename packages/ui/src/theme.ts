@@ -1,7 +1,63 @@
-import { createTheme, type ThemeOptions } from '@mui/material/styles';
+import { createTheme, type PaletteColor } from '@mui/material/styles';
+
+export const ThemeSection = {
+  FabLab: 'fabLab',
+  OpenBadge: 'openBadge',
+  Event: 'event',
+  User: 'user',
+  Support: 'support',
+  Admin: 'admin',
+  Repair: 'repair'
+} as const;
+
+export type ThemeSection = (typeof ThemeSection)[keyof typeof ThemeSection];
+
+export const sectionPalettes: Record<ThemeSection, PaletteColor> = {
+  [ThemeSection.FabLab]: {
+    light: '#CFD5E9',
+    main: '#9DA5BF',
+    dark: '#747FA4',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.OpenBadge]: {
+    light: '#988EFF',
+    main: '#6D61EB',
+    dark: '#4D41D2',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.Event]: {
+    light: '#6C5DFF',
+    main: '#4D3EE5',
+    dark: '#2313C7',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.User]: {
+    light: '#70A5FB',
+    main: '#317BF4',
+    dark: '#1B63D8',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.Support]: {
+    light: '#74736F',
+    main: '#2F2D28',
+    dark: '#22201B',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.Admin]: {
+    light: '#48506B',
+    main: '#191E2D',
+    dark: '#080B14',
+    contrastText: '#FFFFFF'
+  },
+  [ThemeSection.Repair]: {
+    light: '#FFAC87',
+    main: '#FF7233',
+    dark: '#E95818',
+    contrastText: '#FFFFFF'
+  }
+};
 
 export const theme = createTheme({
-  // @see https://mui.com/material-ui/customization/color/#picking-colors
   cssVariables: true,
   breakpoints: {
     values: {
@@ -35,7 +91,8 @@ export const theme = createTheme({
       secondary: '#646774',
       disabled: '#646774'
     },
-    divider: '#D3D6E0'
+    divider: '#D3D6E0',
+    ...sectionPalettes,
   },
   shape: {
     borderRadius: 9
@@ -74,92 +131,3 @@ export const theme = createTheme({
     }
   }
 });
-
-export const Section = {
-  FabLab: 'fabLab',
-  OpenBadge: 'openBadge',
-  Event: 'event',
-  User: 'user',
-  Support: 'support',
-  Admin: 'admin',
-  Repair: 'repair'
-} as const;
-
-export type Section = (typeof Section)[keyof typeof Section];
-
-const sectionSecondary: Record<Section, ThemeOptions> = {
-  [Section.FabLab]: {
-    palette: {
-      secondary: {
-        light: '#CFD5E9',
-        main: '#9DA5BF',
-        dark: '#747FA4',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.OpenBadge]: {
-    palette: {
-      secondary: {
-        light: '#988EFF',
-        main: '#6D61EB',
-        dark: '#4D41D2',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.Event]: {
-    palette: {
-      secondary: {
-        light: '#6C5DFF',
-        main: '#4D3EE5',
-        dark: '#2313C7',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.User]: {
-    palette: {
-      secondary: {
-        light: '#70A5FB',
-        main: '#317BF4',
-        dark: '#1B63D8',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.Support]: {
-    palette: {
-      secondary: {
-        light: '#74736F',
-        main: '#2F2D28',
-        dark: '#22201B',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.Admin]: {
-    palette: {
-      secondary: {
-        light: '#48506B',
-        main: '#191E2D',
-        dark: '#080B14',
-        contrastText: '#FFFFFF'
-      }
-    }
-  },
-  [Section.Repair]: {
-    palette: {
-      secondary: {
-        light: '#FFAC87',
-        main: '#FF7233',
-        dark: '#E95818',
-        contrastText: '#FFFFFF'
-      }
-    }
-  }
-};
-
-export const sectionThemes: Record<Section, typeof theme> = Object.fromEntries(
-  (Object.values(Section) as Section[]).map((section) => [section, createTheme(theme, sectionSecondary[section])])
-) as Record<Section, typeof theme>;

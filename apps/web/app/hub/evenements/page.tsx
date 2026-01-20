@@ -47,7 +47,7 @@ export default function Page() {
   return (
     <>
       <Section>
-        <SectionTitle icon={<EventIcon />}>{t('title')}</SectionTitle>
+        <SectionTitle icon={<EventIcon color="secondary" />}>{t('title')}</SectionTitle>
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>

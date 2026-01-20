@@ -11,7 +11,7 @@ export type SectionSubtitleProps = {
 
 export default function SectionSubtitle({ children, className }: SectionSubtitleProps) {
   return (
-    <Typography variant="h3" className={clsx(styles.root, className)}>
+    <Typography variant="h3" color="secondary" className={clsx(styles.root, className)}>
       {children}
     </Typography>
   );
