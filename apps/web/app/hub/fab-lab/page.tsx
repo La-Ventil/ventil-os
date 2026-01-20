@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import type { Machine } from '@repo/domain/machine';
+import { MachineAvailability, type Machine } from '@repo/domain/machine';
 import MachineCard from '@repo/ui/machine-card';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import Section from '@repo/ui/section';
@@ -24,10 +24,7 @@ export default function Page() {
       category: t('card.category'),
       title: t('card.title'),
       description: t('card.description'),
-      status: {
-        label: t('status.available'),
-        availability: 'available'
-      },
+      availability: MachineAvailability.Available,
       illustrationLabel: t('card.illustrationPlaceholder')
     },
     {
@@ -35,10 +32,7 @@ export default function Page() {
       category: t('card.category'),
       title: t('card.title'),
       description: t('card.description'),
-      status: {
-        label: t('status.reservedToday'),
-        availability: 'reserved'
-      },
+      availability: MachineAvailability.Reserved,
       illustrationLabel: t('card.illustrationPlaceholder')
     },
     {
@@ -46,10 +40,7 @@ export default function Page() {
       category: t('card.category'),
       title: t('card.title'),
       description: t('card.description'),
-      status: {
-        label: t('status.occupied'),
-        availability: 'occupied'
-      },
+      availability: MachineAvailability.Occupied,
       illustrationLabel: t('card.illustrationPlaceholder')
     }
   ];
@@ -73,9 +64,9 @@ export default function Page() {
       </Tabs>
 
       <Section>
-        {machines.map((machine) => (
-          <MachineCard key={machine.id} machine={machine} />
-        ))}
+          {machines.map((machine) => (
+            <MachineCard key={machine.id} machine={machine} t={t} />
+          ))}
       </Section>
     </>
   );

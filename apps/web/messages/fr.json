@@ -205,6 +205,7 @@
         },
         "status": {
           "available": "Libre",
+          "reserved": "Réservé aujourd'hui",
           "reservedToday": "Réservé aujourd'hui",
           "occupied": "Occupé"
         }
@@ -235,6 +236,24 @@
           "actions": {
             "assign": "Attribuer l'open badge",
             "download": "Télécharger mon open badge"
+          }
+        }
+      },
+      "events": {
+        "title": "Agenda",
+        "subtitle": "Information",
+        "intro": "Retrouvez tous les prochains évènements ci-dessous",
+        "tabs": {
+          "ariaLabel": "Filtrer les évènements",
+          "upcoming": "Prochains évènements",
+          "mine": "Mes évènements"
+        },
+        "card": {
+          "labels": {
+            "date": "Date",
+            "location": "Lieu",
+            "audience": "Profil",
+            "registration": "Inscription"
           }
         }
       },

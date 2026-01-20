@@ -17,14 +17,49 @@
   outline-offset: 2px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .category {
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.details {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.available {
+  background: var(--mui-palette-success-main);
+}
+
+.reserved {
+  background: var(--mui-palette-warning-main);
+}
+
+.occupied {
+  background: var(--mui-palette-error-main);
+}
+
+.statusLabel {
   text-transform: uppercase;
 }
 
@@ -41,28 +76,4 @@
   color: var(--mui-palette-text-secondary);
   text-align: center;
   padding: 8px;
-}
-
-.statusRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-}
-
-.statusDotAvailable {
-  background: var(--mui-palette-success-main);
-}
-
-.statusDotReserved {
-  background: var(--mui-palette-warning-main);
-}
-
-.statusDotOccupied {
-  background: var(--mui-palette-error-main);
 }

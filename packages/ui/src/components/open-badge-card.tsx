@@ -3,10 +3,12 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import type { OpenBadge, OpenBadgeLevel as DomainOpenBadgeLevel } from '@repo/domain/open-badge';
+import CardHeader from './card-header';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import LevelChip from './level-chip';
 import styles from './open-badge-card.module.css';
@@ -39,20 +41,13 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
         }
       }}
     >
+      <CardHeader icon={<OpenBadgeIcon />} overline={badge.type} title={badge.title} />
       <CardContent>
         <Stack spacing={2}>
-          <div className={styles.header}>
-            <OpenBadgeIcon />
-            <Box>
-              <Typography variant="caption" color="primary">
-                {badge.type}
-              </Typography>
-              <Typography variant="subtitle1">{badge.title}</Typography>
-            </Box>
-          </div>
-
           <Box display="flex" gap={2}>
-            <div className={styles.illustration}>Illustration en cours</div>
+            <CardMedia className={styles.illustration} component="div">
+              Illustration en cours
+            </CardMedia>
             <Stack spacing={1} flex={1}>
               <div className={styles.levelRow}>
                 {badge.levels.map((levelEntry) => (

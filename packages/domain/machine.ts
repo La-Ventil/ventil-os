@@ -1,15 +1,14 @@
-export type MachineAvailability = 'available' | 'reserved' | 'occupied';
-
-export type MachineStatus = {
-  label: string;
-  availability: MachineAvailability;
-};
+export enum MachineAvailability {
+  Available = 'available',
+  Reserved = 'reserved',
+  Occupied = 'occupied'
+}
 
 export type Machine = {
   id: string;
   category: string;
   title: string;
   description: string;
-  status: MachineStatus;
+  availability: MachineAvailability;
   illustrationLabel?: string;
 };

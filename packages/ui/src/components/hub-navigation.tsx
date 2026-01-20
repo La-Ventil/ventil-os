@@ -38,8 +38,8 @@ export const hubNavigationItems: HubNavigationItem[] = [
   {
     labelKey: 'events',
     value: 'evenements',
-    icon: <EventIcon />,
-    disabled: true
+    href: '/hub/evenements',
+    icon: <EventIcon />
   },
   {
     labelKey: 'settings',

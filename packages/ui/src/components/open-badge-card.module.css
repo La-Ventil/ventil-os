@@ -17,12 +17,6 @@
   outline-offset: 2px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .illustration {
   width: 96px;
   height: 96px;
