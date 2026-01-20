@@ -12,7 +12,7 @@ function ProfilIconSvg(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function profilIcon(props: SvgIconProps) {
+export function ProfilIcon(props: SvgIconProps) {
   return (
     <SvgIcon viewBox="0 0 55 55" {...props}>
       <ProfilIconSvg />

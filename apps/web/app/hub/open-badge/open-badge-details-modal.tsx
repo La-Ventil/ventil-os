@@ -60,7 +60,7 @@ export default function OpenBadgeDetailsModal({
               </Typography>
         </Section>
 
-        <Section className={styles.modalActions}>
+        <Section className={styles.modalActions} p={0}>
             <Button variant="contained" size="large" fullWidth>
               {t('detailsModal.actions.assign')}
             </Button>

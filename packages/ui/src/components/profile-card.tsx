@@ -32,7 +32,7 @@ export default function ProfileCard({ profilUtilisateur, imageSrc = '/avatar.svg
           <Typography className={styles.secondaryText} variant="subtitle1" component="div">
             {profilUtilisateur.pseudo}
           </Typography>
-          <Chip label={profilUtilisateur.profil} />
+          <Chip className={styles.profile} label={profilUtilisateur.profil} />
         </CardContent>
       </div>
     </Card>

@@ -1,12 +1,3 @@
 .root {
-  width: 500px;
-  .MuiPaper-root {
-    width: 500px;
-  }
-  button {
-    svg {
-      width: 55px;
-      height: 55px;
-    }
-  }
+
 }
