@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
-import type { OpenBadge } from '@repo/domain/open-badge';
+import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
 import OpenBadgeCard from '@repo/ui/open-badge-card';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
@@ -32,11 +32,11 @@ const badgeLevels = [
   }
 ];
 
-const badges: OpenBadge[] = [
+const badges: OpenBadgeViewModel[] = [
   {
     id: 'badge-1',
     type: 'Type de badge',
-    title: 'Nom du badge',
+    name: 'Nom du badge',
     description:
       "Open badge permettant de se former à l'utilisation de la perceuse à colonne disponible dans le fab lab.",
     levels: badgeLevels,
@@ -45,7 +45,7 @@ const badges: OpenBadge[] = [
   {
     id: 'badge-2',
     type: 'Type de badge',
-    title: 'Nom du badge',
+    name: 'Nom du badge',
     description:
       "Open badge permettant de se former à l'utilisation de la perceuse à colonne disponible dans le fab lab.",
     levels: badgeLevels,
@@ -54,7 +54,7 @@ const badges: OpenBadge[] = [
 ];
 
 export default function Page() {
-  const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadge | null>(null);
+  const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadgeViewModel | null>(null);
 
   return (
     <>

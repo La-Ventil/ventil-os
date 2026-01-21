@@ -10,26 +10,26 @@ export class UserRepository {
       select: {
         id: true,
         email: true,
-        profil: true,
-        pseudo: true,
-        niveauScolaire: true,
-        adminPedagogique: true,
-        adminGlobal: true,
-        nom: true,
-        prenom: true
+        profile: true,
+        username: true,
+        educationLevel: true,
+        pedagogicalAdmin: true,
+        globalAdmin: true,
+        lastName: true,
+        firstName: true
       }
     });
 
     return {
       id: maybeUser.id,
       email: maybeUser.email,
-      lastName: maybeUser.nom,
-      firstName: maybeUser.prenom,
-      profile: maybeUser.profil,
-      username: maybeUser.pseudo,
-      educationLevel: maybeUser.niveauScolaire,
-      isAdminGlobal: maybeUser.adminGlobal,
-      isAdminPedagogical: maybeUser.adminPedagogique
+      lastName: maybeUser.lastName,
+      firstName: maybeUser.firstName,
+      profile: maybeUser.profile,
+      username: maybeUser.username,
+      educationLevel: maybeUser.educationLevel,
+      globalAdmin: maybeUser.globalAdmin,
+      pedagogicalAdmin: maybeUser.pedagogicalAdmin
     };
   }
 }

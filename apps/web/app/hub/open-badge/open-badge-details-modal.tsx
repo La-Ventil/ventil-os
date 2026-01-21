@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
 import LevelChip from '@repo/ui/level-chip';
-import type { OpenBadge } from '@repo/domain/open-badge';
+import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
@@ -21,7 +21,7 @@ import { ThemeSection } from '@repo/ui/theme';
 import styles from './page.module.css';
 
 type OpenBadgeDetailsModalProps = {
-  openBadge: OpenBadge | null;
+  openBadge: OpenBadgeViewModel | null;
   open: boolean;
   onClose: () => void;
 };
@@ -34,7 +34,7 @@ export default function OpenBadgeDetailsModal({ openBadge, open, onClose }: Open
   const levels = openBadge.levels.map((levelEntry) => ({
     level: levelEntry.level,
     title: levelEntry.title ?? `Niveau ${levelEntry.level}`,
-    body: levelEntry.body ?? ''
+    body: levelEntry.description ?? ''
   }));
 
   return (
@@ -53,9 +53,15 @@ export default function OpenBadgeDetailsModal({ openBadge, open, onClose }: Open
         <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
           <CloseIcon fontSize="small" />
         </IconButton>
-        <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.title}</SectionTitle>
+        <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
         <Section>
-          <div className={styles.modalIllustration}>{t('detailsModal.illustrationPlaceholder')}</div>
+          <div className={styles.modalIllustration}>
+            {openBadge.coverImage ? (
+              <img src={openBadge.coverImage} alt={openBadge.name} className={styles.modalIllustration} />
+            ) : (
+              t('detailsModal.illustrationPlaceholder')
+            )}
+          </div>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('detailsModal.sectionSubtitle')}</SectionSubtitle>
 
           <Typography variant="body1">{openBadge.description}</Typography>

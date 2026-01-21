@@ -5,12 +5,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { MachineAvailability, type Machine } from '@repo/domain/machine';
+import { MachineAvailability, type MachineViewModel } from '@repo/domain/view-models/machine';
 import CardHeader from './card-header';
 import { MachineIcon } from './icons/machine-icon';
 import styles from './machine-card.module.css';
 
-export type MachineCardData = Machine;
+export type MachineCardData = MachineViewModel;
 
 export type MachineCardProps = {
   machine: MachineCardData;
@@ -60,11 +60,15 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
         icon={<MachineIcon color="secondary" />}
         overline={machine.category}
         overlineClassName={styles.category}
-        title={machine.title}
+        title={machine.name}
       />
       <CardContent className={styles.content}>
         <CardMedia className={styles.illustration} component="div">
-          {machine.illustrationLabel ?? 'Illustration en cours'}
+          {machine.imageUrl ? (
+            <img src={machine.imageUrl} alt={machine.name} className={styles.illustration} />
+          ) : (
+            'Illustration en cours'
+          )}
         </CardMedia>
         <div className={styles.details}>
           <Typography variant="body2" color="text.secondary">

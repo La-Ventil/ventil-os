@@ -6,6 +6,6 @@ export interface UserProfile {
   educationLevel?: string | null;
   lastName?: string;
   firstName: string;
-  isAdminGlobal: boolean;
-  isAdminPedagogical: boolean;
+  globalAdmin: boolean;
+  pedagogicalAdmin: boolean;
 }

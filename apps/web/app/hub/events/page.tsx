@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import type { Event } from '@repo/domain/event';
+import type { EventViewModel } from '@repo/domain/view-models/event';
 import EventCard from '@repo/ui/event-card';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 import Section from '@repo/ui/section';
@@ -17,13 +17,12 @@ export default function Page() {
   const t = useTranslations('pages.hub.events');
   const [tabValue, setTabValue] = useState(0);
 
-  const events: Event[] = [
+  const events: EventViewModel[] = [
     {
       id: 'event-1',
       type: 'Type d’atelier',
-      title: "Nom de l'atelier",
-      date: '16/11/26',
-      time: '16h00 - 18h00',
+      name: "Nom de l'atelier",
+      startDate: '2026-11-16T16:00:00.000Z',
       location: 'Fab Lab',
       audience: 'Ouvert a tous',
       registration: { current: 2, capacity: 6 },
@@ -33,9 +32,8 @@ export default function Page() {
     {
       id: 'event-2',
       type: 'Type d’atelier',
-      title: "Nom de l'atelier",
-      date: '16/11/26',
-      time: '16h00 - 18h00',
+      name: "Nom de l'atelier",
+      startDate: '2026-11-16T16:00:00.000Z',
       location: 'Fab Lab',
       audience: 'Ouvert a tous',
       registration: { current: 2, capacity: 6 },

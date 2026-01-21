@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { nanoid } from 'nanoid';
-import { prismaClient, Prisma, Profil, ConsentementType, SousProfilEleve, SousProfilExterne } from '@repo/db';
+import { prismaClient, Prisma, Profile, ConsentType, StudentProfile, ExternalProfile } from '@repo/db';
 import { SignupFormData, signupFormDataSchema } from '@repo/domain/models/forms/signup-form-data';
 import { ProfileType } from '@repo/domain/profile-type';
 import { FormState } from '@repo/ui/form-state';
@@ -27,58 +27,55 @@ export async function registerUser(
       };
     }
 
-console.log(data);
-
     const signupFormData: SignupFormData = data;
     const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
-    let profil = Profil.eleve;
-    let sousProfilEleve: SousProfilEleve | null = null;
-    let sousProfilExterne: SousProfilExterne | null = null;
+    let profile = Profile.student;
+    let studentProfile: StudentProfile | null = null;
+    let externalProfile: ExternalProfile | null = null;
 
     switch (signupFormData.profile) {
       case ProfileType.Ventilacteur:
-        profil = Profil.eleve;
-        sousProfilEleve = SousProfilEleve.ventilacteur;
+        profile = Profile.student;
+        studentProfile = StudentProfile.ventilactor;
         break;
       case ProfileType.HighSchoolStudent:
-        profil = Profil.eleve;
-        sousProfilEleve = SousProfilEleve.visiteur;
+        profile = Profile.student;
+        studentProfile = StudentProfile.visitor;
         break;
       case ProfileType.Teacher:
-        profil = Profil.enseignant;
+        profile = Profile.teacher;
         break;
       case ProfileType.Contributor:
-        profil = Profil.personneExterne;
-        sousProfilExterne = SousProfilExterne.intervenant;
+        profile = Profile.external;
+        externalProfile = ExternalProfile.contributor;
         break;
       case ProfileType.Visitor:
-        profil = Profil.personneExterne;
-        sousProfilExterne = SousProfilExterne.visiteur;
+        profile = Profile.external;
+        externalProfile = ExternalProfile.visitor;
         break;
       default:
-        profil = Profil.eleve;
-        sousProfilEleve = SousProfilEleve.visiteur;
+        profile = Profile.student;
+        studentProfile = StudentProfile.visitor;
     }
 
     let userCreateInput: Prisma.UserCreateInput = {
       name: signupFormData.lastName,
       email: signupFormData.email,
-      pseudo: `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`,
-      prenom: signupFormData.firstName,
-      nom: signupFormData.lastName,
-      niveauScolaire: signupFormData.educationLevel,
+      username: `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`,
+      firstName: signupFormData.firstName,
+      lastName: signupFormData.lastName,
+      educationLevel: signupFormData.educationLevel,
       password: hashedSecret,
       salt,
       iterations,
-      profil,
-      sousProfilEleve,
-      sousProfilExterne,
-      // niveauScolaire?: string | null
-      consentements: {
+      profile,
+      studentProfile,
+      externalProfile,
+      consents: {
         create: {
-          accepte: signupFormData.terms === 'on',
-          accepteAt: new Date(),
-          type: ConsentementType.cgu
+          accepted: signupFormData.terms === 'on',
+          acceptedAt: new Date(),
+          type: ConsentType.terms
         }
       }
     };

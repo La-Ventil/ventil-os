@@ -15,7 +15,7 @@ datasource db {
 
 model Message {
   id      Int    @id @default(autoincrement())
-  contenu String
+  content String
 }
 
 model User {
@@ -40,35 +40,31 @@ model User {
   resetTokenExpiry DateTime?
 
   // custom
-  pseudo String @unique
-  prenom String
-  nom    String
+  username  String @unique
+  firstName String
+  lastName  String
 
-  profil            Profil
-  // sous-profil exclusif et conditionnel au profil :
-  sousProfilEleve   SousProfilEleve? // si profil = eleve
-  sousProfilExterne SousProfilExterne? // si profil = personne_externe
+  profile Profile
+  // Exclusive and conditional sub-profile by profile type.
+  studentProfile  StudentProfile? // if profile = student
+  externalProfile ExternalProfile? // if profile = external
 
-  // libellé texte issu d’une liste de config (stats uniquement)
-  niveauScolaire String? // ex: "Seconde", "BTS 1ère année"
+  // Free-form label from a config list (stats only).
+  educationLevel String? // ex: "Seconde", "BTS 1ère année"
 
-  // rôles d’administration (reflètent les realm roles KC pour confort côté app)
-  adminPedagogique Boolean @default(false)
-  adminGlobal      Boolean @default(false)
+  // Admin roles (app convenience).
+  pedagogicalAdmin Boolean @default(false)
+  globalAdmin      Boolean @default(false)
 
-  // statut de compte
-  bloque Boolean @default(false)
+  // Account status.
+  blocked Boolean @default(false)
 
-  // Consentements de l'utilisateur (RGPD, CGU, etc.)
-  consentements      ConsentementUtilisateur[]
-  evenement          Evenement?                @relation(fields: [evenementId], references: [id])
-  evenementId        String?
-  evenements         Evenement[]
-  templateEvenements TemplateEvenement[]
-  openBadges         OpenBadge[]
-  openBadge          OpenBadge?                @relation(fields: [openBadgeId], references: [id])
-  openBadgeId        String?
-  machines           Machine[]
+  // User consents (GDPR, terms, etc.)
+  consents       UserConsent[]
+
+  // Domain
+  openBadgeProgresses OpenBadgeProgress[]
+  eventRegistrations  EventRegistration[]
 }
 
 model Account {
@@ -126,155 +122,228 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
-// ---------- Consentement par utilisateur ----------
-model ConsentementUtilisateur {
-  id            String           @id @default(cuid())
-  utilisateurId String
-  type          ConsentementType
-  accepte       Boolean          @default(false) // état actuel (pas l’historique complet)
-  accepteAt     DateTime?
-  retireAt      DateTime?
+// ---------- Consent per user ----------
+model UserConsent {
+  id        String      @id @default(cuid())
+  userId    String
+  type      ConsentType
+  accepted  Boolean     @default(false) // current state (not full history)
+  acceptedAt DateTime?
+  revokedAt  DateTime?
 
-  utilisateur User @relation(fields: [utilisateurId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  // 1 ligne par (utilisateur, type) -> état courant (on garde simple)
-  @@unique([utilisateurId, type])
+  // One row per (user, type) -> current state.
+  @@unique([userId, type])
 }
 
 // ============================================================
 // ENUMS
 // ============================================================
-enum ConsentementType {
-  cgu
+enum ConsentType {
+  terms
 }
 
-enum Profil {
-  eleve
-  enseignant
-  personneExterne
+enum Profile {
+  student
+  teacher
+  external
 }
 
-enum SousProfilEleve {
-  visiteur
-  ventilacteur
+enum StudentProfile {
+  visitor
+  member
   alumni
 }
 
-enum SousProfilExterne {
-  intervenant
-  visiteur
+enum ExternalProfile {
+  contributor
+  visitor
 }
 
 // ============================================================
 // DOMAIN MODELS (V0.1)
 // ============================================================
-model Evenement {
-  id            String   @id @default(cuid())
-  dateDebut     DateTime
-  dateFin       DateTime
-  heureDebut    DateTime
-  heureFin      DateTime
-  listeInscrits User[]
-  createurId    String
-  createur      User     @relation(fields: [createurId], references: [id])
+model Event {
+  id        String   @id @default(cuid())
+  name      String
+  description String
+  audience  String
+  startDate DateTime
+  endDate   DateTime
+  maxParticipants Int?
+  creatorId String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  registrations EventRegistration[]
 
-  pieceId String?
-  piece   Piece?  @relation(fields: [pieceId], references: [id])
+  roomId String?
+  room   Room?  @relation(fields: [roomId], references: [id])
 
   templateId String?
-  template   TemplateEvenement? @relation(fields: [templateId], references: [id])
+  template   EventTemplate? @relation(fields: [templateId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model TemplateEvenement {
-  id                    String   @id @default(cuid())
-  nom                   String
-  type                  String
-  nombreMaxParticipants Int?
-  description           String
-  profilsConcernes      Profil[]
-  valeurPoint           Boolean  @default(false)
-  createurId            String
-  createur              User     @relation(fields: [createurId], references: [id])
+model EventTemplate {
+  id              String   @id @default(cuid())
+  name            String
+  type            String
+  maxParticipants Int?
+  description     String
+  profiles        Profile[]
+  pointsEnabled   Boolean  @default(false)
+  creatorId       String
+  creator         User     @relation(fields: [creatorId], references: [id])
 
-  evenements Evenement[]
+  events Event[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model EventRegistration {
+  id        String         @id @default(cuid())
+  eventId   String
+  event     Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    RegistrationStatus @default(registered)
+  registeredAt DateTime    @default(now())
+  attendedAt DateTime?
+
+  @@unique([eventId, userId])
+}
+
+enum RegistrationStatus {
+  registered
+  attended
+  cancelled
+  noShow
 }
 
 model OpenBadge {
-  id              String         @id @default(cuid())
-  nombreNiveau    Int
-  nom             String
-  intituleCourt   String
-  imageCouverture String?
-  pdfAttribue     String?
-  statut          StatutActivite @default(actif)
-  valeurPoint     Boolean        @default(false)
-  categorie       String
+  id            String         @id @default(cuid())
+  type          String
+  name          String
+  coverImage    String?
+  awardedPdfUrl String?
+  status        ActivityStatus @default(active)
+  pointsEnabled Boolean        @default(false)
+  category      String
 
-  createurId String
-  createur   User   @relation(fields: [createurId], references: [id])
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
 
-  formateurs User[]
+  openBadgeProgresses OpenBadgeProgress[]
+  trainerThresholdLevelId String?
+  trainerThresholdLevel   OpenBadgeLevel? @relation(fields: [trainerThresholdLevelId], references: [id])
 
-  machineId String?
-  machine   Machine? @relation(fields: [machineId], references: [id])
+  machines MachineOpenBadgeRequirement[]
 
-  niveaux OpenBadgeNiveau[]
+  levels OpenBadgeLevel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model OpenBadgeNiveau {
+model OpenBadgeLevel {
   id          String    @id @default(cuid())
-  ordre       Int
-  contenu     String
+  level       Int
+  title       String?
+  description String?
   openBadgeId String
   openBadge   OpenBadge @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
+
+  @@unique([openBadgeId, level])
+}
+
+model OpenBadgeProgress {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  openBadgeId    String
+  openBadge      OpenBadge       @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
+  highestLevelId String?
+  highestLevel   OpenBadgeLevel? @relation(fields: [highestLevelId], references: [id])
+  levelHistory   OpenBadgeLevelProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, openBadgeId])
+  @@index([openBadgeId, highestLevelId])
+}
+
+model OpenBadgeLevelProgress {
+  id               String          @id @default(cuid())
+  progressId       String
+  progress         OpenBadgeProgress @relation(fields: [progressId], references: [id], onDelete: Cascade)
+  openBadgeLevelId String
+  openBadgeLevel   OpenBadgeLevel  @relation(fields: [openBadgeLevelId], references: [id], onDelete: Cascade)
+  awardedAt        DateTime        @default(now())
+  awardedById      String
+  awardedBy        User            @relation("OpenBadgeLevelProgressAwardedBy", fields: [awardedById], references: [id])
+
+  @@unique([progressId, openBadgeLevelId])
+  @@index([progressId, awardedAt(sort: Desc)])
 }
 
 model Machine {
-  id                    String         @id @default(cuid())
-  nom                   String
-  pieceId               String?
-  piece                 Piece?         @relation(fields: [pieceId], references: [id])
-  besoinOpenBadge       Boolean        @default(false)
-  openBadgeId           String?
-  openBadge             OpenBadge?     @relation(fields: [openBadgeId], references: [id])
-  openBadgeNiveau       Int?
-  calendrierReservation String?
-  statut                StatutActivite @default(actif)
-  valeurPoint           Boolean        @default(false)
-  createurId            String
-  createur              User           @relation(fields: [createurId], references: [id])
+  id                  String         @id @default(cuid())
+  category            String
+  name                String
+  imageUrl            String?
+  roomId              String?
+  room                Room?          @relation(fields: [roomId], references: [id])
+  reservationCalendarUrl String?
+  status              ActivityStatus @default(active)
+  pointsEnabled       Boolean        @default(false)
+  creatorId           String
+  creator             User           @relation(fields: [creatorId], references: [id])
+  badgeRequirements   MachineOpenBadgeRequirement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Lieu {
-  id     String  @id @default(cuid())
-  nom    String
-  pieces Piece[]
+model MachineOpenBadgeRequirement {
+  id                       String         @id @default(cuid())
+  machineId                String
+  machine                  Machine        @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  requiredOpenBadgeId      String
+  requiredOpenBadge        OpenBadge       @relation(fields: [requiredOpenBadgeId], references: [id], onDelete: Cascade)
+  requiredOpenBadgeLevelId String?
+  requiredOpenBadgeLevel   OpenBadgeLevel? @relation(fields: [requiredOpenBadgeLevelId], references: [id])
+  ruleType                 OpenBadgeRequirementRule @default(all)
+
+  @@unique([machineId, requiredOpenBadgeId, requiredOpenBadgeLevelId])
 }
 
-model Piece {
-  id                  String      @id @default(cuid())
-  nom                 String
-  numero              Int
-  calendrierEvenement String?
-  lieuId              String?
-  lieu                Lieu?       @relation(fields: [lieuId], references: [id])
-  evenements          Evenement[]
-  machines            Machine[]
+enum OpenBadgeRequirementRule {
+  all
+  any
 }
 
-enum StatutActivite {
-  actif
-  desactive
+model Location {
+  id    String @id @default(cuid())
+  name  String
+  rooms Room[]
+}
+
+model Room {
+  id            String    @id @default(cuid())
+  name          String
+  number        Int?
+  eventCalendarUrl String?
+  locationId    String?
+  location      Location? @relation(fields: [locationId], references: [id])
+  events        Event[]
+  machines      Machine[]
+}
+
+enum ActivityStatus {
+  active
+  inactive
 }

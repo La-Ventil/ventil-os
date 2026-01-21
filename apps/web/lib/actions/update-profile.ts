@@ -30,9 +30,9 @@ export async function updateProfile(
     const profileFormData: ProfileFormData = data;
     let userUpdateInput: Prisma.UserUpdateInput = {
       name: profileFormData.lastName,
-      prenom: profileFormData.firstName,
-      nom: profileFormData.lastName,
-      niveauScolaire: profileFormData.educationLevel
+      firstName: profileFormData.firstName,
+      lastName: profileFormData.lastName,
+      educationLevel: profileFormData.educationLevel
     };
     await prismaClient.user.update({
       where: { id: userProfile.id },

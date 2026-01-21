@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { MachineAvailability, type Machine } from '@repo/domain/machine';
+import { MachineAvailability, type MachineViewModel } from '@repo/domain/view-models/machine';
 import MachineCard from '@repo/ui/machine-card';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import Section from '@repo/ui/section';
@@ -18,30 +18,30 @@ export default function Page() {
   const t = useTranslations('pages.hub.fabLab');
   const [tabValue, setTabValue] = useState(0);
 
-  const machines: Machine[] = [
+  const machines: MachineViewModel[] = [
     {
       id: 'machine-1',
       category: t('card.category'),
-      title: t('card.title'),
+      name: t('card.title'),
       description: t('card.description'),
       availability: MachineAvailability.Available,
-      illustrationLabel: t('card.illustrationPlaceholder')
+      imageUrl: undefined
     },
     {
       id: 'machine-2',
       category: t('card.category'),
-      title: t('card.title'),
+      name: t('card.title'),
       description: t('card.description'),
       availability: MachineAvailability.Reserved,
-      illustrationLabel: t('card.illustrationPlaceholder')
+      imageUrl: undefined
     },
     {
       id: 'machine-3',
       category: t('card.category'),
-      title: t('card.title'),
+      name: t('card.title'),
       description: t('card.description'),
       availability: MachineAvailability.Occupied,
-      illustrationLabel: t('card.illustrationPlaceholder')
+      imageUrl: undefined
     }
   ];
 

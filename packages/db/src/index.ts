@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Profil, ConsentementType } from '@prisma/client';
+import { PrismaClient, Prisma, Profile, ConsentType } from '@prisma/client';
 import { UserRepository } from './user.repository';
 
 const globalForPrisma = globalThis as unknown as { prismaClient: PrismaClient }
@@ -11,4 +11,4 @@ export * from "@prisma/client";
 
 export const userRepository = new UserRepository(prismaClient);
 
-export { PrismaClient, Prisma, Profil, ConsentementType };
+export { PrismaClient, Prisma, Profile, ConsentType };

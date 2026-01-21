@@ -4,13 +4,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import type { Event } from '@repo/domain/event';
+import type { EventViewModel } from '@repo/domain/view-models/event';
 import CardHeader from './card-header';
 import { EventIcon } from './icons/event-icon';
 import styles from './event-card.module.css';
 
 export type EventCardProps = {
-  event: Event;
+  event: EventViewModel;
   t: (key: string) => string;
 };
 
@@ -46,11 +46,11 @@ export default function EventCard({ event, t }: EventCardProps) {
           <EventIcon color="secondary" />
         }
         overline={event.type}
-        title={event.title}
+        title={event.name}
       />
       <CardContent>
         <Grid container rowSpacing={1.5} columnSpacing={2}>
-          <EventMeta label={t('card.labels.date')} value={event.date} secondary={event.time} />
+      <EventMeta label={t('card.labels.date')} value={event.startDate} />
           <EventMeta label={t('card.labels.location')} value={event.location} />
           <EventMeta label={t('card.labels.audience')} value={event.audience} />
           <EventMeta

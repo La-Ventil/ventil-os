@@ -1,5 +1,5 @@
 export const ConsentType = {
-  TermsOfUse: 'cgu'
+  TermsOfUse: 'terms'
 } as const;
 
 export type ConsentType = (typeof ConsentType)[keyof typeof ConsentType];

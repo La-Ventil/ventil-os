@@ -58,7 +58,7 @@ export async function resetPassword(
     const appName = process.env.APP_NAME!;
 
     message.subject = t('resetPassword.emailSubject', { appName });
-    message.textContent = t('resetPassword.emailText', { name: user.prenom, resetUrl });
+    message.textContent = t('resetPassword.emailText', { name: user.firstName, resetUrl });
     message.sender = {
       name: appName,
       email: 'no-reply@laventil.org'
@@ -66,7 +66,7 @@ export async function resetPassword(
     message.to = [
       {
         email: user.email,
-        name: `${user.prenom} ${user.name}`
+        name: `${user.firstName} ${user.lastName}`
       }
     ];
 
