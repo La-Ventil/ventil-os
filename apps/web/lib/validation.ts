@@ -15,17 +15,25 @@ export function zodErrorToFieldErrors(err: ZodError, t: Translate): Record<strin
     (out[field] ??= []).push(msg);
   };
 
-  const translateMessage = (messageKey: string) => {
-    let translated = messageKey;
+  const safeTranslate = (key: string, fallback: string) => {
     try {
-      translated = t(messageKey, { defaultMessage: messageKey });
-      if (translated === messageKey) {
-        translated = t('validation.genericError', {
-          defaultMessage: 'Une erreur est survenue, veuillez vérifier ce champ.'
-        });
-      }
+      return t(key, { defaultMessage: fallback });
     } catch {
-      translated = 'Une erreur est survenue, veuillez vérifier ce champ.';
+      return fallback;
+    }
+  };
+
+  const translateMessage = (messageKey: string) => {
+    const fallback = 'Une erreur est survenue, veuillez vérifier ce champ.';
+    const looksLikeKey = messageKey.includes('.') && !messageKey.includes(' ');
+
+    if (!looksLikeKey) {
+      return safeTranslate('validation.genericError', fallback);
+    }
+
+    const translated = safeTranslate(messageKey, messageKey);
+    if (translated === messageKey) {
+      return safeTranslate('validation.genericError', fallback);
     }
     return translated;
   };

@@ -8,12 +8,12 @@
 
 */
 -- DropIndex
-DROP INDEX "User_kcSub_key";
+DROP INDEX IF EXISTS "User_kcSub_key";
 
 -- AlterTable
-ALTER TABLE "User" DROP COLUMN "kcSub",
-ADD COLUMN     "iterations" INTEGER NOT NULL,
-ADD COLUMN     "password" TEXT NOT NULL,
-ADD COLUMN     "resetToken" TEXT,
-ADD COLUMN     "resetTokenExpiry" TIMESTAMP(3),
-ADD COLUMN     "salt" TEXT NOT NULL;
+ALTER TABLE "User" DROP COLUMN IF EXISTS "kcSub",
+ADD COLUMN IF NOT EXISTS "iterations" INTEGER NOT NULL,
+ADD COLUMN IF NOT EXISTS "password" TEXT NOT NULL,
+ADD COLUMN IF NOT EXISTS "resetToken" TEXT,
+ADD COLUMN IF NOT EXISTS "resetTokenExpiry" TIMESTAMP(3),
+ADD COLUMN IF NOT EXISTS "salt" TEXT NOT NULL;

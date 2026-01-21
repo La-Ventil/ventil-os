@@ -65,6 +65,11 @@ model User {
   // Domain
   openBadgeProgresses OpenBadgeProgress[]
   eventRegistrations  EventRegistration[]
+  createdEvents       Event[]            @relation("EventCreator")
+  createdEventTemplates EventTemplate[]  @relation("EventTemplateCreator")
+  createdOpenBadges   OpenBadge[]        @relation("OpenBadgeCreator")
+  createdMachines     Machine[]          @relation("MachineCreator")
+  openBadgeLevelAwards OpenBadgeLevelProgress[] @relation("OpenBadgeLevelProgressAwardedBy")
 }
 
 model Account {
@@ -173,7 +178,7 @@ model Event {
   endDate   DateTime
   maxParticipants Int?
   creatorId String
-  creator   User     @relation(fields: [creatorId], references: [id])
+  creator   User     @relation("EventCreator", fields: [creatorId], references: [id])
   registrations EventRegistration[]
 
   roomId String?
@@ -195,7 +200,7 @@ model EventTemplate {
   profiles        Profile[]
   pointsEnabled   Boolean  @default(false)
   creatorId       String
-  creator         User     @relation(fields: [creatorId], references: [id])
+  creator         User     @relation("EventTemplateCreator", fields: [creatorId], references: [id])
 
   events Event[]
 
@@ -234,11 +239,11 @@ model OpenBadge {
   category      String
 
   creatorId String
-  creator   User   @relation(fields: [creatorId], references: [id])
+  creator   User   @relation("OpenBadgeCreator", fields: [creatorId], references: [id])
 
   openBadgeProgresses OpenBadgeProgress[]
   trainerThresholdLevelId String?
-  trainerThresholdLevel   OpenBadgeLevel? @relation(fields: [trainerThresholdLevelId], references: [id])
+  trainerThresholdLevel   OpenBadgeLevel? @relation("OpenBadgeTrainerThreshold", fields: [trainerThresholdLevelId], references: [id])
 
   machines MachineOpenBadgeRequirement[]
 
@@ -255,6 +260,10 @@ model OpenBadgeLevel {
   description String?
   openBadgeId String
   openBadge   OpenBadge @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
+  trainerThresholdFor OpenBadge[] @relation("OpenBadgeTrainerThreshold")
+  highestLevelFor OpenBadgeProgress[] @relation("OpenBadgeProgressHighestLevel")
+  levelProgressEntries OpenBadgeLevelProgress[] @relation("OpenBadgeLevelProgressLevel")
+  requiredBy MachineOpenBadgeRequirement[] @relation("RequiredOpenBadgeLevel")
 
   @@unique([openBadgeId, level])
 }
@@ -266,7 +275,7 @@ model OpenBadgeProgress {
   openBadgeId    String
   openBadge      OpenBadge       @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
   highestLevelId String?
-  highestLevel   OpenBadgeLevel? @relation(fields: [highestLevelId], references: [id])
+  highestLevel   OpenBadgeLevel? @relation("OpenBadgeProgressHighestLevel", fields: [highestLevelId], references: [id])
   levelHistory   OpenBadgeLevelProgress[]
 
   createdAt DateTime @default(now())
@@ -281,7 +290,7 @@ model OpenBadgeLevelProgress {
   progressId       String
   progress         OpenBadgeProgress @relation(fields: [progressId], references: [id], onDelete: Cascade)
   openBadgeLevelId String
-  openBadgeLevel   OpenBadgeLevel  @relation(fields: [openBadgeLevelId], references: [id], onDelete: Cascade)
+  openBadgeLevel   OpenBadgeLevel  @relation("OpenBadgeLevelProgressLevel", fields: [openBadgeLevelId], references: [id], onDelete: Cascade)
   awardedAt        DateTime        @default(now())
   awardedById      String
   awardedBy        User            @relation("OpenBadgeLevelProgressAwardedBy", fields: [awardedById], references: [id])
@@ -301,7 +310,7 @@ model Machine {
   status              ActivityStatus @default(active)
   pointsEnabled       Boolean        @default(false)
   creatorId           String
-  creator             User           @relation(fields: [creatorId], references: [id])
+  creator             User           @relation("MachineCreator", fields: [creatorId], references: [id])
   badgeRequirements   MachineOpenBadgeRequirement[]
 
   createdAt DateTime @default(now())
@@ -315,7 +324,7 @@ model MachineOpenBadgeRequirement {
   requiredOpenBadgeId      String
   requiredOpenBadge        OpenBadge       @relation(fields: [requiredOpenBadgeId], references: [id], onDelete: Cascade)
   requiredOpenBadgeLevelId String?
-  requiredOpenBadgeLevel   OpenBadgeLevel? @relation(fields: [requiredOpenBadgeLevelId], references: [id])
+  requiredOpenBadgeLevel   OpenBadgeLevel? @relation("RequiredOpenBadgeLevel", fields: [requiredOpenBadgeLevelId], references: [id])
   ruleType                 OpenBadgeRequirementRule @default(all)
 
   @@unique([machineId, requiredOpenBadgeId, requiredOpenBadgeLevelId])
