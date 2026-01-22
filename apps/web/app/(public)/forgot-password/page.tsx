@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
@@ -7,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import ResetPasswordForm from '@repo/ui/forms/reset-password.form';
 import { resetPassword } from '../../../lib/actions/reset-password';
 
-export default function Page() {
+export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.forgotPassword');
 
   return (

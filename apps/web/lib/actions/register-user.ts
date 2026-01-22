@@ -29,18 +29,18 @@ export async function registerUser(
 
     const signupFormData: SignupFormData = data;
     const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
-    let profile = Profile.student;
+    let profile: Profile = Profile.student;
     let studentProfile: StudentProfile | null = null;
     let externalProfile: ExternalProfile | null = null;
 
     switch (signupFormData.profile) {
-      case ProfileType.Ventilacteur:
+      case ProfileType.Member:
         profile = Profile.student;
-        studentProfile = StudentProfile.ventilactor;
+        studentProfile = StudentProfile.member;
         break;
-      case ProfileType.HighSchoolStudent:
+      case ProfileType.Alumni:
         profile = Profile.student;
-        studentProfile = StudentProfile.visitor;
+        studentProfile = StudentProfile.alumni;
         break;
       case ProfileType.Teacher:
         profile = Profile.teacher;

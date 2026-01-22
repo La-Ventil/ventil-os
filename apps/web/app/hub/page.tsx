@@ -1,9 +1,10 @@
+import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
 import SectionTitle from '@repo/ui/section-title';
 
-export default async function Page() {
+export default async function Page(): Promise<JSX.Element> {
   const t = await getTranslations('pages.hub.home');
 
   return (

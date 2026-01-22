@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { FormControlLabel, FormControlLabelProps } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
@@ -43,9 +44,14 @@ export interface ProfileRadioGroupProps {
 
 export default function ProfileRadioGroup({ defaultValue }: ProfileRadioGroupProps) {
   const t = useTranslations('profileSelector');
+  const [value, setValue] = useState<string>('');
   const optionKeyMap: Record<string, string> = {
     eleve_lycee: 'eleveLycee'
   };
+
+  useEffect(() => {
+    setValue(defaultValue ?? ProfileType.Member);
+  }, [defaultValue]);
 
   return (
     <FormGroup className={styles.profileRadioGroupContainer}>
@@ -55,7 +61,8 @@ export default function ProfileRadioGroup({ defaultValue }: ProfileRadioGroupPro
       <Typography variant="body1">{t('subtitle')}</Typography>
       <RadioGroup
         aria-labelledby="profile-label"
-        defaultValue={defaultValue ?? ProfileType.Ventilacteur}
+        value={value}
+        onChange={(event) => setValue(String(event.target.value))}
         name="profile"
       >
         {Object.values(ProfileType).map((key) => {

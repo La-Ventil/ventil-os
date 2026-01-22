@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -14,7 +15,7 @@ import { useFormActionState } from '@repo/ui/hooks';
 import { updatePassword, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
-export default function Page() {
+export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.updatePassword');
   const tForms = useTranslations('forms');
   const tCommon = useTranslations('common');

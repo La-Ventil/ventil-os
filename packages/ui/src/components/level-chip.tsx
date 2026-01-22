@@ -1,5 +1,3 @@
-'use client';
-
 import Chip from '@mui/material/Chip';
 
 export type LevelChipProps = {

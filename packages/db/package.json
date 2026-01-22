@@ -43,6 +43,7 @@
     "@repo/domain": "workspace:*"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./mocks": "./src/__mocks__/index.ts"
   }
 }

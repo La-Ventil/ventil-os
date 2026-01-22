@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -21,6 +22,11 @@ export interface SignupFormProps {
 export default function SignupForm({ actionState: [state, action, isPending] }: SignupFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  useEffect(() => {
+    setTermsAccepted(state.values.terms === 'on');
+  }, [state.values.terms]);
 
   return (
     <form action={action}>
@@ -72,7 +78,13 @@ export default function SignupForm({ actionState: [state, action, isPending] }: 
 
         <FormControlLabel
           required
-          control={<Checkbox name="terms" defaultChecked={state.values.terms === 'on'} />}
+          control={
+            <Checkbox
+              name="terms"
+              checked={termsAccepted}
+              onChange={(event) => setTermsAccepted(event.target.checked)}
+            />
+          }
           label={t('fields.terms')}
         />
       </Stack>

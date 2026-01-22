@@ -163,6 +163,14 @@
         }
       },
       "openBadges": {
+        "title": "Open Badge",
+        "subtitle": "Information",
+        "intro": "Find available and earned open badges below.",
+        "tabs": {
+          "ariaLabel": "Filter open badges",
+          "all": "All open badges",
+          "mine": "My open badges"
+        },
         "detailsModal": {
           "closeLabel": "Close",
           "illustrationPlaceholder": "Illustration in progress",

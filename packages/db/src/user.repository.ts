@@ -5,8 +5,8 @@ import { mapUserProfileToViewModel } from './mappers/user-profile';
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getUserProfileByEmail(email: string): Promise<UserProfile> {
-    const maybeUser = await this.prisma.user.findFirstOrThrow({
+  async getUserProfileByEmail(email: string): Promise<UserProfile | null> {
+    const maybeUser = await this.prisma.user.findFirst({
       where: { email },
       select: {
         id: true,
@@ -21,6 +21,6 @@ export class UserRepository {
       }
     });
 
-    return mapUserProfileToViewModel(maybeUser);
+    return maybeUser ? mapUserProfileToViewModel(maybeUser) : null;
   }
 }

@@ -1,85 +1,90 @@
-'use client';
-
-import Stack from '@mui/material/Stack';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import type { JSX } from 'react';
+import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { OpenBadgeRepositoryMock } from '@repo/db/mocks';
 import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
-import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
 import OpenBadgeCard from '@repo/ui/open-badge-card';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
-import OpenBadgeDetailsModal from './open-badge-details-modal';
+import OpenBadgeModalRoute from './open-badge-modal-route';
+import ServerTabs from '@repo/ui/server-tabs';
 
-const badgeLevels = [
-  {
-    level: 1,
-    title: 'Niveau découverte',
-    body: "Découvrez les bases de l'outil et les règles de sécurité essentielles."
-  },
-  {
-    level: 2,
-    title: 'Niveau intermédiaire',
-    body: 'Rendez-vous autonome sur les usages courants et les bons réglages.'
-  },
-  {
-    level: 3,
-    title: 'Niveau avancé',
-    body:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-  }
-];
+const openBadgeRepository = new OpenBadgeRepositoryMock();
+const defaultTab = 'all';
+const tabsBaseId = 'open-badge-tabs';
 
-const badges: OpenBadgeViewModel[] = [
-  {
-    id: 'badge-1',
-    type: 'Type de badge',
-    name: 'Nom du badge',
-    description:
-      "Open badge permettant de se former à l'utilisation de la perceuse à colonne disponible dans le fab lab.",
-    levels: badgeLevels,
-    activeLevel: 2
-  },
-  {
-    id: 'badge-2',
-    type: 'Type de badge',
-    name: 'Nom du badge',
-    description:
-      "Open badge permettant de se former à l'utilisation de la perceuse à colonne disponible dans le fab lab.",
-    levels: badgeLevels,
-    activeLevel: 1
-  }
-];
+type OpenBadgePageProps = {
+  searchParams?: Promise<{
+    tab?: string;
+    badgeId?: string;
+  }>;
+};
 
-export default function Page() {
-  const [selectedOpenBadge, setSelectedOpenBadge] = useState<OpenBadgeViewModel | null>(null);
+export default async function Page({
+  searchParams
+}: OpenBadgePageProps): Promise<JSX.Element> {
+  const resolvedSearchParams = await searchParams;
+  const t = await getTranslations('pages.hub.openBadges');
+  const badges = await openBadgeRepository.listOpenBadges();
+  const myBadges = badges.filter((badge) => badge.activeLevel > 0);
+  const tab = resolvedSearchParams?.tab === 'mine' ? 'mine' : defaultTab;
+  const badgeId = resolvedSearchParams?.badgeId;
+  const selectedBadge = badgeId ? badges.find((badge) => badge.id === badgeId) ?? null : null;
+  const tabHref = `?${new URLSearchParams({ tab }).toString()}`;
+  const allTabId = `${tabsBaseId}-tab-all`;
+  const mineTabId = `${tabsBaseId}-tab-mine`;
+  const allPanelId = `${tabsBaseId}-panel-all`;
+  const minePanelId = `${tabsBaseId}-panel-mine`;
 
   return (
     <>
-      <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>Open Badge</SectionTitle>
+      <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{t('title')}</SectionTitle>
       <Section>
-          <SectionSubtitle>Information</SectionSubtitle>
-          <Typography variant="body1">Retrouvez les Open badges disponibles et obtenus ci-dessous.</Typography>
+        <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        <Typography variant="body1">{t('intro')}</Typography>
       </Section>
 
-      <Tabs value={0} variant="fullWidth" aria-label="Filtrer les open badges">
-        <Tab label="Tous les open badges" />
-        <Tab label="Mes open badges" />
-      </Tabs>
-
-      <Section>
-          {badges.map((badge) => (
-            <OpenBadgeCard key={badge.id} badge={badge} onClick={() => setSelectedOpenBadge(badge)} />
-          ))}
-      </Section>
-
-      <OpenBadgeDetailsModal
-        openBadge={selectedOpenBadge}
-        open={Boolean(selectedOpenBadge)}
-        onClose={() => setSelectedOpenBadge(null)}
+      <ServerTabs
+        ariaLabel={t('tabs.ariaLabel')}
+        activeValue={tab}
+        baseId={tabsBaseId}
+        tabs={[
+          { value: 'all', label: t('tabs.all'), href: '?tab=all', controlsId: allPanelId },
+          { value: 'mine', label: t('tabs.mine'), href: '?tab=mine', controlsId: minePanelId }
+        ]}
       />
+
+      <Section
+        id={allPanelId}
+        role="tabpanel"
+        aria-labelledby={allTabId}
+        hidden={tab !== 'all'}
+      >
+        {badges.map((badge) => (
+          <OpenBadgeCard
+            key={badge.id}
+            badge={badge}
+            href={`?${new URLSearchParams({ tab, badgeId: badge.id }).toString()}`}
+          />
+        ))}
+      </Section>
+      <Section
+        id={minePanelId}
+        role="tabpanel"
+        aria-labelledby={mineTabId}
+        hidden={tab !== 'mine'}
+      >
+        {myBadges.map((badge) => (
+          <OpenBadgeCard
+            key={badge.id}
+            badge={badge}
+            href={`?${new URLSearchParams({ tab, badgeId: badge.id }).toString()}`}
+          />
+        ))}
+      </Section>
+
+      <OpenBadgeModalRoute openBadge={selectedBadge} closeHref={tabHref} />
     </>
   );
 }

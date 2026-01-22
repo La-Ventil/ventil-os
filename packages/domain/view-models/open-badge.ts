@@ -1,7 +1,7 @@
 export type OpenBadgeLevelViewModel = {
   level: number;
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
 };
 
 export type OpenBadgeViewModel = {

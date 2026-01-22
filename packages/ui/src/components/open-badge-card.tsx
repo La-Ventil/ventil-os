@@ -1,14 +1,11 @@
-'use client';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
 import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/domain/view-models/open-badge';
-import CardHeader from './card-header';
+import Link from 'next/link';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import LevelChip from './level-chip';
 import styles from './open-badge-card.module.css';
@@ -18,30 +15,23 @@ export type OpenBadgeCardData = OpenBadgeViewModel;
 
 export type OpenBadgeCardProps = {
   badge: OpenBadgeCardData;
-  onClick?: () => void;
+  href?: string;
 };
 
-export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
-  const isInteractive = Boolean(onClick);
-
-  return (
-    <Card
-      className={clsx(styles.card, isInteractive && styles.cardInteractive)}
-      onClick={onClick}
-      role={isInteractive ? 'button' : undefined}
-      tabIndex={isInteractive ? 0 : undefined}
-      onKeyDown={(event) => {
-        if (!isInteractive) {
-          return;
-        }
-
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
-      <CardHeader icon={<OpenBadgeIcon color="secondary" />} overline={badge.type} title={badge.name} />
+export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
+  const content = (
+    <Card className={styles.card}>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <OpenBadgeIcon color="secondary" />
+        <div>
+          <Typography variant="h5" color="secondary">
+            {badge.type}
+          </Typography>
+          <Typography variant="subtitle1" color="primary">
+            {badge.name}
+          </Typography>
+        </div>
+      </Stack>
       <CardContent>
         <Stack spacing={2}>
           <Box display="flex" gap={2}>
@@ -71,5 +61,15 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
         </Stack>
       </CardContent>
     </Card>
+  );
+
+  if (!href) {
+    return content;
+  }
+
+  return (
+    <Link href={href} className={styles.cardLink}>
+      {content}
+    </Link>
   );
 }

@@ -1,46 +1,28 @@
 'use client';
-
-import Stack from '@mui/material/Stack';
+import type { JSX } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import type { EventViewModel } from '@repo/domain/view-models/event';
+import { EventRepositoryMock } from '@repo/db/mocks';
 import EventCard from '@repo/ui/event-card';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 
-export default function Page() {
+const eventRepository = new EventRepositoryMock();
+
+export default function Page(): JSX.Element {
   const t = useTranslations('pages.hub.events');
   const [tabValue, setTabValue] = useState(0);
+  const [events, setEvents] = useState<EventViewModel[]>([]);
 
-  const events: EventViewModel[] = [
-    {
-      id: 'event-1',
-      type: 'Type d’atelier',
-      name: "Nom de l'atelier",
-      startDate: '2026-11-16T16:00:00.000Z',
-      location: 'Fab Lab',
-      audience: 'Ouvert a tous',
-      registration: { current: 2, capacity: 6 },
-      description:
-        'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
-    },
-    {
-      id: 'event-2',
-      type: 'Type d’atelier',
-      name: "Nom de l'atelier",
-      startDate: '2026-11-16T16:00:00.000Z',
-      location: 'Fab Lab',
-      audience: 'Ouvert a tous',
-      registration: { current: 2, capacity: 6 },
-      description:
-        'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
-    }
-  ];
+  useEffect(() => {
+    eventRepository.listEvents().then(setEvents);
+  }, []);
 
   return (
     <>

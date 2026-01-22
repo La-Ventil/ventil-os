@@ -9,8 +9,8 @@
     //
 
 export const ProfileType = {
-  Ventilacteur: 'ventilacteur',
-  HighSchoolStudent: 'eleve_lycee',
+  Member: 'ventilacteur',
+  Alumni: 'eleve_lycee',
   Teacher: 'enseignant',
   Contributor: 'intervenant',
   Visitor: 'visiteur'

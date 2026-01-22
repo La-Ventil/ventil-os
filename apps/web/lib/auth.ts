@@ -6,6 +6,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type PrismaClient, Prisma } from '@prisma/client';
+import { redirect } from 'next/navigation';
 import { prismaClient, userRepository } from '@repo/db';
 import type { UserProfile } from '@repo/domain/user-profile';
 import { verifySecret } from './security';
@@ -95,8 +96,15 @@ export async function getUserProfileFromSession(
   ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
   const session = await getServerSession();
+  if (!session?.user?.email) {
+    redirect('/login');
+  }
   console.log('session', session);
-  return userRepository.getUserProfileByEmail(session.user.email);
+  const profile = await userRepository.getUserProfileByEmail(session.user.email);
+  if (!profile) {
+    redirect('/login');
+  }
+  return profile;
 }
 
 export function signInAndRedirect(router: AppRouterInstance) {

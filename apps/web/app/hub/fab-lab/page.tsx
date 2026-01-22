@@ -1,12 +1,12 @@
 'use client';
-
-import Stack from '@mui/material/Stack';
+import type { JSX } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { MachineAvailability, type MachineViewModel } from '@repo/domain/view-models/machine';
+import type { MachineViewModel } from '@repo/domain/view-models/machine';
+import { MachineRepositoryMock } from '@repo/db/mocks';
 import MachineCard from '@repo/ui/machine-card';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import Section from '@repo/ui/section';
@@ -14,36 +14,16 @@ import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import styles from './page.module.css';
 
-export default function Page() {
+const machineRepository = new MachineRepositoryMock();
+
+export default function Page(): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
   const [tabValue, setTabValue] = useState(0);
+  const [machines, setMachines] = useState<MachineViewModel[]>([]);
 
-  const machines: MachineViewModel[] = [
-    {
-      id: 'machine-1',
-      category: t('card.category'),
-      name: t('card.title'),
-      description: t('card.description'),
-      availability: MachineAvailability.Available,
-      imageUrl: undefined
-    },
-    {
-      id: 'machine-2',
-      category: t('card.category'),
-      name: t('card.title'),
-      description: t('card.description'),
-      availability: MachineAvailability.Reserved,
-      imageUrl: undefined
-    },
-    {
-      id: 'machine-3',
-      category: t('card.category'),
-      name: t('card.title'),
-      description: t('card.description'),
-      availability: MachineAvailability.Occupied,
-      imageUrl: undefined
-    }
-  ];
+  useEffect(() => {
+    machineRepository.listMachines().then(setMachines);
+  }, []);
 
   return (
     <>
@@ -64,9 +44,9 @@ export default function Page() {
       </Tabs>
 
       <Section>
-          {machines.map((machine) => (
-            <MachineCard key={machine.id} machine={machine} t={t} />
-          ))}
+        {machines.map((machine) => (
+          <MachineCard key={machine.id} machine={machine} t={t} />
+        ))}
       </Section>
     </>
   );

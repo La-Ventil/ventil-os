@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -11,31 +12,31 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import { OpenBadgeIcon } from '@repo/ui/icons/open-badge-icon';
-import LevelChip from '@repo/ui/level-chip';
+import { OpenBadgeIcon } from './icons/open-badge-icon';
+import LevelChip from './level-chip';
 import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
-import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
-import { ThemeSection } from '@repo/ui/theme';
-import styles from './page.module.css';
+import Section from './section';
+import SectionSubtitle from './section-subtitle';
+import SectionTitle from './section-title';
+import { ThemeSection } from '../theme';
+import styles from './open-badge-modal.module.css';
 
-type OpenBadgeDetailsModalProps = {
+export type OpenBadgeModalProps = {
   openBadge: OpenBadgeViewModel | null;
   open: boolean;
   onClose: () => void;
 };
 
-export default function OpenBadgeDetailsModal({ openBadge, open, onClose }: OpenBadgeDetailsModalProps) {
+export default function OpenBadgeModal({
+  openBadge,
+  open,
+  onClose
+}: OpenBadgeModalProps): JSX.Element | null {
   if (!openBadge) {
     return null;
   }
   const t = useTranslations('pages.hub.openBadges');
-  const levels = openBadge.levels.map((levelEntry) => ({
-    level: levelEntry.level,
-    title: levelEntry.title ?? `Niveau ${levelEntry.level}`,
-    body: levelEntry.description ?? ''
-  }));
+  const { levels } = openBadge;
 
   return (
     <Dialog
@@ -94,7 +95,7 @@ export default function OpenBadgeDetailsModal({ openBadge, open, onClose }: Open
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body2" color="text.secondary">
-                  {level.body}
+                  {level.description}
                 </Typography>
               </AccordionDetails>
             </Accordion>

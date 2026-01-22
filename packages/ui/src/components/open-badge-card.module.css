@@ -72,3 +72,9 @@
 .levelChip :global(.MuiChip-label) {
   padding: 0 8px;
 }
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}

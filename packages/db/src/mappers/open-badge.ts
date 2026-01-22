@@ -22,8 +22,8 @@ export const mapOpenBadgeLevelToViewModel = (
   level: OpenBadgeLevelSchema
 ): OpenBadgeLevelViewModel => ({
   level: level.level,
-  title: level.title ?? undefined,
-  description: level.description ?? undefined
+  title: level.title ?? `Niveau ${level.level}`,
+  description: level.description ?? ''
 });
 
 export const mapOpenBadgeToViewModel = (

@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
@@ -13,6 +16,11 @@ export interface EducationLevelSelectProps {
 
 export default function EducationLevelSelect({ defaultValue }: EducationLevelSelectProps) {
   const t = useTranslations('educationLevel');
+  const [value, setValue] = useState<string>('');
+
+  useEffect(() => {
+    setValue(defaultValue ?? '');
+  }, [defaultValue]);
 
   return (
     <Box className={styles.root}>
@@ -22,7 +30,8 @@ export default function EducationLevelSelect({ defaultValue }: EducationLevelSel
           name="educationLevel"
           labelId="education-level-select-label"
           id="education-level-select"
-          defaultValue={defaultValue ?? ''}
+          value={value}
+          onChange={(event) => setValue(String(event.target.value))}
           label={t('label')}
         >
           <MenuItem value={''}>{t('placeholder')}</MenuItem>

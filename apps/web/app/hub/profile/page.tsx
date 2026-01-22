@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import { EventIcon } from '@repo/ui/icons/event-icon';
@@ -11,7 +12,7 @@ import SectionSubtitle from '@repo/ui/section-subtitle';
 import StatsList, { StatsListEntry } from '@repo/ui/stats-list';
 import { getUserProfileFromSession } from '../../../lib/auth';
 
-export default async function Page() {
+export default async function Page(): Promise<JSX.Element> {
   const userProfile = await getUserProfileFromSession();
   const t = await getTranslations('pages.hub.profile');
   const stats: StatsListEntry[] = [

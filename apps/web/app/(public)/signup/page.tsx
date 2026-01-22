@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,7 +13,7 @@ import SignupForm from '@repo/ui/forms/signup.form';
 import { useFormActionStateWithValues } from '@repo/ui/hooks';
 import { registerUser } from '../../../lib/actions/register-user';
 
-export default function Page() {
+export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
   const actionState = useFormActionStateWithValues<SignupFormData>(registerUser, {
     message: '',

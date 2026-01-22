@@ -160,6 +160,14 @@
         }
       },
       "openBadges": {
+        "title": "Open Badge",
+        "subtitle": "Information",
+        "intro": "Retrouvez les Open badges disponibles et obtenus ci-dessous.",
+        "tabs": {
+          "ariaLabel": "Filtrer les open badges",
+          "all": "Tous les open badges",
+          "mine": "Mes open badges"
+        },
         "detailsModal": {
           "closeLabel": "Fermer",
           "illustrationPlaceholder": "Illustration en cours",
