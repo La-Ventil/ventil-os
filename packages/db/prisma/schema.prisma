@@ -181,11 +181,11 @@ model Event {
   creator   User     @relation("EventCreator", fields: [creatorId], references: [id])
   registrations EventRegistration[]
 
-  roomId String?
-  room   Room?  @relation(fields: [roomId], references: [id])
+  roomId String
+  room   Room  @relation(fields: [roomId], references: [id])
 
-  templateId String?
-  template   EventTemplate? @relation(fields: [templateId], references: [id])
+  templateId String
+  template   EventTemplate @relation(fields: [templateId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -233,6 +233,7 @@ model OpenBadge {
   type          String
   name          String
   coverImage    String?
+  description   String?
   awardedPdfUrl String?
   status        ActivityStatus @default(active)
   pointsEnabled Boolean        @default(false)
@@ -256,7 +257,7 @@ model OpenBadge {
 model OpenBadgeLevel {
   id          String    @id @default(cuid())
   level       Int
-  title       String?
+  title       String
   description String?
   openBadgeId String
   openBadge   OpenBadge @relation(fields: [openBadgeId], references: [id], onDelete: Cascade)
@@ -303,6 +304,7 @@ model Machine {
   id                  String         @id @default(cuid())
   category            String
   name                String
+  description         String?
   imageUrl            String?
   roomId              String?
   room                Room?          @relation(fields: [roomId], references: [id])

@@ -58,7 +58,7 @@ export default function OpenBadgeCard({ badge, onClick }: OpenBadgeCardProps) {
                   <LevelChip
                     key={`${badge.id}-level-${levelEntry.level}`}
                     level={levelEntry.level}
-                    isActive={levelEntry.level === badge.activeLevel}
+                    isActive={levelEntry.level <= badge.activeLevel}
                     className={styles.levelChip}
                   />
                 ))}

@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
-import { UserProfile } from '@repo/domain/user-profile';
+import type { UserProfile } from '@repo/domain/user-profile';
+import { mapUserProfileToViewModel } from './mappers/user-profile';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -20,16 +21,6 @@ export class UserRepository {
       }
     });
 
-    return {
-      id: maybeUser.id,
-      email: maybeUser.email,
-      lastName: maybeUser.lastName,
-      firstName: maybeUser.firstName,
-      profile: maybeUser.profile,
-      username: maybeUser.username,
-      educationLevel: maybeUser.educationLevel,
-      globalAdmin: maybeUser.globalAdmin,
-      pedagogicalAdmin: maybeUser.pedagogicalAdmin
-    };
+    return mapUserProfileToViewModel(maybeUser);
   }
 }
