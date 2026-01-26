@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/domain/view-models/open-badge';
+import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/view-models/open-badge';
 import Link from 'next/link';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import LevelChip from './level-chip';

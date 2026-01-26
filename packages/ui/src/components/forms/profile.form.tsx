@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { ProfileFormData } from '@repo/domain/models/forms/profile-form-data';
-import { UserProfile } from '@repo/domain/user-profile';
+import { UserProfile } from '@repo/view-models/user-profile';
 import EducationLevelSelect from '@repo/ui/inputs/education-level-select';
 import { FormAction } from '../../form-action-state';
 import { useFormActionStateWithValues } from '../../hooks';

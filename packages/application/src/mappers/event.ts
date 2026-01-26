@@ -1,25 +1,5 @@
-import type { Prisma } from '@prisma/client';
-import type { EventViewModel } from '@repo/domain/view-models/event';
-
-export type EventSchema = Prisma.EventGetPayload<{
-  include: {
-    template: {
-      select: {
-        type: true;
-      };
-    };
-    room: {
-      select: {
-        name: true;
-      };
-    };
-    _count: {
-      select: {
-        registrations: true;
-      };
-    };
-  };
-}>;
+import type { EventSchema } from '@repo/db/schemas';
+import type { EventViewModel } from '@repo/view-models/event';
 
 export const mapEventToViewModel = (event: EventSchema): EventViewModel => {
   const registrationCount = event._count.registrations;

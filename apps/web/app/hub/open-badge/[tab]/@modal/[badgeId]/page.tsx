@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { OpenBadgeRepositoryMock } from '@repo/db/mocks';
+import { OpenBadgeRepositoryMock } from '@repo/application/mocks';
 import OpenBadgeModalRoute from '@repo/ui/open-badge-modal-route';
 import { isOpenBadgeTab } from '../../layout';
 

@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import OpenBadgeModal from './open-badge-modal';
 
 type OpenBadgeModalRouteProps = {

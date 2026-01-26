@@ -1,4 +1,4 @@
-import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 
 const badgeLevels = [
   {

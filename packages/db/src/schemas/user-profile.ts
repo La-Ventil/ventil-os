@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+
+export type UserProfileSchema = Prisma.UserGetPayload<{
+  select: {
+    id: true;
+    email: true;
+    profile: true;
+    username: true;
+    educationLevel: true;
+    pedagogicalAdmin: true;
+    globalAdmin: true;
+    lastName: true;
+    firstName: true;
+  };
+}>;

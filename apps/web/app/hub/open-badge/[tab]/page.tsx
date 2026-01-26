@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import { OpenBadgeRepositoryMock } from '@repo/db/mocks';
+import { OpenBadgeRepositoryMock } from '@repo/application/mocks';
 import OpenBadgeList from '@repo/ui/open-badge-list';
 import { getServerSession } from '../../../../lib/auth';
 import { isOpenBadgeTab, type OpenBadgeTab } from './layout';

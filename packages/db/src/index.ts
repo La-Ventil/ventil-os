@@ -11,7 +11,7 @@ export const prismaClient = globalForPrisma.prismaClient || new PrismaClient()
 if (process.env.NODE_ENV !== "production") globalForPrisma.prismaClient = prismaClient
 
 export * from "@prisma/client";
-export * from "./mappers";
+export * from "./schemas";
 
 export const userRepository = new UserRepository(prismaClient);
 export const eventRepository = new EventRepository(prismaClient);

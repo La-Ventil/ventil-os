@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import type { EventViewModel } from '@repo/domain/view-models/event';
+import type { EventViewModel } from '@repo/view-models/event';
 import CardHeader from './card-header';
 import { EventIcon } from './icons/event-icon';
 import styles from './event-card.module.css';

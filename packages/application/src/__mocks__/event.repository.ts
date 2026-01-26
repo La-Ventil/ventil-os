@@ -1,4 +1,4 @@
-import type { EventViewModel } from '@repo/domain/view-models/event';
+import type { EventViewModel } from '@repo/view-models/event';
 
 const events: EventViewModel[] = [
   {

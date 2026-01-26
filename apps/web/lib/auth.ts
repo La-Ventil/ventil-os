@@ -7,8 +7,9 @@ import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type PrismaClient, Prisma } from '@prisma/client';
 import { redirect } from 'next/navigation';
-import { prismaClient, userRepository } from '@repo/db';
-import type { UserProfile } from '@repo/domain/user-profile';
+import { prismaClient } from '@repo/db';
+import { getUserProfileByEmail } from '@repo/application';
+import type { UserProfile } from '@repo/view-models/user-profile';
 import { verifySecret } from './security';
 
 // You'll need to import and pass this
@@ -114,7 +115,7 @@ export async function getUserProfileFromSession(
     redirect('/login');
   }
   console.log('session', session);
-  const profile = await userRepository.getUserProfileByEmail(session.user.email);
+  const profile = await getUserProfileByEmail(session.user.email);
   if (!profile) {
     redirect('/login');
   }

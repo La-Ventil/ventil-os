@@ -1,11 +1,10 @@
 import type { PrismaClient } from '@prisma/client';
-import type { EventViewModel } from '@repo/domain/view-models/event';
-import { mapEventToViewModel, type EventSchema } from './mappers/event';
+import type { EventSchema } from './schemas/event';
 
 export class EventRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async listEvents(): Promise<EventViewModel[]> {
+  async listEvents(): Promise<EventSchema[]> {
     const events = await this.prisma.event.findMany({
       include: {
         template: { select: { type: true } },
@@ -15,10 +14,10 @@ export class EventRepository {
       orderBy: { startDate: 'desc' }
     });
 
-    return events.map((event) => mapEventToViewModel(event as EventSchema));
+    return events as EventSchema[];
   }
 
-  async getEventById(id: string): Promise<EventViewModel | null> {
+  async getEventById(id: string): Promise<EventSchema | null> {
     const event = await this.prisma.event.findUnique({
       where: { id },
       include: {
@@ -28,6 +27,6 @@ export class EventRepository {
       }
     });
 
-    return event ? mapEventToViewModel(event as EventSchema) : null;
+    return event ? (event as EventSchema) : null;
   }
 }

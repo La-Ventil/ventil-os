@@ -39,11 +39,10 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "@repo/domain": "workspace:*"
+    "@prisma/client": "^5.22.0"
   },
   "exports": {
     ".": "./src/index.ts",
-    "./mocks": "./src/__mocks__/index.ts"
+    "./schemas": "./src/schemas/index.ts"
   }
 }

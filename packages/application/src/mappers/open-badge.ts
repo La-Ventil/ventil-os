@@ -1,22 +1,8 @@
-import type { Prisma } from '@prisma/client';
+import type { OpenBadgeLevelSchema, OpenBadgeSchema } from '@repo/db/schemas';
 import type {
   OpenBadgeLevelViewModel,
   OpenBadgeViewModel
-} from '@repo/domain/view-models/open-badge';
-
-export type OpenBadgeSchema = Prisma.OpenBadgeGetPayload<{
-  include: {
-    levels: {
-      select: {
-        level: true;
-        title: true;
-        description: true;
-      };
-    };
-  };
-}>;
-
-export type OpenBadgeLevelSchema = OpenBadgeSchema['levels'][number];
+} from '@repo/view-models/open-badge';
 
 export const mapOpenBadgeLevelToViewModel = (
   level: OpenBadgeLevelSchema

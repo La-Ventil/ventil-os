@@ -1,11 +1,10 @@
 import type { PrismaClient } from '@prisma/client';
-import type { UserProfile } from '@repo/domain/user-profile';
-import { mapUserProfileToViewModel } from './mappers/user-profile';
+import type { UserProfileSchema } from './schemas/user-profile';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getUserProfileByEmail(email: string): Promise<UserProfile | null> {
+  async getUserProfileByEmail(email: string): Promise<UserProfileSchema | null> {
     const maybeUser = await this.prisma.user.findFirst({
       where: { email },
       select: {
@@ -21,6 +20,6 @@ export class UserRepository {
       }
     });
 
-    return maybeUser ? mapUserProfileToViewModel(maybeUser) : null;
+    return maybeUser ? (maybeUser as UserProfileSchema) : null;
   }
 }

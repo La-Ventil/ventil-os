@@ -1,5 +1,5 @@
-import { MachineAvailability } from '@repo/domain/view-models/machine';
-import type { MachineViewModel } from '@repo/domain/view-models/machine';
+import { MachineAvailability } from '@repo/view-models/machine';
+import type { MachineViewModel } from '@repo/view-models/machine';
 
 const machines: MachineViewModel[] = [
   {

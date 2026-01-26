@@ -1,21 +1,20 @@
 import type { PrismaClient } from '@prisma/client';
-import type { MachineViewModel } from '@repo/domain/view-models/machine';
-import { mapMachineToViewModel, type MachineSchema } from './mappers/machine';
+import type { MachineSchema } from './schemas/machine';
 
 export class MachineRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async listMachines(): Promise<MachineViewModel[]> {
+  async listMachines(): Promise<MachineSchema[]> {
     const machines = await this.prisma.machine.findMany({
       orderBy: { name: 'asc' }
     });
 
-    return machines.map((machine) => mapMachineToViewModel(machine as MachineSchema));
+    return machines as MachineSchema[];
   }
 
-  async getMachineById(id: string): Promise<MachineViewModel | null> {
+  async getMachineById(id: string): Promise<MachineSchema | null> {
     const machine = await this.prisma.machine.findUnique({ where: { id } });
 
-    return machine ? mapMachineToViewModel(machine as MachineSchema) : null;
+    return machine ? (machine as MachineSchema) : null;
   }
 }

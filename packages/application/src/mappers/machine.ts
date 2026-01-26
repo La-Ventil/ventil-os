@@ -1,8 +1,5 @@
-import type { ActivityStatus, Prisma } from '@prisma/client';
-import { MachineAvailability } from '@repo/domain/view-models/machine';
-import type { MachineViewModel } from '@repo/domain/view-models/machine';
-
-export type MachineSchema = Prisma.MachineGetPayload<{}>;
+import type { MachineSchema } from '@repo/db/schemas';
+import { MachineAvailability, type MachineViewModel } from '@repo/view-models/machine';
 
 export const mapMachineToViewModel = (
   machine: MachineSchema
@@ -15,7 +12,7 @@ export const mapMachineToViewModel = (
   imageUrl: machine.imageUrl ?? undefined
 });
 
-const mapMachineStatus = (status: ActivityStatus): MachineAvailability => {
+const mapMachineStatus = (status: MachineSchema['status']): MachineAvailability => {
   if (status === 'inactive') {
     return MachineAvailability.Occupied;
   }
