@@ -22,6 +22,12 @@
     "node": ">=18"
   },
   "packageManager": "pnpm@10.18.0",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.5",
+      "@types/react-dom": "19.2.5"
+    }
+  },
   "workspaces": [
     "apps/*",
     "packages/*"

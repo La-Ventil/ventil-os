@@ -1,0 +1,73 @@
+.tabs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: 48px;
+  gap: 0;
+  border-bottom: 1px solid var(--mui-palette-divider);
+  margin: 0;
+}
+
+.tabLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 48px;
+  min-width: 90px;
+  max-width: 360px;
+  position: relative;
+  flex-shrink: 0;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-family: var(--font-nunito), Arial, sans-serif;
+  font-size: var(--mui-typography-button-fontSize, 0.875rem);
+  font-weight: var(--mui-typography-button-fontWeight, 500);
+  letter-spacing: var(--mui-typography-button-letterSpacing, 0.02857em);
+  text-transform: var(--mui-typography-button-textTransform, uppercase);
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  color: var(--mui-palette-text-secondary);
+}
+
+.tabLinkFullWidth {
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-shrink: 1;
+  max-width: none;
+}
+
+.tabLink:hover {
+  color: var(--mui-palette-text-primary);
+  background-color: color-mix(in srgb, var(--mui-palette-text-primary) 6%, transparent);
+}
+
+.tabLinkActive {
+  color: var(--mui-palette-secondary-main);
+}
+
+.tabLinkDisabled {
+  color: var(--mui-palette-text-disabled);
+  opacity: var(--mui-palette-action-disabledOpacity, 0.38);
+  pointer-events: none;
+  cursor: default;
+}
+
+.tabLinkActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background-color: var(--mui-palette-secondary-main);
+  transition: background-color 200ms ease;
+}
+
+.tabLink:focus-visible {
+  outline: 2px solid var(--mui-palette-secondary-main);
+  outline-offset: 2px;
+}

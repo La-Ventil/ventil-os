@@ -32,4 +32,29 @@ export class OpenBadgeRepository {
 
     return badge ? mapOpenBadgeToViewModel(badge as OpenBadgeSchema) : null;
   }
+
+  async listOpenBadgesForUser(userId: string): Promise<OpenBadgeViewModel[]> {
+    const progresses = await this.prisma.openBadgeProgress.findMany({
+      where: { userId },
+      include: {
+        highestLevel: {
+          select: { level: true }
+        },
+        openBadge: {
+          include: {
+            levels: {
+              select: { level: true, title: true, description: true },
+              orderBy: { level: 'asc' }
+            }
+          }
+        }
+      },
+      orderBy: { openBadge: { name: 'asc' } }
+    });
+
+    return progresses.map((progress) => ({
+      ...mapOpenBadgeToViewModel(progress.openBadge as OpenBadgeSchema),
+      activeLevel: progress.highestLevel?.level ?? 0
+    }));
+  }
 }

@@ -1,8 +1,9 @@
 'use client';
 import type { JSX } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { OpenBadgeViewModel } from '@repo/domain/view-models/open-badge';
-import OpenBadgeModal from '@repo/ui/open-badge-modal';
+import OpenBadgeModal from './open-badge-modal';
 
 type OpenBadgeModalRouteProps = {
   openBadge: OpenBadgeViewModel | null;
@@ -14,12 +15,20 @@ export default function OpenBadgeModalRoute({
   closeHref
 }: OpenBadgeModalRouteProps): JSX.Element | null {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(Boolean(openBadge));
+
+  useEffect(() => {
+    setIsOpen(Boolean(openBadge));
+  }, [openBadge]);
 
   return (
     <OpenBadgeModal
       openBadge={openBadge}
-      open={Boolean(openBadge)}
-      onClose={() => router.push(closeHref)}
+      open={isOpen}
+      onClose={() => {
+        setIsOpen(false);
+        router.push(closeHref);
+      }}
     />
   );
 }
