@@ -24,11 +24,11 @@
     "@pigment-css/nextjs-plugin": "^0.0.30",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
+    "@types/node": "22.15.3",
     "@types/react": "19.2.5",
     "@types/react-dom": "19.2.3",
     "eslint": "^9.34.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
   "dependencies": {
     "@mui/icons-material": "^7.3.5",
