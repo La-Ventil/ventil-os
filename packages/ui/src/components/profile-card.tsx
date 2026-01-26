@@ -21,7 +21,7 @@ export default function ProfileCard({ profile, imageSrc = '/avatar.svg' }: Profi
     <Card className={styles.card}>
       <CardMedia className={styles.media} title={profile.email}>
         <div className={styles.imageWrapper}>
-          <Image src={imageSrc} alt={profile.email} layout="fill" objectFit="contain" />
+          <Image src={imageSrc} alt={profile.email} fill style={{ objectFit: 'contain' }} />
         </div>
       </CardMedia>
       <div className={styles.column}>

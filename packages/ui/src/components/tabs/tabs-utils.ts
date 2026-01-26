@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { createElement, type ReactNode } from 'react';
 
 export type TabItem = {
   value: string;
@@ -52,11 +52,15 @@ export const renderPanels = <T extends string>(config: {
   activeValue: T;
   render: (value: T, panelProps: TabPanelRenderProps<T>) => ReactNode;
 }) =>
-  config.tabs.map((value) =>
-    config.render(value, {
+  config.tabs.map((value) => {
+    const panel = config.render(value, {
       value,
       id: getPanelId(config.baseId, value),
       tabId: getTabId(config.baseId, value),
       hidden: value !== config.activeValue
-    })
-  );
+    });
+
+    return panel ? createElement(PanelKey, { key: value }, panel) : null;
+  });
+
+const PanelKey = ({ children }: { children: ReactNode }) => children;

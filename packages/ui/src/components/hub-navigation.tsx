@@ -21,7 +21,14 @@ export const hubNavigationItems: HubNavigationItem[] = [
     labelKey: 'profile',
     value: 'profile',
     href: '/hub/profile',
-    icon: <Image src="/avatar.svg" alt={'profile.email'} layout="fill" objectFit="contain" />
+    icon: (
+      <Image
+        src="/avatar.svg"
+        alt={'profile.email'}
+        fill
+        style={{ objectFit: 'contain' }}
+      />
+    )
   },
   {
     labelKey: 'fabLab',
