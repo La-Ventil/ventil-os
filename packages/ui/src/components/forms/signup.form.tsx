@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { SignupFormData } from '@repo/application/forms';
+import { SignupFormInput } from '@repo/application/forms';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import { FormActionStateTuple } from '../../form-action-state';
@@ -17,7 +17,7 @@ import Link from '../link';
 import TextField from '@mui/material/TextField';
 
 export interface SignupFormProps {
-  actionState: FormActionStateTuple<FormState<SignupFormData>>;
+  actionState: FormActionStateTuple<FormState<SignupFormInput>>;
 }
 
 export default function SignupForm({ actionState: [state, action, isPending] }: SignupFormProps) {

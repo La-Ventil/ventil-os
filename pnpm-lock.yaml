@@ -264,9 +264,6 @@ importers:
       '@repo/application':
         specifier: workspace:*
         version: link:../../packages/application
-      '@repo/db':
-        specifier: workspace:*
-        version: link:../../packages/db
       '@repo/domain':
         specifier: workspace:*
         version: link:../../packages/domain

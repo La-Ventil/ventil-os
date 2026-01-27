@@ -3,18 +3,18 @@
 import { getTranslations } from 'next-intl/server';
 import { nanoid } from 'nanoid';
 import { registerUserAccount } from '@repo/application';
-import { SignupFormData, signupFormDataSchema } from '@repo/application/forms';
+import { SignupFormInput, signupFormDataSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
 export async function registerUser(
-  previousState: FormState<SignupFormData>,
+  previousState: FormState<SignupFormInput>,
   formData: FormData
-): Promise<FormState<SignupFormData>> {
+): Promise<FormState<SignupFormInput>> {
   const t = await getTranslations();
   const { success, data, error } = signupFormDataSchema.safeParse(formData);
-  const values = Object.fromEntries(formData) as unknown as SignupFormData;
+  const values = Object.fromEntries(formData) as unknown as SignupFormInput;
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
@@ -26,7 +26,7 @@ export async function registerUser(
       };
     }
 
-    const signupFormData: SignupFormData = data;
+    const signupFormData: SignupFormInput = data;
     const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
     const username = `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`;
     const result = await registerUserAccount({

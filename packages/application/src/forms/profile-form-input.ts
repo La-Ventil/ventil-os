@@ -6,4 +6,4 @@ export const profileFormDataSchema = zfd.formData({
   lastName: z.string().min(1, { message: 'validation.profile.lastNameRequired' }),
   educationLevel: z.string().min(1, { message: 'validation.profile.educationLevelRequired' })
 });
-export type ProfileFormData = z.infer<typeof profileFormDataSchema>;
+export type ProfileFormInput = z.infer<typeof profileFormDataSchema>;

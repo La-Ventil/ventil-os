@@ -19,4 +19,4 @@ export const signupFormDataSchema = zfd
     path: ['passwordConfirmation']
   });
 
-export type SignupFormData = z.infer<typeof signupFormDataSchema>;
+export type SignupFormInput = z.infer<typeof signupFormDataSchema>;

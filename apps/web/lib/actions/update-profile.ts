@@ -2,18 +2,18 @@
 
 import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
-import { ProfileFormData, profileFormDataSchema } from '@repo/application/forms';
+import { ProfileFormInput, profileFormDataSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
 export async function updateProfile(
-  previousState: FormState<ProfileFormData>,
+  previousState: FormState<ProfileFormInput>,
   formData: FormData
-): Promise<FormState<ProfileFormData>> {
+): Promise<FormState<ProfileFormInput>> {
   const t = await getTranslations();
   const { success, data, error } = profileFormDataSchema.safeParse(formData);
-  const values = Object.fromEntries(formData) as unknown as ProfileFormData;
+  const values = Object.fromEntries(formData) as unknown as ProfileFormInput;
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
@@ -27,7 +27,7 @@ export async function updateProfile(
 
     const userProfile = await getUserProfileFromSession();
 
-    const profileFormData: ProfileFormData = data;
+    const profileFormData: ProfileFormInput = data;
     await updateUserProfile(userProfile.id, {
       firstName: profileFormData.firstName,
       lastName: profileFormData.lastName,

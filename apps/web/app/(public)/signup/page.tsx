@@ -8,14 +8,14 @@ import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { SignupFormData } from '@repo/application/forms';
+import { SignupFormInput } from '@repo/application/forms';
 import SignupForm from '@repo/ui/forms/signup.form';
 import { useFormActionStateWithValues } from '@repo/ui/hooks';
 import { registerUser } from '../../../lib/actions/register-user';
 
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
-  const actionState = useFormActionStateWithValues<SignupFormData>(registerUser, {
+  const actionState = useFormActionStateWithValues<SignupFormInput>(registerUser, {
     message: '',
     fieldErrors: {},
     values: {

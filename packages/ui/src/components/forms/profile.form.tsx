@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { ProfileFormData } from '@repo/application/forms';
+import { ProfileFormInput } from '@repo/application/forms';
 import { UserProfile } from '@repo/view-models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
 import { FormAction } from '../../form-action-state';
@@ -16,14 +16,14 @@ import Link from '../link';
 
 export interface ProfileFormProps {
   profilePromise: Promise<UserProfile>;
-  handleSubmit: FormAction<ProfileFormData>;
+  handleSubmit: FormAction<ProfileFormInput>;
 }
 
 export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const profile = use(profilePromise);
-  const [formState, formAction, pending] = useFormActionStateWithValues<ProfileFormData>(handleSubmit, {
+  const [formState, formAction, pending] = useFormActionStateWithValues<ProfileFormInput>(handleSubmit, {
     message: '',
     fieldErrors: {},
     values: {
