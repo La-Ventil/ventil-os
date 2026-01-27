@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
-import { ProfileFormInput, profileFormDataSchema } from '@repo/application/forms';
+import { ProfileFormInput, profileFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -12,7 +12,7 @@ export async function updateProfile(
   formData: FormData
 ): Promise<FormState<ProfileFormInput>> {
   const t = await getTranslations();
-  const { success, data, error } = profileFormDataSchema.safeParse(formData);
+  const { success, data, error } = profileFormSchema.safeParse(formData);
   const values = Object.fromEntries(formData) as unknown as ProfileFormInput;
   try {
     if (!success) {

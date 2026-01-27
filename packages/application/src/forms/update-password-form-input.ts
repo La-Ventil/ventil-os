@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { passwordConfirmationSchema, passwordSchema } from './password';
 
-export const updatePasswordFormDataSchema = zfd
+export const updatePasswordFormSchema = zfd
   .formData({
     password: passwordSchema,
     passwordConfirmation: passwordConfirmationSchema
@@ -12,4 +12,4 @@ export const updatePasswordFormDataSchema = zfd
     path: ['passwordConfirmation']
   });
 
-export type UpdatePasswordFormInput = z.infer<typeof updatePasswordFormDataSchema>;
+export type UpdatePasswordFormInput = z.infer<typeof updatePasswordFormSchema>;

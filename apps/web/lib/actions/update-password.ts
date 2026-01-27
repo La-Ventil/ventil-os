@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
-import { UpdatePasswordFormInput, updatePasswordFormDataSchema } from '@repo/application/forms';
+import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
@@ -20,7 +20,7 @@ export async function updatePassword(
   formData: FormData
 ): Promise<UpdatePasswordActionState> {
   const t = await getTranslations();
-  const { success, data, error } = updatePasswordFormDataSchema.safeParse(formData);
+  const { success, data, error } = updatePasswordFormSchema.safeParse(formData);
 
   try {
     if (!success) {

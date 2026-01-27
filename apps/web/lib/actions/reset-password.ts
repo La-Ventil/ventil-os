@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import { nanoid } from 'nanoid';
 import { findUserForPasswordReset, setUserResetToken } from '@repo/application';
-import { ResetPasswordFormInput, resetPasswordFormDataSchema } from '@repo/application/forms';
+import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
@@ -13,7 +13,7 @@ export async function resetPassword(
   formData: FormData
 ): Promise<FormState<ResetPasswordFormInput>> {
   const t = await getTranslations();
-  const { success, data, error } = resetPasswordFormDataSchema.safeParse(formData);
+  const { success, data, error } = resetPasswordFormSchema.safeParse(formData);
 
   try {
     if (!success) {

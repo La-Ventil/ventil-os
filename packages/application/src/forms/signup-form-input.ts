@@ -3,7 +3,7 @@ import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { passwordConfirmationSchema, passwordSchema } from './password';
 
-export const signupFormDataSchema = zfd
+export const signupFormSchema = zfd
   .formData({
     firstName: z.string().min(1, { message: 'validation.signup.firstNameRequired' }),
     lastName: z.string().min(1, { message: 'validation.signup.lastNameRequired' }),
@@ -19,4 +19,4 @@ export const signupFormDataSchema = zfd
     path: ['passwordConfirmation']
   });
 
-export type SignupFormInput = z.infer<typeof signupFormDataSchema>;
+export type SignupFormInput = z.infer<typeof signupFormSchema>;
