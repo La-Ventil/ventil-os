@@ -2,6 +2,20 @@
   "home": {
     "messageBienvenue": "Bienvenue sur l’application de La-Ventil."
   },
+  "metadata": {
+    "root": {
+      "title": "La-Ventil {appName}",
+      "description": "La-Ventil est la plateforme du fab‑lab pour les membres, les machines et les open badges."
+    },
+    "public": {
+      "title": "La-Ventil — Accès",
+      "description": "Créez un compte ou connectez-vous pour accéder à votre espace membre."
+    },
+    "hub": {
+      "title": "La-Ventil — Espace membre",
+      "description": "Gérez votre profil, vos badges, vos machines et vos événements."
+    }
+  },
   "common": {
     "actions": {
       "back": "Retour"

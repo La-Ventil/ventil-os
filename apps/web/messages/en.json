@@ -5,6 +5,20 @@
   "home": {
     "messageBienvenue": "Welcome to the La-Ventil app."
   },
+  "metadata": {
+    "root": {
+      "title": "La-Ventil {appName}",
+      "description": "La-Ventil is the community platform for members, machines, and open badges."
+    },
+    "public": {
+      "title": "La-Ventil — Access",
+      "description": "Create an account or sign in to access your member space."
+    },
+    "hub": {
+      "title": "La-Ventil — Member Space",
+      "description": "Manage your profile, badges, machines, and events."
+    }
+  },
   "common": {
     "actions": {
       "back": "Back"
