@@ -6,10 +6,15 @@
   "exports": {
     ".": "./src/index.ts",
     "./mocks": "./src/__mocks__/index.ts",
+    "./forms": "./src/forms/index.ts",
+    "./forms/*": "./src/forms/*.ts",
     "./*": "./src/*.ts"
   },
   "dependencies": {
     "@repo/db": "workspace:*",
-    "@repo/view-models": "workspace:*"
+    "@repo/domain": "workspace:*",
+    "@repo/view-models": "workspace:*",
+    "zod": "^4.1.12",
+    "zod-form-data": "^3.0.1"
   }
 }

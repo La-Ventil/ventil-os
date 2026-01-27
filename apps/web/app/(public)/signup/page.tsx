@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { SignupFormData } from '@repo/domain/models/forms/signup-form-data';
+import { SignupFormData } from '@repo/application/forms/signup-form-data';
 import SignupForm from '@repo/ui/forms/signup.form';
 import { useFormActionStateWithValues } from '@repo/ui/hooks';
 import { registerUser } from '../../../lib/actions/register-user';

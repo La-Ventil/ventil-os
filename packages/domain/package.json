@@ -5,9 +5,5 @@
   "private": true,
   "exports": {
     "./*": "./*.ts"
-  },
-  "dependencies": {
-    "zod": "^4.1.12",
-    "zod-form-data": "^3.0.1"
   }
 }

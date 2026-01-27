@@ -3,11 +3,11 @@
 import { getTranslations } from 'next-intl/server';
 import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import { nanoid } from 'nanoid';
-import { prismaClient } from '@repo/db';
+import { findUserForPasswordReset, setUserResetToken } from '@repo/application';
 import {
   ResetPasswordFormData,
   resetPasswordFormDataSchema
-} from '@repo/domain/models/forms/reset-password-form-data';
+} from '@repo/application/forms/reset-password-form-data';
 import { FormState } from '@repo/ui/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
@@ -31,9 +31,7 @@ export async function resetPassword(
     }
 
     const { email } = data;
-    const user = await prismaClient.user.findUnique({
-      where: { email }
-    });
+    const user = await findUserForPasswordReset(email);
 
     const okMessage = t('resetPassword.success');
 
@@ -44,10 +42,7 @@ export async function resetPassword(
     const resetToken = nanoid();
     const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1h
 
-    await prismaClient.user.update({
-      where: { id: user.id },
-      data: { resetToken, resetTokenExpiry }
-    });
+    await setUserResetToken(user.id, resetToken, resetTokenExpiry);
 
     const emailAPI = new TransactionalEmailsApi();
     emailAPI.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY!);

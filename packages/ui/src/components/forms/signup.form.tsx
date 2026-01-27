@@ -8,7 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { SignupFormData } from '@repo/domain/models/forms/signup-form-data';
+import { SignupFormData } from '@repo/application/forms/signup-form-data';
 import EducationLevelSelect from '@repo/ui/inputs/education-level-select';
 import ProfileRadioGroup from '@repo/ui/inputs/profile-radio-group';
 import { FormActionStateTuple } from '../../form-action-state';

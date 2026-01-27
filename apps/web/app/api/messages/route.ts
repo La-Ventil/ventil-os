@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { type NextRequest } from 'next/server';
-import { prismaClient } from '@repo/db';
+import { createMessage } from '@repo/application';
 
 export async function POST(request: NextRequest) {
   const headersList = headers();
@@ -9,10 +9,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
   console.log(body);
-  console.log(prismaClient);
-  const createdMessage = await prismaClient.message.create({
-    data: { contenu: 'hello world' }
-  });
+  const createdMessage = await createMessage('hello world');
 
   return new Response(`Created message id ${createdMessage.id}`, {
     status: 200,

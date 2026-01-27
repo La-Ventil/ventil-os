@@ -1,11 +1,11 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { prismaClient } from '@repo/db';
+import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
 import {
   UpdatePasswordFormData,
   updatePasswordFormDataSchema
-} from '@repo/domain/models/forms/update-password-form-data';
+} from '@repo/application/forms/update-password-form-data';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
@@ -36,12 +36,7 @@ export async function updatePassword(
 
     const updatePasswordFormData: UpdatePasswordFormData = data;
 
-    const user = await prismaClient.user.findFirst({
-      where: {
-        resetToken: { equals: previousState.token },
-        resetTokenExpiry: { gte: new Date() }
-      }
-    });
+    const user = await findUserByValidResetToken(previousState.token);
 
     if (!user) {
       return {
@@ -57,15 +52,10 @@ export async function updatePassword(
 
     const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.password);
 
-    await prismaClient.user.update({
-      where: { id: user.id },
-      data: {
-        resetToken: null,
-        resetTokenExpiry: null,
-        password: hashedSecret,
-        salt,
-        iterations
-      }
+    await updateUserPassword(user.id, {
+      password: hashedSecret,
+      salt,
+      iterations
     });
 
     return {

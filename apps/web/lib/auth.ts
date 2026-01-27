@@ -5,10 +5,10 @@ import { getServerSession as getNextAuthServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { type PrismaClient, Prisma } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { prismaClient } from '@repo/db';
-import { getUserProfileByEmail } from '@repo/application';
+import { getUserCredentialsByEmail, getUserProfileByEmail } from '@repo/application';
 import type { UserProfile } from '@repo/view-models/user-profile';
 import { verifySecret } from './security';
 
@@ -62,23 +62,7 @@ function authorize(prisma: PrismaClient) {
     if (typeof credentials.password !== 'string') {
       throw new Error('"password" is required in credentials');
     }
-    const maybeUser = await prisma.user.findFirst({
-      where: { email: credentials.email },
-      select: {
-        id: true,
-        email: true,
-        password: true,
-        salt: true,
-        iterations: true,
-        profile: true,
-        username: true,
-        educationLevel: true,
-        pedagogicalAdmin: true,
-        globalAdmin: true,
-        lastName: true,
-        firstName: true
-      }
-    });
+    const maybeUser = await getUserCredentialsByEmail(credentials.email);
     if (!maybeUser?.password) return null;
     // verify the input password with stored hash
     const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);

@@ -2,9 +2,8 @@
 
 import { getTranslations } from 'next-intl/server';
 import { nanoid } from 'nanoid';
-import { prismaClient, Prisma, Profile, ConsentType, StudentProfile, ExternalProfile } from '@repo/db';
-import { SignupFormData, signupFormDataSchema } from '@repo/domain/models/forms/signup-form-data';
-import { ProfileType } from '@repo/domain/profile-type';
+import { registerUserAccount } from '@repo/application';
+import { SignupFormData, signupFormDataSchema } from '@repo/application/forms/signup-form-data';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -29,68 +28,21 @@ export async function registerUser(
 
     const signupFormData: SignupFormData = data;
     const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
-    let profile: Profile = Profile.student;
-    let studentProfile: StudentProfile | null = null;
-    let externalProfile: ExternalProfile | null = null;
-
-    switch (signupFormData.profile) {
-      case ProfileType.Member:
-        profile = Profile.student;
-        studentProfile = StudentProfile.member;
-        break;
-      case ProfileType.Alumni:
-        profile = Profile.student;
-        studentProfile = StudentProfile.alumni;
-        break;
-      case ProfileType.Teacher:
-        profile = Profile.teacher;
-        break;
-      case ProfileType.Contributor:
-        profile = Profile.external;
-        externalProfile = ExternalProfile.contributor;
-        break;
-      case ProfileType.Visitor:
-        profile = Profile.external;
-        externalProfile = ExternalProfile.visitor;
-        break;
-      default:
-        profile = Profile.student;
-        studentProfile = StudentProfile.visitor;
-    }
-
-    let userCreateInput: Prisma.UserCreateInput = {
-      name: signupFormData.lastName,
+    const username = `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`;
+    const result = await registerUserAccount({
       email: signupFormData.email,
-      username: `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`,
+      username,
       firstName: signupFormData.firstName,
       lastName: signupFormData.lastName,
       educationLevel: signupFormData.educationLevel,
-      password: hashedSecret,
+      profileType: signupFormData.profile,
+      hashedSecret,
       salt,
       iterations,
-      profile,
-      studentProfile,
-      externalProfile,
-      consents: {
-        create: {
-          accepted: signupFormData.terms === 'on',
-          acceptedAt: new Date(),
-          type: ConsentType.terms
-        }
-      }
-    };
-    await prismaClient.user.create({
-      data: userCreateInput
+      termsAccepted: signupFormData.terms === 'on'
     });
 
-    return {
-      values,
-      message: t('signup.success'),
-      isValid: true,
-      fieldErrors: {}
-    };
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+    if (!result.ok) {
       const fieldErrors = {
         email: [
           t('validation.emailAlreadyUsed', {
@@ -107,6 +59,13 @@ export async function registerUser(
       };
     }
 
+    return {
+      values,
+      message: t('signup.success'),
+      isValid: true,
+      fieldErrors: {}
+    };
+  } catch (e) {
     console.error(e);
     return {
       message: t('signup.error'),

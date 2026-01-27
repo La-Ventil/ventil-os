@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { ResetPasswordFormData } from '@repo/domain/models/forms/reset-password-form-data';
+import { ResetPasswordFormData } from '@repo/application/forms/reset-password-form-data';
 import { FormActionState } from '../../form-action-state';
 import { useFormActionStateWithValues } from '../../hooks';
 
