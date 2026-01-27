@@ -1,5 +1,5 @@
 export * from './email';
-export * from './login-form-data';
+export * from './login-form-input';
 export * from './password';
 export * from './profile-form-input';
 export * from './reset-password-form-input';
