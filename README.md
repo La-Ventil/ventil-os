@@ -80,7 +80,9 @@ apps/
 
 packages/
   ui/         → bibliothèque de composants React (MUI + Emotion)
-  domain/     → modèles métier et schémas de formulaires
+  domain/     → modèles métier (types, enums, règles pures)
+  view-models/→ DTOs orientés UI
+  application/→ use-cases + schemas de formulaires + mappers
   db/         → Prisma (schéma, migrations, seed)
   logger/     → utilitaires de logs
   eslint-config/, typescript-config/ → configurations partagées
@@ -88,6 +90,19 @@ packages/
 
 💡 Pour l’intégration front :  
 se concentrer sur `apps/web` (pages, layouts) et `packages/ui` (thème + composants).
+
+---
+
+## 🧭 Couches & data flow
+
+**Couches**
+- **Domain** : types métier stables, pas de dépendance DB/UI.
+- **Application** : use-cases, validation (schemas), mappers vers view-models.
+- **DB** : accès données (Prisma, repositories).
+- **UI** : composants + pages Next.js.
+
+**Flux recommandé**
+UI → application → db → application (mappers) → view-models → UI
 
 ---
 
