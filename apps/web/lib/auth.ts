@@ -6,8 +6,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { redirect } from 'next/navigation';
-import { prismaClient } from '@repo/db';
 import { getUserCredentialsByEmail, getUserProfileByEmail } from '@repo/application';
+import { prismaClient } from '@repo/application/prisma';
 import type { UserProfile } from '@repo/view-models/user-profile';
 import { verifySecret } from './security';
 

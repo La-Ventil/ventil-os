@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./mocks": "./src/__mocks__/index.ts",
@@ -16,5 +19,9 @@
     "@repo/view-models": "workspace:*",
     "zod": "^4.1.12",
     "zod-form-data": "^3.0.1"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "5.9.3"
   }
 }
