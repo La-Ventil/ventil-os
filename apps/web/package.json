@@ -7,7 +7,8 @@
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --max-warnings 0",
+    "lint": "eslint . --max-warnings 0",
+    "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
     "test": "playwright test",
     "prettier": "prettier . --write"
@@ -46,6 +47,7 @@
     "@types/react": "19.2.5",
     "@types/react-dom": "19.2.3",
     "baseline-browser-mapping": "^2.9.14",
+    "dotenv": "^16.5.0",
     "eslint": "^9.36.0",
     "eslint-config-next": "15.0.0-rc.0",
     "prisma": "^5.16.1",

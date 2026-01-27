@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
-import { ProfileFormData, profileFormDataSchema } from '@repo/application/forms/profile-form-data';
+import { ProfileFormData, profileFormDataSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';

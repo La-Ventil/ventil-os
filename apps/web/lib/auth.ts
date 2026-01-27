@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import type { NextAuthOptions } from 'next-auth';
+import type { NextAuthOptions, RequestInternal } from 'next-auth';
 import { getServerSession as getNextAuthServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
 function authorize(prisma: PrismaClient) {
   return async (
     credentials: Partial<Record<'email' | 'password', unknown>> | undefined,
-    req
+    _req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
   ): Promise<UserProfile | null> => {
     console.log('credentials', credentials);
     if (!credentials) {

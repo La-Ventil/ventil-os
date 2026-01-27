@@ -1,5 +1,5 @@
 import Image, { type ImageProps } from "next/image";
-import { BottomNavigation } from "@repo/ui/bottomNavigation";
+import BottomNavigation from "@repo/ui/bottom-navigation";
 import styles from "./page.module.css";
 
 type Props = Omit<ImageProps, "src"> & {
@@ -63,9 +63,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <BottomNavigation appName="docs" className={styles.secondary}>
-          Open alert
-        </BottomNavigation>
+        <BottomNavigation />
       </main>
       <footer className={styles.footer}>
         <a

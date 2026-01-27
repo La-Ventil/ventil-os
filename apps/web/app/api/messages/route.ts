@@ -3,7 +3,7 @@ import { type NextRequest } from 'next/server';
 import { createMessage } from '@repo/application';
 
 export async function POST(request: NextRequest) {
-  const headersList = headers();
+  const headersList = await headers();
   const referer = headersList.get('referer') || '';
   console.log(referer);
 

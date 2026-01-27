@@ -3,7 +3,7 @@
 import { getTranslations } from 'next-intl/server';
 import { nanoid } from 'nanoid';
 import { registerUserAccount } from '@repo/application';
-import { SignupFormData, signupFormDataSchema } from '@repo/application/forms/signup-form-data';
+import { SignupFormData, signupFormDataSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';

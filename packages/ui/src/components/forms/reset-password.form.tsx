@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { ResetPasswordFormData } from '@repo/application/forms/reset-password-form-data';
+import { ResetPasswordFormData } from '@repo/application/forms';
 import { FormActionState } from '../../form-action-state';
 import { useFormActionStateWithValues } from '../../hooks';
 
@@ -18,7 +18,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordForm) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [formState, formAction, pending] = useFormActionStateWithValues<ResetPasswordFormData>(handleSubmit, {
-    message: undefined,
+    message: '',
     fieldErrors: {},
     values: {
       email: ''

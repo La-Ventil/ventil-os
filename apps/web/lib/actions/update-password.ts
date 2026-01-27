@@ -5,12 +5,16 @@ import { findUserByValidResetToken, updateUserPassword } from '@repo/application
 import {
   UpdatePasswordFormData,
   updatePasswordFormDataSchema
-} from '@repo/application/forms/update-password-form-data';
+} from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
-export type UpdatePasswordActionState = FormState<UpdatePasswordFormData> & {
+export type UpdatePasswordActionValues = UpdatePasswordFormData & {
+  email?: string;
+};
+
+export type UpdatePasswordActionState = FormState<UpdatePasswordActionValues> & {
   token: string;
 };
 
@@ -24,7 +28,7 @@ export async function updatePassword(
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      const values = Object.fromEntries(formData) as unknown as UpdatePasswordFormData;
+      const values = Object.fromEntries(formData) as unknown as UpdatePasswordActionValues;
       return {
         token: previousState.token,
         message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),

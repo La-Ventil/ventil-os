@@ -16,9 +16,8 @@ export default function LoginForm() {
   const tCommon = useTranslations('common');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [formState, setFormState] = useState({
-    message: '',
-    isValid: undefined
+  const [formState, setFormState] = useState<{ message: string; isValid?: boolean }>({
+    message: ''
   });
   const router = useRouter();
 

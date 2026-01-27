@@ -32,10 +32,10 @@ export default function OpenBadgeModal({
   open,
   onClose
 }: OpenBadgeModalProps): JSX.Element | null {
+  const t = useTranslations('pages.hub.openBadges');
   if (!openBadge) {
     return null;
   }
-  const t = useTranslations('pages.hub.openBadges');
   const { levels } = openBadge;
 
   return (

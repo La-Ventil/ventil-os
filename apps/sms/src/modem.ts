@@ -1,78 +1,87 @@
-import {ReadlineParser, SerialPort} from "serialport";
+import { ReadlineParser, SerialPort } from 'serialport';
 
 export class Modem {
-    private serialPort: SerialPort;
-    constructor(serialPort: SerialPort) {
-        this.serialPort = serialPort;
-    }
+  private serialPort: SerialPort;
 
-    connect() {
-        return new Promise((resolve, reject) => {
-            this.serialPort.on('open', ()   =>  resolve());
-            this.serialPort.on('error', e => reject(e));
+  constructor(serialPort: SerialPort) {
+    this.serialPort = serialPort;
+  }
+
+  connect() {
+    return new Promise<void>((resolve, reject) => {
+      this.serialPort.on('open', () => resolve());
+      this.serialPort.on('error', (error) => reject(error));
+    });
+  }
+
+  disconnect() {
+    return new Promise<void>((resolve, reject) => {
+      this.serialPort.close((error) => (error ? reject(error) : resolve()));
+    });
+  }
+
+  at(
+    command: string,
+    options?: { lineEnd?: string; readTimeoutMs?: number; readUntil?: string }
+  ) {
+    const lineEnd = options?.lineEnd ?? '\r';
+    const readUntil = options?.readUntil;
+    const readTimeoutMs = options?.readTimeoutMs ?? 1000;
+
+    return new Promise<string>((resolve, reject) => {
+      const parser = this.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+      const result: string[] = [];
+
+      const cleanup = () => {
+        parser.removeListener('data', onData);
+        parser.removeListener('error', onError);
+        this.serialPort.unpipe(parser);
+      };
+
+      const onError = (error: unknown) => {
+        cleanup();
+        reject(error);
+      };
+
+      const onData = (chunk: string) => {
+        result.push(chunk);
+        const trimmed = chunk.trim();
+        if (readUntil && trimmed === readUntil) {
+          cleanup();
+          resolve(result.join('\n'));
+          return;
+        }
+        if (!readUntil && (trimmed === 'OK' || trimmed === 'ERROR')) {
+          cleanup();
+          resolve(result.join('\n'));
+        }
+      };
+
+      parser.on('data', onData);
+      parser.on('error', onError);
+
+      this.serialPort.write(`${command}${lineEnd}`, (error) => {
+        if (error) {
+          cleanup();
+          reject(error);
+          return;
+        }
+
+        this.serialPort.drain((drainError) => {
+          if (drainError) {
+            cleanup();
+            reject(drainError);
+            return;
+          }
+
+          if (!readUntil) {
+            setTimeout(() => {
+              cleanup();
+              resolve(result.join('\n'));
+            }, readTimeoutMs);
+          }
         });
-    }
-
-    disconnect() {
-        return new Promise((resolve, reject) => {
-            this.serialPort.close(e => e ? reject(e) : resolve());
-        });
-
-    }
-
-    at(command: string) {
-        const parser = this.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' }))
-        parser.on('data', console.log)
-        return new Promise((resolve, reject) => {
-            // we need this to measure time since last read to stop data waiting
-            // when there are no more data
-            let time = null;
-
-            // read output
-            let result = [];
-            const reader = new ReadlineParser({ delimiter: '\r\n' });
-
-            reader.on('data', chunk => {
-                time = process.hrtime();
-                result.push(chunk);
-
-                // need to stop reading data
-                if (read_until && chunk.trim() === read_until) {
-                    this.port.unpipe();
-                    resolve(result.join('\n'));
-                }
-            });
-
-            this.port.pipe(reader);
-
-            // send AT command
-            this.port.write(`${command}${this.options.line_end}`, err => {
-                if (err) return void reject(err);
-
-                // wait until all data is transmitted to the serial port
-                this.port.drain(err => {
-                    if (!read_until) {
-                        // stop if no data received from port for a long time
-                        const interval = setInterval(
-                            () => {
-                                // no data read yet
-                                if (time === null) return;
-
-                                // calculate how much time lost sinse last data read
-                                const diff = process.hrtime(time);
-                                const diff_ms = diff[0] * 1000 + Math.round(diff[1] / 1000000);
-
-                                // probably no more data
-                                if (diff_ms > this.options.read_time) {
-                                    clearInterval(interval);
-                                    this.port.unpipe();
-                                    resolve(result.join('\n'));
-                                }
-                            },
-                            this.options.read_time
-                        );
-                    }
-                });
-            });
-    }
+      });
+    });
+  }
 }

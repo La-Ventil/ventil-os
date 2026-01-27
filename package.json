@@ -6,7 +6,9 @@
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "lint": "pnpm -r lint",
+    "lint:dev": "pnpm -r lint:dev",
+    "check-types": "pnpm -r check-types",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "prettier": "turbo run prettier"
@@ -15,7 +17,7 @@
     "@playwright/test": "^1.45.1",
     "@types/node": "22.15.3",
     "prettier": "^3.2.5",
-    "turbo": "^2.5.8",
+    "turbo": "^2.7.6",
     "typescript": "5.9.3"
   },
   "engines": {

@@ -1,4 +1,5 @@
 import { createTheme, type PaletteColor } from '@mui/material/styles';
+import './mui';
 
 export const ThemeSection = {
   FabLab: 'fabLab',

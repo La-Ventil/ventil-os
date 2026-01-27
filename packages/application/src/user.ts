@@ -1,4 +1,4 @@
-import { ConsentType, ExternalProfile, Prisma, Profile, StudentProfile, userRepository } from '@repo/db';
+import { ConsentType, ExternalProfile, Profile, StudentProfile, userRepository } from '@repo/db';
 import type { UserCredentialsSchema, UserPasswordResetSchema } from '@repo/db/schemas';
 import { ProfileType } from '@repo/domain/profile-type';
 import type { UserProfile } from '@repo/view-models/user-profile';
@@ -29,6 +29,14 @@ export type RegisterUserAccountInput = {
 export type RegisterUserAccountResult =
   | { ok: true }
   | { ok: false; reason: 'email-already-used' };
+
+const isUniqueConstraintError = (error: unknown): error is { code: string } => {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  return 'code' in error && (error as { code?: string }).code === 'P2002';
+};
 
 const resolveProfile = (profileType: string) => {
   let profile: Profile = Profile.student;
@@ -93,7 +101,7 @@ export const registerUserAccount = async (
 
     return { ok: true };
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+    if (isUniqueConstraintError(error)) {
       return { ok: false, reason: 'email-already-used' };
     }
 

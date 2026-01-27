@@ -1,3 +1,3 @@
-export const log = (str: any) => {
-  console.log("logger: " + str);
+export const log = (value: unknown) => {
+  console.log(`logger: ${String(value)}`);
 };

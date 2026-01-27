@@ -63,4 +63,4 @@ export const renderPanels = <T extends string>(config: {
     return panel ? createElement(PanelKey, { key: value }, panel) : null;
   });
 
-const PanelKey = ({ children }: { children: ReactNode }) => children;
+const PanelKey = ({ children }: { children?: ReactNode }) => children;

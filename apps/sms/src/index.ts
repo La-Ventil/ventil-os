@@ -13,7 +13,7 @@ import { SerialPort } from "serialport";
 
 config();
 
-export const serialPort = new SerialPort({
+export const serialPort: SerialPort = new SerialPort({
   path: process.env.MODEM_SERIAL_PORT_PATH || "/dev/ttyUSB0",
   baudRate: Number(process.env.MODEM_SERIAL_PORT_BAUD_RATE) || 9600,
 });

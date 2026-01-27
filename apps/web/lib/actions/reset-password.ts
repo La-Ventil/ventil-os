@@ -7,7 +7,7 @@ import { findUserForPasswordReset, setUserResetToken } from '@repo/application';
 import {
   ResetPasswordFormData,
   resetPasswordFormDataSchema
-} from '@repo/application/forms/reset-password-form-data';
+} from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 

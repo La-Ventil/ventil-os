@@ -22,7 +22,7 @@ export default function Page(): JSX.Element {
   const { token } = useParams<{ token: string }>();
   const initialState: UpdatePasswordActionState = {
     token,
-    message: undefined,
+    message: '',
     fieldErrors: {},
     values: {
       email: '',
@@ -35,10 +35,10 @@ export default function Page(): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    if (formState?.isValid) {
+    if (formState?.isValid && formState.values.email) {
       signInAndRedirect(router)(formState.values.email, formState.values.password);
     }
-  }, [formState]);
+  }, [formState, router]);
 
   return (
     <Box>

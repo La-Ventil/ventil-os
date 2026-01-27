@@ -1,11 +1,4 @@
-import {
-  PrismaClient,
-  Prisma,
-  Profile,
-  ConsentType,
-  StudentProfile,
-  ExternalProfile
-} from '@prisma/client';
+import { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile } from '@prisma/client';
 import { EventRepository } from './event.repository';
 import { MessageRepository } from './message.repository';
 import { MachineRepository } from './machine.repository';
@@ -26,4 +19,4 @@ export const messageRepository = new MessageRepository(prismaClient);
 export const machineRepository = new MachineRepository(prismaClient);
 export const openBadgeRepository = new OpenBadgeRepository(prismaClient);
 
-export { PrismaClient, Prisma, Profile, ConsentType, StudentProfile, ExternalProfile };
+export { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile };

@@ -1,5 +1,10 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://v2-7-6.turborepo.dev/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "MODEM_SERIAL_PORT_PATH",
+    "MODEM_SERIAL_PORT_BAUD_RATE"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

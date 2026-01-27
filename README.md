@@ -226,6 +226,8 @@ Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/la
 | `pnpm dev --filter web`           | Lance l’application web |
 | `pnpm db:deploy --filter @repo/db` | Applique les migrations |
 | `pnpm lint --filter web`          | Vérifie la qualité du code |
+| `pnpm lint:dev`                   | Lint du monorepo (peut prendre ~2–3 min) |
+| `pnpm -C apps/web lint:dev`       | Lint ciblé (ex: uniquement web) |
 | `pnpm check-types --filter web`   | Vérifie les types TypeScript |
 | `pnpm test --filter web`          | Lance les tests Playwright |
 | `docker compose up -d`            | Lance la base de données |
@@ -260,6 +262,11 @@ Avant toute contribution :
 ```bash
 pnpm lint
 pnpm --filter web check-types
+```
+
+Astuce (timeout) :
+```bash
+timeout 5m pnpm lint:dev
 ```
 
 ---
