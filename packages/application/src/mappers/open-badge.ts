@@ -1,20 +1,7 @@
-import type {
-  OpenBadgeLevelSchema,
-  OpenBadgeProgressSchema,
-  OpenBadgeSchema
-} from '@repo/db/schemas';
-import type {
-  OpenBadgeLevelViewModel,
-  OpenBadgeViewModel
-} from '@repo/view-models/open-badge';
-
-export const mapOpenBadgeLevelToViewModel = (
-  level: OpenBadgeLevelSchema
-): OpenBadgeLevelViewModel => ({
-  level: level.level,
-  title: level.title ?? `Niveau ${level.level}`,
-  description: level.description ?? ''
-});
+import type { OpenBadgeProgressSchema, OpenBadgeSchema } from '@repo/db/schemas';
+import { BadgeLevel } from '@repo/domain/badge-level';
+import { Level } from '@repo/domain/level';
+import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 
 export const mapOpenBadgeToViewModel = (
   badge: OpenBadgeSchema
@@ -24,7 +11,9 @@ export const mapOpenBadgeToViewModel = (
   name: badge.name,
   coverImage: badge.coverImage ?? undefined,
   description: badge.description ?? '',
-  levels: badge.levels.map(mapOpenBadgeLevelToViewModel),
+  levels: badge.levels.map((level) =>
+    BadgeLevel.from(level.level, level.title, level.description)
+  ),
   activeLevel: 0
 });
 
@@ -32,5 +21,5 @@ export const mapOpenBadgeProgressToViewModel = (
   progress: OpenBadgeProgressSchema
 ): OpenBadgeViewModel => ({
   ...mapOpenBadgeToViewModel(progress.openBadge),
-  activeLevel: progress.highestLevel?.level ?? 0
+  activeLevel: progress.highestLevel ? Level.from(progress.highestLevel.level) : 0
 });

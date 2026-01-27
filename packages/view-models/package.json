@@ -5,5 +5,8 @@
   "private": true,
   "exports": {
     "./*": "./*.ts"
+  },
+  "dependencies": {
+    "@repo/domain": "workspace:*"
   }
 }

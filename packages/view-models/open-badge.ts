@@ -1,8 +1,7 @@
-export type OpenBadgeLevelViewModel = {
-  level: number;
-  title: string;
-  description: string;
-};
+import type { BadgeLevel } from '@repo/domain/badge-level';
+import type { Level } from '@repo/domain/level';
+
+export type OpenBadgeLevelViewModel = BadgeLevel;
 
 export type OpenBadgeViewModel = {
   id: string;
@@ -11,5 +10,5 @@ export type OpenBadgeViewModel = {
   coverImage?: string;
   description: string;
   levels: OpenBadgeLevelViewModel[];
-  activeLevel: number;
+  activeLevel: Level | 0;
 };
