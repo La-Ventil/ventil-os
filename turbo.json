@@ -3,7 +3,14 @@
   "globalEnv": [
     "NODE_ENV",
     "MODEM_SERIAL_PORT_PATH",
-    "MODEM_SERIAL_PORT_BAUD_RATE"
+    "MODEM_SERIAL_PORT_BAUD_RATE",
+    "APP_NAME",
+    "BASE_URL",
+    "BREVO_API_KEY",
+    "NEXTAUTH_SECRET",
+    "SECRET_PEPPER",
+    "CI",
+    "PORT"
   ],
   "tasks": {
     "build": {

@@ -8,21 +8,21 @@
 //   log(`api running on ${port}`);
 // });
 
-import { config } from "dotenv";
-import { SerialPort } from "serialport";
+import { config } from 'dotenv';
+import { SerialPort } from 'serialport';
 
 config();
 
 export const serialPort: SerialPort = new SerialPort({
-  path: process.env.MODEM_SERIAL_PORT_PATH || "/dev/ttyUSB0",
-  baudRate: Number(process.env.MODEM_SERIAL_PORT_BAUD_RATE) || 9600,
+  path: process.env.MODEM_SERIAL_PORT_PATH || '/dev/ttyUSB0',
+  baudRate: Number(process.env.MODEM_SERIAL_PORT_BAUD_RATE) || 9600
 });
 
 const commands = [
   // 'ATE1',
   // 'AT',
   // 'AT',
-  "AT+CCID",
+  'AT+CCID'
   // 'AT',
   // 'AT+CCID',
   // 'AT',
@@ -33,9 +33,9 @@ commands.forEach((command) => {
 });
 
 let commandIndex = 0;
-serialPort.on("data", (data) => {
-  // console.log(commandIndex);
-  // console.log(commands[commandIndex]);
+serialPort.on('data', (data) => {
+  console.log(commandIndex);
+  console.log(commands[commandIndex]);
   console.log(String(data));
   // console.log(JSON.stringify(data));
   handleMessageReception(String(data));
@@ -50,7 +50,7 @@ serialPort.on("data", (data) => {
 //     return String(modemData).startsWith("+CMT:")
 // }
 
-const isReceivedMessageCommand = (data: string) => data.startsWith("+CMT");
+const isReceivedMessageCommand = (data: string) => data.startsWith('+CMT');
 const handleMessageReception = (data: string) => {
   if (!isReceivedMessageCommand(data)) {
     return;
