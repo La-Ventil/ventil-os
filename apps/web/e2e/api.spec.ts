@@ -8,7 +8,7 @@ test.afterAll(async () => {
   console.log('After tests');
 });
 
-test('my test', async ({ page }) => {
+test('my test', async () => {
   // ...
 });
 

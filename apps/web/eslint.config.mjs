@@ -1,3 +1,8 @@
 import { nextJsConfig } from '@repo/eslint-config/next-js';
 
-export default nextJsConfig;
+export default [
+  {
+    ignores: ['**/.next/**', 'next-env.d.ts', '**/playwright-report/**']
+  },
+  ...nextJsConfig
+];

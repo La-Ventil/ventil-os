@@ -1,11 +1,10 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import type { NextAuthOptions, RequestInternal } from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
 import { getServerSession as getNextAuthServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import type { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { prismaClient } from '@repo/db';
 import { getUserCredentialsByEmail, getUserProfileByEmail } from '@repo/application';
@@ -25,7 +24,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email', placeholder: 'email@email.com' },
         password: { label: 'Mot de passe', type: 'password' }
       },
-      authorize: authorize(prismaClient)
+      authorize: authorize()
     })
   ],
   callbacks: {
@@ -45,10 +44,9 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET
 };
 
-function authorize(prisma: PrismaClient) {
+function authorize() {
   return async (
-    credentials: Partial<Record<'email' | 'password', unknown>> | undefined,
-    _req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
+    credentials: Partial<Record<'email' | 'password', unknown>> | undefined
   ): Promise<UserProfile | null> => {
     console.log('credentials', credentials);
     if (!credentials) {
@@ -91,9 +89,7 @@ export async function getServerSession(
   return getNextAuthServerSession(...args, authOptions);
 }
 
-export async function getUserProfileFromSession(
-  ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
-) {
+export async function getUserProfileFromSession() {
   const session = await getServerSession();
   if (!session?.user?.email) {
     redirect('/login');

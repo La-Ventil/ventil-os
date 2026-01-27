@@ -30,7 +30,7 @@ export default function Page(): JSX.Element {
     },
     isValid: undefined
   });
-  const [formState, formAction, pending] = actionState;
+  const [formState] = actionState;
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Page(): JSX.Element {
 
       signInAndRedirect();
     }
-  }, [formState]);
+  }, [formState, router]);
 
   return (
     <Box>

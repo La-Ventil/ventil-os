@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { getTranslations } from 'next-intl/server';
 import { DebugIcon } from '@repo/ui/icons/debug-icon';
@@ -22,24 +21,24 @@ export default async function Page(): Promise<ReactElement> {
     <>
       <SectionTitle icon={<DebugIcon color="secondary" />}>{t('title')}</SectionTitle>
       <Section className={styles.root}>
-          <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
-          <Typography variant="body1">{t('intro')}</Typography>
-          <Typography variant="body1">{t('contact')}</Typography>
+        <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        <Typography variant="body1">{t('intro')}</Typography>
+        <Typography variant="body1">{t('contact')}</Typography>
       </Section>
 
       <Section>
-          <div className={styles.illustration}>{t('illustrationPlaceholder')}</div>
-          <Typography variant="body1">{t('guidelines.title')}</Typography>
-          <ul className={styles.guidelineList}>
-            <li>{t('guidelines.items.subject')}</li>
-            <li>{t('guidelines.items.details')}</li>
-            <li>{t('guidelines.items.device')}</li>
-          </ul>
+        <div className={styles.illustration}>{t('illustrationPlaceholder')}</div>
+        <Typography variant="body1">{t('guidelines.title')}</Typography>
+        <ul className={styles.guidelineList}>
+          <li>{t('guidelines.items.subject')}</li>
+          <li>{t('guidelines.items.details')}</li>
+          <li>{t('guidelines.items.device')}</li>
+        </ul>
       </Section>
 
       <Section>
-          <SectionSubtitle>{t('session.title')}</SectionSubtitle>
-          <pre className={styles.sessionBlock}>{JSON.stringify(session, null, 2)}</pre>
+        <SectionSubtitle>{t('session.title')}</SectionSubtitle>
+        <pre className={styles.sessionBlock}>{JSON.stringify(session, null, 2)}</pre>
       </Section>
     </>
   );
