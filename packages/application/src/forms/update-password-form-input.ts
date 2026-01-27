@@ -12,4 +12,4 @@ export const updatePasswordFormDataSchema = zfd
     path: ['passwordConfirmation']
   });
 
-export type UpdatePasswordFormData = z.infer<typeof updatePasswordFormDataSchema>;
+export type UpdatePasswordFormInput = z.infer<typeof updatePasswordFormDataSchema>;

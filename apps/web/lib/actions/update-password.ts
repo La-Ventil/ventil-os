@@ -2,15 +2,12 @@
 
 import { getTranslations } from 'next-intl/server';
 import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
-import {
-  UpdatePasswordFormData,
-  updatePasswordFormDataSchema
-} from '@repo/application/forms';
+import { UpdatePasswordFormInput, updatePasswordFormDataSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { hashSecret } from '../security';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
-export type UpdatePasswordActionValues = UpdatePasswordFormData & {
+export type UpdatePasswordActionValues = UpdatePasswordFormInput & {
   email?: string;
 };
 
@@ -38,7 +35,7 @@ export async function updatePassword(
       };
     }
 
-    const updatePasswordFormData: UpdatePasswordFormData = data;
+    const updatePasswordFormData: UpdatePasswordFormInput = data;
 
     const user = await findUserByValidResetToken(previousState.token);
 

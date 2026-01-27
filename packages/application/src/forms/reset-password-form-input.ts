@@ -6,4 +6,4 @@ export const resetPasswordFormDataSchema = zfd.formData({
   email: emailSchema
 });
 
-export type ResetPasswordFormData = z.infer<typeof resetPasswordFormDataSchema>;
+export type ResetPasswordFormInput = z.infer<typeof resetPasswordFormDataSchema>;
