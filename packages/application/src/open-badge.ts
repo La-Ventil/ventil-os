@@ -1,7 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
-import type { OpenBadgeProgressSchema } from '@repo/db/schemas';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import { mapOpenBadgeToViewModel } from './mappers/open-badge';
+import { mapOpenBadgeProgressToViewModel, mapOpenBadgeToViewModel } from './mappers/open-badge';
 
 export const listOpenBadges = async (): Promise<OpenBadgeViewModel[]> => {
   const badges = await openBadgeRepository.listOpenBadges();
@@ -19,10 +18,3 @@ export const listOpenBadgesForUser = async (
   const progresses = await openBadgeRepository.listOpenBadgesForUser(userId);
   return progresses.map(mapOpenBadgeProgressToViewModel);
 };
-
-const mapOpenBadgeProgressToViewModel = (
-  progress: OpenBadgeProgressSchema
-): OpenBadgeViewModel => ({
-  ...mapOpenBadgeToViewModel(progress.openBadge),
-  activeLevel: progress.highestLevel?.level ?? 0
-});
