@@ -161,7 +161,34 @@
         "users": {
           "title": "User administration",
           "subtitle": "Information",
-          "intro": "Manage user accounts and access."
+          "intro": "Manage user accounts and access.",
+          "columns": {
+            "firstName": "first name",
+            "lastName": "last name",
+            "username": "username",
+            "email": "email",
+            "profile": "profile",
+            "admin": "administrator",
+            "machines": "machines used",
+            "events": "events",
+            "openBadges": "open badges",
+            "assign": "assign"
+          },
+          "adminStatus": {
+            "none": "no",
+            "global": "global",
+            "pedagogical": "pedagogical"
+          },
+          "assignModal": {
+            "title": "Assign an open badge",
+            "subtitle": "Choose the level and the user concerned.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Assigned level",
+            "userLabel": "User",
+            "cancel": "Back",
+            "confirm": "Assign",
+            "illustrationPlaceholder": "Illustration in progress"
+          }
         }
       },
       "profile": {

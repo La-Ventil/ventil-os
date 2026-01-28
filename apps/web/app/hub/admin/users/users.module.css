@@ -1,0 +1,16 @@
+.tableSection {
+  padding-top: 0;
+}
+
+.table {
+  width: 100%;
+}
+
+.table :global(.MuiTableCell-head) {
+  font-weight: 600;
+  text-transform: none;
+}
+
+.table :global(.MuiTableRow-root:hover) {
+  background-color: rgba(0, 0, 0, 0.02);
+}

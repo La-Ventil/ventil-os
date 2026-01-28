@@ -1,5 +1,6 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 import type { UserCredentialsSchema } from './schemas/user-credentials';
+import type { UserAdminSchema } from './schemas/user-admin';
 import type { UserPasswordResetSchema } from './schemas/user-password-reset';
 import type { UserProfileSchema } from './schemas/user-profile';
 
@@ -47,6 +48,32 @@ export class UserRepository {
     });
 
     return user ? (user as UserCredentialsSchema) : null;
+  }
+
+  async listUsersForAdmin(): Promise<UserAdminSchema[]> {
+    const users = await this.prisma.user.findMany({
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        profile: true,
+        studentProfile: true,
+        externalProfile: true,
+        pedagogicalAdmin: true,
+        globalAdmin: true,
+        _count: {
+          select: {
+            eventRegistrations: true,
+            openBadgeProgresses: true
+          }
+        }
+      }
+    });
+
+    return users as UserAdminSchema[];
   }
 
   async createUser(data: Prisma.UserCreateInput) {

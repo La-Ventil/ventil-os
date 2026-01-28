@@ -158,7 +158,34 @@
         "users": {
           "title": "Administration des utilisateurs",
           "subtitle": "Information",
-          "intro": "Gérez les comptes et les accès des utilisateurs."
+          "intro": "Gérez les comptes et les accès des utilisateurs.",
+          "columns": {
+            "firstName": "prénom",
+            "lastName": "nom",
+            "username": "pseudo",
+            "email": "email",
+            "profile": "profil",
+            "admin": "administrateur",
+            "machines": "machines utilisées",
+            "events": "évènements",
+            "openBadges": "open badges",
+            "assign": "attribuer"
+          },
+          "adminStatus": {
+            "none": "non",
+            "global": "global",
+            "pedagogical": "pédagogique"
+          },
+          "assignModal": {
+            "title": "Attribution d’un open badge",
+            "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Niveau attribué",
+            "userLabel": "Utilisateur",
+            "cancel": "Retour",
+            "confirm": "Attribuer",
+            "illustrationPlaceholder": "Illustration en cours"
+          }
         }
       },
       "profile": {

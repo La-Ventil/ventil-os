@@ -3,10 +3,16 @@ import type { UserCredentialsSchema, UserPasswordResetSchema } from '@repo/db/sc
 import { ProfileType } from '@repo/domain/profile-type';
 import type { UserProfile } from '@repo/view-models/user-profile';
 import { mapUserProfileToViewModel } from './mappers/user-profile';
+import { mapUserAdminToViewModel } from './mappers/user-admin';
 
 export const getUserProfileByEmail = async (email: string): Promise<UserProfile | null> => {
   const profile = await userRepository.getUserProfileByEmail(email);
   return profile ? mapUserProfileToViewModel(profile) : null;
+};
+
+export const listAdminUsers = async () => {
+  const users = await userRepository.listUsersForAdmin();
+  return users.map(mapUserAdminToViewModel);
 };
 
 export const getUserCredentialsByEmail = async (
