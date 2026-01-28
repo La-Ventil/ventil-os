@@ -1,3 +1,5 @@
+'use client';
+
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
@@ -8,58 +10,64 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
-import { getTranslations } from 'next-intl/server';
+import Alert from '@mui/material/Alert';
+import { useTranslations } from 'next-intl';
+import { MachineCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
+import { FormActionStateTuple } from '../../form-action-state';
+import { FormState } from '../../form-state';
 import styles from './machine-create.form.module.css';
 
-export default async function MachineCreateForm() {
-  const t = await getTranslations('pages.hub.admin.machinesCreate');
+export interface MachineCreateFormProps {
+  actionState: FormActionStateTuple<FormState<MachineCreateFormInput>>;
+}
 
-  const labels = {
-    fields: {
-      name: t('fields.name'),
-      description: t('fields.description'),
-      image: t('fields.image')
-    },
-    image: {
-      placeholder: t('image.placeholder'),
-      upload: t('image.upload')
-    },
-    badgeRequirement: {
-      title: t('badgeRequirement.title'),
-      description: t('badgeRequirement.description'),
-      searchLabel: t('badgeRequirement.searchLabel'),
-      searchPlaceholder: t('badgeRequirement.searchPlaceholder'),
-      badgeType: t('badgeRequirement.badgeType'),
-      badgeName: t('badgeRequirement.badgeName'),
-      removeLabel: t('badgeRequirement.removeLabel')
-    },
-    activation: {
-      title: t('activation.title'),
-      description: t('activation.description')
-    },
-    actions: {
-      back: t('actions.back'),
-      save: t('actions.save')
-    }
-  };
+export default function MachineCreateForm({
+  actionState: [state, action, isPending]
+}: MachineCreateFormProps) {
+  const t = useTranslations('pages.hub.admin.machinesCreate');
+  const fieldError = (field: keyof MachineCreateFormInput) =>
+    state.fieldErrors[field as string]?.[0];
 
   return (
-    <Stack component="form" spacing={2}>
+    <Stack component="form" action={action} spacing={2}>
+      {state.message && !isPending && (
+        <Alert severity={state.isValid ? 'success' : 'error'}>{state.message}</Alert>
+      )}
       <FormSection>
-        <TextField label={labels.fields.name} required fullWidth />
-        <TextField label={labels.fields.description} required fullWidth />
+        <TextField
+          name="name"
+          defaultValue={state.values.name}
+          label={t('fields.name')}
+          required
+          fullWidth
+          error={Boolean(fieldError('name'))}
+          helperText={fieldError('name')}
+        />
+        <TextField
+          name="description"
+          defaultValue={state.values.description}
+          label={t('fields.description')}
+          required
+          fullWidth
+          error={Boolean(fieldError('description'))}
+          helperText={fieldError('description')}
+        />
 
         <div className={styles.imageRow}>
           <ImageUploadField
-            label={labels.fields.image}
-            placeholder={labels.image.placeholder}
-            uploadLabel={labels.image.upload}
+            name="imageUrl"
+            defaultValue={state.values.imageUrl}
+            label={t('fields.image')}
+            placeholder={t('image.placeholder')}
+            uploadLabel={t('image.upload')}
             required
+            error={Boolean(fieldError('imageUrl'))}
+            helperText={fieldError('imageUrl')}
           />
         </div>
       </FormSection>
@@ -67,15 +75,17 @@ export default async function MachineCreateForm() {
       <Divider />
 
       <FormSection>
-        <SectionSubtitle>{labels.badgeRequirement.title}</SectionSubtitle>
+        <SectionSubtitle>{t('badgeRequirement.title')}</SectionSubtitle>
         <Typography variant="body1" className={styles.sectionDescription}>
-          {labels.badgeRequirement.description}
+          {t('badgeRequirement.description')}
         </Typography>
-        <Switch defaultChecked />
+        <Switch name="badgeRequired" defaultChecked={state.values.badgeRequired} />
         <Stack spacing={2}>
           <TextField
-            label={labels.badgeRequirement.searchLabel}
-            placeholder={labels.badgeRequirement.searchPlaceholder}
+            name="badgeQuery"
+            defaultValue={state.values.badgeQuery}
+            label={t('badgeRequirement.searchLabel')}
+            placeholder={t('badgeRequirement.searchPlaceholder')}
             fullWidth
             InputProps={{
               startAdornment: (
@@ -86,14 +96,16 @@ export default async function MachineCreateForm() {
             }}
           />
           <div className={styles.badgeCard}>
-            <div className={styles.badgeIllustration}>{labels.image.placeholder}</div>
+            <div className={styles.badgeIllustration}>{t('image.placeholder')}</div>
             <Stack spacing={0.5}>
               <Typography className={styles.badgeType}>
-                {labels.badgeRequirement.badgeType}
+                {t('badgeRequirement.badgeType')}
               </Typography>
-              <Typography className={styles.badgeName}>{labels.badgeRequirement.badgeName}</Typography>
+              <Typography className={styles.badgeName}>
+                {t('badgeRequirement.badgeName')}
+              </Typography>
             </Stack>
-            <IconButton aria-label={labels.badgeRequirement.removeLabel}>
+            <IconButton aria-label={t('badgeRequirement.removeLabel')}>
               <CloseIcon />
             </IconButton>
           </div>
@@ -103,18 +115,20 @@ export default async function MachineCreateForm() {
       <Divider />
 
       <FormSection>
-        <SectionSubtitle>{labels.activation.title}</SectionSubtitle>
+        <SectionSubtitle>{t('activation.title')}</SectionSubtitle>
         <Typography variant="body1" className={styles.sectionDescription}>
-          {labels.activation.description}
+          {t('activation.description')}
         </Typography>
-        <Switch defaultChecked />
+        <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
       </FormSection>
 
       <FormActions>
         <AdminButton variant="outlined" component={Link} href="/hub/admin/machines">
-          {labels.actions.back}
+          {t('actions.back')}
         </AdminButton>
-        <AdminButton variant="contained">{labels.actions.save}</AdminButton>
+        <AdminButton variant="contained" type="submit" disabled={isPending}>
+          {t('actions.save')}
+        </AdminButton>
       </FormActions>
     </Stack>
   );

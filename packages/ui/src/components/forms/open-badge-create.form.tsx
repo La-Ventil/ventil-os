@@ -1,3 +1,5 @@
+'use client';
+
 import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
@@ -8,23 +10,54 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
-import { getTranslations } from 'next-intl/server';
+import Alert from '@mui/material/Alert';
+import { useTranslations } from 'next-intl';
+import { OpenBadgeCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
 import LevelChip from '../level-chip';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
+import { FormActionStateTuple } from '../../form-action-state';
+import { FormState } from '../../form-state';
 import styles from './open-badge-create.form.module.css';
 
-export default async function OpenBadgeCreateForm() {
-  const t = await getTranslations('pages.hub.admin.openBadgesCreate');
+export interface OpenBadgeCreateFormProps {
+  actionState: FormActionStateTuple<FormState<OpenBadgeCreateFormInput>>;
+}
+
+export default function OpenBadgeCreateForm({
+  actionState: [state, action, isPending]
+}: OpenBadgeCreateFormProps) {
+  const t = useTranslations('pages.hub.admin.openBadgesCreate');
+  const fieldError = (field: keyof OpenBadgeCreateFormInput) =>
+    state.fieldErrors[field as string]?.[0];
 
   return (
-    <Stack component="form" spacing={2}>
+    <Stack component="form" action={action} spacing={2}>
+      {state.message && !isPending && (
+        <Alert severity={state.isValid ? 'success' : 'error'}>{state.message}</Alert>
+      )}
       <FormSection>
-        <TextField label={t('fields.name')} required fullWidth />
-        <TextField label={t('fields.description')} required fullWidth />
+        <TextField
+          name="name"
+          defaultValue={state.values.name}
+          label={t('fields.name')}
+          required
+          fullWidth
+          error={Boolean(fieldError('name'))}
+          helperText={fieldError('name')}
+        />
+        <TextField
+          name="description"
+          defaultValue={state.values.description}
+          label={t('fields.description')}
+          required
+          fullWidth
+          error={Boolean(fieldError('description'))}
+          helperText={fieldError('description')}
+        />
       </FormSection>
 
       <Divider />
@@ -32,10 +65,14 @@ export default async function OpenBadgeCreateForm() {
       <FormSection>
         <div className={styles.imageRow}>
           <ImageUploadField
+            name="imageUrl"
+            defaultValue={state.values.imageUrl}
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
             required
+            error={Boolean(fieldError('imageUrl'))}
+            helperText={fieldError('imageUrl')}
           />
         </div>
       </FormSection>
@@ -45,13 +82,25 @@ export default async function OpenBadgeCreateForm() {
       <FormSection direction="row" spacing={2} alignItems="flex-start">
         <LevelChip level={1} isActive size="medium" />
         <Stack spacing={2}>
-          <TextField label={t('fields.levelTitle')} required fullWidth />
           <TextField
+            name="levelTitle"
+            defaultValue={state.values.levelTitle}
+            label={t('fields.levelTitle')}
+            required
+            fullWidth
+            error={Boolean(fieldError('levelTitle'))}
+            helperText={fieldError('levelTitle')}
+          />
+          <TextField
+            name="levelDescription"
+            defaultValue={state.values.levelDescription}
             label={t('fields.levelDescription')}
             required
             fullWidth
             multiline
             minRows={4}
+            error={Boolean(fieldError('levelDescription'))}
+            helperText={fieldError('levelDescription')}
           />
         </Stack>
       </FormSection>
@@ -72,15 +121,16 @@ export default async function OpenBadgeCreateForm() {
           {t('delivery.description')}
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
-          <Switch defaultChecked />
+          <Switch name="deliveryEnabled" defaultChecked={state.values.deliveryEnabled} />
           <FormControl size="small">
             <InputLabel id="open-badge-delivery-level-label">
               {t('delivery.levelLabel')}
             </InputLabel>
             <Select
               labelId="open-badge-delivery-level-label"
+              name="deliveryLevel"
               label={t('delivery.levelLabel')}
-              defaultValue="level-1"
+              defaultValue={state.values.deliveryLevel || 'level-1'}
             >
               <MenuItem value="level-1">{t('delivery.levelOption')}</MenuItem>
             </Select>
@@ -95,7 +145,7 @@ export default async function OpenBadgeCreateForm() {
         <Typography variant="body1" className={styles.sectionDescription}>
           {t('activation.description')}
         </Typography>
-        <Switch defaultChecked />
+        <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
       </FormSection>
 
       <Divider />
@@ -104,7 +154,9 @@ export default async function OpenBadgeCreateForm() {
         <AdminButton variant="outlined" component={Link} href="/hub/admin/open-badges">
           {t('actions.back')}
         </AdminButton>
-        <AdminButton variant="contained">{t('actions.save')}</AdminButton>
+        <AdminButton variant="contained" type="submit" disabled={isPending}>
+          {t('actions.save')}
+        </AdminButton>
       </FormActions>
     </Stack>
   );

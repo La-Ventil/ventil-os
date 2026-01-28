@@ -8,8 +8,12 @@ export type ImageUploadFieldProps = {
   uploadLabel: string;
   required?: boolean;
   name?: string;
+  fileName?: string;
   previewUrl?: string;
   accept?: string;
+  defaultValue?: string;
+  error?: boolean;
+  helperText?: string;
 };
 
 export default function ImageUploadField({
@@ -17,9 +21,13 @@ export default function ImageUploadField({
   placeholder,
   uploadLabel,
   required = false,
-  name = 'image',
+  name = 'imageUrl',
+  fileName = 'imageFile',
   previewUrl,
-  accept = 'image/*'
+  accept = 'image/*',
+  defaultValue,
+  error = false,
+  helperText
 }: ImageUploadFieldProps) {
   return (
     <>
@@ -31,10 +39,18 @@ export default function ImageUploadField({
         )}
       </div>
       <div className={styles.controls}>
-        <TextField label={label} required={required} fullWidth />
+        <TextField
+          name={name}
+          defaultValue={defaultValue}
+          label={label}
+          required={required}
+          fullWidth
+          error={error}
+          helperText={helperText}
+        />
         <AdminButton variant="contained" component="label">
           {uploadLabel}
-          <input type="file" name={name} accept={accept} hidden />
+          <input type="file" name={fileName} accept={accept} hidden />
         </AdminButton>
       </div>
     </>
