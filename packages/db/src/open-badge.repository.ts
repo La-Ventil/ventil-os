@@ -1,5 +1,9 @@
 import type { PrismaClient } from '@prisma/client';
-import type { OpenBadgeProgressSchema, OpenBadgeSchema } from './schemas/open-badge';
+import type {
+  OpenBadgeAdminSchema,
+  OpenBadgeProgressSchema,
+  OpenBadgeSchema
+} from './schemas/open-badge';
 
 export class OpenBadgeRepository {
   constructor(private prisma: PrismaClient) {}
@@ -30,6 +34,25 @@ export class OpenBadgeRepository {
     });
 
     return badge ? (badge as OpenBadgeSchema) : null;
+  }
+
+  async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminSchema[]> {
+    const badges = await this.prisma.openBadge.findMany({
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        _count: {
+          select: {
+            levels: true,
+            openBadgeProgresses: true
+          }
+        }
+      },
+      orderBy: { name: 'asc' }
+    });
+
+    return badges as OpenBadgeAdminSchema[];
   }
 
   async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressSchema[]> {

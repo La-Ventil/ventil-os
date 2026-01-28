@@ -34,3 +34,17 @@ export type OpenBadgeProgressSchema = Prisma.OpenBadgeProgressGetPayload<{
     };
   };
 }>;
+
+export type OpenBadgeAdminSchema = Prisma.OpenBadgeGetPayload<{
+  select: {
+    id: true;
+    name: true;
+    status: true;
+    _count: {
+      select: {
+        levels: true;
+        openBadgeProgresses: true;
+      };
+    };
+  };
+}>;

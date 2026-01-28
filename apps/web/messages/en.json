@@ -156,7 +156,17 @@
         "openBadges": {
           "title": "Open badge administration",
           "subtitle": "Information",
-          "intro": "Manage open badges and their levels."
+          "intro": "Manage open badges and their levels.",
+          "columns": {
+            "name": "name",
+            "levels": "level count",
+            "assigned": "times assigned",
+            "status": "active"
+          },
+          "status": {
+            "active": "yes",
+            "inactive": "no"
+          }
         },
         "users": {
           "title": "User administration",
