@@ -41,7 +41,8 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0"
+    "@prisma/client": "^5.22.0",
+    "@repo/crypto": "workspace:*"
   },
   "exports": {
     ".": "./src/index.ts",

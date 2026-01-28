@@ -1,7 +1,8 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { hashSecret, registerUserAccount } from '@repo/application';
+import { registerUserAccount } from '@repo/application';
+import { hashSecret } from '@repo/crypto';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';

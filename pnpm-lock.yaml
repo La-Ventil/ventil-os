@@ -264,6 +264,9 @@ importers:
       '@repo/application':
         specifier: workspace:*
         version: link:../../packages/application
+      '@repo/crypto':
+        specifier: workspace:*
+        version: link:../../packages/crypto
       '@repo/domain':
         specifier: workspace:*
         version: link:../../packages/domain
@@ -375,11 +378,23 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
+  packages/crypto:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
   packages/db:
     dependencies:
       '@prisma/client':
         specifier: ^5.22.0
         version: 5.22.0(prisma@5.22.0)
+      '@repo/crypto':
+        specifier: workspace:*
+        version: link:../crypto
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*

@@ -1,0 +1,18 @@
+{
+  "name": "@repo/crypto",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./security": "./src/security.ts",
+    "./*": "./src/*.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "5.9.3"
+  }
+}

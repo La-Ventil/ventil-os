@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 import { getUserCredentialsByEmail, getUserProfileByEmail } from '@repo/application';
 import { prismaClient } from '@repo/application/prisma';
 import type { UserProfile } from '@repo/view-models/user-profile';
-import { verifySecret } from '@repo/application';
+import { verifySecret } from '@repo/crypto';
 
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
