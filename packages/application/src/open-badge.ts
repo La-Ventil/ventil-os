@@ -18,3 +18,10 @@ export const listOpenBadgesForUser = async (
   const progresses = await openBadgeRepository.listOpenBadgesForUser(userId);
   return progresses.map(mapOpenBadgeProgressToViewModel);
 };
+
+export const awardOpenBadgeLevel = async (input: {
+  userId: string;
+  openBadgeId: string;
+  level: number;
+  awardedById: string;
+}) => openBadgeRepository.awardOpenBadgeLevel(input);

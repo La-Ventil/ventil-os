@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import Image from 'next/image';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
@@ -17,6 +17,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import { ThemeSection } from '@repo/ui/theme';
+import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
 import styles from './assign-open-badge-dialog.module.css';
 
 type AssignOpenBadgeDialogProps = {
@@ -53,9 +54,11 @@ export default function AssignOpenBadgeDialog({
   const [selectedLevel, setSelectedLevel] = useState(
     levelOptions[0] ? String(levelOptions[0].level) : ''
   );
+  const [isPending, startTransition] = useTransition();
 
   const userOptions = useMemo(() => users, [users]);
   const selectedUserId = user?.id ?? users[0]?.id ?? '';
+  const canSubmit = Boolean(selectedBadgeId && selectedLevel && selectedUserId);
 
   const handleBadgeChange = (badgeId: string) => {
     setSelectedBadgeId(badgeId);
@@ -64,6 +67,31 @@ export default function AssignOpenBadgeDialog({
       ? String(badge.levels[0].level)
       : '';
     setSelectedLevel(nextLevel);
+  };
+
+  const handleAssign = () => {
+    if (!canSubmit) {
+      return;
+    }
+
+    const level = Number.parseInt(selectedLevel, 10);
+
+    if (Number.isNaN(level)) {
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        await assignOpenBadge({
+          userId: selectedUserId,
+          openBadgeId: selectedBadgeId,
+          level
+        });
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
+    });
   };
 
   return (
@@ -111,6 +139,7 @@ export default function AssignOpenBadgeDialog({
                 labelId="assign-open-badge-select-label"
                 label={labels.badgeLabel}
                 value={selectedBadgeId}
+                disabled={isPending}
                 onChange={(event) => handleBadgeChange(event.target.value)}
               >
                 {openBadges.map((badge) => (
@@ -127,6 +156,7 @@ export default function AssignOpenBadgeDialog({
                 labelId="assign-open-badge-level-label"
                 label={labels.levelLabel}
                 value={selectedLevel}
+                disabled={isPending}
                 onChange={(event) => setSelectedLevel(event.target.value)}
               >
                 {levelOptions.map((level) => (
@@ -162,7 +192,7 @@ export default function AssignOpenBadgeDialog({
           <Button variant="outlined" fullWidth onClick={onClose}>
             {labels.cancel}
           </Button>
-          <Button variant="contained" fullWidth>
+          <Button variant="contained" fullWidth onClick={handleAssign} disabled={!canSubmit || isPending}>
             {labels.confirm}
           </Button>
         </Section>

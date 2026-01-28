@@ -53,4 +53,82 @@ export class OpenBadgeRepository {
 
     return progresses as OpenBadgeProgressSchema[];
   }
+
+  async awardOpenBadgeLevel(input: {
+    userId: string;
+    openBadgeId: string;
+    level: number;
+    awardedById: string;
+  }) {
+    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
+      where: {
+        openBadgeId_level: {
+          openBadgeId: input.openBadgeId,
+          level: input.level
+        }
+      },
+      select: { id: true, level: true }
+    });
+
+    if (!openBadgeLevel) {
+      throw new Error('Open badge level not found.');
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      const progress = await tx.openBadgeProgress.upsert({
+        where: {
+          userId_openBadgeId: {
+            userId: input.userId,
+            openBadgeId: input.openBadgeId
+          }
+        },
+        create: {
+          userId: input.userId,
+          openBadgeId: input.openBadgeId
+        },
+        update: {}
+      });
+
+      const existingLevel = await tx.openBadgeLevelProgress.findUnique({
+        where: {
+          progressId_openBadgeLevelId: {
+            progressId: progress.id,
+            openBadgeLevelId: openBadgeLevel.id
+          }
+        },
+        select: { id: true }
+      });
+
+      if (!existingLevel) {
+        await tx.openBadgeLevelProgress.create({
+          data: {
+            progressId: progress.id,
+            openBadgeLevelId: openBadgeLevel.id,
+            awardedById: input.awardedById
+          }
+        });
+      }
+
+      const currentHighest = await tx.openBadgeProgress.findUnique({
+        where: { id: progress.id },
+        select: {
+          highestLevel: {
+            select: { id: true, level: true }
+          }
+        }
+      });
+
+      if (
+        !currentHighest?.highestLevel ||
+        openBadgeLevel.level >= currentHighest.highestLevel.level
+      ) {
+        await tx.openBadgeProgress.update({
+          where: { id: progress.id },
+          data: { highestLevelId: openBadgeLevel.id }
+        });
+      }
+
+      return progress;
+    });
+  }
 }
