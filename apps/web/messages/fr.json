@@ -150,7 +150,7 @@
           "subtitle": "Information",
           "intro": "Gérez les machines du fab lab.",
           "actions": {
-            "create": "+ CRÉER UNE NOUVELLE MACHINE"
+            "create": "+ Créer une nouvelle machine"
           },
           "columns": {
             "name": "nom",
@@ -169,7 +169,7 @@
           "subtitle": "Information",
           "intro": "Gérez les open badges et leurs niveaux.",
           "actions": {
-            "create": "+ CRÉER UN NOUVEL OPEN BADGE"
+            "create": "+ Créer un nouvel open badge"
           },
           "columns": {
             "name": "nom",
@@ -180,6 +180,66 @@
           "status": {
             "active": "oui",
             "inactive": "non"
+          }
+        },
+        "openBadgesCreate": {
+          "title": "Création d’un open badge",
+          "fields": {
+            "name": "Nom de l’open badge *",
+            "description": "Description courte *",
+            "image": "Image *",
+            "levelTitle": "Niveau 1 : titre *",
+            "levelDescription": "Niveau 1 : description *"
+          },
+          "image": {
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger"
+          },
+          "levels": {
+            "add": "+ Ajouter un niveau"
+          },
+          "delivery": {
+            "title": "Délivrance",
+            "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
+            "levelLabel": "Niveau",
+            "levelOption": "Au niveau 1"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "Si le badge est actif, il pourra être attribué aux utilisateurs. Si le badge est lié à une machine, cette machine deviendra elle aussi inactive."
+          },
+          "actions": {
+            "back": "Retour",
+            "save": "Enregistrer"
+          }
+        },
+        "machinesCreate": {
+          "title": "Création d’une machine",
+          "fields": {
+            "name": "Nom de la machine *",
+            "description": "Description courte *",
+            "image": "Image *"
+          },
+          "image": {
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger"
+          },
+          "badgeRequirement": {
+            "title": "Open badge pour utiliser la machine",
+            "description": "Si coché, la machine sera liée à un open badge pour valider son utilisation et sa réservation. Si décoché, la machine pourra être utilisée sans formation préalable et réservée par tout utilisateur.",
+            "searchLabel": "Rechercher un open badge",
+            "searchPlaceholder": "Rechercher l’intitulé de l’open badge",
+            "badgeType": "Type de badge",
+            "badgeName": "Nom du badge",
+            "removeLabel": "Retirer l’open badge"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "Si la machine est active, elle pourra être utilisée et réservée par les utilisateurs. Si désactivée, elle n’apparaîtra plus dans la liste des machines disponibles."
+          },
+          "actions": {
+            "back": "Retour",
+            "save": "Enregistrer"
           }
         },
         "users": {

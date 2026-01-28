@@ -153,7 +153,7 @@
           "subtitle": "Information",
           "intro": "Manage fab lab machines.",
           "actions": {
-            "create": "+ CREATE A NEW MACHINE"
+            "create": "+ Create a new machine"
           },
           "columns": {
             "name": "name",
@@ -172,7 +172,7 @@
           "subtitle": "Information",
           "intro": "Manage open badges and their levels.",
           "actions": {
-            "create": "+ CREATE A NEW OPEN BADGE"
+            "create": "+ Create a new open badge"
           },
           "columns": {
             "name": "name",
@@ -183,6 +183,66 @@
           "status": {
             "active": "yes",
             "inactive": "no"
+          }
+        },
+        "openBadgesCreate": {
+          "title": "Create an open badge",
+          "fields": {
+            "name": "Open badge name *",
+            "description": "Short description *",
+            "image": "Image *",
+            "levelTitle": "Level 1: title *",
+            "levelDescription": "Level 1: description *"
+          },
+          "image": {
+            "placeholder": "Illustration in progress",
+            "upload": "Upload"
+          },
+          "levels": {
+            "add": "+ Add a level"
+          },
+          "delivery": {
+            "title": "Issuance",
+            "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",
+            "levelLabel": "Level",
+            "levelOption": "At level 1"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "If the badge is active, it can be assigned to users. If linked to a machine, that machine will also become inactive."
+          },
+          "actions": {
+            "back": "Back",
+            "save": "Save"
+          }
+        },
+        "machinesCreate": {
+          "title": "Create a machine",
+          "fields": {
+            "name": "Machine name *",
+            "description": "Short description *",
+            "image": "Image *"
+          },
+          "image": {
+            "placeholder": "Illustration in progress",
+            "upload": "Upload"
+          },
+          "badgeRequirement": {
+            "title": "Open badge required to use the machine",
+            "description": "If checked, the machine will be linked to an open badge to validate its use and reservation. If unchecked, the machine can be used without prior training and reserved by any user.",
+            "searchLabel": "Search an open badge",
+            "searchPlaceholder": "Search the open badge title",
+            "badgeType": "Badge type",
+            "badgeName": "Badge name",
+            "removeLabel": "Remove open badge"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "If the machine is active, it can be used and reserved by users. If disabled, it will no longer appear in the list of available machines."
+          },
+          "actions": {
+            "back": "Back",
+            "save": "Save"
           }
         },
         "users": {

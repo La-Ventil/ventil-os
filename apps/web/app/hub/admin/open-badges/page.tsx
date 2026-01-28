@@ -1,8 +1,9 @@
 import { getTranslations } from 'next-intl/server';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { listAdminOpenBadges } from '@repo/application';
+import AdminButton from '@repo/ui/admin/admin-button';
+import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
@@ -42,11 +43,11 @@ export default async function AdminOpenBadgesPage() {
         <Typography variant="body1">{labels.intro}</Typography>
       </Section>
 
-      <Section pt={0} pb={2} direction="row" justifyContent="flex-start">
-        <Button variant="contained" component={Link} href="/hub/admin/open-badges/create">
+      <AdminActionsSection>
+        <AdminButton variant="contained" component={Link} href="/hub/admin/open-badges/create">
           {labels.actions.create}
-        </Button>
-      </Section>
+        </AdminButton>
+      </AdminActionsSection>
 
       <Section pt={0}>
         <AdminOpenBadgesTable
