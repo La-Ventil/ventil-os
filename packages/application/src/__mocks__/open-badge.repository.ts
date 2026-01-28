@@ -47,6 +47,7 @@ export class OpenBadgeRepositoryMock {
   }
 
   async listOpenBadgesForUser(userId: string): Promise<OpenBadgeViewModel[]> {
+    void userId;
     return badges.filter((badge) => badge.activeLevel > 0);
   }
 
