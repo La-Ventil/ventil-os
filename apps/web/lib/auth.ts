@@ -31,12 +31,16 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user?.id) {
         token.id = user.id;
+        token.globalAdmin = (user as UserProfile).globalAdmin;
+        token.pedagogicalAdmin = (user as UserProfile).pedagogicalAdmin;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
+        session.user.globalAdmin = token.globalAdmin;
+        session.user.pedagogicalAdmin = token.pedagogicalAdmin;
       }
       return session;
     }
@@ -48,7 +52,6 @@ function authorize() {
   return async (
     credentials: Partial<Record<'email' | 'password', unknown>> | undefined
   ): Promise<UserProfile | null> => {
-    console.log('credentials', credentials);
     if (!credentials) {
       throw new Error('Missing credentials');
     }
@@ -66,18 +69,7 @@ function authorize() {
     const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);
 
     if (!isValid) return null;
-    console.log('maybeUser', maybeUser);
-    return {
-      id: maybeUser.id,
-      email: maybeUser.email,
-      lastName: maybeUser.lastName,
-      firstName: maybeUser.firstName,
-      profile: maybeUser.profile,
-      username: maybeUser.username,
-      educationLevel: maybeUser.educationLevel,
-      globalAdmin: maybeUser.globalAdmin,
-      pedagogicalAdmin: maybeUser.pedagogicalAdmin
-    };
+    return getUserProfileByEmail(maybeUser.email);
   };
 }
 

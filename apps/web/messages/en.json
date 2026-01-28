@@ -133,12 +133,36 @@
         "intro": "Update your account information with the sections below.",
         "profileLink": "Profile information",
         "avatarLink": "Avatar",
+        "admin": {
+          "title": "Administration",
+          "machineLink": "Machine administration",
+          "openBadgeLink": "Open badge administration",
+          "userLink": "User administration"
+        },
         "drawer": {
           "open": "Open menu",
           "title": "Settings",
           "closeLabel": "Close"
         },
         "supportLink": "Support"
+      },
+      "admin": {
+        "title": "Administration",
+        "machines": {
+          "title": "Machine administration",
+          "subtitle": "Information",
+          "intro": "Manage fab lab machines."
+        },
+        "openBadges": {
+          "title": "Open badge administration",
+          "subtitle": "Information",
+          "intro": "Manage open badges and their levels."
+        },
+        "users": {
+          "title": "User administration",
+          "subtitle": "Information",
+          "intro": "Manage user accounts and access."
+        }
       },
       "profile": {
         "subtitle": "Information",

@@ -22,6 +22,7 @@ export default async function RootLayout({
   if (!session) {
     redirect('/login');
   }
+  const isAdmin = Boolean(session.user?.globalAdmin || session.user?.pedagogicalAdmin);
 
   return (
     <>
@@ -29,7 +30,7 @@ export default async function RootLayout({
         {children}
       </main>
       <footer>
-        <BottomNavigation />
+        <BottomNavigation isAdmin={isAdmin} />
       </footer>
     </>
   );

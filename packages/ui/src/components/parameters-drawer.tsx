@@ -15,13 +15,17 @@ import SectionTitle from './section-title';
 import SettingsList, { SettingsListItem } from './settings-list';
 import styles from './parameters-drawer.module.css';
 import { ThemeSection } from '../theme';
+import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';
+import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from './icons/admin-open-badge-icon';
+import { adminUserIcon as AdminUserIcon } from './icons/admin-user-icon';
 
 export type ParametersDrawerProps = {
   open: boolean;
   onClose: () => void;
+  isAdmin?: boolean;
 };
 
-export default function ParametersDrawer({ open, onClose }: ParametersDrawerProps) {
+export default function ParametersDrawer({ open, onClose, isAdmin = false }: ParametersDrawerProps) {
   const tSettings = useTranslations('pages.hub.settings');
 
   return (
@@ -66,6 +70,36 @@ export default function ParametersDrawer({ open, onClose }: ParametersDrawerProp
           onClick={onClose}
         />
       </SettingsList>
+      {isAdmin ? (
+        <>
+          <Section>
+            <SectionSubtitle>{tSettings('admin.title')}</SectionSubtitle>
+          </Section>
+          <SettingsList>
+            <SettingsListItem
+              icon={<AdminFablabIcon />}
+              label={tSettings('admin.machineLink')}
+              href="/hub/admin/machines"
+              linkComponent={Link}
+              onClick={onClose}
+            />
+            <SettingsListItem
+              icon={<AdminOpenBadgeIcon />}
+              label={tSettings('admin.openBadgeLink')}
+              href="/hub/admin/open-badges"
+              linkComponent={Link}
+              onClick={onClose}
+            />
+            <SettingsListItem
+              icon={<AdminUserIcon />}
+              label={tSettings('admin.userLink')}
+              href="/hub/admin/users"
+              linkComponent={Link}
+              onClick={onClose}
+            />
+          </SettingsList>
+        </>
+      ) : null}
     </Drawer>
   );
 }

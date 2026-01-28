@@ -130,12 +130,36 @@
         "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous.",
         "profileLink": "Information du profil",
         "avatarLink": "Avatar",
+        "admin": {
+          "title": "Administration",
+          "machineLink": "Administration machine",
+          "openBadgeLink": "Administration open badge",
+          "userLink": "Administration utilisateurs"
+        },
         "drawer": {
           "open": "Ouvrir le menu",
           "title": "Paramètres",
           "closeLabel": "Fermer"
         },
         "supportLink": "Support"
+      },
+      "admin": {
+        "title": "Administration",
+        "machines": {
+          "title": "Administration des machines",
+          "subtitle": "Information",
+          "intro": "Gérez les machines du fab lab."
+        },
+        "openBadges": {
+          "title": "Administration des open badges",
+          "subtitle": "Information",
+          "intro": "Gérez les open badges et leurs niveaux."
+        },
+        "users": {
+          "title": "Administration des utilisateurs",
+          "subtitle": "Information",
+          "intro": "Gérez les comptes et les accès des utilisateurs."
+        }
       },
       "profile": {
         "subtitle": "Information",
