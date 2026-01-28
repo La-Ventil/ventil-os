@@ -1,9 +1,13 @@
+import type { EducationLevel } from '@repo/domain/education-level';
+import type { Email } from '@repo/domain/email';
+import type { ProfileType } from '@repo/domain/profile-type';
+
 export interface UserProfile {
   id: string;
-  profile: string;
-  email: string;
+  profile: ProfileType;
+  email: Email;
   username: string;
-  educationLevel?: string | null;
+  educationLevel?: EducationLevel | null;
   lastName?: string;
   firstName: string;
   globalAdmin: boolean;

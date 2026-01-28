@@ -13,6 +13,8 @@ export class UserRepository {
         id: true,
         email: true,
         profile: true,
+        studentProfile: true,
+        externalProfile: true,
         username: true,
         educationLevel: true,
         pedagogicalAdmin: true,
