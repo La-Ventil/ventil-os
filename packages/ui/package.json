@@ -9,6 +9,7 @@
     "./*": "./src/components/*.tsx",
     "./tabs": "./src/components/tabs/index.tsx",
     "./tabs/*": "./src/components/tabs/*.tsx",
+    "./admin/*": "./src/components/admin/*.tsx",
     "./settings-list": "./src/components/settings-list/index.tsx",
     "./settings-list/*": "./src/components/settings-list/*.tsx",
     "./hooks": "./src/hooks.ts",

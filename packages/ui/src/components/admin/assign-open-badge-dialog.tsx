@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
@@ -13,11 +13,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
-import { ThemeSection } from '@repo/ui/theme';
-import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
+import Section from '../section';
+import SectionSubtitle from '../section-subtitle';
+import SectionTitle from '../section-title';
+import { ThemeSection } from '../../theme';
 import styles from './assign-open-badge-dialog.module.css';
 
 type AssignOpenBadgeDialogProps = {
@@ -36,6 +35,8 @@ type AssignOpenBadgeDialogProps = {
     confirm: string;
     illustrationPlaceholder: string;
   };
+  isSubmitting?: boolean;
+  onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
 };
 
 export default function AssignOpenBadgeDialog({
@@ -44,7 +45,9 @@ export default function AssignOpenBadgeDialog({
   user,
   users,
   openBadges,
-  labels
+  labels,
+  isSubmitting = false,
+  onConfirm
 }: AssignOpenBadgeDialogProps) {
   const defaultBadgeId = openBadges[0]?.id ?? '';
   const [selectedBadgeId, setSelectedBadgeId] = useState(defaultBadgeId);
@@ -54,7 +57,6 @@ export default function AssignOpenBadgeDialog({
   const [selectedLevel, setSelectedLevel] = useState(
     levelOptions[0] ? String(levelOptions[0].level) : ''
   );
-  const [isPending, startTransition] = useTransition();
 
   const userOptions = useMemo(() => users, [users]);
   const selectedUserId = user?.id ?? users[0]?.id ?? '';
@@ -80,17 +82,10 @@ export default function AssignOpenBadgeDialog({
       return;
     }
 
-    startTransition(async () => {
-      try {
-        await assignOpenBadge({
-          userId: selectedUserId,
-          openBadgeId: selectedBadgeId,
-          level
-        });
-        onClose();
-      } catch (error) {
-        console.error(error);
-      }
+    onConfirm({
+      userId: selectedUserId,
+      openBadgeId: selectedBadgeId,
+      level
     });
   };
 
@@ -139,7 +134,7 @@ export default function AssignOpenBadgeDialog({
                 labelId="assign-open-badge-select-label"
                 label={labels.badgeLabel}
                 value={selectedBadgeId}
-                disabled={isPending}
+                disabled={isSubmitting}
                 onChange={(event) => handleBadgeChange(event.target.value)}
               >
                 {openBadges.map((badge) => (
@@ -156,7 +151,7 @@ export default function AssignOpenBadgeDialog({
                 labelId="assign-open-badge-level-label"
                 label={labels.levelLabel}
                 value={selectedLevel}
-                disabled={isPending}
+                disabled={isSubmitting}
                 onChange={(event) => setSelectedLevel(event.target.value)}
               >
                 {levelOptions.map((level) => (
@@ -192,7 +187,12 @@ export default function AssignOpenBadgeDialog({
           <Button variant="outlined" fullWidth onClick={onClose}>
             {labels.cancel}
           </Button>
-          <Button variant="contained" fullWidth onClick={handleAssign} disabled={!canSubmit || isPending}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleAssign}
+            disabled={!canSubmit || isSubmitting}
+          >
             {labels.confirm}
           </Button>
         </Section>
