@@ -1,0 +1,28 @@
+.preview {
+  width: 160px;
+  height: 120px;
+  border-radius: 12px;
+  border: 1px solid #e2e6ef;
+  background: #f7f9fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9aa3b2;
+  font-size: 12px;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

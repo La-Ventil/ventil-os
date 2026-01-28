@@ -3,8 +3,18 @@ import styles from './admin-button.module.css';
 
 export type AdminButtonProps = ButtonProps;
 
-export default function AdminButton({ className, ...props }: AdminButtonProps) {
+export default function AdminButton({
+  className,
+  variant = 'contained',
+  color = 'secondary',
+  ...props
+}: AdminButtonProps) {
   return (
-    <Button className={`${styles.button}${className ? ` ${className}` : ''}`} {...props} />
+    <Button
+      className={`${styles.button}${className ? ` ${className}` : ''}`}
+      variant={variant}
+      color={color}
+      {...props}
+    />
   );
 }

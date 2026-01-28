@@ -4,13 +4,19 @@ export type LevelChipProps = {
   level: number;
   isActive?: boolean;
   className?: string;
+  size?: 'small' | 'medium';
 };
 
-export default function LevelChip({ level, isActive = false, className }: LevelChipProps) {
+export default function LevelChip({
+  level,
+  isActive = false,
+  className,
+  size = 'small'
+}: LevelChipProps) {
   return (
     <Chip
       label={level}
-      size="small"
+      size={size}
       variant="filled"
       color={isActive ? 'secondary' : 'default'}
       className={className}
