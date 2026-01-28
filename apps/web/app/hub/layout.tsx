@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import BottomNavigation from '@repo/ui/bottom-navigation';
+import { isAdminUser } from '@repo/application';
 import { getServerSession } from '../../lib/auth';
 import styles from './layout.module.css';
 
@@ -22,7 +23,7 @@ export default async function RootLayout({
   if (!session) {
     redirect('/login');
   }
-  const isAdmin = Boolean(session.user?.globalAdmin || session.user?.pedagogicalAdmin);
+  const isAdmin = isAdminUser(session.user);
 
   return (
     <>

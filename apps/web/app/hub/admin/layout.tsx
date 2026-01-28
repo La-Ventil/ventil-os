@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { isAdminUser } from '@repo/application';
 import { getServerSession } from '../../../lib/auth';
 
 export default async function AdminLayout({
@@ -7,7 +8,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession();
-  const isAdmin = Boolean(session?.user?.globalAdmin || session?.user?.pedagogicalAdmin);
+  const isAdmin = isAdminUser(session?.user);
 
   if (!session || !isAdmin) {
     redirect('/hub/profile');
