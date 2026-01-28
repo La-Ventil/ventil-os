@@ -153,7 +153,7 @@
           "subtitle": "Information",
           "intro": "Manage fab lab machines.",
           "actions": {
-            "create": "+ Create a new machine"
+            "create": "+ CREATE A NEW MACHINE"
           },
           "columns": {
             "name": "name",
@@ -172,7 +172,7 @@
           "subtitle": "Information",
           "intro": "Manage open badges and their levels.",
           "actions": {
-            "create": "+ Create a new open badge"
+            "create": "+ CREATE A NEW OPEN BADGE"
           },
           "columns": {
             "name": "name",

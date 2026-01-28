@@ -150,7 +150,7 @@
           "subtitle": "Information",
           "intro": "Gérez les machines du fab lab.",
           "actions": {
-            "create": "+ Créer une nouvelle machine"
+            "create": "+ CRÉER UNE NOUVELLE MACHINE"
           },
           "columns": {
             "name": "nom",
@@ -169,7 +169,7 @@
           "subtitle": "Information",
           "intro": "Gérez les open badges et leurs niveaux.",
           "actions": {
-            "create": "+ Créer un nouvel open badge"
+            "create": "+ CRÉER UN NOUVEL OPEN BADGE"
           },
           "columns": {
             "name": "nom",
