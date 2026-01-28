@@ -1,5 +1,5 @@
 export type { EventSchema } from './event';
-export type { MachineSchema } from './machine';
+export type { MachineSchema, MachineAdminSchema } from './machine';
 export type { MessageSchema } from './message';
 export type {
   OpenBadgeSchema,

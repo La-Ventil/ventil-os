@@ -151,12 +151,29 @@
         "machines": {
           "title": "Machine administration",
           "subtitle": "Information",
-          "intro": "Manage fab lab machines."
+          "intro": "Manage fab lab machines.",
+          "actions": {
+            "create": "+ Create a new machine"
+          },
+          "columns": {
+            "name": "name",
+            "category": "type",
+            "room": "room",
+            "badgeRequirements": "badge required",
+            "status": "active"
+          },
+          "status": {
+            "active": "yes",
+            "inactive": "no"
+          }
         },
         "openBadges": {
           "title": "Open badge administration",
           "subtitle": "Information",
           "intro": "Manage open badges and their levels.",
+          "actions": {
+            "create": "+ Create a new open badge"
+          },
           "columns": {
             "name": "name",
             "levels": "level count",
