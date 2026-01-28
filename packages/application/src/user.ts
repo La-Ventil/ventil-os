@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { ConsentType, ExternalProfile, Profile, StudentProfile, userRepository } from '@repo/db';
 import type { UserCredentialsSchema, UserPasswordResetSchema } from '@repo/db/schemas';
 import { ProfileType } from '@repo/domain/profile-type';
@@ -21,7 +22,7 @@ export const getUserCredentialsByEmail = async (
 
 export type RegisterUserAccountInput = {
   email: string;
-  username: string;
+  username?: string;
   firstName: string;
   lastName: string;
   educationLevel: string;
@@ -77,16 +78,22 @@ const resolveProfile = (profileType: string) => {
   return { profile, studentProfile, externalProfile };
 };
 
+const generateToken = (bytes: number) => randomBytes(bytes).toString('base64url');
+
+const generateUsername = (firstName: string, lastName: string) =>
+  `${firstName}${lastName}#${generateToken(6)}`;
+
 export const registerUserAccount = async (
   input: RegisterUserAccountInput
 ): Promise<RegisterUserAccountResult> => {
   const { profile, studentProfile, externalProfile } = resolveProfile(input.profileType);
+  const username = input.username ?? generateUsername(input.firstName, input.lastName);
 
   try {
     await userRepository.createUser({
       name: input.lastName,
       email: input.email,
-      username: input.username,
+      username,
       firstName: input.firstName,
       lastName: input.lastName,
       educationLevel: input.educationLevel,
@@ -136,6 +143,21 @@ export const updateUserProfile = async (
 export const findUserForPasswordReset = async (
   email: string
 ): Promise<UserPasswordResetSchema | null> => userRepository.findUserForPasswordReset(email);
+
+export const requestPasswordReset = async (email: string) => {
+  const user = await findUserForPasswordReset(email);
+
+  if (!user) {
+    return { user: null, resetToken: null, resetTokenExpiry: null };
+  }
+
+  const resetToken = generateToken(24);
+  const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
+
+  await userRepository.setResetToken(user.id, resetToken, resetTokenExpiry);
+
+  return { user, resetToken, resetTokenExpiry };
+};
 
 export const setUserResetToken = async (
   userId: string,

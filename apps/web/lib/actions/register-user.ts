@@ -1,11 +1,9 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { nanoid } from 'nanoid';
-import { registerUserAccount } from '@repo/application';
+import { hashSecret, registerUserAccount } from '@repo/application';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/ui/form-state';
-import { hashSecret } from '../security';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
 export async function registerUser(
@@ -28,10 +26,8 @@ export async function registerUser(
 
     const signupFormData: SignupFormInput = data;
     const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
-    const username = `${signupFormData.firstName}${signupFormData.lastName}#${nanoid()}`;
     const result = await registerUserAccount({
       email: signupFormData.email,
-      username,
       firstName: signupFormData.firstName,
       lastName: signupFormData.lastName,
       educationLevel: signupFormData.educationLevel,
