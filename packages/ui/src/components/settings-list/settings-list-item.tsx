@@ -22,7 +22,7 @@ export default function SettingsListItem({
   return (
     <ListItemButton component={linkComponent} href={href} onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={label} />
+      <ListItemText primary={label} />    
     </ListItemButton>
   );
 }

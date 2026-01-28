@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/view-models/open-badge';
 import Link from 'next/link';
+import CardHeader from './card-header';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import LevelChip from './level-chip';
 import styles from './open-badge-card.module.css';
@@ -21,19 +22,14 @@ export type OpenBadgeCardProps = {
 export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
   const content = (
     <Card className={styles.card}>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <OpenBadgeIcon color="secondary" />
-        <div>
-          <Typography variant="h5" color="secondary">
-            {badge.type}
-          </Typography>
-          <Typography variant="subtitle1" color="primary">
-            {badge.name}
-          </Typography>
-        </div>
-      </Stack>
-      <CardContent>
-        <Stack spacing={2}>
+
+       <CardHeader
+        icon={<OpenBadgeIcon color="secondary" />}
+        overline={badge.type}
+        overlineClassName={styles.category}
+        title={badge.name}
+      />
+      <CardContent className={styles.content}>
           <Box display="flex" gap={2}>
             <CardMedia className={styles.illustration} component="div">
               {badge.coverImage ? (
@@ -58,7 +54,6 @@ export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
               </Typography>
             </Stack>
           </Box>
-        </Stack>
       </CardContent>
     </Card>
   );

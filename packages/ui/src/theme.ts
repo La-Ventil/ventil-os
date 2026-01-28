@@ -86,7 +86,11 @@ export const theme = createTheme({
     background: {
       default: '#FBFBFC',
       card: '#F0F2F8',
-      paper: '#FFFFFF'
+      paper: '#FFFFFF',
+    },
+    drawer: {
+      main: '#212636',
+      contrastText: '#FFFFFF'
     },
     text: {
       primary: '#212636',
