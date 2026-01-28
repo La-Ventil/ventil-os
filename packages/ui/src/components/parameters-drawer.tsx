@@ -23,9 +23,15 @@ export type ParametersDrawerProps = {
   open: boolean;
   onClose: () => void;
   isAdmin?: boolean;
+  canManageUsers?: boolean;
 };
 
-export default function ParametersDrawer({ open, onClose, isAdmin = false }: ParametersDrawerProps) {
+export default function ParametersDrawer({
+  open,
+  onClose,
+  isAdmin = false,
+  canManageUsers = false
+}: ParametersDrawerProps) {
   const tSettings = useTranslations('pages.hub.settings');
 
   return (
@@ -90,13 +96,15 @@ export default function ParametersDrawer({ open, onClose, isAdmin = false }: Par
               linkComponent={Link}
               onClick={onClose}
             />
-            <SettingsListItem
-              icon={<AdminUserIcon />}
-              label={tSettings('admin.userLink')}
-              href="/hub/admin/users"
-              linkComponent={Link}
-              onClick={onClose}
-            />
+            {canManageUsers ? (
+              <SettingsListItem
+                icon={<AdminUserIcon />}
+                label={tSettings('admin.userLink')}
+                href="/hub/admin/users"
+                linkComponent={Link}
+                onClick={onClose}
+              />
+            ) : null}
           </SettingsList>
         </>
       ) : null}

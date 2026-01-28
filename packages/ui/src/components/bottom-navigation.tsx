@@ -13,9 +13,13 @@ import styles from './bottom-navigation.module.css';
 
 export type BottomNavigationProps = {
   isAdmin?: boolean;
+  canManageUsers?: boolean;
 };
 
-export default function BottomNavigation({ isAdmin = false }: BottomNavigationProps) {
+export default function BottomNavigation({
+  isAdmin = false,
+  canManageUsers = false
+}: BottomNavigationProps) {
   const t = useTranslations('pages.hub.navigation');
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -49,6 +53,7 @@ export default function BottomNavigation({ isAdmin = false }: BottomNavigationPr
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         isAdmin={isAdmin}
+        canManageUsers={canManageUsers}
       />
     </BottomSlot>
   );
