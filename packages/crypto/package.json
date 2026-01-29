@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "lint:staged": "echo \"skip lint:staged (crypto)\""
   },
   "exports": {
     ".": "./src/index.ts",

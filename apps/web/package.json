@@ -11,7 +11,8 @@
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
     "test": "playwright test",
-    "prettier": "prettier . --write"
+    "prettier": "prettier . --write",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",

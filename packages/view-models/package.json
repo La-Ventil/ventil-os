@@ -8,5 +8,8 @@
   },
   "dependencies": {
     "@repo/domain": "workspace:*"
+  },
+  "scripts": {
+    "lint:staged": "echo \"skip lint:staged (view-models)\""
   }
 }

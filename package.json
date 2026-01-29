@@ -8,6 +8,7 @@
     "dev": "turbo run dev",
     "lint": "pnpm -r lint",
     "lint:dev": "pnpm -r lint:dev",
+    "lint:staged": "pnpm -r --workspace-concurrency 1 lint:staged",
     "check-types": "pnpm -r check-types",
     "prepare": "husky",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -16,8 +17,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.45.1",
+    "eslint": "^9.36.0",
     "@types/node": "22.15.3",
     "husky": "^9.0.0",
+    "lint-staged": "^15.2.11",
     "prettier": "^3.2.5",
     "turbo": "^2.7.6",
     "typescript": "5.9.3"

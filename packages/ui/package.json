@@ -11,8 +11,8 @@
     "./tabs/*": "./src/components/tabs/*.tsx",
     "./admin/*": "./src/components/admin/*.tsx",
     "./forms/*": "./src/components/forms/*.tsx",
-    "./settings-list": "./src/components/settings-list/index.tsx",
-    "./settings-list/*": "./src/components/settings-list/*.tsx",
+    "./menu-list": "./src/components/menu-list/index.tsx",
+    "./menu-list/*": "./src/components/menu-list/*.tsx",
     "./hooks": "./src/hooks.ts",
     "./form-action-state": "./src/form-action-state.ts"
   },
@@ -21,7 +21,8 @@
     "lint:dev": "eslint .",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
-    "prettier": "prettier . --write"
+    "prettier": "prettier . --write",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "devDependencies": {
     "@pigment-css/nextjs-plugin": "^0.0.30",

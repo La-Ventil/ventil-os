@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",
     "lint:dev": "eslint \"src/**/*.ts*\"",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "exports": {
     ".": "./src/index.ts",

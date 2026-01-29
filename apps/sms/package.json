@@ -12,7 +12,8 @@
     "start": "node -r esbuild-register src/index.ts",
     "test": "jest --detectOpenHandles",
     "cli": "serialport-terminal -b 9600",
-    "list": "serialport-terminal -l"
+    "list": "serialport-terminal -l",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "jest": {
     "preset": "@repo/jest-presets/node"

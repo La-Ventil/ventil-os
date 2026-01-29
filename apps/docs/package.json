@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "echo \"skip lint (docs)\"",
     "lint:dev": "echo \"skip lint:dev (docs)\"",
-    "check-types": "echo \"skip check-types (docs)\""
+    "check-types": "echo \"skip check-types (docs)\"",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "dependencies": {
     "@repo/ui": "workspace:*",

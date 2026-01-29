@@ -1,2 +1,2 @@
 pnpm check-types
-pnpm lint:dev
+pnpm lint:staged

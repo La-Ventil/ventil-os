@@ -5,5 +5,8 @@
   "private": true,
   "exports": {
     "./*": "./*.ts"
+  },
+  "scripts": {
+    "lint:staged": "echo \"skip lint:staged (domain)\""
   }
 }

@@ -14,7 +14,8 @@
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",
     "lint:dev": "eslint \"src/**/*.ts*\"",
     "check-types": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "jest": {
     "preset": "@repo/jest-presets/node"
