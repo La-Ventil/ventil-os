@@ -1,15 +1,24 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { listAdminMachines } from '@repo/application';
+import { canManageBadgesUser, listAdminMachines } from '@repo/application';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminMachinesTable from './admin-machines-table';
+import { getServerSession } from '../../../../lib/auth';
+import { redirect } from 'next/navigation';
 
 export default async function AdminMachinesPage() {
+  const session = await getServerSession();
+  const canManageBadges = canManageBadgesUser(session?.user);
+
+  if (!session || !canManageBadges) {
+    redirect('/hub/profile');
+  }
+
   const t = await getTranslations('pages.hub.admin.machines');
   const machines = await listAdminMachines();
 
@@ -53,11 +62,7 @@ export default async function AdminMachinesPage() {
       </AdminActionsSection>
 
       <Section pt={0}>
-        <AdminMachinesTable
-          machines={machines}
-          columns={labels.columns}
-          statusLabelFor={statusLabelFor}
-        />
+        <AdminMachinesTable machines={machines} columns={labels.columns} statusLabelFor={statusLabelFor} />
       </Section>
     </>
   );

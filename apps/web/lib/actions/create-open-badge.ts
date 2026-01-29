@@ -7,19 +7,14 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
-const buildValues = (
-  formData: FormData,
-  previousValues: OpenBadgeCreateFormInput
-): OpenBadgeCreateFormInput => ({
+const buildValues = (formData: FormData, previousValues: OpenBadgeCreateFormInput): OpenBadgeCreateFormInput => ({
   name: formData.get('name')?.toString() ?? previousValues.name,
   description: formData.get('description')?.toString() ?? previousValues.description,
   imageUrl: formData.get('imageUrl')?.toString() ?? previousValues.imageUrl,
   levelTitle: formData.get('levelTitle')?.toString() ?? previousValues.levelTitle,
-  levelDescription:
-    formData.get('levelDescription')?.toString() ?? previousValues.levelDescription,
+  levelDescription: formData.get('levelDescription')?.toString() ?? previousValues.levelDescription,
   deliveryEnabled: formData.get('deliveryEnabled') === 'on',
-  deliveryLevel:
-    formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
+  deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
   activationEnabled: formData.get('activationEnabled') === 'on'
 });
 
@@ -42,7 +37,7 @@ export async function createOpenBadge(
     };
   }
   const values = buildValues(formData, previousState.values);
-  const { success, data, error } = openBadgeCreateFormSchema.safeParse(formData);
+  const { success, data, error } = openBadgeCreateFormSchema.safeParse(values);
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);

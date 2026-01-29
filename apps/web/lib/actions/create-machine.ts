@@ -7,10 +7,7 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
-const buildValues = (
-  formData: FormData,
-  previousValues: MachineCreateFormInput
-): MachineCreateFormInput => ({
+const buildValues = (formData: FormData, previousValues: MachineCreateFormInput): MachineCreateFormInput => ({
   name: formData.get('name')?.toString() ?? previousValues.name,
   description: formData.get('description')?.toString() ?? previousValues.description,
   imageUrl: formData.get('imageUrl')?.toString() ?? previousValues.imageUrl,
@@ -38,7 +35,7 @@ export async function createMachine(
     };
   }
   const values = buildValues(formData, previousState.values);
-  const { success, data, error } = machineCreateFormSchema.safeParse(formData);
+  const { success, data, error } = machineCreateFormSchema.safeParse(values);
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);

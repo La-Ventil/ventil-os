@@ -1,15 +1,24 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { listAdminOpenBadges } from '@repo/application';
+import { canManageBadgesUser, listAdminOpenBadges } from '@repo/application';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminOpenBadgesTable from './admin-open-badges-table';
+import { getServerSession } from '../../../../lib/auth';
+import { redirect } from 'next/navigation';
 
 export default async function AdminOpenBadgesPage() {
+  const session = await getServerSession();
+  const canManageBadges = canManageBadgesUser(session?.user);
+
+  if (!session || !canManageBadges) {
+    redirect('/hub/profile');
+  }
+
   const t = await getTranslations('pages.hub.admin.openBadges');
   const badges = await listAdminOpenBadges();
 
@@ -52,11 +61,7 @@ export default async function AdminOpenBadgesPage() {
       </AdminActionsSection>
 
       <Section pt={0}>
-        <AdminOpenBadgesTable
-          badges={badges}
-          columns={labels.columns}
-          statusLabelFor={statusLabelFor}
-        />
+        <AdminOpenBadgesTable badges={badges} columns={labels.columns} statusLabelFor={statusLabelFor} />
       </Section>
     </>
   );

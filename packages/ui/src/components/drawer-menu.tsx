@@ -23,9 +23,16 @@ export type DrawerMenuProps = {
   onClose: () => void;
   isAdmin?: boolean;
   canManageUsers?: boolean;
+  canManageBadges?: boolean;
 };
 
-export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUsers = false }: DrawerMenuProps) {
+export default function DrawerMenu({
+  open,
+  onClose,
+  isAdmin = false,
+  canManageUsers = false,
+  canManageBadges = false
+}: DrawerMenuProps) {
   const tDrawer = useTranslations('pages.hub.drawer');
 
   return (
@@ -85,22 +92,26 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
 
         {isAdmin ? (
           <>
-            <MenuListItem
-              icon={<AdminFablabIcon />}
-              label={tDrawer('admin.machineLink')}
-              href="/hub/admin/machines"
-              linkComponent={Link}
-              className={getThemeSectionClassName(ThemeSection.Admin)}
-              onClick={onClose}
-            />
-            <MenuListItem
-              icon={<AdminOpenBadgeIcon />}
-              label={tDrawer('admin.openBadgeLink')}
-              href="/hub/admin/open-badges"
-              linkComponent={Link}
-              className={getThemeSectionClassName(ThemeSection.Admin)}
-              onClick={onClose}
-            />
+            {canManageBadges ? (
+              <>
+                <MenuListItem
+                  icon={<AdminFablabIcon />}
+                  label={tDrawer('admin.machineLink')}
+                  href="/hub/admin/machines"
+                  linkComponent={Link}
+                  className={getThemeSectionClassName(ThemeSection.Admin)}
+                  onClick={onClose}
+                />
+                <MenuListItem
+                  icon={<AdminOpenBadgeIcon />}
+                  label={tDrawer('admin.openBadgeLink')}
+                  href="/hub/admin/open-badges"
+                  linkComponent={Link}
+                  className={getThemeSectionClassName(ThemeSection.Admin)}
+                  onClick={onClose}
+                />
+              </>
+            ) : null}
             {canManageUsers ? (
               <MenuListItem
                 icon={<AdminUserIcon />}
