@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { GlobalStyles, ThemeProvider } from '@mui/material';
+import { CssVarsProvider, GlobalStyles } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { NextIntlClientProvider } from 'next-intl';
 import type { AbstractIntlMessages } from 'next-intl';
@@ -28,12 +28,12 @@ const sectionThemeStyles = Object.fromEntries(
 export default function Providers({ children, locale, messages }: ProvidersProps) {
   return (
     <AppRouterCacheProvider options={{ key: 'mui', prepend: true }}>
-      <ThemeProvider theme={theme}>
+      <CssVarsProvider theme={theme} defaultMode="light">
         <GlobalStyles styles={sectionThemeStyles} />
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
-      </ThemeProvider>
+      </CssVarsProvider>
     </AppRouterCacheProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { createTheme, type PaletteColor } from '@mui/material/styles';
+import { extendTheme, type PaletteColor } from '@mui/material/styles';
 import './mui';
 
 export const ThemeSection = {
@@ -58,8 +58,59 @@ export const sectionPalettes: Record<ThemeSection, PaletteColor> = {
   }
 };
 
-export const theme = createTheme({
-  cssVariables: true,
+export const theme = extendTheme({
+  colorSchemeSelector: 'data-mui-color-scheme',
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#212636',
+          contrastText: '#FFFFFF'
+        },
+        error: {
+          main: '#d32f2f',
+          light: '#FF671B'
+        },
+        success: {
+          main: '#2E7D32',
+          light: '#53E3B8',
+          contrastText: '#FFFFFF'
+        },
+        background: {
+          default: '#FBFBFC',
+          card: '#F0F2F8',
+          paper: '#FFFFFF'
+        },
+        text: {
+          primary: '#212636',
+          secondary: '#646774',
+          disabled: '#646774'
+        },
+        divider: '#D3D6E0',
+        ...sectionPalettes
+      }
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: '#DDE3F5',
+          contrastText: '#1A1D27'
+        },
+        background: {
+          default: '#151923',
+          card: '#1E2331',
+          paper: '#1B2030'
+        },
+        text: {
+          primary: '#EEF1F7',
+          secondary: '#A9B0C4',
+          disabled: '#7D869E'
+        },
+        divider: '#2C3348',
+        ...sectionPalettes
+      }
+    }
+  },
   breakpoints: {
     values: {
       xs: 0,
@@ -68,33 +119,6 @@ export const theme = createTheme({
       lg: 1200,
       xl: 1536
     }
-  },
-  palette: {
-    primary: {
-      main: '#212636',
-      contrastText: '#FFFFFF'
-    },
-    error: {
-      main: '#d32f2f',
-      light: '#FF671B'
-    },
-    success: {
-      main: '#2E7D32',
-      light: '#53E3B8',
-      contrastText: '#FFFFFF'
-    },
-    background: {
-      default: '#FBFBFC',
-      card: '#F0F2F8',
-      paper: '#FFFFFF'
-    },
-    text: {
-      primary: '#212636',
-      secondary: '#646774',
-      disabled: '#646774'
-    },
-    divider: '#D3D6E0',
-    ...sectionPalettes,
   },
   shape: {
     borderRadius: 9

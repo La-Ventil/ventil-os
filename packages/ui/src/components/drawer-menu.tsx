@@ -1,23 +1,21 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import CloseIcon from '@mui/icons-material/Close';
 import BugReportIcon from '@mui/icons-material/BugReport';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
+import SettingsIcon from '@mui/icons-material/Settings';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import type { PaperProps } from '@mui/material/Paper';
 import Link from './link';
-import Section from './section';
-import SectionSubtitle from './section-subtitle';
-import SectionTitle from './section-title';
+import Map from './map';
 import MenuList, { MenuListItem } from './menu-list';
 import styles from './drawer-menu.module.css';
-import { ThemeSection } from '../theme';
 import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';
 import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from './icons/admin-open-badge-icon';
 import { adminUserIcon as AdminUserIcon } from './icons/admin-user-icon';
+import { EventIcon } from './icons/event-icon';
+import { MachineIcon } from './icons/machine-icon';
+import { OpenBadgeIcon } from './icons/open-badge-icon';
+import { logoutIcon as LogoutIcon } from './icons/logout-icon';
 
 export type DrawerMenuProps = {
   open: boolean;
@@ -27,7 +25,7 @@ export type DrawerMenuProps = {
 };
 
 export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUsers = false }: DrawerMenuProps) {
-  const tSettings = useTranslations('pages.hub.settings');
+  const tDrawer = useTranslations('pages.hub.drawer');
 
   return (
     <Drawer
@@ -36,57 +34,61 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
       onClose={onClose}
       slotProps={{
         paper: {
-          className: `${styles.drawer} sectionTheme-${ThemeSection.User}`
-        }
+          className: `${styles.drawer}`,
+          'data-mui-color-scheme': 'dark'
+        } as PaperProps
       }}
     >
-      <IconButton aria-label={tSettings('drawer.closeLabel')} onClick={onClose} size="small">
-        <CloseIcon fontSize="small" />
-      </IconButton>
-      <Section>
-        <SectionTitle>{tSettings('title')}</SectionTitle>
-        <SectionSubtitle>{tSettings('subtitle')}</SectionSubtitle>
-        <Typography variant="body1">{tSettings('intro')}</Typography>
-      </Section>
+      <Map ariaLabel={tDrawer('map.ariaLabel')} />
       <MenuList>
         <MenuListItem
-          icon={<SendIcon />}
-          label={tSettings('profileLink')}
-          href="/hub/settings/profile"
+          icon={<MachineIcon />}
+          label={tDrawer('links.machines')}
+          href="/hub/fab-lab"
           linkComponent={Link}
           onClick={onClose}
         />
         <MenuListItem
-          icon={<DraftsIcon />}
-          label={tSettings('avatarLink')}
-          href="/hub/settings/avatar"
+          icon={<OpenBadgeIcon />}
+          label={tDrawer('links.openBadges')}
+          href="/hub/open-badge"
+          linkComponent={Link}
+          onClick={onClose}
+        />
+        <MenuListItem
+          icon={<EventIcon />}
+          label={tDrawer('links.events')}
+          href="/hub/events"
+          linkComponent={Link}
+          onClick={onClose}
+        />
+        <MenuListItem
+          icon={<SettingsIcon />}
+          label={tDrawer('links.settings')}
+          href="/hub/settings"
           linkComponent={Link}
           onClick={onClose}
         />
         <MenuListItem
           icon={<BugReportIcon />}
-          label={tSettings('supportLink')}
+          label={tDrawer('links.support')}
           href="/hub/support"
           linkComponent={Link}
           onClick={onClose}
         />
-      </MenuList>
-      {isAdmin ? (
-        <>
-          <Section>
-            <SectionSubtitle>{tSettings('admin.title')}</SectionSubtitle>
-          </Section>
-          <MenuList>
+
+        {isAdmin ? (
+          <>
             <MenuListItem
               icon={<AdminFablabIcon />}
-              label={tSettings('admin.machineLink')}
+              label={tDrawer('admin.machineLink')}
               href="/hub/admin/machines"
               linkComponent={Link}
               onClick={onClose}
             />
             <MenuListItem
               icon={<AdminOpenBadgeIcon />}
-              label={tSettings('admin.openBadgeLink')}
+              label={tDrawer('admin.openBadgeLink')}
               href="/hub/admin/open-badges"
               linkComponent={Link}
               onClick={onClose}
@@ -94,15 +96,22 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
             {canManageUsers ? (
               <MenuListItem
                 icon={<AdminUserIcon />}
-                label={tSettings('admin.userLink')}
+                label={tDrawer('admin.userLink')}
                 href="/hub/admin/users"
                 linkComponent={Link}
                 onClick={onClose}
               />
             ) : null}
-          </MenuList>
-        </>
-      ) : null}
+          </>
+        ) : null}
+        <MenuListItem
+          icon={<LogoutIcon />}
+          label={tDrawer('links.signout')}
+          href="/api/auth/signout"
+          linkComponent={Link}
+          onClick={onClose}
+        />
+      </MenuList>
     </Drawer>
   );
 }

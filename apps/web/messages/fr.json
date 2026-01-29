@@ -136,12 +136,28 @@
           "openBadgeLink": "Administration open badge",
           "userLink": "Administration utilisateurs"
         },
-        "drawer": {
-          "open": "Ouvrir le menu",
-          "title": "Paramètres",
-          "closeLabel": "Fermer"
-        },
         "supportLink": "Support"
+      },
+      "drawer": {
+        "open": "Ouvrir le menu",
+        "closeLabel": "Fermer",
+        "map": {
+          "ariaLabel": "Plan du lab"
+        },
+        "links": {
+          "machines": "Machine",
+          "openBadges": "Open badge",
+          "events": "Agenda",
+          "settings": "Paramètres",
+          "support": "Support",
+          "signout": "Déconnexion"
+        },
+        "admin": {
+          "title": "Administration",
+          "machineLink": "Administration machine",
+          "openBadgeLink": "Administration open badge",
+          "userLink": "Administration utilisateurs"
+        }
       },
       "admin": {
         "title": "Administration",
