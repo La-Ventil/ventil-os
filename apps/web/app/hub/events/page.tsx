@@ -12,6 +12,7 @@ import { EventIcon } from '@repo/ui/icons/event-icon';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import CardList from '@repo/ui/card-list';
 
 const eventRepository = new EventRepositoryMock();
 
@@ -42,11 +43,11 @@ export default function Page(): JSX.Element {
         <Tab label={t('tabs.mine')} />
       </Tabs>
 
-      <Section>
+      <CardList>
         {events.map((event) => (
           <EventCard key={event.id} event={event} t={t} />
         ))}
-      </Section>
+      </CardList>
     </>
   );
 }

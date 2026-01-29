@@ -1,12 +1,11 @@
-import type { ReactNode } from 'react';
-import Section from './section';
-import type { SectionProps } from './section';
+import { Stack, type StackProps } from '@mui/material';
 
-export type CardListProps = {
-  children: ReactNode;
-  sectionProps?: SectionProps;
-};
+export type CardListProps = StackProps;
 
-export default function CardList({ children, sectionProps }: CardListProps) {
-  return <Section {...sectionProps}>{children}</Section>;
+export default function CardList({ children, component = 'section', p = 2, spacing = 2, ...props }: CardListProps) {
+  return (
+    <Stack component={component} p={p} spacing={spacing} {...props}>
+      {children}
+    </Stack>
+  );
 }

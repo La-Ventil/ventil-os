@@ -1,5 +1,6 @@
 .drawer {
   border-radius: 0;
   width: min(320px, 90vw);
-  background-color: var(--mui-palette-drawer-main);
+  background-color: var(--mui-palette-background-paper);
+  color: var(--mui-palette-text-primary);
 }

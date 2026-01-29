@@ -44,7 +44,7 @@ export default function Page(): JSX.Element {
         <Tab label={t('tabs.reservations')} />
       </Tabs>
 
-      <CardList sectionProps={{ component: 'section' }}>
+      <CardList component="section">
         {machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} t={t} />
         ))}
