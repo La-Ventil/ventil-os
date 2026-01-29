@@ -13,6 +13,9 @@ export const ThemeSection = {
 
 export type ThemeSection = (typeof ThemeSection)[keyof typeof ThemeSection];
 
+export const themeSectionClassPrefix = 'sectionTheme-';
+export const getThemeSectionClassName = (section: ThemeSection) => `${themeSectionClassPrefix}${section}`;
+
 export const sectionPalettes: Record<ThemeSection, PaletteColor> = {
   [ThemeSection.FabLab]: {
     light: '#CFD5E9',

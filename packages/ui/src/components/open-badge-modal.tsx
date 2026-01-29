@@ -18,7 +18,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import Section from './section';
 import SectionSubtitle from './section-subtitle';
 import SectionTitle from './section-title';
-import { ThemeSection } from '../theme';
+import { getThemeSectionClassName, ThemeSection } from '../theme';
 import styles from './open-badge-modal.module.css';
 
 export type OpenBadgeModalProps = {
@@ -27,11 +27,7 @@ export type OpenBadgeModalProps = {
   onClose: () => void;
 };
 
-export default function OpenBadgeModal({
-  openBadge,
-  open,
-  onClose
-}: OpenBadgeModalProps): JSX.Element | null {
+export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeModalProps): JSX.Element | null {
   const t = useTranslations('pages.hub.openBadges');
   if (!openBadge) {
     return null;
@@ -46,7 +42,7 @@ export default function OpenBadgeModal({
       maxWidth="sm"
       slotProps={{
         paper: {
-          className: `${styles.modal} sectionTheme-${ThemeSection.OpenBadge}`
+          className: `${styles.modal} ${getThemeSectionClassName(ThemeSection.OpenBadge)}`
         }
       }}
     >

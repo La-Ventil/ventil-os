@@ -5,7 +5,7 @@ import { CssVarsProvider, GlobalStyles } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { NextIntlClientProvider } from 'next-intl';
 import type { AbstractIntlMessages } from 'next-intl';
-import { ThemeSection, sectionPalettes, theme } from '@repo/ui/theme';
+import { themeSectionClassPrefix, ThemeSection, sectionPalettes, theme } from '@repo/ui/theme';
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ type ProvidersProps = {
 
 const sectionThemeStyles = Object.fromEntries(
   (Object.values(ThemeSection) as ThemeSection[]).map((section) => [
-    `.sectionTheme-${section}`,
+    `.${themeSectionClassPrefix}${section}`,
     {
       '--mui-palette-secondary-light': sectionPalettes[section].light,
       '--mui-palette-secondary-main': sectionPalettes[section].main,

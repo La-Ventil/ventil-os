@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
@@ -17,7 +17,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
-import { ThemeSection } from '../../theme';
+import { getThemeSectionClassName, ThemeSection } from '../../theme';
 import styles from './assign-open-badge-dialog.module.css';
 
 type AssignOpenBadgeDialogProps = {
@@ -58,9 +58,7 @@ export default function AssignOpenBadgeDialog({
   const selectedBadge = openBadges.find((badge) => badge.id === selectedBadgeId) ?? openBadges[0];
 
   const levelOptions = selectedBadge?.levels ?? [];
-  const [selectedLevel, setSelectedLevel] = useState(
-    levelOptions[0] ? String(levelOptions[0].level) : ''
-  );
+  const [selectedLevel, setSelectedLevel] = useState(levelOptions[0] ? String(levelOptions[0].level) : '');
 
   const userOptions = useMemo(() => users, [users]);
   const selectedUserId = user?.id ?? users[0]?.id ?? '';
@@ -69,9 +67,7 @@ export default function AssignOpenBadgeDialog({
   const handleBadgeChange = (badgeId: string) => {
     setSelectedBadgeId(badgeId);
     const badge = openBadges.find((item) => item.id === badgeId);
-    const nextLevel = badge?.levels?.[0]
-      ? String(badge.levels[0].level)
-      : '';
+    const nextLevel = badge?.levels?.[0] ? String(badge.levels[0].level) : '';
     setSelectedLevel(nextLevel);
   };
 
@@ -101,7 +97,7 @@ export default function AssignOpenBadgeDialog({
       maxWidth="sm"
       slotProps={{
         paper: {
-          className: `${styles.modal} sectionTheme-${ThemeSection.OpenBadge}`
+          className: `${styles.modal} ${getThemeSectionClassName(ThemeSection.OpenBadge)}`
         }
       }}
     >
@@ -164,10 +160,7 @@ export default function AssignOpenBadgeDialog({
                 onChange={(event) => setSelectedLevel(event.target.value)}
               >
                 {levelOptions.map((level) => (
-                  <MenuItem
-                    key={`${selectedBadgeId}-${level.level}`}
-                    value={String(level.level)}
-                  >
+                  <MenuItem key={`${selectedBadgeId}-${level.level}`} value={String(level.level)}>
                     {level.title}
                   </MenuItem>
                 ))}
@@ -176,12 +169,7 @@ export default function AssignOpenBadgeDialog({
 
             <FormControl fullWidth>
               <InputLabel id="assign-open-badge-user-label">{labels.userLabel}</InputLabel>
-              <Select
-                labelId="assign-open-badge-user-label"
-                label={labels.userLabel}
-                value={selectedUserId}
-                disabled
-              >
+              <Select labelId="assign-open-badge-user-label" label={labels.userLabel} value={selectedUserId} disabled>
                 {userOptions.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.label}
@@ -196,12 +184,7 @@ export default function AssignOpenBadgeDialog({
           <Button variant="outlined" fullWidth onClick={onClose}>
             {labels.cancel}
           </Button>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleAssign}
-            disabled={!canSubmit || isSubmitting}
-          >
+          <Button variant="contained" fullWidth onClick={handleAssign} disabled={!canSubmit || isSubmitting}>
             {labels.confirm}
           </Button>
         </Section>

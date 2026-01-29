@@ -16,6 +16,7 @@ import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { logoutIcon as LogoutIcon } from './icons/logout-icon';
+import { getThemeSectionClassName, ThemeSection } from '../theme';
 
 export type DrawerMenuProps = {
   open: boolean;
@@ -46,6 +47,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.machines')}
           href="/hub/fab-lab"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.FabLab)}
           onClick={onClose}
         />
         <MenuListItem
@@ -53,6 +55,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.openBadges')}
           href="/hub/open-badge"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.OpenBadge)}
           onClick={onClose}
         />
         <MenuListItem
@@ -60,6 +63,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.events')}
           href="/hub/events"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.Event)}
           onClick={onClose}
         />
         <MenuListItem
@@ -67,6 +71,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.settings')}
           href="/hub/settings"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.User)}
           onClick={onClose}
         />
         <MenuListItem
@@ -74,6 +79,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.support')}
           href="/hub/support"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.Support)}
           onClick={onClose}
         />
 
@@ -84,6 +90,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
               label={tDrawer('admin.machineLink')}
               href="/hub/admin/machines"
               linkComponent={Link}
+              className={getThemeSectionClassName(ThemeSection.Admin)}
               onClick={onClose}
             />
             <MenuListItem
@@ -91,6 +98,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
               label={tDrawer('admin.openBadgeLink')}
               href="/hub/admin/open-badges"
               linkComponent={Link}
+              className={getThemeSectionClassName(ThemeSection.Admin)}
               onClick={onClose}
             />
             {canManageUsers ? (
@@ -99,6 +107,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
                 label={tDrawer('admin.userLink')}
                 href="/hub/admin/users"
                 linkComponent={Link}
+                className={getThemeSectionClassName(ThemeSection.Admin)}
                 onClick={onClose}
               />
             ) : null}
@@ -109,6 +118,7 @@ export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUs
           label={tDrawer('links.signout')}
           href="/api/auth/signout"
           linkComponent={Link}
+          className={getThemeSectionClassName(ThemeSection.Support)}
           onClick={onClose}
         />
       </MenuList>

@@ -1,0 +1,15 @@
+.item {
+  color: inherit;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  background: var(--mui-palette-secondary-main);
+  color: var(--mui-palette-secondary-contrastText);
+  border-radius: 6px;
+}
+
+.item :global(.MuiListItemIcon-root) {
+  min-width: auto;
+}
