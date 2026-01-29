@@ -11,3 +11,6 @@ export const isGlobalAdmin = (flags?: AdminFlags | null): boolean =>
 
 export const canManageUsers = (flags?: AdminFlags | null): boolean =>
   isGlobalAdmin(flags);
+
+export const canManageBadges = (flags?: AdminFlags | null): boolean =>
+  isAdmin(flags);

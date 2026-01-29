@@ -1,4 +1,5 @@
 import {
+  canManageBadges,
   canManageUsers,
   isAdmin,
   isGlobalAdmin,
@@ -11,3 +12,6 @@ export const isGlobalAdminUser = (user?: AdminFlags | null): boolean => isGlobal
 
 export const canManageUsersUser = (user?: AdminFlags | null): boolean =>
   canManageUsers(user);
+
+export const canManageBadgesUser = (user?: AdminFlags | null): boolean =>
+  canManageBadges(user);

@@ -18,3 +18,23 @@ export const getMachineById = async (id: string): Promise<MachineViewModel | nul
   const machine = await machineRepository.getMachineById(id);
   return machine ? mapMachineToViewModel(machine) : null;
 };
+
+const DEFAULT_MACHINE_CATEGORY = 'Machine';
+
+export type CreateMachineInput = {
+  name: string;
+  description: string;
+  imageUrl: string;
+  activationEnabled: boolean;
+  creatorId: string;
+};
+
+export const createMachine = async (input: CreateMachineInput) =>
+  machineRepository.createMachine({
+    name: input.name,
+    description: input.description,
+    imageUrl: input.imageUrl,
+    status: input.activationEnabled ? 'active' : 'inactive',
+    creatorId: input.creatorId,
+    category: DEFAULT_MACHINE_CATEGORY
+  });

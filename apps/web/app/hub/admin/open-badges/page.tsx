@@ -44,9 +44,11 @@ export default async function AdminOpenBadgesPage() {
       </Section>
 
       <AdminActionsSection>
-        <AdminButton variant="contained" component={Link} href="/hub/admin/open-badges/create">
-          {labels.actions.create}
-        </AdminButton>
+        <Link href="/hub/admin/open-badges/create">
+          <AdminButton variant="contained" component="span">
+            {labels.actions.create}
+          </AdminButton>
+        </Link>
       </AdminActionsSection>
 
       <Section pt={0}>

@@ -145,6 +145,9 @@ export default function OpenBadgeCreateForm({
         <Typography variant="body1" className={styles.sectionDescription}>
           {t('activation.description')}
         </Typography>
+        <Typography variant="body2" className={styles.sectionNote} fontStyle="italic">
+          {t('activation.note')}
+        </Typography>
         <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
       </FormSection>
 

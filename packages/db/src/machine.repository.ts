@@ -1,4 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
+import type { ActivityStatus } from '@prisma/client';
 import type { MachineAdminSchema, MachineSchema } from './schemas/machine';
 
 export class MachineRepository {
@@ -38,5 +39,27 @@ export class MachineRepository {
     });
 
     return machines as MachineAdminSchema[];
+  }
+
+  async createMachine(input: {
+    name: string;
+    category: string;
+    description?: string | null;
+    imageUrl?: string | null;
+    status: ActivityStatus;
+    creatorId: string;
+  }): Promise<MachineSchema> {
+    const machine = await this.prisma.machine.create({
+      data: {
+        name: input.name,
+        category: input.category,
+        description: input.description ?? null,
+        imageUrl: input.imageUrl ?? null,
+        status: input.status,
+        creatorId: input.creatorId
+      }
+    });
+
+    return machine as MachineSchema;
   }
 }

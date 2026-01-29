@@ -10,6 +10,10 @@
   gap: 16px;
 }
 
+.feedback {
+  margin-top: 8px;
+}
+
 .formSection {
   display: flex;
   gap: 24px;

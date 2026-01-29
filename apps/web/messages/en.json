@@ -209,7 +209,8 @@
           },
           "activation": {
             "title": "Activation",
-            "description": "If the badge is active, it can be assigned to users. If linked to a machine, that machine will also become inactive."
+            "description": "If the badge is active, it can be assigned to users.",
+            "note": "If linked to a machine, that machine will also become inactive."
           },
           "actions": {
             "back": "Back",
@@ -274,7 +275,8 @@
             "userLabel": "User",
             "cancel": "Back",
             "confirm": "Assign",
-            "illustrationPlaceholder": "Illustration in progress"
+            "illustrationPlaceholder": "Illustration in progress",
+            "error": "Unable to assign the open badge."
           }
         }
       },

@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import FormControl from '@mui/material/FormControl';
+import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -34,9 +35,11 @@ type AssignOpenBadgeDialogProps = {
     cancel: string;
     confirm: string;
     illustrationPlaceholder: string;
+    error: string;
   };
   isSubmitting?: boolean;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
+  feedback?: { type: 'error' | 'success'; message: string } | null;
 };
 
 export default function AssignOpenBadgeDialog({
@@ -47,7 +50,8 @@ export default function AssignOpenBadgeDialog({
   openBadges,
   labels,
   isSubmitting = false,
-  onConfirm
+  onConfirm,
+  feedback = null
 }: AssignOpenBadgeDialogProps) {
   const defaultBadgeId = openBadges[0]?.id ?? '';
   const [selectedBadgeId, setSelectedBadgeId] = useState(defaultBadgeId);
@@ -105,6 +109,11 @@ export default function AssignOpenBadgeDialog({
         <IconButton aria-label={labels.cancel} onClick={onClose} size="small">
           <CloseIcon fontSize="small" />
         </IconButton>
+        {feedback ? (
+          <Alert severity={feedback.type} className={styles.feedback}>
+            {feedback.message}
+          </Alert>
+        ) : null}
         <SectionTitle>{labels.title}</SectionTitle>
         <Section>
           <SectionSubtitle>{labels.subtitle}</SectionSubtitle>

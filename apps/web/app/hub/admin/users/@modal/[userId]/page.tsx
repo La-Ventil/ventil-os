@@ -38,7 +38,8 @@ export default async function AdminUsersModalPage({
         userLabel: t('assignModal.userLabel'),
         cancel: t('assignModal.cancel'),
         confirm: t('assignModal.confirm'),
-        illustrationPlaceholder: t('assignModal.illustrationPlaceholder')
+        illustrationPlaceholder: t('assignModal.illustrationPlaceholder'),
+        error: t('assignModal.error')
       }}
       closeHref="/hub/admin/users"
     />

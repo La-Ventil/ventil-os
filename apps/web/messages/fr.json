@@ -206,7 +206,8 @@
           },
           "activation": {
             "title": "Activation",
-            "description": "Si le badge est actif, il pourra être attribué aux utilisateurs. Si le badge est lié à une machine, cette machine deviendra elle aussi inactive."
+            "description": "Si le badge est actif, il pourra être attribué aux utilisateurs.",
+            "note": "Si le badge est lié à une machine, cette machine deviendra elle aussi inactive."
           },
           "actions": {
             "back": "Retour",
@@ -271,7 +272,8 @@
             "userLabel": "Utilisateur",
             "cancel": "Retour",
             "confirm": "Attribuer",
-            "illustrationPlaceholder": "Illustration en cours"
+            "illustrationPlaceholder": "Illustration en cours",
+            "error": "Impossible d’attribuer l’open badge."
           }
         }
       },

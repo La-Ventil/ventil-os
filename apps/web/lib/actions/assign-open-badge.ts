@@ -1,6 +1,6 @@
 'use server';
 
-import { awardOpenBadgeLevel, isAdminUser } from '@repo/application';
+import { awardOpenBadgeLevel, canManageBadgesUser } from '@repo/application';
 import { getServerSession } from '../auth';
 
 type AssignOpenBadgeInput = {
@@ -12,7 +12,7 @@ type AssignOpenBadgeInput = {
 export async function assignOpenBadge(input: AssignOpenBadgeInput) {
   const session = await getServerSession();
 
-  if (!session || !isAdminUser(session.user)) {
+  if (!session || !canManageBadgesUser(session.user)) {
     throw new Error('Unauthorized');
   }
 

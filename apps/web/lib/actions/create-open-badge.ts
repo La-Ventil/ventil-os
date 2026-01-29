@@ -1,12 +1,11 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import {
-  openBadgeCreateFormSchema,
-  type OpenBadgeCreateFormInput
-} from '@repo/application/forms';
+import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
+import { canManageBadgesUser, createOpenBadge as createOpenBadgeRecord } from '@repo/application';
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { getServerSession } from '../auth';
 
 const buildValues = (
   formData: FormData,
@@ -29,6 +28,19 @@ export async function createOpenBadge(
   formData: FormData
 ): Promise<FormState<OpenBadgeCreateFormInput>> {
   const t = await getTranslations();
+  const session = await getServerSession();
+  const canManageBadges = canManageBadgesUser(session?.user);
+
+  if (!session || !canManageBadges) {
+    return {
+      message: t('openBadge.create.unauthorized', {
+        defaultMessage: "Vous n'êtes pas autorisé à créer un open badge."
+      }),
+      isValid: false,
+      fieldErrors: {},
+      values: previousState.values
+    };
+  }
   const values = buildValues(formData, previousState.values);
   const { success, data, error } = openBadgeCreateFormSchema.safeParse(formData);
 
@@ -44,7 +56,10 @@ export async function createOpenBadge(
 
   try {
     const parsed: OpenBadgeCreateFormInput = data;
-    void parsed;
+    await createOpenBadgeRecord({
+      ...parsed,
+      creatorId: session.user.id
+    });
 
     return {
       values,

@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient, ActivityStatus } from '@prisma/client';
 import type {
   OpenBadgeAdminSchema,
   OpenBadgeProgressSchema,
@@ -153,5 +153,44 @@ export class OpenBadgeRepository {
 
       return progress;
     });
+  }
+
+  async createOpenBadge(input: {
+    name: string;
+    type: string;
+    category: string;
+    description?: string | null;
+    coverImage?: string | null;
+    status: ActivityStatus;
+    creatorId: string;
+    levelTitle: string;
+    levelDescription?: string | null;
+  }): Promise<OpenBadgeSchema> {
+    const badge = await this.prisma.openBadge.create({
+      data: {
+        name: input.name,
+        type: input.type,
+        category: input.category,
+        description: input.description ?? null,
+        coverImage: input.coverImage ?? null,
+        status: input.status,
+        creatorId: input.creatorId,
+        levels: {
+          create: {
+            level: 1,
+            title: input.levelTitle,
+            description: input.levelDescription ?? null
+          }
+        }
+      },
+      include: {
+        levels: {
+          select: { level: true, title: true, description: true },
+          orderBy: { level: 'asc' }
+        }
+      }
+    });
+
+    return badge as OpenBadgeSchema;
   }
 }

@@ -45,9 +45,11 @@ export default async function AdminMachinesPage() {
       </Section>
 
       <AdminActionsSection>
-        <AdminButton variant="contained" component={Link} href="/hub/admin/machines/create">
-          {labels.actions.create}
-        </AdminButton>
+        <Link href="/hub/admin/machines/create">
+          <AdminButton variant="contained" component="span">
+            {labels.actions.create}
+          </AdminButton>
+        </Link>
       </AdminActionsSection>
 
       <Section pt={0}>

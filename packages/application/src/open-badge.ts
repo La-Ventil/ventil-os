@@ -32,3 +32,29 @@ export const awardOpenBadgeLevel = async (input: {
   level: number;
   awardedById: string;
 }) => openBadgeRepository.awardOpenBadgeLevel(input);
+
+const DEFAULT_BADGE_TYPE = 'Administration';
+const DEFAULT_BADGE_CATEGORY = 'Machine';
+
+export type CreateOpenBadgeInput = {
+  name: string;
+  description: string;
+  imageUrl: string;
+  levelTitle: string;
+  levelDescription: string;
+  activationEnabled: boolean;
+  creatorId: string;
+};
+
+export const createOpenBadge = async (input: CreateOpenBadgeInput) =>
+  openBadgeRepository.createOpenBadge({
+    name: input.name,
+    description: input.description,
+    coverImage: input.imageUrl,
+    levelTitle: input.levelTitle,
+    levelDescription: input.levelDescription,
+    status: input.activationEnabled ? 'active' : 'inactive',
+    creatorId: input.creatorId,
+    type: DEFAULT_BADGE_TYPE,
+    category: DEFAULT_BADGE_CATEGORY
+  });

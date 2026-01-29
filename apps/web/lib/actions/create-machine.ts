@@ -1,12 +1,11 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import {
-  machineCreateFormSchema,
-  type MachineCreateFormInput
-} from '@repo/application/forms';
+import { machineCreateFormSchema, type MachineCreateFormInput } from '@repo/application/forms';
+import { canManageBadgesUser, createMachine as createMachineRecord } from '@repo/application';
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { getServerSession } from '../auth';
 
 const buildValues = (
   formData: FormData,
@@ -25,6 +24,19 @@ export async function createMachine(
   formData: FormData
 ): Promise<FormState<MachineCreateFormInput>> {
   const t = await getTranslations();
+  const session = await getServerSession();
+  const canManageBadges = canManageBadgesUser(session?.user);
+
+  if (!session || !canManageBadges) {
+    return {
+      message: t('machine.create.unauthorized', {
+        defaultMessage: "Vous n'êtes pas autorisé à créer une machine."
+      }),
+      isValid: false,
+      fieldErrors: {},
+      values: previousState.values
+    };
+  }
   const values = buildValues(formData, previousState.values);
   const { success, data, error } = machineCreateFormSchema.safeParse(formData);
 
@@ -40,7 +52,10 @@ export async function createMachine(
 
   try {
     const parsed: MachineCreateFormInput = data;
-    void parsed;
+    await createMachineRecord({
+      ...parsed,
+      creatorId: session.user.id
+    });
 
     return {
       values,

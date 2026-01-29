@@ -60,14 +60,11 @@ export default function AdminUsersTable({
             <TableCell>{user.eventsCount}</TableCell>
             <TableCell>{user.openBadgesCount}</TableCell>
             <TableCell align="right">
-              <Button
-                size="small"
-                variant="outlined"
-                component={Link}
-                href={assignHrefFor ? assignHrefFor(user) : `/hub/admin/users/${user.id}`}
-              >
-                {columns.assign}
-              </Button>
+              <Link href={assignHrefFor ? assignHrefFor(user) : `/hub/admin/users/${user.id}`}>
+                <Button size="small" variant="outlined" component="span">
+                  {columns.assign}
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
         ))}

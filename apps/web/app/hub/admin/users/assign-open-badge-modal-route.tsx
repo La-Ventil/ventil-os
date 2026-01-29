@@ -21,6 +21,7 @@ type AssignOpenBadgeModalRouteProps = {
     cancel: string;
     confirm: string;
     illustrationPlaceholder: string;
+    error: string;
   };
   closeHref: string;
 };
@@ -35,6 +36,9 @@ export default function AssignOpenBadgeModalRoute({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(Boolean(user));
   const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(
+    null
+  );
 
   useEffect(() => {
     setIsOpen(Boolean(user));
@@ -50,11 +54,13 @@ export default function AssignOpenBadgeModalRoute({
       onConfirm={(payload) => {
         startTransition(async () => {
           try {
+            setFeedback(null);
             await assignOpenBadge(payload);
             setIsOpen(false);
             router.push(closeHref);
           } catch (error) {
             console.error(error);
+            setFeedback({ type: 'error', message: labels.error });
           }
         });
       }}
@@ -63,6 +69,7 @@ export default function AssignOpenBadgeModalRoute({
       openBadges={openBadges}
       labels={labels}
       isSubmitting={isPending}
+      feedback={feedback}
     />
   );
 }
