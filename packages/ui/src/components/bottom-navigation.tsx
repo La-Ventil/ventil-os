@@ -8,7 +8,7 @@ import MuiBottomNavigation from '@mui/material/BottomNavigation';
 import BottomSlot from './bottom-slot';
 import { hubNavigationItems } from './hub-navigation';
 import Link from './link';
-import ParametersDrawer from './parameters-drawer';
+import DrawerMenu from './drawer-menu';
 import styles from './bottom-navigation.module.css';
 
 export type BottomNavigationProps = {
@@ -16,10 +16,7 @@ export type BottomNavigationProps = {
   canManageUsers?: boolean;
 };
 
-export default function BottomNavigation({
-  isAdmin = false,
-  canManageUsers = false
-}: BottomNavigationProps) {
+export default function BottomNavigation({ isAdmin = false, canManageUsers = false }: BottomNavigationProps) {
   const t = useTranslations('pages.hub.navigation');
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -49,7 +46,7 @@ export default function BottomNavigation({
           />
         ))}
       </MuiBottomNavigation>
-      <ParametersDrawer
+      <DrawerMenu
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         isAdmin={isAdmin}

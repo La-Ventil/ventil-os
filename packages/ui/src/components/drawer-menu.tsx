@@ -12,26 +12,21 @@ import Link from './link';
 import Section from './section';
 import SectionSubtitle from './section-subtitle';
 import SectionTitle from './section-title';
-import SettingsList, { SettingsListItem } from './settings-list';
-import styles from './parameters-drawer.module.css';
+import MenuList, { MenuListItem } from './menu-list';
+import styles from './drawer-menu.module.css';
 import { ThemeSection } from '../theme';
 import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';
 import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from './icons/admin-open-badge-icon';
 import { adminUserIcon as AdminUserIcon } from './icons/admin-user-icon';
 
-export type ParametersDrawerProps = {
+export type DrawerMenuProps = {
   open: boolean;
   onClose: () => void;
   isAdmin?: boolean;
   canManageUsers?: boolean;
 };
 
-export default function ParametersDrawer({
-  open,
-  onClose,
-  isAdmin = false,
-  canManageUsers = false
-}: ParametersDrawerProps) {
+export default function DrawerMenu({ open, onClose, isAdmin = false, canManageUsers = false }: DrawerMenuProps) {
   const tSettings = useTranslations('pages.hub.settings');
 
   return (
@@ -45,51 +40,51 @@ export default function ParametersDrawer({
         }
       }}
     >
-        <IconButton aria-label={tSettings('drawer.closeLabel')} onClick={onClose} size="small">
-          <CloseIcon fontSize="small" />
-        </IconButton>
+      <IconButton aria-label={tSettings('drawer.closeLabel')} onClick={onClose} size="small">
+        <CloseIcon fontSize="small" />
+      </IconButton>
       <Section>
-          <SectionTitle>{tSettings('title')}</SectionTitle>
-          <SectionSubtitle>{tSettings('subtitle')}</SectionSubtitle>
-          <Typography variant="body1">{tSettings('intro')}</Typography>
+        <SectionTitle>{tSettings('title')}</SectionTitle>
+        <SectionSubtitle>{tSettings('subtitle')}</SectionSubtitle>
+        <Typography variant="body1">{tSettings('intro')}</Typography>
       </Section>
-      <SettingsList>
-        <SettingsListItem
+      <MenuList>
+        <MenuListItem
           icon={<SendIcon />}
           label={tSettings('profileLink')}
           href="/hub/settings/profile"
           linkComponent={Link}
           onClick={onClose}
         />
-        <SettingsListItem
+        <MenuListItem
           icon={<DraftsIcon />}
           label={tSettings('avatarLink')}
           href="/hub/settings/avatar"
           linkComponent={Link}
           onClick={onClose}
         />
-        <SettingsListItem
+        <MenuListItem
           icon={<BugReportIcon />}
           label={tSettings('supportLink')}
           href="/hub/support"
           linkComponent={Link}
           onClick={onClose}
         />
-      </SettingsList>
+      </MenuList>
       {isAdmin ? (
         <>
           <Section>
             <SectionSubtitle>{tSettings('admin.title')}</SectionSubtitle>
           </Section>
-          <SettingsList>
-            <SettingsListItem
+          <MenuList>
+            <MenuListItem
               icon={<AdminFablabIcon />}
               label={tSettings('admin.machineLink')}
               href="/hub/admin/machines"
               linkComponent={Link}
               onClick={onClose}
             />
-            <SettingsListItem
+            <MenuListItem
               icon={<AdminOpenBadgeIcon />}
               label={tSettings('admin.openBadgeLink')}
               href="/hub/admin/open-badges"
@@ -97,7 +92,7 @@ export default function ParametersDrawer({
               onClick={onClose}
             />
             {canManageUsers ? (
-              <SettingsListItem
+              <MenuListItem
                 icon={<AdminUserIcon />}
                 label={tSettings('admin.userLink')}
                 href="/hub/admin/users"
@@ -105,7 +100,7 @@ export default function ParametersDrawer({
                 onClick={onClose}
               />
             ) : null}
-          </SettingsList>
+          </MenuList>
         </>
       ) : null}
     </Drawer>

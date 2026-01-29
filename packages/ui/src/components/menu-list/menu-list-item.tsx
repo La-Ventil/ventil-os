@@ -4,7 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-export type SettingsListItemProps = {
+export type MenuListItemProps = {
   icon: React.ReactNode;
   label: React.ReactNode;
   href: string;
@@ -12,13 +12,7 @@ export type SettingsListItemProps = {
   onClick?: () => void;
 };
 
-export default function SettingsListItem({
-  icon,
-  label,
-  href,
-  linkComponent,
-  onClick
-}: SettingsListItemProps) {
+export default function MenuListItem({ icon, label, href, linkComponent, onClick }: MenuListItemProps) {
   return (
     <ListItemButton component={linkComponent} href={href} onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
