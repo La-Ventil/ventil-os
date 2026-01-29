@@ -1,25 +1,18 @@
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import CardList from './card-list';
 import OpenBadgeCard from './open-badge-card';
-import Section from './section';
 
 export type OpenBadgeListProps = {
   badges: OpenBadgeViewModel[];
   getBadgeHref?: (badgeId: string) => string;
 };
 
-export default function OpenBadgeList({
-  badges,
-  getBadgeHref
-}: OpenBadgeListProps) {
+export default function OpenBadgeList({ badges, getBadgeHref }: OpenBadgeListProps) {
   return (
-    <Section>
+    <CardList>
       {badges.map((badge) => (
-        <OpenBadgeCard
-          key={badge.id}
-          badge={badge}
-          href={getBadgeHref ? getBadgeHref(badge.id) : undefined}
-        />
+        <OpenBadgeCard key={badge.id} badge={badge} href={getBadgeHref ? getBadgeHref(badge.id) : undefined} />
       ))}
-    </Section>
+    </CardList>
   );
 }

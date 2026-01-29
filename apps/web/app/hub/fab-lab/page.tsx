@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import type { MachineViewModel } from '@repo/view-models/machine';
 import { MachineRepositoryMock } from '@repo/application/mocks';
+import CardList from '@repo/ui/card-list';
 import MachineCard from '@repo/ui/machine-card';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import Section from '@repo/ui/section';
@@ -43,11 +44,11 @@ export default function Page(): JSX.Element {
         <Tab label={t('tabs.reservations')} />
       </Tabs>
 
-      <Section>
+      <CardList sectionProps={{ component: 'section' }}>
         {machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} t={t} />
         ))}
-      </Section>
+      </CardList>
     </>
   );
 }
