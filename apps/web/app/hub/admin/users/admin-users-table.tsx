@@ -25,12 +25,7 @@ type AdminUsersTableProps = {
   assignHrefFor?: (user: UserAdminViewModel) => string;
 };
 
-export default function AdminUsersTable({
-  users,
-  columns,
-  adminLabelFor,
-  assignHrefFor
-}: AdminUsersTableProps) {
+export default function AdminUsersTable({ users, columns, adminLabelFor, assignHrefFor }: AdminUsersTableProps) {
   return (
     <AdminTable>
       <TableHead>
@@ -61,7 +56,7 @@ export default function AdminUsersTable({
             <TableCell>{user.openBadgesCount}</TableCell>
             <TableCell align="right">
               <Link href={assignHrefFor ? assignHrefFor(user) : `/hub/admin/users/${user.id}`}>
-                <Button size="small" variant="outlined" component="span">
+                <Button size="small" variant="contained" color="secondary" component="span">
                   {columns.assign}
                 </Button>
               </Link>
