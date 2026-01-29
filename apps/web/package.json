@@ -29,7 +29,7 @@
     "@repo/ui": "workspace:*",
     "@repo/view-models": "workspace:*",
     "nanoid": "^5.1.6",
-    "next": "^16.0.3",
+    "next": "^16.1.6",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.11",
     "react": "^19.2.0",
@@ -50,7 +50,7 @@
     "baseline-browser-mapping": "^2.9.14",
     "dotenv": "^16.5.0",
     "eslint": "^9.36.0",
-    "eslint-config-next": "15.0.0-rc.0",
+    "eslint-config-next": "^16.1.6",
     "prisma": "^5.16.1",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
