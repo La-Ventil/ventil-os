@@ -1,24 +1,20 @@
 import type { JSX } from 'react';
-import { OpenBadgeRepositoryMock } from '@repo/application/mocks';
+import { getOpenBadgeById } from '@repo/application';
 import OpenBadgeModalRoute from '@repo/ui/open-badge-modal-route';
 import { isOpenBadgeTab } from '../../layout';
-
-const openBadgeRepository = new OpenBadgeRepositoryMock();
 
 type OpenBadgeModalPageProps = {
   params: Promise<{ tab: string; badgeId: string }>;
 };
 
-export default async function OpenBadgeModalPage({
-  params
-}: OpenBadgeModalPageProps): Promise<JSX.Element | null> {
+export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageProps): Promise<JSX.Element | null> {
   const { tab, badgeId } = await params;
 
   if (!isOpenBadgeTab(tab)) {
     return null;
   }
 
-  const openBadge = await openBadgeRepository.getOpenBadgeById(badgeId);
+  const openBadge = await getOpenBadgeById(badgeId);
   if (!openBadge) {
     return null;
   }
