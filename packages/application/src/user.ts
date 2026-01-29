@@ -16,9 +16,8 @@ export const listAdminUsers = async () => {
   return users.map(mapUserAdminToViewModel);
 };
 
-export const getUserCredentialsByEmail = async (
-  email: string
-): Promise<UserCredentialsSchema | null> => userRepository.findUserCredentialsByEmail(email);
+export const getUserCredentialsByEmail = async (email: string): Promise<UserCredentialsSchema | null> =>
+  userRepository.findUserCredentialsByEmail(email);
 
 export type RegisterUserAccountInput = {
   email: string;
@@ -33,9 +32,7 @@ export type RegisterUserAccountInput = {
   termsAccepted: boolean;
 };
 
-export type RegisterUserAccountResult =
-  | { ok: true }
-  | { ok: false; reason: 'email-already-used' };
+export type RegisterUserAccountResult = { ok: true } | { ok: false; reason: 'email-already-used' };
 
 const isUniqueConstraintError = (error: unknown): error is { code: string } => {
   if (!error || typeof error !== 'object') {
@@ -80,12 +77,9 @@ const resolveProfile = (profileType: string) => {
 
 const generateToken = (bytes: number) => randomBytes(bytes).toString('base64url');
 
-const generateUsername = (firstName: string, lastName: string) =>
-  `${firstName}${lastName}#${generateToken(6)}`;
+const generateUsername = (firstName: string, lastName: string) => `${firstName}${lastName}#${generateToken(6)}`;
 
-export const registerUserAccount = async (
-  input: RegisterUserAccountInput
-): Promise<RegisterUserAccountResult> => {
+export const registerUserAccount = async (input: RegisterUserAccountInput): Promise<RegisterUserAccountResult> => {
   const { profile, studentProfile, externalProfile } = resolveProfile(input.profileType);
   const username = input.username ?? generateUsername(input.firstName, input.lastName);
 
@@ -128,10 +122,7 @@ export type UpdateUserProfileInput = {
   educationLevel: string;
 };
 
-export const updateUserProfile = async (
-  userId: string,
-  input: UpdateUserProfileInput
-): Promise<void> => {
+export const updateUserProfile = async (userId: string, input: UpdateUserProfileInput): Promise<void> => {
   await userRepository.updateUserProfile(userId, {
     name: input.lastName,
     firstName: input.firstName,
@@ -140,9 +131,13 @@ export const updateUserProfile = async (
   });
 };
 
-export const findUserForPasswordReset = async (
-  email: string
-): Promise<UserPasswordResetSchema | null> => userRepository.findUserForPasswordReset(email);
+export const findUserForPasswordReset = async (email: string): Promise<UserPasswordResetSchema | null> =>
+  userRepository.findUserForPasswordReset(email);
+
+export const userExists = async (userId: string): Promise<boolean> => {
+  const user = await userRepository.exists(userId);
+  return Boolean(user);
+};
 
 export const requestPasswordReset = async (email: string) => {
   const user = await findUserForPasswordReset(email);
@@ -159,16 +154,11 @@ export const requestPasswordReset = async (email: string) => {
   return { user, resetToken, resetTokenExpiry };
 };
 
-export const setUserResetToken = async (
-  userId: string,
-  resetToken: string,
-  resetTokenExpiry: Date
-): Promise<void> => {
+export const setUserResetToken = async (userId: string, resetToken: string, resetTokenExpiry: Date): Promise<void> => {
   await userRepository.setResetToken(userId, resetToken, resetTokenExpiry);
 };
 
-export const findUserByValidResetToken = async (token: string) =>
-  userRepository.findUserByValidResetToken(token);
+export const findUserByValidResetToken = async (token: string) => userRepository.findUserByValidResetToken(token);
 
 export const updateUserPassword = async (
   userId: string,
