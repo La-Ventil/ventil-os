@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #dfdff2;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-3, .cls-4 {
+        fill: none;
+        stroke-miterlimit: 10.01;
+      }
+
+      .cls-5 {
+        fill: #f0f2f8;
+      }
+
+      .cls-2 {
+        fill: #212636;
+        stroke: #212636;
+        stroke-linejoin: round;
+      }
+
+      .cls-3 {
+        stroke: #918ff2;
+      }
+
+      .cls-6 {
+        fill: #6d61eb;
+      }
+
+      .cls-4 {
+        stroke: #6a5eed;
+      }
+    </style>
+  </defs>
+  <path class="cls-5" d="M107,92H12c-1.1,0-2-.89-2-2v-19c0-1.1.89-2,2-2h35.24c1.16,0,2.32.17,3.44.5l6.63,1.88c1.43.4,2.94.4,4.37,0l6.63-1.88c1.12-.33,2.27-.5,3.44-.5h35.25c1.1,0,2,.89,2,2v19c0,1.1-.89,2-2,2Z"/>
+  <path class="cls-6" d="M54.5,61.5h9c1.1,0,2,.9,2,2v1c0,1.1-.9,2-2,2h-9c-.55,0-1-.45-1-1v-3c0-.55.45-1,1-1Z" transform="translate(123.5 4.5) rotate(90)"/>
+  <path class="cls-2" d="M67,28v18.52c0,.95-.34,1.88-.96,2.6l-4.74,5.53c-.19.22-.47.35-.76.35h-2.08c-.29,0-.57-.13-.76-.35l-4.74-5.53c-.62-.72-.96-1.65-.96-2.6v-18.52h15Z"/>
+  <line id="Ligne_485" data-name="Ligne 485" class="cls-4" x1="71" y1="64" x2="80" y2="61"/>
+  <line id="Ligne_487" data-name="Ligne 487" class="cls-3" x1="69" y1="58" x2="77" y2="49"/>
+  <line id="Ligne_485-2" data-name="Ligne 485" class="cls-1" x1="41" y1="61" x2="50" y2="64"/>
+  <line id="Ligne_487-2" data-name="Ligne 487" class="cls-3" x1="44" y1="49" x2="52" y2="58"/>
+</svg>
