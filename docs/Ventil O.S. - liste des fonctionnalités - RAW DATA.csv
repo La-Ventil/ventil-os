@@ -1,0 +1,160 @@
+OPEN BADGE 1,
+nom,Impression 3D Bambu Lab
+nombre de niveau,3
+intitulé court,Certification permettant d'utiliser les machines d'impression 3D Bambu lab du fab lab
+niveau 1 - titre,Utilisateur autonome
+niveau 1 - description,"Personne autonome qui sait utiliser la machine dans des conditions standards. Elle représente la majorité des usagers du FabLab.
+
+- Connaître le fonctionnement théorique et la composition de la machine
+
+- Connaître les matériaux standards : PLA, ABS, PVA, PP, PET, ASA, etc.
+
+- Connaître les dangers et les risques corporels liés à l'utilisation de la machine :
+incendie, émission de composés toxiques, brulures, etc.
+
+- Connaître les dangers et les risques techniques liés à l'utilisation de la machine :
+utilisation dans un environnement poussiéreux, éjection plateau, collision buse - obstacle, etc.
+
+- Savoir utiliser le logiciel de fabrication : paramétrer, générer le fichier, etc.
+
+- Connaître les types de fichiers utilisés : Gcode, STL, etc.
+
+- Connaître la méthode de transfert du GCode en fonction de la machine : réseau, USB, etc.
+
+- Savoir configurer le logiciel avec les paramètres standards : ajouter une pièce, positionner une pièce, orienter une pièce, ajouter des supports, etc.
+
+- Savoir réaliser les vérifications d'usage avant le lancement du travail : plateau apprêté, nature du matériau conforme, matériau chargé et en quantité suffisante, machine et buse propres, etc.
+
+- Savoir préparer le travail : mise à niveau et nettoyage du plateau, changement de consommable, etc.
+
+- Savoir surveiller le travail et intervenir : mettre en pause, reprise, arrêt urgence, déplacement manuel, etc.
+
+- Savoir réagir et intervenir en cas de danger iminnent.
+
+- Savoir manipuler et stocker le matériel : outils, produits de nettoyage, matériaux consommables, etc.
+
+- Savoir contrôler la fabrication de manière qualitative (de visu), pendant et après la fabrication : décollement de la pièce, mauvaise impression, etc."
+niveau 2 - titre,Utilisateur avancé
+niveau 2 - description,"Personne qui maîtrise la machine de manière plus avancée, qui est familière de son utilisation. Elle est capable de procéder aux réglages avancés et d'en assurer la maintenance courante. Elle est capable d'accompagner le niveau 1.
+
+- Savoir identifier et corriger les défauts  : warping, sur-extrusion, sous-extrusion, problème température, etc.
+
+- Savoir configurer le logiciel avec les paramètres avancés pour optimiser la fabrication : température, orientation, remplissage, finesse, vitesse, etc."
+niveau 3 - titre,Utilisateur expert
+niveau 3 - description,"Personne experte avec une connaissance/expérience précise de la technologie et du process. Personne ressource pour des réglages très précis et des pièces de
+haute technicité. Elle est capable d'assurer la maintenance avancée et d'accompagner les niveaux 1 et 2.
+
+- Savoir assurer la maintenance avancée : nettoyage et graissage des axes, nettoyage et changement de la buse d'extrusion, etc"
+niveau nécessaire pour attribuer l'open badge,niveau 2
+catégorie,machine
+image de couverture,
+OPEN BADGE 2,
+nom,découpe laser Laserbox
+nombre de niveau,3
+intitulé court,Certification permettant d'utiliser la machine de découpe laser Laserbox du fab lab
+niveau 1 - titre,Utilisateur autonome
+niveau 1 - description,"- Connaître le fonctionnement théorique et la composition de la machine.
+
+- Connaître les matériaux standards : plexiglas, MDF, contreplaqué, etc.
+
+- Connaître les matériaux non-compatibles et/ou interdits pour les risques qu'ils présentent : PVC, Vynil, PC, etc.
+
+- Connaître les dangers et les risques corporels liés à l'utilisation de la machine :
+incendie, émission de composés toxiques, brulures, rayonnement optique, etc.
+
+- Connaître les dangers et les risques techniques liés à l'utilisation de la machine : collision mécanique, voilement d'un matériau, etc.
+
+- Connaître les logiciels utilisés pour le pilotage de la machine : JobControl,
+Inkscape, etc.
+
+- Connaître les types de fichiers utilisés :vectoriel, matriciel, etc.
+
+- Connaître la méthode de transfert du GCode en fonction de la machine : réseau, USB, etc.
+
+- Savoir configurer le logiciel avec les paramètres standards : distinguer le marquage, la gravure et la découpe, paramétrer et ordonnancer les étapes de fabrication (épaisseur de trait, couleur de trait, puissance et vitesse d'avance du laser, déterminer le point de démarrage du travail (en haut à gauche, en bas à droite, etc.).
+
+- Savoir configurer le logiciel avec les paramètres avancés pour optimiser la fabrication : vitesse, fréquence, algorithme de gravure, précision, etc.
+
+- Savoir utiliser le logiciel de fabrication : paramétrer, générer le fichier, etc.
+
+- Savoir réaliser les vérifications d'usage avant le lancement du travail : grille adaptée, nature du matériau conforme, machine et optiques propres, absence d'obstacle, ventilation, extraction, etc.
+
+- Savoir préparer le travail : choisir la grille en fonction de la pièce, positionner le brut et le fixer sur la grille, régler la focale et le débit d'air, etc.
+
+- Savoir surveiller le travail et intervenir : mettre en pause, reprise, arrêt urgence, déplacement manuel, etc.
+
+- Savoir réagir et intervenir en cas de danger iminnent.
+
+- Savoir manipuler et stocker le matériel : outils, produits de nettoyage, matériaux consommables, etc.
+
+- Savoir contrôler la fabrication de manière qualitative (de visu), pendant et après la fabrication : départ de flamme, découpe non traversante, dédoublement de faisceau, déplacement du matériau, etc.
+
+- Savoir identifier et corriger des défauts courant
+(mauvais réglage, brûlure...)
+
+- Savoir réaliser le post-traitement : nettoyage et ponçage de la pièce, etc.
+
+- Savoir assurer l'entretien de base : nettoyage du poste de travail et de la machine, récupération des déchets, rechargement en matériel, etc."
+niveau 2 - titre,Utilisateur avancé
+niveau 2 - description,"- Savoir identifier et corriger des défauts
+courant (mauvais réglages, brûlures...)"
+niveau 3 - titre,Utilisateur expert
+niveau 3 - description,"- Savoir assurer la maintenance avancée :
+nettoyage et réglage du circuit optique
+(miroirs et lentilles), entretenir le circuit d'air,
+etc.
+
+- Être disponible pour accueillir,
+informer et partager ses savoirs et savoirfaire
+avec des utilisateurs"
+niveau nécessaire pour attribuer l'open badge,niveau 2
+catégorie,machine
+image de couverture,
+OPEN BADGE 3,
+nom,réparation JoyCon Nintendo
+nombre de niveau,2
+intitulé court,Certification permettant de réparer les manettes de jeux Nintendo JoyCon pour Nintendo Switch
+niveau 1 - titre,Utilisateur autonome
+niveau 1 - description,"Ce niveau d'open badge valide que l'utilisateur a été formé à :
+- connaitre les outils à utiliser
+- préparer le plan de travail
+- l'identification des trois pannes les plus courantes (joystick drift, rail de connexion, gachette)
+- le démontage de la manette pour les trois types de pannes
+- le changement des pièces détachées
+- le remontage de la manette
+- le testing de la manette une fois les pièces changées
+- la gestion des pièces détachées neuves et déffectueuses
+- la gestion de la manette et le contact avec son propriétaire"
+niveau 2 - titre,Utilisateur expert
+niveau 2 - description,Ce niveau d'open badge valide que l'utilisateur est capable de former une autre personne au premier niveau. Il sait détailler et expliquer tous les points du premier niveau de manière professionnelle.
+niveau nécessaire pour attribuer l'open badge,niveau 2
+catégorie,réparation
+image de couverture,
+OPEN BADGE 3,
+nom,organisation du Repair Café
+nombre de niveau,2
+intitulé court,Certification validant la gestion du repair café
+niveau 1 - titre,Utilisateur expert
+niveau 1 - description,"L'utilisateur sait gérer le repair café :
+- il connait les outils et vérifie leur état et le rangement
+- il sait nettoyer l'espace
+- il sait accueillir les visiteurs dans le lieu
+- il connait et sait expliquer le fonctionnement de récupération des objets, le rangement, le suivi de réparation et la restittution des objets"
+niveau nécessaire pour attribuer l'open badge,niveau 1
+catégorie,gestion et organisation
+image de couverture,
+MACHINE 1,
+nom,Bambu Lab X1C n°1
+pièce,Fab Lab
+besoin d'open badge,oui
+quel open badge,Impression 3D Bambu Lab - niveau 1
+MACHINE 2,
+nom,Bambu Lab X1C n°2
+pièce,Fab Lab
+besoin d'open badge,oui
+quel open badge,Impression 3D Bambu Lab - niveau 1
+MACHINE 3,
+nom,Laserbox
+pièce,Fab Lab
+besoin d'open badge,oui
+quel open badge,découpe laser Laserbox - niveau 1
