@@ -1,6 +1,6 @@
 'use server';
 
-import { awardOpenBadgeLevel, canManageBadgesUser, userExists } from '@repo/application';
+import { awardOpenBadgeLevel, canManageBadgesUser, getUserProfileByEmail } from '@repo/application';
 import { getServerSession } from '../auth';
 
 type AssignOpenBadgeInput = {
@@ -20,7 +20,9 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput) {
     throw new Error('Invalid input');
   }
 
-  if (!(await userExists(session.user.id))) {
+  const awarder = session.user.email ? await getUserProfileByEmail(session.user.email) : null;
+
+  if (!awarder) {
     throw new Error('Awarding user not found');
   }
 
@@ -28,7 +30,7 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput) {
     userId: input.userId,
     openBadgeId: input.openBadgeId,
     level: input.level,
-    awardedById: session.user.id
+    awardedById: awarder.id
   });
 
   return { ok: true };
