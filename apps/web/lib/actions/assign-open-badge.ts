@@ -1,6 +1,11 @@
 'use server';
 
-import { awardOpenBadgeLevel, canManageBadgesUser, getUserProfileByEmail } from '@repo/application';
+import {
+  awardOpenBadgeLevel,
+  canManageBadgesUser,
+  getUserProfileByEmail,
+  assignOpenBadgeFormInputSchema
+} from '@repo/application';
 import { getServerSession } from '../auth';
 
 type AssignOpenBadgeInput = {
@@ -16,7 +21,8 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput) {
     throw new Error('Unauthorized');
   }
 
-  if (!input.userId || !input.openBadgeId || !Number.isFinite(input.level)) {
+  const parsed = assignOpenBadgeFormInputSchema.safeParse(input);
+  if (!parsed.success) {
     throw new Error('Invalid input');
   }
 
@@ -27,9 +33,9 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput) {
   }
 
   await awardOpenBadgeLevel({
-    userId: input.userId,
-    openBadgeId: input.openBadgeId,
-    level: input.level,
+    userId: parsed.data.userId,
+    openBadgeId: parsed.data.openBadgeId,
+    level: parsed.data.level,
     awardedById: awarder.id
   });
 
