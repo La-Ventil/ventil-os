@@ -9,6 +9,7 @@
     "lint": "pnpm -r lint",
     "lint:dev": "pnpm -r lint:dev",
     "check-types": "pnpm -r check-types",
+    "prepare": "husky",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "prettier": "turbo run prettier"
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@playwright/test": "^1.45.1",
     "@types/node": "22.15.3",
+    "husky": "^9.0.0",
     "prettier": "^3.2.5",
     "turbo": "^2.7.6",
     "typescript": "5.9.3"
