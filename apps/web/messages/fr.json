@@ -185,11 +185,11 @@
         "openBadgesCreate": {
           "title": "Création d’un open badge",
           "fields": {
-            "name": "Nom de l’open badge *",
-            "description": "Description courte *",
-            "image": "Image *",
-            "levelTitle": "Niveau 1 : titre *",
-            "levelDescription": "Niveau 1 : description *"
+            "name": "Nom de l’open badge",
+            "description": "Description courte",
+            "image": "Image",
+            "levelTitle": "Niveau 1 : titre",
+            "levelDescription": "Niveau 1 : description"
           },
           "image": {
             "placeholder": "Illustration en cours",

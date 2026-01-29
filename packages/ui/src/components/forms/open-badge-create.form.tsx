@@ -12,6 +12,7 @@ import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { OpenBadgeCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
@@ -33,6 +34,7 @@ export default function OpenBadgeCreateForm({
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const fieldError = (field: keyof OpenBadgeCreateFormInput) =>
     state.fieldErrors[field as string]?.[0];
+  const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
 
   return (
     <Stack component="form" action={action} spacing={2}>
@@ -121,7 +123,11 @@ export default function OpenBadgeCreateForm({
           {t('delivery.description')}
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
-          <Switch name="deliveryEnabled" defaultChecked={state.values.deliveryEnabled} />
+          <Switch
+            name="deliveryEnabled"
+            defaultChecked={state.values.deliveryEnabled}
+            onChange={(event) => setDeliveryEnabled(event.target.checked)}
+          />
           <FormControl size="small">
             <InputLabel id="open-badge-delivery-level-label">
               {t('delivery.levelLabel')}
@@ -131,6 +137,7 @@ export default function OpenBadgeCreateForm({
               name="deliveryLevel"
               label={t('delivery.levelLabel')}
               defaultValue={state.values.deliveryLevel || 'level-1'}
+              disabled={!deliveryEnabled || isPending}
             >
               <MenuItem value="level-1">{t('delivery.levelOption')}</MenuItem>
             </Select>
@@ -145,10 +152,12 @@ export default function OpenBadgeCreateForm({
         <Typography variant="body1" className={styles.sectionDescription}>
           {t('activation.description')}
         </Typography>
-        <Typography variant="body2" className={styles.sectionNote} fontStyle="italic">
-          {t('activation.note')}
-        </Typography>
-        <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
+        <FormControl>
+          <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
+          <Typography variant="caption" className={styles.sectionNote}>
+            {t('activation.note')}
+          </Typography>
+        </FormControl>
       </FormSection>
 
       <Divider />
