@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import BottomNavigation from '@repo/ui/bottom-navigation';
+import QuickActionsMenu from '@repo/ui/quick-actions-menu';
 import { canManageBadgesUser, canManageUsersUser, isAdminUser } from '@repo/application';
 import { getServerSession } from '../../lib/auth';
 import styles from './layout.module.css';
@@ -31,7 +31,7 @@ export default async function RootLayout({
     <>
       <main className={styles.main}>{children}</main>
       <footer>
-        <BottomNavigation isAdmin={isAdmin} canManageUsers={canManageUsers} canManageBadges={canManageBadges} />
+        <QuickActionsMenu isAdmin={isAdmin} canManageUsers={canManageUsers} canManageBadges={canManageBadges} />
       </footer>
     </>
   );

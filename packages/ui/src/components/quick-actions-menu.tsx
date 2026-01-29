@@ -9,19 +9,19 @@ import BottomSlot from './bottom-slot';
 import { hubNavigationItems } from './hub-navigation';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
-import styles from './bottom-navigation.module.css';
+import styles from './quick-actions-menu.module.css';
 
-export type BottomNavigationProps = {
+export type QuickActionsMenuProps = {
   isAdmin?: boolean;
   canManageUsers?: boolean;
   canManageBadges?: boolean;
 };
 
-export default function BottomNavigation({
+export default function QuickActionsMenu({
   isAdmin = false,
   canManageUsers = false,
   canManageBadges = false
-}: BottomNavigationProps) {
+}: QuickActionsMenuProps) {
   const t = useTranslations('pages.hub.navigation');
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
