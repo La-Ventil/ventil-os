@@ -1,0 +1,17 @@
+.container {
+  width: 200px;
+  max-width: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
