@@ -13,7 +13,7 @@ import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation
 import { getServerSession } from '../auth';
 
 const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => {
-  const levels: Record<number, { title: string; description: string }> = {};
+  const byIndex = new Map<number, { title?: string; description?: string }>();
 
   for (const [key, value] of formData.entries()) {
     if (!key.startsWith('levels[')) continue;
@@ -22,15 +22,15 @@ const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => 
 
     const index = Number(match[1]);
     const field = match[2] as 'title' | 'description';
+    const entry = byIndex.get(index) ?? {};
 
-    levels[index] ??= { title: '', description: '' };
-    levels[index][field] = value.toString();
+    entry[field] = value.toString();
+    byIndex.set(index, entry);
   }
 
-  return Object.keys(levels)
-    .map(Number)
-    .sort((a, b) => a - b)
-    .map((idx) => levels[idx]!)
+  return [...byIndex.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([, { title = '', description = '' }]) => ({ title, description }))
     .filter((lvl) => lvl.title || lvl.description);
 };
 
