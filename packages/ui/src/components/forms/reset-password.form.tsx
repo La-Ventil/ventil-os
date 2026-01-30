@@ -10,11 +10,11 @@ import { ResetPasswordFormInput } from '@repo/application/forms';
 import { FormActionState } from '../../form-action-state';
 import { useFormActionStateWithValues } from '../../hooks';
 
-export interface ResetPasswordForm {
+export interface ResetPasswordFormProps {
   handleSubmit: FormActionState<ResetPasswordFormInput>;
 }
 
-export default function ResetPasswordForm({ handleSubmit }: ResetPasswordForm) {
+export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [formState, formAction, pending] = useFormActionStateWithValues<ResetPasswordFormInput>(handleSubmit, {

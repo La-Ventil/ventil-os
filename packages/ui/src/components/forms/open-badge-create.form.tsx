@@ -22,6 +22,7 @@ import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '../../form-action-state';
 import { FormState } from '../../form-state';
+import { firstFieldError } from './form-errors';
 import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {
@@ -30,7 +31,7 @@ export interface OpenBadgeCreateFormProps {
 
 export default function OpenBadgeCreateForm({ actionState: [state, action, isPending] }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
-  const fieldError = (field: keyof OpenBadgeCreateFormInput) => state.fieldErrors[field]?.[0];
+  const fieldError = (field: keyof OpenBadgeCreateFormInput) => firstFieldError(state, field);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
 
   return (

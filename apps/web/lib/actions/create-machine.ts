@@ -29,9 +29,7 @@ export async function createMachine(
       success: false,
       valid: true,
       isValid: false,
-      message: t('machine.create.unauthorized', {
-        defaultMessage: "Vous n'êtes pas autorisé à créer une machine."
-      }),
+      message: t('machine.create.unauthorized'),
       fieldErrors: {},
       values: previousState.values
     };
@@ -63,9 +61,7 @@ export async function createMachine(
       valid: true,
       isValid: true,
       values,
-      message: t('machine.create.success', {
-        defaultMessage: 'La machine a bien été enregistrée.'
-      }),
+      message: t('machine.create.success'),
       fieldErrors: {}
     };
   } catch (err) {
@@ -74,9 +70,7 @@ export async function createMachine(
       success: false,
       valid: true,
       isValid: false,
-      message: t('machine.create.error', {
-        defaultMessage: "Impossible d'enregistrer la machine."
-      }),
+      message: t('machine.create.error'),
       fieldErrors: {},
       values
     };

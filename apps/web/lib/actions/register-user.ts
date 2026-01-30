@@ -43,11 +43,7 @@ export async function registerUser(
 
     if (!result.ok) {
       const fieldErrors = {
-        email: [
-          t('validation.emailAlreadyUsed', {
-            defaultMessage: 'Cette adresse email est déjà utilisée.'
-          })
-        ]
+        email: [t('validation.emailAlreadyUsed')]
       };
 
       return {

@@ -20,6 +20,7 @@ import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '../../form-action-state';
 import { FormState } from '../../form-state';
+import { firstFieldError } from './form-errors';
 import styles from './machine-create.form.module.css';
 
 export interface MachineCreateFormProps {
@@ -28,7 +29,7 @@ export interface MachineCreateFormProps {
 
 export default function MachineCreateForm({ actionState: [state, action, isPending] }: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
-  const fieldError = (field: keyof MachineCreateFormInput) => state.fieldErrors[field]?.[0];
+  const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
 
   return (
     <Stack component="form" action={action} spacing={2}>

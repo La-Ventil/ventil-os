@@ -31,9 +31,7 @@ export async function createOpenBadge(
       success: false,
       valid: true,
       isValid: false,
-      message: t('openBadge.create.unauthorized', {
-        defaultMessage: "Vous n'êtes pas autorisé à créer un open badge."
-      }),
+      message: t('openBadge.create.unauthorized'),
       fieldErrors: {},
       values: previousState.values
     };
@@ -65,9 +63,7 @@ export async function createOpenBadge(
       valid: true,
       isValid: true,
       values,
-      message: t('openBadge.create.success', {
-        defaultMessage: "L'open badge a bien été enregistré."
-      }),
+      message: t('openBadge.create.success'),
       fieldErrors: {}
     };
   } catch (err) {
@@ -76,9 +72,7 @@ export async function createOpenBadge(
       success: false,
       valid: true,
       isValid: false,
-      message: t('openBadge.create.error', {
-        defaultMessage: "Impossible d'enregistrer l'open badge."
-      }),
+      message: t('openBadge.create.error'),
       fieldErrors: {},
       values
     };

@@ -33,7 +33,7 @@ export default function SignupForm({ actionState: [state, action, isPending] }: 
     <form action={action}>
       <Stack spacing={2}>
         {state?.message && !isPending && (
-          <Alert severity={state?.isValid ? 'success' : 'error'}>{state?.message}</Alert>
+          <Alert severity={state?.success ? 'success' : 'error'}>{state?.message}</Alert>
         )}
         <TextField
           name="firstName"
