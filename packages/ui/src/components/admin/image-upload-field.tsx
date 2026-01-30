@@ -8,6 +8,7 @@ import { ChangeEvent, useEffect, useId, useRef, useState } from 'react';
 import ImagePreview from './image-preview';
 
 export type ImageUploadFieldProps = {
+  name?: string;
   label: string;
   placeholder: string;
   uploadLabel: string;
@@ -47,6 +48,7 @@ export default function ImageUploadField({
   resetKey
 }: ImageUploadFieldProps) {
   const inputId = useId();
+  const fileInputName = name ?? fileName;
   const [preview, setPreview] = useState<string | null>(previewUrl || defaultValue || null);
   const [localError, setLocalError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -120,6 +122,8 @@ export default function ImageUploadField({
   };
 
   const effectiveHelper = localError ?? helperText;
+  const showHelper = Boolean(effectiveHelper);
+  const hintText = maxSizeHint ?? `Max ${maxSizeMb}MB`;
 
   return (
     <Stack spacing={1} className={styles.controls}>
@@ -127,17 +131,28 @@ export default function ImageUploadField({
       <Stack direction="row" spacing={1} alignItems="center">
         <AdminButton variant="contained" component="label">
           {uploadLabel}
-          <input type="file" name={fileName} accept={accept} hidden ref={fileInputRef} onChange={handleFileChange} />
+          <input
+            type="file"
+            name={fileInputName}
+            accept={accept}
+            hidden
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            required={required}
+          />
         </AdminButton>
         <AdminButton variant="outlined" color="secondary" onClick={handleClear} type="button">
           {clearLabel}
         </AdminButton>
       </Stack>
-      {helperText ? null : (
-        <Typography variant="caption" color="text.secondary">
-          {maxSizeHint ?? `Max ${maxSizeMb}MB`}
+      {showHelper ? (
+        <Typography variant="caption" color={localError ? 'error' : 'text.secondary'}>
+          {effectiveHelper}
         </Typography>
-      )}
+      ) : null}
+      <Typography variant="caption" color="text.secondary">
+        {hintText}
+      </Typography>
     </Stack>
   );
 }
