@@ -13,11 +13,13 @@ import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useMemo } from 'react';
 import { OpenBadgeCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
 import LevelChip from '../level-chip';
+import OpenBadgeLevelsEditor from './open-badge-levels-editor';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '../../form-action-state';
@@ -33,6 +35,18 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const fieldError = (field: keyof OpenBadgeCreateFormInput) => firstFieldError(state, field);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
+  const initialLevels = useMemo(
+    () =>
+      state.values.levels && state.values.levels.length
+        ? state.values.levels
+        : [
+            {
+              title: state.values.levelTitle ?? '',
+              description: state.values.levelDescription ?? ''
+            }
+          ],
+    [state.values.levelDescription, state.values.levelTitle, state.values.levels]
+  );
 
   return (
     <Stack component="form" action={action} spacing={2}>
@@ -68,6 +82,8 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
+            clearLabel={t('image.clear')}
+            maxSizeMb={5}
             required
             error={Boolean(fieldError('imageUrl'))}
             helperText={fieldError('imageUrl')}
@@ -77,39 +93,18 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
 
       <Divider />
 
-      <FormSection direction="row" spacing={2} alignItems="flex-start">
-        <LevelChip level={1} isActive size="medium" />
-        <Stack spacing={2}>
-          <TextField
-            name="levelTitle"
-            defaultValue={state.values.levelTitle}
-            label={t('fields.levelTitle')}
-            required
-            fullWidth
-            error={Boolean(fieldError('levelTitle'))}
-            helperText={fieldError('levelTitle')}
-          />
-          <TextField
-            name="levelDescription"
-            defaultValue={state.values.levelDescription}
-            label={t('fields.levelDescription')}
-            required
-            fullWidth
-            multiline
-            minRows={4}
-            error={Boolean(fieldError('levelDescription'))}
-            helperText={fieldError('levelDescription')}
-          />
-        </Stack>
-      </FormSection>
-
-      <Divider />
-
-      <FormSection>
-        <AdminButton variant="contained" color="secondary">
-          {t('levels.add')}
-        </AdminButton>
-      </FormSection>
+      <OpenBadgeLevelsEditor
+        initialLevels={initialLevels}
+        maxLevels={5}
+        error={fieldError('levels' as keyof OpenBadgeCreateFormInput)}
+        labels={{
+          add: t('levels.add'),
+          title: t('fields.levelTitle'),
+          description: t('fields.levelDescription'),
+          remove: t('levels.remove'),
+          chipPrefix: t('levels.chipPrefix')
+        }}
+      />
 
       <Divider />
 

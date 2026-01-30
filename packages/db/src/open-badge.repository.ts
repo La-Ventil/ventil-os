@@ -163,8 +163,7 @@ export class OpenBadgeRepository {
     coverImage?: string | null;
     status: ActivityStatus;
     creatorId: string;
-    levelTitle: string;
-    levelDescription?: string | null;
+    levels: Array<{ title: string; description: string }>;
   }): Promise<OpenBadgeSchema> {
     const badge = await this.prisma.openBadge.create({
       data: {
@@ -176,11 +175,11 @@ export class OpenBadgeRepository {
         status: input.status,
         creatorId: input.creatorId,
         levels: {
-          create: {
-            level: 1,
-            title: input.levelTitle,
-            description: input.levelDescription ?? null
-          }
+          create: input.levels.map((level, idx) => ({
+            level: idx + 1,
+            title: level.title,
+            description: level.description ?? null
+          }))
         }
       },
       include: {

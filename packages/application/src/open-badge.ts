@@ -81,8 +81,7 @@ export type CreateOpenBadgeInput = {
   name: string;
   description: string;
   imageUrl: string;
-  levelTitle: string;
-  levelDescription: string;
+  levels: Array<{ title: string; description: string }>;
   activationEnabled: boolean;
   creatorId: string;
 };
@@ -92,8 +91,7 @@ export const createOpenBadge = async (input: CreateOpenBadgeInput) =>
     name: input.name,
     description: input.description,
     coverImage: input.imageUrl,
-    levelTitle: input.levelTitle,
-    levelDescription: input.levelDescription,
+    levels: input.levels,
     status: input.activationEnabled ? 'active' : 'inactive',
     creatorId: input.creatorId,
     type: DEFAULT_BADGE_TYPE,

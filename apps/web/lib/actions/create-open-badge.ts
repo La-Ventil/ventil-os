@@ -11,8 +11,17 @@ const buildValues = (formData: FormData, previousValues: OpenBadgeCreateFormInpu
   name: formData.get('name')?.toString() ?? previousValues.name,
   description: formData.get('description')?.toString() ?? previousValues.description,
   imageUrl: formData.get('imageUrl')?.toString() ?? previousValues.imageUrl,
-  levelTitle: formData.get('levelTitle')?.toString() ?? previousValues.levelTitle,
-  levelDescription: formData.get('levelDescription')?.toString() ?? previousValues.levelDescription,
+  levels: Array.from(formData.entries())
+    .filter(([key]) => key.startsWith('levels['))
+    .reduce<OpenBadgeCreateFormInput['levels']>((acc, [key, value]) => {
+      const match = key.match(/levels\[(\d+)\]\.(title|description)/);
+      if (!match) return acc;
+      const idx = Number(match[1]);
+      acc[idx] = acc[idx] || { title: '', description: '' };
+      acc[idx][match[2] as 'title' | 'description'] = value.toString();
+      return acc;
+    }, [])
+    .filter((lvl) => lvl && (lvl.title || lvl.description)),
   deliveryEnabled: formData.get('deliveryEnabled') === 'on',
   deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
   activationEnabled: formData.get('activationEnabled') === 'on'

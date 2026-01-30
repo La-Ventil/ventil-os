@@ -1,17 +1,20 @@
 import { z } from 'zod';
-import { zfd } from 'zod-form-data';
 
-export const openBadgeCreateFormSchema = zfd.formData({
+export const openBadgeCreateFormSchema = z.object({
   name: z.string().min(1, { message: 'validation.openBadge.nameRequired' }),
   description: z.string().min(1, { message: 'validation.openBadge.descriptionRequired' }),
   imageUrl: z.string().min(1, { message: 'validation.openBadge.imageRequired' }),
-  levelTitle: z.string().min(1, { message: 'validation.openBadge.levelTitleRequired' }),
-  levelDescription: z
-    .string()
-    .min(1, { message: 'validation.openBadge.levelDescriptionRequired' }),
-  deliveryEnabled: zfd.checkbox(),
+  levels: z
+    .array(
+      z.object({
+        title: z.string().min(1, { message: 'validation.openBadge.levelTitleRequired' }),
+        description: z.string().min(1, { message: 'validation.openBadge.levelDescriptionRequired' })
+      })
+    )
+    .min(1, { message: 'validation.openBadge.levelAtLeastOne' }),
+  deliveryEnabled: z.boolean(),
   deliveryLevel: z.string().optional(),
-  activationEnabled: zfd.checkbox()
+  activationEnabled: z.boolean()
 });
 
 export type OpenBadgeCreateFormInput = z.infer<typeof openBadgeCreateFormSchema>;
