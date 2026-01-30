@@ -30,6 +30,8 @@
   "validation": {
     "genericError": "An unexpected error occurred :(",
     "emailAlreadyUsed": "This email address is already in use.",
+    "imageTooLarge": "Image too large (max {max}).",
+    "imageInvalidType": "Invalid image type. Please upload png, jpg, gif or webp.",
     "emailRequired": "Please enter your email address.",
     "emailInvalid": "The email address is not valid.",
     "password": {

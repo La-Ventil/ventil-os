@@ -47,13 +47,23 @@ const pickImageSource = async (
   t: (key: string, vars?: Record<string, unknown>) => string
 ): Promise<{ imageUrl: string } | { error: string; fieldErrors: Record<string, string[]> }> => {
   const maxBytes = 5 * 1024 * 1024;
+  const allowedMimes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+
   if (file instanceof File && file.size > 0) {
+    if (!allowedMimes.includes(file.type)) {
+      return {
+        error: t('validation.imageInvalidType'),
+        fieldErrors: { imageUrl: [t('validation.imageInvalidType')] }
+      };
+    }
+
     if (file.size > maxBytes) {
       return {
         error: t('validation.imageTooLarge', { max: '5MB' }),
         fieldErrors: { imageUrl: [t('validation.imageTooLarge', { max: '5MB' })] }
       };
     }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const base64 = buffer.toString('base64');
     const mime = file.type || 'image/png';

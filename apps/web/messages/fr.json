@@ -25,6 +25,8 @@
     }
   },
   "validation": {
+    "imageTooLarge": "Image trop lourde (max {max}).",
+    "imageInvalidType": "Format d'image invalide. Merci d'envoyer png, jpg, gif ou webp.",
     "emailRequired": "Veuillez renseigner votre adresse email.",
     "emailInvalid": "L'adresse email n'est pas valide.",
     "genericError": "Une erreur inattendue est survenue :(",

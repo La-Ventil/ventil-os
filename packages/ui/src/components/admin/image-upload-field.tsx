@@ -22,6 +22,7 @@ export type ImageUploadFieldProps = {
   clearLabel?: string;
   tooLargeLabel?: string;
   maxSizeHint?: string;
+  invalidTypeLabel?: string;
   onChange?: (payload: { file: File | null; preview: string | null }) => void;
   resetKey?: string | number;
 };
@@ -41,6 +42,7 @@ export default function ImageUploadField({
   clearLabel = 'Clear',
   tooLargeLabel,
   maxSizeHint,
+  invalidTypeLabel,
   onChange,
   resetKey
 }: ImageUploadFieldProps) {
@@ -78,6 +80,14 @@ export default function ImageUploadField({
     const file = event.target.files?.[0];
     if (!file) {
       setLocalError(null);
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      const message = invalidTypeLabel ?? 'Invalid file type. Please select an image.';
+      setLocalError(message);
+      event.target.value = '';
+      notifyChange(null, preview);
       return;
     }
 
