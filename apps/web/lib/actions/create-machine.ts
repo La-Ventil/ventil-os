@@ -28,7 +28,6 @@ export async function createMachine(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('machine.create.unauthorized'),
       fieldErrors: {},
       values: previousState.values
@@ -42,7 +41,6 @@ export async function createMachine(
     return {
       success: false,
       valid: false,
-      isValid: false,
       message: fieldErrorsToSingleMessage(fieldErrors),
       fieldErrors,
       values
@@ -59,7 +57,6 @@ export async function createMachine(
     return {
       success: true,
       valid: true,
-      isValid: true,
       values,
       message: t('machine.create.success'),
       fieldErrors: {}
@@ -69,7 +66,6 @@ export async function createMachine(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('machine.create.error'),
       fieldErrors: {},
       values

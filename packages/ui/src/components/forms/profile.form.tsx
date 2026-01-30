@@ -32,8 +32,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
       firstName: profile.firstName ?? '',
       lastName: profile.lastName ?? '',
       educationLevel: profile.educationLevel ?? ''
-    },
-    isValid: undefined
+    }
   });
 
   return (

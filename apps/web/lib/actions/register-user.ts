@@ -20,7 +20,6 @@ export async function registerUser(
       return {
         success: false,
         valid: false,
-        isValid: false,
         message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
@@ -49,7 +48,6 @@ export async function registerUser(
       return {
         success: false,
         valid: true,
-        isValid: false,
         message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
@@ -59,7 +57,6 @@ export async function registerUser(
     return {
       success: true,
       valid: true,
-      isValid: true,
       values,
       message: t('signup.success'),
       fieldErrors: {}
@@ -69,7 +66,6 @@ export async function registerUser(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('signup.error'),
       fieldErrors: {},
       values

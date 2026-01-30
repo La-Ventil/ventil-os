@@ -24,8 +24,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
     fieldErrors: {},
     values: {
       email: ''
-    },
-    isValid: undefined
+    }
   });
 
   return (

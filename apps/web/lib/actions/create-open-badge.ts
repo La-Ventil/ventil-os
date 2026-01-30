@@ -30,7 +30,6 @@ export async function createOpenBadge(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('openBadge.create.unauthorized'),
       fieldErrors: {},
       values: previousState.values
@@ -44,7 +43,6 @@ export async function createOpenBadge(
     return {
       success: false,
       valid: false,
-      isValid: false,
       message: fieldErrorsToSingleMessage(fieldErrors),
       fieldErrors,
       values
@@ -61,7 +59,6 @@ export async function createOpenBadge(
     return {
       success: true,
       valid: true,
-      isValid: true,
       values,
       message: t('openBadge.create.success'),
       fieldErrors: {}
@@ -71,7 +68,6 @@ export async function createOpenBadge(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('openBadge.create.error'),
       fieldErrors: {},
       values

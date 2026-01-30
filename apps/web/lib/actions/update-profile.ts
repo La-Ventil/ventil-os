@@ -20,7 +20,6 @@ export async function updateProfile(
       return {
         success: false,
         valid: false,
-        isValid: false,
         message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
@@ -39,7 +38,6 @@ export async function updateProfile(
     return {
       success: true,
       valid: true,
-      isValid: true,
       values,
       message: t('forms.messages.profileUpdated'),
       fieldErrors: {}
@@ -49,7 +47,6 @@ export async function updateProfile(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('validation.genericError'),
       fieldErrors: {},
       values

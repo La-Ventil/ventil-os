@@ -21,7 +21,6 @@ export async function resetPassword(
       return {
         success: false,
         valid: false,
-        isValid: false,
         message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
         fieldErrors,
         values
@@ -34,7 +33,7 @@ export async function resetPassword(
     const okMessage = t('resetPassword.success');
 
     if (!user || !resetToken) {
-      return { success: true, valid: true, isValid: true, message: okMessage, fieldErrors: {}, values: { email } };
+      return { success: true, valid: true, message: okMessage, fieldErrors: {}, values: { email } };
     }
 
     const emailAPI = new TransactionalEmailsApi();
@@ -63,7 +62,6 @@ export async function resetPassword(
     return {
       success: true,
       valid: true,
-      isValid: true,
       message: okMessage,
       fieldErrors: {},
       values: { email }
@@ -74,7 +72,6 @@ export async function resetPassword(
     return {
       success: false,
       valid: true,
-      isValid: false,
       message: t('validation.genericError'),
       fieldErrors: {},
       values: previousState.values
