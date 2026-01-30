@@ -118,9 +118,6 @@ export default function ImageUploadField({
           {uploadLabel}
           <input type="file" name={fileName} accept={accept} hidden ref={fileInputRef} onChange={handleFileChange} />
         </AdminButton>
-        <Typography variant="caption" className={styles.hint}>
-          {`Max ${maxSizeMb}MB`}
-        </Typography>
         <AdminButton variant="outlined" color="secondary" onClick={handleClear} type="button">
           {clearLabel}
         </AdminButton>
