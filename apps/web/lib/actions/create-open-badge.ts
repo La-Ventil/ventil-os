@@ -1,11 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import {
-  openBadgeCreateFormSchema,
-  openBadgeCreateFormDataSchema,
-  type OpenBadgeCreateFormInput
-} from '@repo/application/forms';
+import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
 import {
   canManageBadgesUser,
   createOpenBadge as createOpenBadgeRecord,
@@ -34,11 +30,7 @@ export async function createOpenBadge(
     };
   }
 
-  // 1) Parse form data (all fields except file)
-  const parsedForm = openBadgeCreateFormDataSchema.parse(formData);
-  const levels = (parsedForm.levels ?? []).filter((level) => level.title || level.description);
-
-  // 2) Handle image upload / validation
+  // 1) Handle image upload / validation
   const file = formData.get('imageFile');
   const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) {
@@ -51,17 +43,9 @@ export async function createOpenBadge(
     };
   }
 
-  const values: OpenBadgeCreateFormInput = {
-    name: parsedForm.name ?? previousState.values.name,
-    description: parsedForm.description ?? previousState.values.description,
-    imageUrl: imageResult.url,
-    levels: (parsedForm.levels ?? []).filter((level) => level.title || level.description),
-    deliveryEnabled: parsedForm.deliveryEnabled ?? false,
-    deliveryLevel: parsedForm.deliveryLevel ?? previousState.values.deliveryLevel,
-    activationEnabled: parsedForm.activationEnabled ?? false
-  };
-
-  const { success, data, error } = openBadgeCreateFormSchema.safeParse(values);
+  // Inject image and parse all fields in a single step
+  formData.set('imageUrl', imageResult.url);
+  const { success, data, error } = openBadgeCreateFormSchema.safeParse(formData);
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
@@ -70,21 +54,20 @@ export async function createOpenBadge(
       valid: false,
       message: fieldErrorsToSingleMessage(fieldErrors),
       fieldErrors,
-      values
+      values: previousState.values
     };
   }
 
   try {
-    const parsed: OpenBadgeCreateFormInput = data;
     await createOpenBadgeRecord({
-      ...parsed,
+      ...data,
       creatorId: session.user.id
     });
 
     return {
       success: true,
       valid: true,
-      values,
+      values: data,
       message: t('openBadge.create.success'),
       fieldErrors: {}
     };
@@ -95,7 +78,7 @@ export async function createOpenBadge(
       valid: true,
       message: t('openBadge.create.error'),
       fieldErrors: {},
-      values
+      values: data ?? previousState.values
     };
   }
 }
