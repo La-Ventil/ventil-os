@@ -26,3 +26,7 @@
   flex-direction: column;
   gap: 12px;
 }
+
+.hint {
+  color: #78839a;
+}

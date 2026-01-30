@@ -1,6 +1,11 @@
+"use client";
+
 import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import AdminButton from './admin-button';
 import styles from './image-upload-field.module.css';
+import { ChangeEvent, useEffect, useId, useRef, useState } from 'react';
 
 export type ImageUploadFieldProps = {
   label: string;
@@ -14,6 +19,9 @@ export type ImageUploadFieldProps = {
   defaultValue?: string;
   error?: boolean;
   helperText?: string;
+  maxSizeMb?: number;
+  clearLabel?: string;
+  onChange?: (payload: { file: File | null; preview: string | null }) => void;
 };
 
 export default function ImageUploadField({
@@ -27,32 +35,96 @@ export default function ImageUploadField({
   accept = 'image/*',
   defaultValue,
   error = false,
-  helperText
+  helperText,
+  maxSizeMb = 5,
+  clearLabel = 'Clear',
+  onChange
 }: ImageUploadFieldProps) {
+  const inputId = useId();
+  const [preview, setPreview] = useState<string | null>(previewUrl || defaultValue || null);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const urlInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setPreview(previewUrl || defaultValue || null);
+  }, [defaultValue, previewUrl]);
+
+  const notifyChange = (file: File | null, newPreview: string | null) => {
+    onChange?.({ file, preview: newPreview });
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setLocalError(null);
+      return;
+    }
+
+    const maxBytes = maxSizeMb * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setLocalError(`File too large (max ${maxSizeMb}MB).`);
+      event.target.value = '';
+      notifyChange(null, preview);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+    setLocalError(null);
+    setPreview(objectUrl);
+    notifyChange(file, objectUrl);
+  };
+
+  const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const url = event.target.value.trim();
+    setPreview(url || null);
+    notifyChange(null, url || null);
+  };
+
+  const handleClear = () => {
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+    setPreview(null);
+    setLocalError(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (urlInputRef.current) urlInputRef.current.value = '';
+    notifyChange(null, null);
+  };
+
+  const effectiveHelper = localError ?? helperText;
+
   return (
-    <>
-      <div className={styles.preview}>
-        {previewUrl ? (
-          <img className={styles.previewImage} src={previewUrl} alt={label} />
-        ) : (
-          placeholder
-        )}
+    <Stack spacing={1} className={styles.controls}>
+      <div className={styles.preview} aria-label={label} id={inputId}>
+        {preview ? <img className={styles.previewImage} src={preview} alt={label} /> : placeholder}
       </div>
-      <div className={styles.controls}>
-        <TextField
-          name={name}
-          defaultValue={defaultValue}
-          label={label}
-          required={required}
-          fullWidth
-          error={error}
-          helperText={helperText}
-        />
+      <TextField
+        name={name}
+        defaultValue={defaultValue}
+        label={label}
+        required={required}
+        fullWidth
+        inputRef={urlInputRef}
+        onChange={handleUrlChange}
+        error={error || Boolean(localError)}
+        helperText={effectiveHelper}
+      />
+      <Stack direction="row" spacing={1} alignItems="center">
         <AdminButton variant="contained" component="label">
           {uploadLabel}
-          <input type="file" name={fileName} accept={accept} hidden />
+          <input type="file" name={fileName} accept={accept} hidden ref={fileInputRef} onChange={handleFileChange} />
         </AdminButton>
-      </div>
-    </>
+        <Typography variant="caption" className={styles.hint}>
+          {`Max ${maxSizeMb}MB`}
+        </Typography>
+        <AdminButton variant="outlined" color="secondary" onClick={handleClear} type="button">
+          {clearLabel}
+        </AdminButton>
+      </Stack>
+    </Stack>
   );
 }
