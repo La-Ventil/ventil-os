@@ -13,25 +13,26 @@ import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation
 import { getServerSession } from '../auth';
 
 const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => {
-  const byIndex = new Map<number, { title?: string; description?: string }>();
+  const levelsByIndex = new Map<number, { title?: string; description?: string }>();
 
-  for (const [key, value] of formData.entries()) {
-    if (!key.startsWith('levels[')) continue;
-    const match = key.match(/levels\[(\d+)\]\.(title|description)/);
+  for (const [rawKey, rawValue] of formData.entries()) {
+    if (!rawKey.startsWith('levels[')) continue;
+
+    const match = rawKey.match(/levels\[(\d+)\]\.(title|description)/);
     if (!match) continue;
 
     const index = Number(match[1]);
     const field = match[2] as 'title' | 'description';
-    const entry = byIndex.get(index) ?? {};
 
-    entry[field] = value.toString();
-    byIndex.set(index, entry);
+    const current = levelsByIndex.get(index) ?? {};
+    current[field] = rawValue.toString();
+    levelsByIndex.set(index, current);
   }
 
-  return [...byIndex.entries()]
+  return Array.from(levelsByIndex.entries())
     .sort(([a], [b]) => a - b)
     .map(([, { title = '', description = '' }]) => ({ title, description }))
-    .filter((lvl) => lvl.title || lvl.description);
+    .filter((level) => level.title || level.description);
 };
 
 const buildValues = async (
