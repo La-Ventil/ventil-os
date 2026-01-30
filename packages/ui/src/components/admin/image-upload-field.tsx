@@ -22,6 +22,8 @@ export type ImageUploadFieldProps = {
   helperText?: string;
   maxSizeMb?: number;
   clearLabel?: string;
+  tooLargeLabel?: string;
+  maxSizeHint?: string;
   onChange?: (payload: { file: File | null; preview: string | null }) => void;
 };
 
@@ -39,6 +41,8 @@ export default function ImageUploadField({
   helperText,
   maxSizeMb = 5,
   clearLabel = 'Clear',
+  tooLargeLabel,
+  maxSizeHint,
   onChange
 }: ImageUploadFieldProps) {
   const inputId = useId();
@@ -64,7 +68,8 @@ export default function ImageUploadField({
 
     const maxBytes = maxSizeMb * 1024 * 1024;
     if (file.size > maxBytes) {
-      setLocalError(`File too large (max ${maxSizeMb}MB).`);
+      const formattedMax = `${maxSizeMb}MB`;
+      setLocalError(tooLargeLabel ? tooLargeLabel.replace('{max}', formattedMax) : `File too large (max ${formattedMax}).`);
       event.target.value = '';
       notifyChange(null, preview);
       return;
@@ -123,7 +128,7 @@ export default function ImageUploadField({
       </Stack>
       {helperText ? null : (
         <Typography variant="caption" color="text.secondary">
-          {`Max ${maxSizeMb}MB`}
+          {maxSizeHint ?? `Max ${maxSizeMb}MB`}
         </Typography>
       )}
     </Stack>
