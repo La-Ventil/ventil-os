@@ -7,11 +7,12 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
-const buildValues = (formData: FormData, previousValues: OpenBadgeCreateFormInput): OpenBadgeCreateFormInput => ({
-  name: formData.get('name')?.toString() ?? previousValues.name,
-  description: formData.get('description')?.toString() ?? previousValues.description,
-  imageUrl: formData.get('imageUrl')?.toString() ?? previousValues.imageUrl,
-  levels: Array.from(formData.entries())
+const buildValues = async (
+  formData: FormData,
+  previousValues: OpenBadgeCreateFormInput,
+  t: (key: string, vars?: Record<string, unknown>) => string
+): Promise<OpenBadgeCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
+  const levels = Array.from(formData.entries())
     .filter(([key]) => key.startsWith('levels['))
     .reduce<OpenBadgeCreateFormInput['levels']>((acc, [key, value]) => {
       const match = key.match(/levels\[(\d+)\]\.(title|description)/);
@@ -21,11 +22,51 @@ const buildValues = (formData: FormData, previousValues: OpenBadgeCreateFormInpu
       acc[idx][match[2] as 'title' | 'description'] = value.toString();
       return acc;
     }, [])
-    .filter((lvl) => lvl && (lvl.title || lvl.description)),
-  deliveryEnabled: formData.get('deliveryEnabled') === 'on',
-  deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
-  activationEnabled: formData.get('activationEnabled') === 'on'
-});
+    .filter((lvl) => lvl && (lvl.title || lvl.description));
+
+  const file = formData.get('imageFile');
+  const url = formData.get('imageUrl')?.toString() ?? previousValues.imageUrl;
+
+  const imageResult = await pickImageSource(file, url, t);
+  if ('error' in imageResult) return imageResult;
+
+  return {
+    name: formData.get('name')?.toString() ?? previousValues.name,
+    description: formData.get('description')?.toString() ?? previousValues.description,
+    imageUrl: imageResult.imageUrl,
+    levels,
+    deliveryEnabled: formData.get('deliveryEnabled') === 'on',
+    deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
+    activationEnabled: formData.get('activationEnabled') === 'on'
+  };
+};
+
+const pickImageSource = async (
+  file: FormDataEntryValue | null,
+  url: string,
+  t: (key: string, vars?: Record<string, unknown>) => string
+): Promise<{ imageUrl: string } | { error: string; fieldErrors: Record<string, string[]> }> => {
+  const maxBytes = 5 * 1024 * 1024;
+  if (file instanceof File && file.size > 0) {
+    if (file.size > maxBytes) {
+      return {
+        error: t('validation.imageTooLarge', { max: '5MB' }),
+        fieldErrors: { imageUrl: [t('validation.imageTooLarge', { max: '5MB' })] }
+      };
+    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const base64 = buffer.toString('base64');
+    const mime = file.type || 'image/png';
+    return { imageUrl: `data:${mime};base64,${base64}` };
+  }
+
+  if (url) return { imageUrl: url };
+
+  return {
+    error: t('validation.openBadge.imageRequired'),
+    fieldErrors: { imageUrl: [t('validation.openBadge.imageRequired')] }
+  };
+};
 
 export async function createOpenBadge(
   previousState: FormState<OpenBadgeCreateFormInput>,
@@ -44,7 +85,19 @@ export async function createOpenBadge(
       values: previousState.values
     };
   }
-  const values = buildValues(formData, previousState.values);
+  const valuesOrError = await buildValues(formData, previousState.values, t);
+
+  if ('error' in valuesOrError) {
+    return {
+      success: false,
+      valid: false,
+      message: valuesOrError.error,
+      fieldErrors: valuesOrError.fieldErrors,
+      values: previousState.values
+    };
+  }
+
+  const values = valuesOrError;
   const { success, data, error } = openBadgeCreateFormSchema.safeParse(values);
 
   if (!success) {
