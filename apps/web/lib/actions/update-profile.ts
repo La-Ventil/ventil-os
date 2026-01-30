@@ -18,8 +18,10 @@ export async function updateProfile(
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
       return {
-        message: fieldErrorsToSingleMessage(fieldErrors),
+        success: false,
+        valid: false,
         isValid: false,
+        message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
       };
@@ -35,16 +37,20 @@ export async function updateProfile(
     });
 
     return {
+      success: true,
+      valid: true,
+      isValid: true,
       values,
       message: t('forms.messages.profileUpdated'),
-      isValid: true,
       fieldErrors: {}
     };
   } catch (e) {
     console.error(e);
     return {
-      message: t('validation.genericError'),
+      success: false,
+      valid: true,
       isValid: false,
+      message: t('validation.genericError'),
       fieldErrors: {},
       values
     };

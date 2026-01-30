@@ -18,6 +18,8 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordForm) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [formState, formAction, pending] = useFormActionStateWithValues<ResetPasswordFormInput>(handleSubmit, {
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -29,7 +31,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordForm) {
   return (
     <form action={formAction}>
       {formState?.message && !pending && (
-        <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>
+        <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
       )}
       <Stack spacing={2}>
         <TextField

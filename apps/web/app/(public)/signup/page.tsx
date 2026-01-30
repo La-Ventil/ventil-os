@@ -16,6 +16,8 @@ import { registerUser } from '../../../lib/actions/register-user';
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
   const actionState = useFormActionStateWithValues<SignupFormInput>(registerUser, {
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -34,7 +36,7 @@ export default function Page(): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    if (formState?.isValid) {
+    if (formState?.success) {
       async function signInAndRedirect() {
         await signIn('credentials', {
           redirect: false,

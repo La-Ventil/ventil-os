@@ -22,6 +22,8 @@ export default function Page(): JSX.Element {
   const { token } = useParams<{ token: string }>();
   const initialState: UpdatePasswordActionState = {
     token,
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -35,7 +37,7 @@ export default function Page(): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    if (formState?.isValid && formState.values.email) {
+    if (formState?.success && formState.values.email) {
       signInAndRedirect(router)(formState.values.email, formState.values.password);
     }
   }, [formState, router]);
@@ -46,7 +48,7 @@ export default function Page(): JSX.Element {
         <Typography variant="h2">{t('title')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
         {formState?.message && !pending && (
-          <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>
+          <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
         )}
       </Stack>
       <form action={formAction}>

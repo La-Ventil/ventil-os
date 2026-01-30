@@ -10,6 +10,8 @@ import { createMachine } from '../../../../../lib/actions/create-machine';
 export default function MachineCreateFormClient() {
   const router = useRouter();
   const actionState = useFormActionStateWithValues<MachineCreateFormInput>(createMachine, {
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -26,10 +28,10 @@ export default function MachineCreateFormClient() {
   const [state] = actionState;
 
   useEffect(() => {
-    if (state.isValid) {
+    if (state.success) {
       router.push('/hub/admin/machines');
     }
-  }, [router, state.isValid]);
+  }, [router, state.success]);
 
   return <MachineCreateForm actionState={actionState} />;
 }

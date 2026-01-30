@@ -28,8 +28,10 @@ export async function updatePassword(
       const values = Object.fromEntries(formData) as unknown as UpdatePasswordActionValues;
       return {
         token: previousState.token,
-        message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+        success: false,
+        valid: false,
         isValid: false,
+        message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
         fieldErrors,
         values
       };
@@ -42,10 +44,12 @@ export async function updatePassword(
     if (!user) {
       return {
         token: previousState.token,
+        success: false,
+        valid: true,
+        isValid: false,
         message: t('updatePassword.invalidToken', {
           defaultMessage: "Ce lien de réinitialisation n'existe pas ou n'est plus valide."
         }),
-        isValid: false,
         fieldErrors: {},
         values: previousState.values
       };
@@ -61,10 +65,12 @@ export async function updatePassword(
 
     return {
       token: previousState.token,
+      success: true,
+      valid: true,
+      isValid: true,
       message: t('updatePassword.success', {
         defaultMessage: 'Votre mot de passe a bien été changé.'
       }),
-      isValid: true,
       fieldErrors: {},
       values: {
         email: user.email,
@@ -79,8 +85,10 @@ export async function updatePassword(
 
     return {
       token: previousState.token,
-      message: fallback,
+      success: false,
+      valid: true,
       isValid: false,
+      message: fallback,
       fieldErrors: {},
       values: previousState.values
     };

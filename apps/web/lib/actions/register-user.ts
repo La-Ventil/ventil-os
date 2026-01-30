@@ -18,8 +18,10 @@ export async function registerUser(
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
       return {
-        message: fieldErrorsToSingleMessage(fieldErrors),
+        success: false,
+        valid: false,
         isValid: false,
+        message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
       };
@@ -49,24 +51,30 @@ export async function registerUser(
       };
 
       return {
-        message: fieldErrorsToSingleMessage(fieldErrors),
+        success: false,
+        valid: true,
         isValid: false,
+        message: fieldErrorsToSingleMessage(fieldErrors),
         fieldErrors,
         values
       };
     }
 
     return {
+      success: true,
+      valid: true,
+      isValid: true,
       values,
       message: t('signup.success'),
-      isValid: true,
       fieldErrors: {}
     };
   } catch (e) {
     console.error(e);
     return {
-      message: t('signup.error'),
+      success: false,
+      valid: true,
       isValid: false,
+      message: t('signup.error'),
       fieldErrors: {},
       values
     };

@@ -3,6 +3,8 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import { mapOpenBadgeAdminToViewModel } from './mappers/open-badge-admin';
 import { mapOpenBadgeProgressToViewModel, mapOpenBadgeToViewModel } from './mappers/open-badge';
+import { canManageBadgesUser } from './authorization';
+import { userExists } from './user';
 
 export const listOpenBadges = async (): Promise<OpenBadgeViewModel[]> => {
   const badges = await openBadgeRepository.listOpenBadges();
@@ -19,9 +21,7 @@ export const getOpenBadgeById = async (id: string): Promise<OpenBadgeViewModel |
   return badge ? mapOpenBadgeToViewModel(badge) : null;
 };
 
-export const listOpenBadgesForUser = async (
-  userId: string
-): Promise<OpenBadgeViewModel[]> => {
+export const listOpenBadgesForUser = async (userId: string): Promise<OpenBadgeViewModel[]> => {
   const progresses = await openBadgeRepository.listOpenBadgesForUser(userId);
   return progresses.map(mapOpenBadgeProgressToViewModel);
 };
@@ -32,6 +32,47 @@ export const awardOpenBadgeLevel = async (input: {
   level: number;
   awardedById: string;
 }) => openBadgeRepository.awardOpenBadgeLevel(input);
+
+export const awardOpenBadgeLevelUseCase = async (
+  input: {
+    userId: string;
+    openBadgeId: string;
+    level: number;
+  },
+  currentUser: {
+    id?: string;
+    email?: string | null;
+    globalAdmin?: boolean;
+    pedagogicalAdmin?: boolean;
+  }
+) => {
+  if (!currentUser?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  if (!canManageBadgesUser(currentUser)) {
+    throw new Error('Unauthorized');
+  }
+
+  const awarderExists = await userExists(currentUser.id);
+  if (!awarderExists) {
+    throw new Error('Awarding user not found');
+  }
+
+  const targetExists = await userExists(input.userId);
+  if (!targetExists) {
+    throw new Error('Target user not found');
+  }
+
+  await awardOpenBadgeLevel({
+    userId: input.userId,
+    openBadgeId: input.openBadgeId,
+    level: input.level,
+    awardedById: currentUser.id
+  });
+
+  return { ok: true };
+};
 
 const DEFAULT_BADGE_TYPE = 'Administration';
 const DEFAULT_BADGE_CATEGORY = 'Machine';

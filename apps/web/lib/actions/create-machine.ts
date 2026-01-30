@@ -26,10 +26,12 @@ export async function createMachine(
 
   if (!session || !canManageBadges) {
     return {
+      success: false,
+      valid: true,
+      isValid: false,
       message: t('machine.create.unauthorized', {
         defaultMessage: "Vous n'êtes pas autorisé à créer une machine."
       }),
-      isValid: false,
       fieldErrors: {},
       values: previousState.values
     };
@@ -40,8 +42,10 @@ export async function createMachine(
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
     return {
-      message: fieldErrorsToSingleMessage(fieldErrors),
+      success: false,
+      valid: false,
       isValid: false,
+      message: fieldErrorsToSingleMessage(fieldErrors),
       fieldErrors,
       values
     };
@@ -55,20 +59,24 @@ export async function createMachine(
     });
 
     return {
+      success: true,
+      valid: true,
+      isValid: true,
       values,
       message: t('machine.create.success', {
         defaultMessage: 'La machine a bien été enregistrée.'
       }),
-      isValid: true,
       fieldErrors: {}
     };
   } catch (err) {
     console.error(err);
     return {
+      success: false,
+      valid: true,
+      isValid: false,
       message: t('machine.create.error', {
         defaultMessage: "Impossible d'enregistrer la machine."
       }),
-      isValid: false,
       fieldErrors: {},
       values
     };

@@ -10,6 +10,8 @@ import { createOpenBadge } from '../../../../../lib/actions/create-open-badge';
 export default function OpenBadgeCreateFormClient() {
   const router = useRouter();
   const actionState = useFormActionStateWithValues<OpenBadgeCreateFormInput>(createOpenBadge, {
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -28,10 +30,10 @@ export default function OpenBadgeCreateFormClient() {
   const [state] = actionState;
 
   useEffect(() => {
-    if (state.isValid) {
+    if (state.success) {
       router.push('/hub/admin/open-badges');
     }
-  }, [router, state.isValid]);
+  }, [router, state.success]);
 
   return <OpenBadgeCreateForm actionState={actionState} />;
 }

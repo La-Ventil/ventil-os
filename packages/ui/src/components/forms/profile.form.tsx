@@ -24,6 +24,8 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
   const tCommon = useTranslations('common');
   const profile = use(profilePromise);
   const [formState, formAction, pending] = useFormActionStateWithValues<ProfileFormInput>(handleSubmit, {
+    success: false,
+    valid: true,
     message: '',
     fieldErrors: {},
     values: {
@@ -38,7 +40,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
     <form action={formAction}>
       <Stack spacing={2}>
         {formState?.message && !pending && (
-          <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>
+          <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
         )}
         <TextField
           name="firstName"

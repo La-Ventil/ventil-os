@@ -1,11 +1,7 @@
 'use server';
 
-import {
-  awardOpenBadgeLevel,
-  canManageBadgesUser,
-  getUserProfileByEmail,
-  assignOpenBadgeFormInputSchema
-} from '@repo/application';
+import { awardOpenBadgeLevelUseCase, assignOpenBadgeFormInputSchema } from '@repo/application';
+import type { FormState } from '@repo/ui/form-state';
 import { getServerSession } from '../auth';
 
 type AssignOpenBadgeInput = {
@@ -14,30 +10,42 @@ type AssignOpenBadgeInput = {
   level: number;
 };
 
-export async function assignOpenBadge(input: AssignOpenBadgeInput) {
+export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<FormState<AssignOpenBadgeInput>> {
   const session = await getServerSession();
 
-  if (!session || !session.user?.id || !canManageBadgesUser(session.user)) {
-    throw new Error('Unauthorized');
+  if (!session || !session.user?.id) {
+    return {
+      success: false,
+      valid: true,
+      message: 'Unauthorized',
+      fieldErrors: {},
+      values: input
+    };
   }
 
   const parsed = assignOpenBadgeFormInputSchema.safeParse(input);
   if (!parsed.success) {
-    throw new Error('Invalid input');
+    return {
+      success: false,
+      valid: false,
+      message: 'Invalid input',
+      fieldErrors: parsed.error.flatten().fieldErrors,
+      values: input
+    };
   }
 
-  const awarder = session.user.email ? await getUserProfileByEmail(session.user.email) : null;
-
-  if (!awarder) {
-    throw new Error('Awarding user not found');
-  }
-
-  await awardOpenBadgeLevel({
-    userId: parsed.data.userId,
-    openBadgeId: parsed.data.openBadgeId,
-    level: parsed.data.level,
-    awardedById: awarder.id
+  await awardOpenBadgeLevelUseCase(parsed.data, {
+    id: session.user.id,
+    email: session.user.email ?? null,
+    globalAdmin: session.user.globalAdmin,
+    pedagogicalAdmin: session.user.pedagogicalAdmin
   });
 
-  return { ok: true };
+  return {
+    success: true,
+    valid: true,
+    message: 'Badge attribué',
+    fieldErrors: {},
+    values: parsed.data
+  };
 }

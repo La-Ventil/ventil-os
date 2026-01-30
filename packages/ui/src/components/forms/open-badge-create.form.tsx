@@ -28,19 +28,14 @@ export interface OpenBadgeCreateFormProps {
   actionState: FormActionStateTuple<FormState<OpenBadgeCreateFormInput>>;
 }
 
-export default function OpenBadgeCreateForm({
-  actionState: [state, action, isPending]
-}: OpenBadgeCreateFormProps) {
+export default function OpenBadgeCreateForm({ actionState: [state, action, isPending] }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
-  const fieldError = (field: keyof OpenBadgeCreateFormInput) =>
-    state.fieldErrors[field as string]?.[0];
+  const fieldError = (field: keyof OpenBadgeCreateFormInput) => state.fieldErrors[field]?.[0];
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
 
   return (
     <Stack component="form" action={action} spacing={2}>
-      {state.message && !isPending && (
-        <Alert severity={state.isValid ? 'success' : 'error'}>{state.message}</Alert>
-      )}
+      {state.message && !isPending && <Alert severity={state.success ? 'success' : 'error'}>{state.message}</Alert>}
       <FormSection>
         <TextField
           name="name"
@@ -129,9 +124,7 @@ export default function OpenBadgeCreateForm({
             onChange={(event) => setDeliveryEnabled(event.target.checked)}
           />
           <FormControl size="small">
-            <InputLabel id="open-badge-delivery-level-label">
-              {t('delivery.levelLabel')}
-            </InputLabel>
+            <InputLabel id="open-badge-delivery-level-label">{t('delivery.levelLabel')}</InputLabel>
             <Select
               labelId="open-badge-delivery-level-label"
               name="deliveryLevel"

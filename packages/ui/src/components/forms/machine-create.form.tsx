@@ -26,18 +26,13 @@ export interface MachineCreateFormProps {
   actionState: FormActionStateTuple<FormState<MachineCreateFormInput>>;
 }
 
-export default function MachineCreateForm({
-  actionState: [state, action, isPending]
-}: MachineCreateFormProps) {
+export default function MachineCreateForm({ actionState: [state, action, isPending] }: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
-  const fieldError = (field: keyof MachineCreateFormInput) =>
-    state.fieldErrors[field as string]?.[0];
+  const fieldError = (field: keyof MachineCreateFormInput) => state.fieldErrors[field]?.[0];
 
   return (
     <Stack component="form" action={action} spacing={2}>
-      {state.message && !isPending && (
-        <Alert severity={state.isValid ? 'success' : 'error'}>{state.message}</Alert>
-      )}
+      {state.message && !isPending && <Alert severity={state.success ? 'success' : 'error'}>{state.message}</Alert>}
       <FormSection>
         <TextField
           name="name"
@@ -98,12 +93,8 @@ export default function MachineCreateForm({
           <div className={styles.badgeCard}>
             <div className={styles.badgeIllustration}>{t('image.placeholder')}</div>
             <Stack spacing={0.5}>
-              <Typography className={styles.badgeType}>
-                {t('badgeRequirement.badgeType')}
-              </Typography>
-              <Typography className={styles.badgeName}>
-                {t('badgeRequirement.badgeName')}
-              </Typography>
+              <Typography className={styles.badgeType}>{t('badgeRequirement.badgeType')}</Typography>
+              <Typography className={styles.badgeName}>{t('badgeRequirement.badgeName')}</Typography>
             </Stack>
             <IconButton aria-label={t('badgeRequirement.removeLabel')}>
               <CloseIcon />
