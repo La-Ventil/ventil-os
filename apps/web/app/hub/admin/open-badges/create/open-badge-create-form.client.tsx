@@ -18,8 +18,12 @@ export default function OpenBadgeCreateFormClient() {
       name: '',
       description: '',
       imageUrl: '',
-      levelTitle: '',
-      levelDescription: '',
+      levels: [
+        {
+          title: '',
+          description: ''
+        }
+      ],
       deliveryEnabled: true,
       deliveryLevel: 'level-1',
       activationEnabled: true

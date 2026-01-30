@@ -60,7 +60,7 @@ export default function OpenBadgeLevelsEditor({
         return (
           <Stack key={`${fieldPrefix}-${index}`} spacing={1} className={styles.levelBlock}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <LevelChip level={levelNumber} isActive size="medium" label={`${labels.chipPrefix} ${levelNumber}`} />
+              <LevelChip level={levelNumber} isActive size="medium" className={styles.levelChip} />
               {levels.length > 1 && (
                 <IconButton aria-label={labels.remove} onClick={() => removeLevel(index)} size="small">
                   <DeleteIcon fontSize="small" />

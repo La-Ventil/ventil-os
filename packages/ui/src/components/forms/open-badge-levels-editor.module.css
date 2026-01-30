@@ -4,3 +4,7 @@
   border-radius: 12px;
   padding: 12px;
 }
+
+.levelChip {
+  font-weight: 700;
+}

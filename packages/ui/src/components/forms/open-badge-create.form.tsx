@@ -36,16 +36,8 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
   const fieldError = (field: keyof OpenBadgeCreateFormInput) => firstFieldError(state, field);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const initialLevels = useMemo(
-    () =>
-      state.values.levels && state.values.levels.length
-        ? state.values.levels
-        : [
-            {
-              title: state.values.levelTitle ?? '',
-              description: state.values.levelDescription ?? ''
-            }
-          ],
-    [state.values.levelDescription, state.values.levelTitle, state.values.levels]
+    () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
+    [state.values.levels]
   );
 
   return (
