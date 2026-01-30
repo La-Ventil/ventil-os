@@ -214,9 +214,12 @@
       "tooLarge": "Fichier trop lourd (max {max}).",
       "clear": "Effacer"
     },
-          "levels": {
-            "add": "+ Ajouter un niveau"
-          },
+    "levels": {
+      "add": "+ Ajouter un niveau",
+      "remove": "Supprimer",
+      "chipPrefix": "Niveau",
+      "min": "Au moins un niveau est requis"
+    },
           "delivery": {
             "title": "Délivrance",
             "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",

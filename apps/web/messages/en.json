@@ -217,9 +217,12 @@
       "tooLarge": "File too large (max {max}).",
       "clear": "Clear"
     },
-          "levels": {
-            "add": "+ Add a level"
-          },
+    "levels": {
+      "add": "+ Add a level",
+      "remove": "Remove",
+      "chipPrefix": "Level",
+      "min": "At least one level is required"
+    },
           "delivery": {
             "title": "Issuance",
             "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",

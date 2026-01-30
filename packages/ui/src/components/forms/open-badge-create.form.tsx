@@ -96,7 +96,8 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
           title: t('fields.levelTitle'),
           description: t('fields.levelDescription'),
           remove: t('levels.remove'),
-          chipPrefix: t('levels.chipPrefix')
+          chipPrefix: t('levels.chipPrefix'),
+          minLevels: t('levels.min')
         }}
       />
 

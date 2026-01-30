@@ -19,6 +19,7 @@ export type OpenBadgeLevelDraft = {
 export type OpenBadgeLevelsEditorProps = {
   initialLevels?: OpenBadgeLevelDraft[];
   maxLevels?: number;
+  minLevels?: number;
   error?: string | undefined;
   labels: {
     add: string;
@@ -26,12 +27,14 @@ export type OpenBadgeLevelsEditorProps = {
     description: string;
     remove: string;
     chipPrefix: string;
+    minLevels?: string;
   };
 };
 
 export default function OpenBadgeLevelsEditor({
   initialLevels = [],
   maxLevels = 5,
+  minLevels = 1,
   error,
   labels
 }: OpenBadgeLevelsEditorProps) {
@@ -46,6 +49,7 @@ export default function OpenBadgeLevelsEditor({
   };
 
   const removeLevel = (index: number) => {
+    if (levels.length <= minLevels) return;
     setLevels((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -99,11 +103,11 @@ export default function OpenBadgeLevelsEditor({
       >
         {labels.add}
       </AdminButton>
-      {error ? (
+      {(error || (levels.length < minLevels && labels.minLevels)) && (
         <Typography variant="caption" color="error">
-          {error}
+          {error ?? labels.minLevels}
         </Typography>
-      ) : null}
+      )}
     </Stack>
   );
 }

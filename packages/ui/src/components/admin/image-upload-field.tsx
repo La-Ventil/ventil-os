@@ -55,6 +55,12 @@ export default function ImageUploadField({
     setPreview(previewUrl || defaultValue || null);
   }, [defaultValue, previewUrl]);
 
+  useEffect(() => () => {
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+  }, [preview]);
+
   const notifyChange = (file: File | null, newPreview: string | null) => {
     onChange?.({ file, preview: newPreview });
   };
