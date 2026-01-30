@@ -11,53 +11,43 @@ import {
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
+import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 
-const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => {
-  const levelsByIndex = new Map<number, { title?: string; description?: string }>();
-
-  for (const [rawKey, rawValue] of formData.entries()) {
-    if (!rawKey.startsWith('levels[')) continue;
-
-    const isTitle = rawKey.endsWith('.title');
-    const isDescription = rawKey.endsWith('.description');
-    if (!isTitle && !isDescription) continue;
-
-    const indexSlice = rawKey.slice('levels['.length);
-    const indexString = indexSlice.split(']')[0];
-    const index = Number(indexString);
-    if (Number.isNaN(index)) continue;
-
-    const field = isTitle ? 'title' : 'description';
-    const current = levelsByIndex.get(index) ?? {};
-    current[field] = rawValue.toString();
-    levelsByIndex.set(index, current);
-  }
-
-  return Array.from(levelsByIndex.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([, { title = '', description = '' }]) => ({ title, description }))
-    .filter((level) => level.title || level.description);
-};
+const formDataSchema = zfd.formData({
+  name: zfd.text(),
+  description: zfd.text(),
+  deliveryEnabled: zfd.checkbox(),
+  deliveryLevel: zfd.text(z.string().optional()),
+  activationEnabled: zfd.checkbox(),
+  'levels.title': zfd.repeatableOfType(zfd.text()),
+  'levels.description': zfd.repeatableOfType(zfd.text())
+});
 
 const buildValues = async (
   formData: FormData,
   previousValues: OpenBadgeCreateFormInput,
   t: (...args: any[]) => string
 ): Promise<OpenBadgeCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
-  const levels = parseLevels(formData);
-
   const file = formData.get('imageFile');
   const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) return imageResult;
 
+  const parsedForm = formDataSchema.parse(formData);
+  const titles = parsedForm['levels.title'] ?? [];
+  const descriptions = parsedForm['levels.description'] ?? [];
+  const levels = titles
+    .map((title, idx) => ({ title, description: descriptions[idx] ?? '' }))
+    .filter((level) => level.title || level.description);
+
   return {
-    name: formData.get('name')?.toString() ?? previousValues.name,
-    description: formData.get('description')?.toString() ?? previousValues.description,
+    name: parsedForm.name ?? previousValues.name,
+    description: parsedForm.description ?? previousValues.description,
     imageUrl: imageResult.url,
     levels,
-    deliveryEnabled: formData.get('deliveryEnabled') === 'on',
-    deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
-    activationEnabled: formData.get('activationEnabled') === 'on'
+    deliveryEnabled: parsedForm.deliveryEnabled ?? false,
+    deliveryLevel: parsedForm.deliveryLevel ?? previousValues.deliveryLevel,
+    activationEnabled: parsedForm.activationEnabled ?? false
   };
 };
 
