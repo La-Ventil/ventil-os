@@ -30,9 +30,7 @@ const buildValues = async (
     .filter((lvl) => lvl && (lvl.title || lvl.description));
 
   const file = formData.get('imageFile');
-  const url = formData.get('imageUrl')?.toString() ?? previousValues.imageUrl;
-
-  const imageResult = await pickImageSource(file, t);
+  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) return imageResult;
 
   return {
@@ -45,11 +43,6 @@ const buildValues = async (
     activationEnabled: formData.get('activationEnabled') === 'on'
   };
 };
-
-const pickImageSource = async (
-  file: FormDataEntryValue | null,
-  t: (...args: any[]) => string
-) => validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
 
 export async function createOpenBadge(
   previousState: FormState<OpenBadgeCreateFormInput>,
