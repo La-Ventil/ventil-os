@@ -22,12 +22,12 @@ const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => 
     const isDescription = rawKey.endsWith('.description');
     if (!isTitle && !isDescription) continue;
 
-    const indexMatch = rawKey.match(/levels\[(\d+)\]/);
-    if (!indexMatch) continue;
+    const indexSlice = rawKey.slice('levels['.length);
+    const indexString = indexSlice.split(']')[0];
+    const index = Number(indexString);
+    if (Number.isNaN(index)) continue;
 
-    const index = Number(indexMatch[1]);
     const field = isTitle ? 'title' : 'description';
-
     const current = levelsByIndex.get(index) ?? {};
     current[field] = rawValue.toString();
     levelsByIndex.set(index, current);
