@@ -59,16 +59,17 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
             name="imageUrl"
             defaultValue={state.values.imageUrl}
             label={t('fields.image')}
-            placeholder={t('image.placeholder')}
-            uploadLabel={t('image.upload')}
-            maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge')}
-            clearLabel={t('image.clear')}
-            maxSizeMb={5}
-            required
-            error={Boolean(fieldError('imageUrl'))}
-            helperText={fieldError('imageUrl')}
-          />
+          placeholder={t('image.placeholder')}
+          uploadLabel={t('image.upload')}
+          maxSizeHint={t('image.maxSizeHint')}
+          tooLargeLabel={t('image.tooLarge')}
+          clearLabel={t('image.clear')}
+          maxSizeMb={5}
+          resetKey={state.success ? 'reset' : state.values.imageUrl}
+          required
+          error={Boolean(fieldError('imageUrl'))}
+          helperText={fieldError('imageUrl')}
+        />
         </div>
       </FormSection>
 

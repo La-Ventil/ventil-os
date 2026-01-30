@@ -1,6 +1,5 @@
 "use client";
 
-import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AdminButton from './admin-button';
@@ -13,7 +12,6 @@ export type ImageUploadFieldProps = {
   placeholder: string;
   uploadLabel: string;
   required?: boolean;
-  name?: string;
   fileName?: string;
   previewUrl?: string;
   accept?: string;
@@ -25,6 +23,7 @@ export type ImageUploadFieldProps = {
   tooLargeLabel?: string;
   maxSizeHint?: string;
   onChange?: (payload: { file: File | null; preview: string | null }) => void;
+  resetKey?: string | number;
 };
 
 export default function ImageUploadField({
@@ -32,7 +31,6 @@ export default function ImageUploadField({
   placeholder,
   uploadLabel,
   required = false,
-  name = 'imageUrl',
   fileName = 'imageFile',
   previewUrl,
   accept = 'image/*',
@@ -43,13 +41,13 @@ export default function ImageUploadField({
   clearLabel = 'Clear',
   tooLargeLabel,
   maxSizeHint,
-  onChange
+  onChange,
+  resetKey
 }: ImageUploadFieldProps) {
   const inputId = useId();
   const [preview, setPreview] = useState<string | null>(previewUrl || defaultValue || null);
   const [localError, setLocalError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const urlInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setPreview(previewUrl || defaultValue || null);
@@ -60,6 +58,17 @@ export default function ImageUploadField({
       URL.revokeObjectURL(preview);
     }
   }, [preview]);
+
+  // Reset when parent indicates success/refresh via resetKey
+  useEffect(() => {
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+    setPreview(null);
+    setLocalError(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    notifyChange(null, null);
+  }, [resetKey]);
 
   const notifyChange = (file: File | null, newPreview: string | null) => {
     onChange?.({ file, preview: newPreview });
@@ -90,12 +99,6 @@ export default function ImageUploadField({
     notifyChange(file, objectUrl);
   };
 
-  const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const url = event.target.value.trim();
-    setPreview(url || null);
-    notifyChange(null, url || null);
-  };
-
   const handleClear = () => {
     if (preview && preview.startsWith('blob:')) {
       URL.revokeObjectURL(preview);
@@ -103,7 +106,6 @@ export default function ImageUploadField({
     setPreview(null);
     setLocalError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
-    if (urlInputRef.current) urlInputRef.current.value = '';
     notifyChange(null, null);
   };
 
@@ -112,17 +114,6 @@ export default function ImageUploadField({
   return (
     <Stack spacing={1} className={styles.controls}>
       <ImagePreview label={label} preview={preview} placeholder={placeholder} id={inputId} />
-      <TextField
-        name={name}
-        defaultValue={defaultValue}
-        label={label}
-        required={required}
-        fullWidth
-        inputRef={urlInputRef}
-        onChange={handleUrlChange}
-        error={error || Boolean(localError)}
-        helperText={effectiveHelper}
-      />
       <Stack direction="row" spacing={1} alignItems="center">
         <AdminButton variant="contained" component="label">
           {uploadLabel}
