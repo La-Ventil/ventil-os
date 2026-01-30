@@ -3,6 +3,8 @@
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import AdminButton from './admin-button';
 import styles from './image-upload-field.module.css';
 import { ChangeEvent, useEffect, useId, useRef, useState } from 'react';
@@ -99,9 +101,33 @@ export default function ImageUploadField({
 
   return (
     <Stack spacing={1} className={styles.controls}>
-      <div className={styles.preview} aria-label={label} id={inputId}>
-        {preview ? <img className={styles.previewImage} src={preview} alt={label} /> : placeholder}
-      </div>
+      <Paper
+        variant="outlined"
+        aria-label={label}
+        id={inputId}
+        sx={{
+          width: 200,
+          height: 140,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: preview ? 'grey.50' : 'grey.100',
+          overflow: 'hidden'
+        }}
+      >
+        {preview ? (
+          <Box
+            component="img"
+            src={preview}
+            alt={label}
+            sx={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+          />
+        ) : (
+          <Typography variant="caption" color="text.secondary" align="center" px={1}>
+            {placeholder}
+          </Typography>
+        )}
+      </Paper>
       <TextField
         name={name}
         defaultValue={defaultValue}
