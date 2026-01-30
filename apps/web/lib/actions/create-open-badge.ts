@@ -12,22 +12,34 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
+const parseLevels = (formData: FormData): OpenBadgeCreateFormInput['levels'] => {
+  const levels: Record<number, { title: string; description: string }> = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith('levels[')) continue;
+    const match = key.match(/levels\[(\d+)\]\.(title|description)/);
+    if (!match) continue;
+
+    const index = Number(match[1]);
+    const field = match[2] as 'title' | 'description';
+
+    levels[index] ??= { title: '', description: '' };
+    levels[index][field] = value.toString();
+  }
+
+  return Object.keys(levels)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map((idx) => levels[idx]!)
+    .filter((lvl) => lvl.title || lvl.description);
+};
+
 const buildValues = async (
   formData: FormData,
   previousValues: OpenBadgeCreateFormInput,
   t: (...args: any[]) => string
 ): Promise<OpenBadgeCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
-  const levels = Array.from(formData.entries())
-    .filter(([key]) => key.startsWith('levels['))
-    .reduce<OpenBadgeCreateFormInput['levels']>((acc, [key, value]) => {
-      const match = key.match(/levels\[(\d+)\]\.(title|description)/);
-      if (!match) return acc;
-      const idx = Number(match[1]);
-      acc[idx] = acc[idx] || { title: '', description: '' };
-      acc[idx][match[2] as 'title' | 'description'] = value.toString();
-      return acc;
-    }, [])
-    .filter((lvl) => lvl && (lvl.title || lvl.description));
+  const levels = parseLevels(formData);
 
   const file = formData.get('imageFile');
   const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
