@@ -16,29 +16,6 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
-const buildValues = async (
-  formData: FormData,
-  previousValues: OpenBadgeCreateFormInput,
-  t: (...args: any[]) => string
-): Promise<OpenBadgeCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
-  const file = formData.get('imageFile');
-  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
-  if ('error' in imageResult) return imageResult;
-
-  const parsedForm = openBadgeCreateFormDataSchema.parse(formData);
-  const levels = (parsedForm.levels ?? []).filter((level) => level.title || level.description);
-
-  return {
-    name: parsedForm.name ?? previousValues.name,
-    description: parsedForm.description ?? previousValues.description,
-    imageUrl: imageResult.url,
-    levels,
-    deliveryEnabled: parsedForm.deliveryEnabled ?? false,
-    deliveryLevel: parsedForm.deliveryLevel ?? previousValues.deliveryLevel,
-    activationEnabled: parsedForm.activationEnabled ?? false
-  };
-};
-
 export async function createOpenBadge(
   previousState: FormState<OpenBadgeCreateFormInput>,
   formData: FormData
@@ -56,19 +33,34 @@ export async function createOpenBadge(
       values: previousState.values
     };
   }
-  const valuesOrError = await buildValues(formData, previousState.values, t);
 
-  if ('error' in valuesOrError) {
+  // 1) Parse form data (all fields except file)
+  const parsedForm = openBadgeCreateFormDataSchema.parse(formData);
+  const levels = (parsedForm.levels ?? []).filter((level) => level.title || level.description);
+
+  // 2) Handle image upload / validation
+  const file = formData.get('imageFile');
+  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
+  if ('error' in imageResult) {
     return {
       success: false,
       valid: false,
-      message: valuesOrError.error,
-      fieldErrors: valuesOrError.fieldErrors,
+      message: imageResult.error,
+      fieldErrors: imageResult.fieldErrors,
       values: previousState.values
     };
   }
 
-  const values = valuesOrError;
+  const values: OpenBadgeCreateFormInput = {
+    name: parsedForm.name ?? previousState.values.name,
+    description: parsedForm.description ?? previousState.values.description,
+    imageUrl: imageResult.url,
+    levels: (parsedForm.levels ?? []).filter((level) => level.title || level.description),
+    deliveryEnabled: parsedForm.deliveryEnabled ?? false,
+    deliveryLevel: parsedForm.deliveryLevel ?? previousState.values.deliveryLevel,
+    activationEnabled: parsedForm.activationEnabled ?? false
+  };
+
   const { success, data, error } = openBadgeCreateFormSchema.safeParse(values);
 
   if (!success) {
