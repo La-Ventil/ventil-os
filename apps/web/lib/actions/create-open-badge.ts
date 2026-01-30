@@ -2,10 +2,12 @@
 
 import { getTranslations } from 'next-intl/server';
 import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
-import { canManageBadgesUser, createOpenBadge as createOpenBadgeRecord } from '@repo/application';
-import fs from 'fs/promises';
-import path from 'path';
-import { randomUUID } from 'crypto';
+import {
+  canManageBadgesUser,
+  createOpenBadge as createOpenBadgeRecord,
+  validateAndStoreImage,
+  MAX_IMAGE_MB
+} from '@repo/application';
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
@@ -13,7 +15,7 @@ import { getServerSession } from '../auth';
 const buildValues = async (
   formData: FormData,
   previousValues: OpenBadgeCreateFormInput,
-  t: (key: string, vars?: Record<string, unknown>) => string
+  t: (...args: any[]) => string
 ): Promise<OpenBadgeCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
   const levels = Array.from(formData.entries())
     .filter(([key]) => key.startsWith('levels['))
@@ -30,13 +32,13 @@ const buildValues = async (
   const file = formData.get('imageFile');
   const url = formData.get('imageUrl')?.toString() ?? previousValues.imageUrl;
 
-  const imageResult = await pickImageSource(file, url, t);
+  const imageResult = await pickImageSource(file, t);
   if ('error' in imageResult) return imageResult;
 
   return {
     name: formData.get('name')?.toString() ?? previousValues.name,
     description: formData.get('description')?.toString() ?? previousValues.description,
-    imageUrl: imageResult.imageUrl,
+    imageUrl: imageResult.url,
     levels,
     deliveryEnabled: formData.get('deliveryEnabled') === 'on',
     deliveryLevel: formData.get('deliveryLevel')?.toString() ?? previousValues.deliveryLevel,
@@ -46,50 +48,8 @@ const buildValues = async (
 
 const pickImageSource = async (
   file: FormDataEntryValue | null,
-  t: (key: string, vars?: Record<string, unknown>) => string
-): Promise<{ imageUrl: string } | { error: string; fieldErrors: Record<string, string[]> }> => {
-  const maxBytes = 5 * 1024 * 1024;
-  const allowedMimes: Record<string, string> = {
-    'image/png': 'png',
-    'image/jpeg': 'jpg',
-    'image/jpg': 'jpg',
-    'image/gif': 'gif',
-    'image/webp': 'webp'
-  };
-
-  if (!(file instanceof File) || file.size === 0) {
-    return {
-      error: t('validation.openBadge.imageRequired'),
-      fieldErrors: { imageUrl: [t('validation.openBadge.imageRequired')] }
-    };
-  }
-
-  if (!allowedMimes[file.type]) {
-    return {
-      error: t('validation.imageInvalidType'),
-      fieldErrors: { imageUrl: [t('validation.imageInvalidType')] }
-    };
-  }
-
-  if (file.size > maxBytes) {
-    return {
-      error: t('validation.imageTooLarge', { max: '5MB' }),
-      fieldErrors: { imageUrl: [t('validation.imageTooLarge', { max: '5MB' })] }
-    };
-  }
-
-  const uploadsDir = path.join(process.cwd(), 'apps', 'web', 'public', 'uploads');
-  await fs.mkdir(uploadsDir, { recursive: true });
-
-  const extension = allowedMimes[file.type];
-  const filename = `${randomUUID()}.${extension}`;
-  const filepath = path.join(uploadsDir, filename);
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(filepath, buffer);
-
-  return { imageUrl: `/uploads/${filename}` };
-};
+  t: (...args: any[]) => string
+) => validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
 
 export async function createOpenBadge(
   previousState: FormState<OpenBadgeCreateFormInput>,
