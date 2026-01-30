@@ -1,7 +1,11 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
+import {
+  openBadgeCreateFormSchema,
+  openBadgeCreateFormDataSchema,
+  type OpenBadgeCreateFormInput
+} from '@repo/application/forms';
 import {
   canManageBadgesUser,
   createOpenBadge as createOpenBadgeRecord,
@@ -11,24 +15,6 @@ import {
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
-import { z } from 'zod';
-import { zfd } from 'zod-form-data';
-
-const formDataSchema = zfd.formData({
-  name: zfd.text(),
-  description: zfd.text(),
-  deliveryEnabled: zfd.checkbox(),
-  deliveryLevel: zfd.text(z.string().optional()),
-  activationEnabled: zfd.checkbox(),
-  levels: zfd.repeatable(
-    z.array(
-      z.object({
-        title: zfd.text(z.string().trim().default('')),
-        description: zfd.text(z.string().trim().default(''))
-      })
-    )
-  )
-});
 
 const buildValues = async (
   formData: FormData,
@@ -39,7 +25,7 @@ const buildValues = async (
   const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) return imageResult;
 
-  const parsedForm = formDataSchema.parse(formData);
+  const parsedForm = openBadgeCreateFormDataSchema.parse(formData);
   const levels = (parsedForm.levels ?? []).filter((level) => level.title || level.description);
 
   return {
