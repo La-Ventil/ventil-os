@@ -208,9 +208,12 @@
             "levelDescription": "Niveau 1 : description"
           },
           "image": {
-            "placeholder": "Illustration en cours",
-            "upload": "Télécharger"
-          },
+      "placeholder": "Illustration en cours",
+      "upload": "Télécharger",
+      "maxSizeHint": "Max 5 Mo",
+      "tooLarge": "Fichier trop lourd (max {max}).",
+      "clear": "Effacer"
+    },
           "levels": {
             "add": "+ Ajouter un niveau"
           },

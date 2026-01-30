@@ -48,6 +48,7 @@ Nous adoptons une architecture de styling **en couches**, avec des **thèmes imb
 - Le **CSS global applique uniquement le reset et la structure du DOM**
 - Les **sections applicatives utilisent des thèmes imbriqués** (ThemeProvider)
 - Les composants consomment les valeurs via le theme (palette, typography, etc.)
+- **Préférence : CSS Modules pour le styling local** (pas de `sx` ni `styled` dans les composants partagés, sauf cas ultra-local justifié). Les overrides globaux passent par `theme.components.*`.
 
 Principe fondamental :
 

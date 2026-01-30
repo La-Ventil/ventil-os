@@ -61,6 +61,8 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
+            maxSizeHint={t('image.maxSizeHint')}
+            tooLargeLabel={t('image.tooLarge')}
             clearLabel={t('image.clear')}
             maxSizeMb={5}
             required

@@ -211,9 +211,12 @@
             "levelDescription": "Level 1: description"
           },
           "image": {
-            "placeholder": "Illustration in progress",
-            "upload": "Upload"
-          },
+      "placeholder": "Illustration in progress",
+      "upload": "Upload",
+      "maxSizeHint": "Max 5MB",
+      "tooLarge": "File too large (max {max}).",
+      "clear": "Clear"
+    },
           "levels": {
             "add": "+ Add a level"
           },
