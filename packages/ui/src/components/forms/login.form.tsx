@@ -16,7 +16,7 @@ export default function LoginForm() {
   const tCommon = useTranslations('common');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [formState, setFormState] = useState<{ message: string; isValid?: boolean }>({
+  const [formState, setFormState] = useState<{ message: string; success?: boolean }>({
     message: ''
   });
   const router = useRouter();
@@ -32,13 +32,13 @@ export default function LoginForm() {
     if (result?.ok) {
       setFormState({
         message: t('messages.signInSuccess'),
-        isValid: true
+        success: true
       });
       router.push('/hub/profile');
     } else {
       setFormState({
         message: t('messages.signInFailed'),
-        isValid: false
+        success: false
       });
     }
   }
@@ -46,7 +46,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={(e) => void onSignin(e)}>
       <Stack spacing={2}>
-        {formState?.message && <Alert severity={formState?.isValid ? 'success' : 'error'}>{formState?.message}</Alert>}
+        {formState?.message && <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>}
         <TextField
           name={'email'}
           value={email}

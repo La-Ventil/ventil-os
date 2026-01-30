@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import type { JSX } from 'react';
 import { useEffect, useState, useTransition } from 'react';
@@ -7,6 +7,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AssignOpenBadgeDialog from '@repo/ui/admin/assign-open-badge-dialog';
 import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
+import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
 type AssignOpenBadgeModalRouteProps = {
   user: UserAdminViewModel | null;
@@ -36,9 +37,7 @@ export default function AssignOpenBadgeModalRoute({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(Boolean(user));
   const [isPending, startTransition] = useTransition();
-  const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(
-    null
-  );
+  const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
 
   useEffect(() => {
     setIsOpen(Boolean(user));
@@ -53,15 +52,23 @@ export default function AssignOpenBadgeModalRoute({
       }}
       onConfirm={(payload) => {
         startTransition(async () => {
-          try {
-            setFeedback(null);
-            await assignOpenBadge(payload);
-            setIsOpen(false);
-            router.push(closeHref);
-          } catch (error) {
-            console.error(error);
-            setFeedback({ type: 'error', message: labels.error });
+          setFeedback(null);
+          const result = await assignOpenBadge(payload);
+
+          if (!result.success) {
+            const firstFieldError = result.fieldErrors
+              ? fieldErrorsToSingleMessage(result.fieldErrors, { maxMessages: 1 })
+              : undefined;
+            setFeedback({
+              type: 'error',
+              message: firstFieldError ?? result.message ?? labels.error
+            });
+            return;
           }
+
+          setFeedback({ type: 'success', message: result.message ?? labels.confirm });
+          setIsOpen(false);
+          router.push(closeHref);
         });
       }}
       user={user}
