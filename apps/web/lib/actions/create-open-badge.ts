@@ -3,6 +3,9 @@
 import { getTranslations } from 'next-intl/server';
 import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
 import { canManageBadgesUser, createOpenBadge as createOpenBadgeRecord } from '@repo/application';
+import fs from 'fs/promises';
+import path from 'path';
+import { randomUUID } from 'crypto';
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
@@ -43,39 +46,49 @@ const buildValues = async (
 
 const pickImageSource = async (
   file: FormDataEntryValue | null,
-  url: string,
   t: (key: string, vars?: Record<string, unknown>) => string
 ): Promise<{ imageUrl: string } | { error: string; fieldErrors: Record<string, string[]> }> => {
   const maxBytes = 5 * 1024 * 1024;
-  const allowedMimes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+  const allowedMimes: Record<string, string> = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+    'image/gif': 'gif',
+    'image/webp': 'webp'
+  };
 
-  if (file instanceof File && file.size > 0) {
-    if (!allowedMimes.includes(file.type)) {
-      return {
-        error: t('validation.imageInvalidType'),
-        fieldErrors: { imageUrl: [t('validation.imageInvalidType')] }
-      };
-    }
-
-    if (file.size > maxBytes) {
-      return {
-        error: t('validation.imageTooLarge', { max: '5MB' }),
-        fieldErrors: { imageUrl: [t('validation.imageTooLarge', { max: '5MB' })] }
-      };
-    }
-
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const base64 = buffer.toString('base64');
-    const mime = file.type || 'image/png';
-    return { imageUrl: `data:${mime};base64,${base64}` };
+  if (!(file instanceof File) || file.size === 0) {
+    return {
+      error: t('validation.openBadge.imageRequired'),
+      fieldErrors: { imageUrl: [t('validation.openBadge.imageRequired')] }
+    };
   }
 
-  if (url) return { imageUrl: url };
+  if (!allowedMimes[file.type]) {
+    return {
+      error: t('validation.imageInvalidType'),
+      fieldErrors: { imageUrl: [t('validation.imageInvalidType')] }
+    };
+  }
 
-  return {
-    error: t('validation.openBadge.imageRequired'),
-    fieldErrors: { imageUrl: [t('validation.openBadge.imageRequired')] }
-  };
+  if (file.size > maxBytes) {
+    return {
+      error: t('validation.imageTooLarge', { max: '5MB' }),
+      fieldErrors: { imageUrl: [t('validation.imageTooLarge', { max: '5MB' })] }
+    };
+  }
+
+  const uploadsDir = path.join(process.cwd(), 'apps', 'web', 'public', 'uploads');
+  await fs.mkdir(uploadsDir, { recursive: true });
+
+  const extension = allowedMimes[file.type];
+  const filename = `${randomUUID()}.${extension}`;
+  const filepath = path.join(uploadsDir, filename);
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await fs.writeFile(filepath, buffer);
+
+  return { imageUrl: `/uploads/${filename}` };
 };
 
 export async function createOpenBadge(
