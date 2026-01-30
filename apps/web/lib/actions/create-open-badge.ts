@@ -20,8 +20,14 @@ const formDataSchema = zfd.formData({
   deliveryEnabled: zfd.checkbox(),
   deliveryLevel: zfd.text(z.string().optional()),
   activationEnabled: zfd.checkbox(),
-  'levels.title': zfd.repeatableOfType(zfd.text()),
-  'levels.description': zfd.repeatableOfType(zfd.text())
+  levels: zfd.repeatable(
+    z.array(
+      z.object({
+        title: zfd.text(z.string().trim().default('')),
+        description: zfd.text(z.string().trim().default(''))
+      })
+    )
+  )
 });
 
 const buildValues = async (
@@ -34,11 +40,7 @@ const buildValues = async (
   if ('error' in imageResult) return imageResult;
 
   const parsedForm = formDataSchema.parse(formData);
-  const titles = parsedForm['levels.title'] ?? [];
-  const descriptions = parsedForm['levels.description'] ?? [];
-  const levels = titles
-    .map((title, idx) => ({ title, description: descriptions[idx] ?? '' }))
-    .filter((level) => level.title || level.description);
+  const levels = (parsedForm.levels ?? []).filter((level) => level.title || level.description);
 
   return {
     name: parsedForm.name ?? previousValues.name,

@@ -73,14 +73,14 @@ export default function OpenBadgeLevelsEditor({
             </Stack>
             <Stack spacing={1}>
               <TextField
-                name="levels.title"
+                name={`levels[${index}].title`}
                 label={labels.title}
                 required
                 fullWidth
                 defaultValue={level.title}
               />
               <TextField
-                name="levels.description"
+                name={`levels[${index}].description`}
                 label={labels.description}
                 required
                 fullWidth
