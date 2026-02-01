@@ -1,0 +1,7 @@
+.root {
+  background-color: #fbfbfc;
+  opacity: 0.8;
+  background-image: linear-gradient(#ececf0 1px, transparent 1px), linear-gradient(to right, #ececf0 1px, #fbfbfc 1px);
+  background-size: 15px 15px;
+  min-height: calc(100vh - 100px);
+}

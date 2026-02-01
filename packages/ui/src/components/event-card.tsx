@@ -23,14 +23,14 @@ type EventMetaProps = {
 function EventMeta({ label, value, secondary }: EventMetaProps) {
   return (
     <Grid size={6}>
-      <Typography variant="caption" className={styles.metaLabel}>
+      <Typography variant="caption" color="text.primary" className={styles.metaLabel}>
         {label}
       </Typography>
-      <Typography variant="body2" className={styles.metaValue}>
+      <Typography variant="body2" color="text.primary" className={styles.metaValue}>
         {value}
       </Typography>
       {secondary ? (
-        <Typography variant="body2" className={styles.metaValue}>
+        <Typography variant="body2" color="text.primary" className={styles.metaValue}>
           {secondary}
         </Typography>
       ) : null}
@@ -41,16 +41,10 @@ function EventMeta({ label, value, secondary }: EventMetaProps) {
 export default function EventCard({ event, t }: EventCardProps) {
   return (
     <Card className={styles.card}>
-      <CardHeader
-        icon={
-          <EventIcon color="secondary" />
-        }
-        overline={event.type}
-        title={event.name}
-      />
-      <CardContent>
+      <CardHeader icon={<EventIcon color="secondary" />} overline={event.type} title={event.name} />
+      <CardContent className={styles.content}>
         <Grid container rowSpacing={1.5} columnSpacing={2}>
-      <EventMeta label={t('card.labels.date')} value={event.startDate} />
+          <EventMeta label={t('card.labels.date')} value={event.startDate} />
           <EventMeta label={t('card.labels.location')} value={event.location} />
           <EventMeta label={t('card.labels.audience')} value={event.audience} />
           <EventMeta
@@ -58,7 +52,7 @@ export default function EventCard({ event, t }: EventCardProps) {
             value={`${event.registration.current} / ${event.registration.capacity}`}
           />
         </Grid>
-        <Typography variant="body2" color="text.secondary" mt={2}>
+        <Typography variant="body2" color="text.primary" mt={2}>
           {event.description}
         </Typography>
       </CardContent>

@@ -213,18 +213,18 @@
             "levelDescription": "Level 1: description"
           },
           "image": {
-      "placeholder": "Illustration in progress",
-      "upload": "Upload",
-      "maxSizeHint": "Max 5MB",
-      "tooLarge": "File too large (max {max}).",
-      "clear": "Clear"
-    },
-    "levels": {
-      "add": "+ Add a level",
-      "remove": "Remove",
-      "chipPrefix": "Level",
-      "min": "At least one level is required"
-    },
+            "placeholder": "Illustration in progress",
+            "upload": "Upload",
+            "maxSizeHint": "Max 5MB",
+            "tooLarge": "File too large (max {max}).",
+            "clear": "Clear"
+          },
+          "levels": {
+            "add": "+ Add a level",
+            "remove": "Remove",
+            "chipPrefix": "Level",
+            "min": "At least one level is required"
+          },
           "delivery": {
             "title": "Issuance",
             "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",
@@ -384,7 +384,7 @@
         "title": "Support",
         "subtitle": "Information",
         "intro": "Help us improve the La-Ventil app!",
-        "contact": "Found a bug? Send an email to loic.marlexi@gmail.com",
+        "contact": "Found a bug? Send an email to loic.marleix@gmail.com",
         "illustrationPlaceholder": "Illustration in progress",
         "session": {
           "title": "Session information"

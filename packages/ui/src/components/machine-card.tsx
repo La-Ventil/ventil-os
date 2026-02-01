@@ -71,7 +71,7 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
           )}
         </CardMedia>
         <div className={styles.details}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.primary">
             {machine.description}
           </Typography>
           <MachineAvailabilityStatus availability={machine.availability} t={t} />

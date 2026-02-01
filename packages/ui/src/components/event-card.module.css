@@ -1,16 +1,16 @@
-.card {
-  border: 1px solid var(--mui-palette-divider);
-  border-radius: 16px;
-}
-
 .metaLabel {
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.7rem;
-  color: var(--mui-palette-primary-main);
+  letter-spacing: 0.5px;
+  font-size: 10px;
+  color: var(--mui-palette-secondary-main);
   font-weight: 600;
 }
 
-.metaValue {
-  color: var(--mui-palette-text-secondary);
+.content {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  &:last-child {
+    padding-bottom: 10px;
+  }
 }
