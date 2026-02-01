@@ -210,18 +210,18 @@
             "levelDescription": "Niveau 1 : description"
           },
           "image": {
-      "placeholder": "Illustration en cours",
-      "upload": "Télécharger",
-      "maxSizeHint": "Max 5 Mo",
-      "tooLarge": "Fichier trop lourd (max {max}).",
-      "clear": "Effacer"
-    },
-    "levels": {
-      "add": "+ Ajouter un niveau",
-      "remove": "Supprimer",
-      "chipPrefix": "Niveau",
-      "min": "Au moins un niveau est requis"
-    },
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger",
+            "maxSizeHint": "Max 5 Mo",
+            "tooLarge": "Fichier trop lourd (max {max}).",
+            "clear": "Effacer"
+          },
+          "levels": {
+            "add": "+ Ajouter un niveau",
+            "remove": "Supprimer",
+            "chipPrefix": "Niveau",
+            "min": "Au moins un niveau est requis"
+          },
           "delivery": {
             "title": "Délivrance",
             "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
@@ -381,7 +381,7 @@
         "title": "Support",
         "subtitle": "Information",
         "intro": "Aidez-nous à améliorer l'application de La-Ventil !",
-        "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marlexi@gmail.com",
+        "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marleix@gmail.com",
         "illustrationPlaceholder": "Illustration en cours",
         "session": {
           "title": "Informations de session"

@@ -169,10 +169,6 @@ export const theme = extendTheme({
     body2: {
       fontSize: '1.2rem',
       letterSpacing: '0.5px'
-    },
-    minimapTag: {
-      fontSize: '1.2rem',
-      letterSpacing: '0.5px'
     }
   }
 });
