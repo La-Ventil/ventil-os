@@ -102,7 +102,7 @@ export const theme = extendTheme({
         background: {
           default: '#151923',
           card: '#1E2331',
-          paper: '#1B2030'
+          paper: '#212636'
         },
         text: {
           primary: '#EEF1F7',
@@ -167,6 +167,10 @@ export const theme = extendTheme({
       letterSpacing: '0.5px'
     },
     body2: {
+      fontSize: '1.2rem',
+      letterSpacing: '0.5px'
+    },
+    minimapTag: {
       fontSize: '1.2rem',
       letterSpacing: '0.5px'
     }

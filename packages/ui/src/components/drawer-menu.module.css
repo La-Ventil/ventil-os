@@ -1,6 +1,122 @@
 .drawer {
   border-radius: 0;
-  width: min(320px, 90vw);
+  @media (max-width: 400px) {
+    width: 100%;
+  }
+  @media (min-width: 400px) {
+    width: 360px;
+  }
   background-color: var(--mui-palette-background-paper);
   color: var(--mui-palette-text-primary);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mui-palette-background-paper);
+}
+.mapContainer {
+  width: 200px;
+  height: 100px;
+  transform: skewX(-40deg);
+}
+.infoMap {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  div {
+    display: flex;
+    gap: 3px;
+    border-left: 1px dotted var(--mui-palette-admin-contrastText);
+    span {
+      margin-left: 4px;
+      font-size: 12px;
+      font-family: var(--font-vg5000), Arial, sans-serif;
+      color: var(--mui-palette-user-main);
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+      font-family: var(--font-nunito), Arial, sans-serif;
+    }
+  }
+  .tagCoworking {
+    position: absolute;
+    top: -20px;
+    left: 50px;
+    align-items: start;
+    height: 75px;
+  }
+  .tagDesign {
+    position: absolute;
+    bottom: -23px;
+    left: -10px;
+    align-items: end;
+    height: 23px;
+  }
+  .tagRepair {
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    align-items: start;
+    height: 20px;
+  }
+  .tagFablab {
+    position: absolute;
+    bottom: 5px;
+    right: -10px;
+    align-items: end;
+    height: 23px;
+  }
+}
+.roomCoworking {
+  background-color: var(--mui-palette-admin-contrastText);
+  border: 2px solid var(--mui-palette-background-paper);
+  width: 100px;
+  height: 100px;
+  margin-left: 50px;
+  position: relative;
+  border-radius: 3px;
+}
+.roomRepair {
+  background-color: var(--mui-palette-admin-contrastText);
+  border: 2px solid var(--mui-palette-background-paper);
+  width: 60px;
+  height: 25px;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  border-radius: 1px;
+  border-radius: 3px;
+}
+.roomFablab {
+  background-color: var(--mui-palette-admin-contrastText);
+  border: 2px solid var(--mui-palette-background-paper);
+  width: 70px;
+  height: 25px;
+  position: absolute;
+  bottom: 25px;
+  right: -69px;
+  border-radius: 1px;
+  border-left: 0px;
+  z-index: -1;
+  border-radius: 3px;
+}
+.roomDesign {
+  background-color: var(--mui-palette-admin-contrastText);
+  border: 2px solid var(--mui-palette-background-paper);
+  width: 50px;
+  height: 25px;
+  position: absolute;
+  bottom: -2px;
+  left: -50px;
+  border-radius: 1px;
+  border-radius: 3px;
 }

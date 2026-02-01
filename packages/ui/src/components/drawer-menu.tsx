@@ -13,6 +13,8 @@ import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';
 import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from './icons/admin-open-badge-icon';
 import { adminUserIcon as AdminUserIcon } from './icons/admin-user-icon';
 import { EventIcon } from './icons/event-icon';
+import { ProfileIcon } from './icons/profile-icon';
+import { DebugIcon } from './icons/debug-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { logoutIcon as LogoutIcon } from './icons/logout-icon';
@@ -47,7 +49,33 @@ export default function DrawerMenu({
         } as PaperProps
       }}
     >
-      <Map ariaLabel={tDrawer('map.ariaLabel')} />
+      <div className={styles.map}>
+        <div className={styles.infoMap}>
+          <div className={styles.tagCoworking}>
+            <span>1</span>
+            <p>Coworking</p>
+          </div>
+          <div className={styles.tagDesign}>
+            <span>2</span>
+            <p>Design room</p>
+          </div>
+          <div className={styles.tagRepair}>
+            <span>3</span>
+            <p>Repair café</p>
+          </div>
+          <div className={styles.tagFablab}>
+            <span>4</span>
+            <p>Fab Lab</p>
+          </div>
+        </div>
+        <div className={styles.mapContainer}>
+          <div className={styles.roomCoworking}>
+            <div className={styles.roomRepair}></div>
+            <div className={styles.roomDesign}></div>
+            <div className={styles.roomFablab}></div>
+          </div>
+        </div>
+      </div>
       <MenuList>
         <MenuListItem
           icon={<MachineIcon />}
@@ -74,7 +102,7 @@ export default function DrawerMenu({
           onClick={onClose}
         />
         <MenuListItem
-          icon={<SettingsIcon />}
+          icon={<ProfileIcon />}
           label={tDrawer('links.settings')}
           href="/hub/settings"
           linkComponent={Link}
@@ -82,7 +110,7 @@ export default function DrawerMenu({
           onClick={onClose}
         />
         <MenuListItem
-          icon={<BugReportIcon />}
+          icon={<DebugIcon />}
           label={tDrawer('links.support')}
           href="/hub/support"
           linkComponent={Link}
@@ -129,7 +157,7 @@ export default function DrawerMenu({
           label={tDrawer('links.signout')}
           href="/api/auth/signout"
           linkComponent={Link}
-          className={getThemeSectionClassName(ThemeSection.Support)}
+          className={getThemeSectionClassName(ThemeSection.Admin)}
           onClick={onClose}
         />
       </MenuList>
