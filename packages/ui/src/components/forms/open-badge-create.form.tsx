@@ -14,7 +14,7 @@ import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useMemo } from 'react';
-import { OpenBadgeCreateFormInput } from '@repo/application/forms';
+import { OpenBadgeCreateData } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
@@ -28,12 +28,12 @@ import { firstFieldError } from './form-errors';
 import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {
-  actionState: FormActionStateTuple<FormState<OpenBadgeCreateFormInput>>;
+  actionState: FormActionStateTuple<FormState<OpenBadgeCreateData>>;
 }
 
 export default function OpenBadgeCreateForm({ actionState: [state, action, isPending] }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
-  const fieldError = (field: keyof OpenBadgeCreateFormInput) => firstFieldError(state, field);
+  const fieldError = (field: keyof OpenBadgeCreateData) => firstFieldError(state, field);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
@@ -90,7 +90,7 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
       <OpenBadgeLevelsEditor
         initialLevels={initialLevels}
         maxLevels={5}
-        error={fieldError('levels' as keyof OpenBadgeCreateFormInput)}
+        error={fieldError('levels' as keyof OpenBadgeCreateData)}
         labels={{
           add: t('levels.add'),
           title: t('fields.levelTitle'),

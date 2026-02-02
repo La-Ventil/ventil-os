@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { OpenBadgeCreateFormInput } from '@repo/application/forms';
+import { OpenBadgeCreateData } from '@repo/application/forms';
 import OpenBadgeCreateForm from '@repo/ui/forms/open-badge-create.form';
 import { useFormActionStateWithValues } from '@repo/ui/hooks';
 import { createOpenBadge } from '../../../../../lib/actions/create-open-badge';
 
 export default function OpenBadgeCreateFormClient() {
   const router = useRouter();
-  const actionState = useFormActionStateWithValues<OpenBadgeCreateFormInput>(createOpenBadge, {
+  const actionState = useFormActionStateWithValues<OpenBadgeCreateData>(createOpenBadge, {
     success: false,
     valid: true,
     message: '',
