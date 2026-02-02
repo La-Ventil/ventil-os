@@ -63,3 +63,9 @@ a {
 .MuiSvgIcon-fontSizeLarge {
   font-size: 10rem;
 }
+
+.MuiButton-root {
+  height: 40px;
+  min-width: 140px;
+  box-shadow: none;
+}
