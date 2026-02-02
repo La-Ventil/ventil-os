@@ -30,13 +30,15 @@ export async function createMachine(
     };
   }
   const file = formData.get('imageFile');
-  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
+  const imageResult = await validateAndStoreImage(file as File | null, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) {
+    const fieldKey = imageResult.field ?? 'imageUrl';
+    const msg = t(`validation.${imageResult.error}`, imageResult.params);
     return {
       success: false,
       valid: false,
-      message: imageResult.error,
-      fieldErrors: imageResult.fieldErrors,
+      message: msg,
+      fieldErrors: { [fieldKey]: [msg] },
       values: previousState.values
     };
   }

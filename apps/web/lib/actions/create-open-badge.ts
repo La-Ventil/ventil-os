@@ -36,9 +36,9 @@ export async function createOpenBadge(
   const userId = session.user.id;
 
   // 1) Validate all fields including imageFile presence
-  const requestResult = openBadgeCreateRequestSchema.safeParse(formData);
-  if (!requestResult.success) {
-    const fieldErrors = zodErrorToFieldErrors(requestResult.error, t);
+  const parseResult = openBadgeCreateRequestSchema.safeParse(formData);
+  if (!parseResult.success) {
+    const fieldErrors = zodErrorToFieldErrors(parseResult.error, t);
     return {
       success: false,
       valid: false,
@@ -47,22 +47,24 @@ export async function createOpenBadge(
       values: previousState.values
     };
   }
-  const request = requestResult.data as OpenBadgeCreateRequest;
+  const request = parseResult.data as OpenBadgeCreateRequest;
 
   // 2) Handle image upload / validation (file already type-checked)
-  const imageResult = await validateAndStoreImage(request.imageFile as File | null, t, { maxMb: MAX_IMAGE_MB });
+  const imageResult = await validateAndStoreImage(request.imageFile as File | null, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) {
+    const fieldKey = imageResult.field ?? 'imageUrl';
+    const msg = t(`validation.${imageResult.error}`, imageResult.params);
     return {
       success: false,
       valid: false,
-      message: imageResult.error,
-      fieldErrors: imageResult.fieldErrors,
+      message: msg,
+      fieldErrors: { [fieldKey]: [msg] },
       values: previousState.values
     };
   }
 
   // 3) Build final values
-  const data: OpenBadgeCreateData = {
+  const values: OpenBadgeCreateData = {
     name: request.name ?? previousState.values.name,
     description: request.description ?? previousState.values.description,
     imageUrl: imageResult.url,
@@ -74,14 +76,14 @@ export async function createOpenBadge(
 
   try {
     await createOpenBadgeRecord({
-      ...data,
+      ...values,
       creatorId: userId
     });
 
     return {
       success: true,
       valid: true,
-      values: data,
+      values,
       message: t('openBadge.create.success'),
       fieldErrors: {}
     };
@@ -92,7 +94,7 @@ export async function createOpenBadge(
       valid: true,
       message: t('openBadge.create.error'),
       fieldErrors: {},
-      values: data ?? previousState.values
+      values: values ?? previousState.values
     };
   }
 }
