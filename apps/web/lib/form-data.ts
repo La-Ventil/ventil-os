@@ -7,9 +7,13 @@ export function formDataToObject(formData: FormData): FormDataObject {
   const result: FormDataObject = {};
 
   for (const [key, value] of formData.entries()) {
-    if (key in result) {
-      const current = result[key];
-      result[key] = Array.isArray(current) ? [...current, value] : [current, value];
+    if (Object.prototype.hasOwnProperty.call(result, key)) {
+      const current = result[key] as FormDataEntryValue | FormDataEntryValue[];
+      if (Array.isArray(current)) {
+        result[key] = [...current, value];
+      } else {
+        result[key] = [current, value];
+      }
     } else {
       result[key] = value;
     }
