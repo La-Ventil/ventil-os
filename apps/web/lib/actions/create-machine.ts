@@ -12,25 +12,6 @@ import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 
-const buildValues = async (
-  formData: FormData,
-  previousValues: MachineCreateFormInput,
-  t: (...args: any[]) => string
-): Promise<MachineCreateFormInput | { error: string; fieldErrors: Record<string, string[]> }> => {
-  const file = formData.get('imageFile');
-  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
-  if ('error' in imageResult) return imageResult;
-
-  return {
-    name: formData.get('name')?.toString() ?? previousValues.name,
-    description: formData.get('description')?.toString() ?? previousValues.description,
-    imageUrl: imageResult.url,
-    badgeRequired: formData.get('badgeRequired') === 'on',
-    badgeQuery: formData.get('badgeQuery')?.toString() ?? previousValues.badgeQuery,
-    activationEnabled: formData.get('activationEnabled') === 'on'
-  };
-};
-
 export async function createMachine(
   previousState: FormState<MachineCreateFormInput>,
   formData: FormData
@@ -48,18 +29,21 @@ export async function createMachine(
       values: previousState.values
     };
   }
-  const valuesOrError = await buildValues(formData, previousState.values, t);
-  if ('error' in valuesOrError) {
+  const file = formData.get('imageFile');
+  const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
+  if ('error' in imageResult) {
     return {
       success: false,
       valid: false,
-      message: valuesOrError.error,
-      fieldErrors: valuesOrError.fieldErrors,
+      message: imageResult.error,
+      fieldErrors: imageResult.fieldErrors,
       values: previousState.values
     };
   }
-  const values = valuesOrError;
-  const { success, data, error } = machineCreateFormSchema.safeParse(values);
+
+  formData.set('imageUrl', imageResult.url);
+
+  const { success, data, error } = machineCreateFormSchema.safeParse(formData);
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
@@ -68,21 +52,20 @@ export async function createMachine(
       valid: false,
       message: fieldErrorsToSingleMessage(fieldErrors),
       fieldErrors,
-      values
+      values: previousState.values
     };
   }
 
   try {
-    const parsed: MachineCreateFormInput = data;
     await createMachineRecord({
-      ...parsed,
+      ...data,
       creatorId: session.user.id
     });
 
     return {
       success: true,
       valid: true,
-      values,
+      values: data,
       message: t('machine.create.success'),
       fieldErrors: {}
     };
@@ -93,7 +76,7 @@ export async function createMachine(
       valid: true,
       message: t('machine.create.error'),
       fieldErrors: {},
-      values
+      values: data ?? previousState.values
     };
   }
 }
