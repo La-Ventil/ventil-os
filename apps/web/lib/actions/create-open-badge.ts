@@ -1,12 +1,17 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { openBadgeCreateFormSchema, type OpenBadgeCreateFormInput } from '@repo/application/forms';
+import {
+  openBadgeCreateFormSchema,
+  openBadgeCreateFieldsSchema,
+  type OpenBadgeCreateFormInput
+} from '@repo/application/forms';
 import {
   canManageBadgesUser,
   createOpenBadge as createOpenBadgeRecord,
   validateAndStoreImage,
-  MAX_IMAGE_MB
+  MAX_IMAGE_MB,
+  imageFileSchema
 } from '@repo/application';
 import type { FormState } from '@repo/ui/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -30,8 +35,32 @@ export async function createOpenBadge(
     };
   }
 
-  // 1) Handle image upload / validation
+  // 1) Validate fields (sans image) before I/O
+  const fieldsResult = openBadgeCreateFieldsSchema.safeParse(formData);
+  if (!fieldsResult.success) {
+    const fieldErrors = zodErrorToFieldErrors(fieldsResult.error, t);
+    return {
+      success: false,
+      valid: false,
+      message: fieldErrorsToSingleMessage(fieldErrors),
+      fieldErrors,
+      values: previousState.values
+    };
+  }
+
+  // 2) Handle image upload / validation
   const file = formData.get('imageFile');
+  const fileCheck = imageFileSchema.safeParse(file);
+  if (!fileCheck.success) {
+    const fieldErrors = zodErrorToFieldErrors(fileCheck.error, t);
+    return {
+      success: false,
+      valid: false,
+      message: fieldErrorsToSingleMessage(fieldErrors),
+      fieldErrors,
+      values: previousState.values
+    };
+  }
   const imageResult = await validateAndStoreImage(file as File | null, t, { maxMb: MAX_IMAGE_MB });
   if ('error' in imageResult) {
     return {
@@ -43,7 +72,7 @@ export async function createOpenBadge(
     };
   }
 
-  // Inject image and parse all fields in a single step
+  // 3) Inject image and parse full schema
   formData.set('imageUrl', imageResult.url);
   const { success, data, error } = openBadgeCreateFormSchema.safeParse(formData);
 
