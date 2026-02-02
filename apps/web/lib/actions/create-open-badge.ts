@@ -6,12 +6,9 @@ import {
   type OpenBadgeCreateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import {
-  canManageBadgesUser,
-  createOpenBadge as createOpenBadgeRecord,
-  validateAndStoreImage,
-  MAX_IMAGE_MB
-} from '@repo/application';
+import { canManageBadgesUser, createOpenBadge as createOpenBadgeRecord } from '@repo/application';
+import { validateAndStoreImage } from '@repo/application/server/uploads';
+import { MAX_IMAGE_MB } from '@repo/application/uploads-constants';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';

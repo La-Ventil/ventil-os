@@ -2,12 +2,9 @@
 
 import { getTranslations } from 'next-intl/server';
 import { machineCreateFormSchema, type MachineCreateFormInput } from '@repo/application/forms';
-import {
-  canManageBadgesUser,
-  createMachine as createMachineRecord,
-  validateAndStoreImage,
-  MAX_IMAGE_MB
-} from '@repo/application';
+import { canManageBadgesUser, createMachine as createMachineRecord } from '@repo/application';
+import { validateAndStoreImage } from '@repo/application/server/uploads';
+import { MAX_IMAGE_MB } from '@repo/application/uploads-constants';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';

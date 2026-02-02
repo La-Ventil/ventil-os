@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../uploads';
+import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../uploads-constants';
 
 const allowedMimeTypes = new Set(Object.keys(ALLOWED_IMAGE_MIMES));
 const maxBytes = MAX_IMAGE_MB * 1024 * 1024;

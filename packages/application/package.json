@@ -16,6 +16,8 @@
     "./mocks": "./src/__mocks__/index.ts",
     "./forms": "./src/forms/index.ts",
     "./forms/*": "./src/forms/*.ts",
+    "./uploads-constants": "./src/uploads-constants.ts",
+    "./server/uploads": "./src/server/uploads.ts",
     "./*": "./src/*.ts"
   },
   "dependencies": {

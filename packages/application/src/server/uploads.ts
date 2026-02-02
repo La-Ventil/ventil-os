@@ -1,15 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
-
-export const MAX_IMAGE_MB = 5;
-export const ALLOWED_IMAGE_MIMES: Record<string, string> = {
-  'image/png': 'png',
-  'image/jpeg': 'jpg',
-  'image/jpg': 'jpg',
-  'image/gif': 'gif',
-  'image/webp': 'webp'
-};
+import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../uploads-constants';
 
 export type ImageValidationError = 'imageRequired' | 'imageInvalidType' | 'imageTooLarge';
 
