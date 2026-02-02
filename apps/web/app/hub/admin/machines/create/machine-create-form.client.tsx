@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { MachineCreateFormInput } from '@repo/application/forms';
 import MachineCreateForm from '@repo/ui/forms/machine-create.form';
-import { useFormActionStateWithValues } from '@repo/ui/hooks';
+import { FormState } from '@repo/form/form-state';
 import { createMachine } from '../../../../../lib/actions/create-machine';
 
 export default function MachineCreateFormClient() {
   const router = useRouter();
-  const actionState = useFormActionStateWithValues<MachineCreateFormInput>(createMachine, {
+  const actionState = useActionState<FormState<MachineCreateFormInput>, FormData>(createMachine, {
     success: false,
     valid: true,
     message: '',

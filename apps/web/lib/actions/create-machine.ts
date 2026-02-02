@@ -8,7 +8,7 @@ import {
   validateAndStoreImage,
   MAX_IMAGE_MB
 } from '@repo/application';
-import type { FormState } from '@repo/ui/form-state';
+import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 

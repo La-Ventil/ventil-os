@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
 import { hashSecret } from '@repo/crypto';
 import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
-import { FormState } from '@repo/ui/form-state';
+import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
 export type UpdatePasswordActionValues = UpdatePasswordFormInput & {

@@ -5,16 +5,13 @@
   "exports": {
     "./theme": "./src/theme.ts",
     "./fonts": "./src/fonts.tsx",
-    "./form-state": "./src/form-state.tsx",
     "./*": "./src/components/*.tsx",
     "./tabs": "./src/components/tabs/index.tsx",
     "./tabs/*": "./src/components/tabs/*.tsx",
     "./admin/*": "./src/components/admin/*.tsx",
     "./forms/*": "./src/components/forms/*.tsx",
     "./menu-list": "./src/components/menu-list/index.tsx",
-    "./menu-list/*": "./src/components/menu-list/*.tsx",
-    "./hooks": "./src/hooks.ts",
-    "./form-action-state": "./src/form-action-state.ts"
+    "./menu-list/*": "./src/components/menu-list/*.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -40,6 +37,7 @@
     "@mui/material-pigment-css": "^7.3.7",
     "@repo/application": "workspace:*",
     "@repo/domain": "workspace:*",
+    "@repo/form": "workspace:*",
     "@repo/view-models": "workspace:*",
     "clsx": "^2.1.1",
     "next": "^16.1.6",

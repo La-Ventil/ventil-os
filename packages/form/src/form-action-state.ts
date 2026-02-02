@@ -5,3 +5,4 @@ export type FormActionStateParameters<State, Payload = FormData> = Parameters<ty
 export type FormAction<Values, Payload = FormData> = FormActionStateParameters<FormState<Values>, Payload>[0];
 export type FormActionState<Values, Payload = FormData> = FormActionStateParameters<FormState<Values>, Payload>[0];
 export type FormActionStateTuple<State, Payload = FormData> = ReturnType<typeof useActionState<State, Payload>>;
+export type FormActionDispatch<Payload = FormData> = (payload: Payload) => void;

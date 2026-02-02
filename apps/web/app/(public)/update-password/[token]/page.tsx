@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 
-import { useEffect } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
@@ -11,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useFormActionState } from '@repo/ui/hooks';
 import { updatePassword, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
@@ -33,7 +32,7 @@ export default function Page(): JSX.Element {
     },
     isValid: undefined
   };
-  const [formState, formAction, pending] = useFormActionState(updatePassword, initialState);
+  const [formState, formAction, pending] = useActionState(updatePassword, initialState);
   const router = useRouter();
 
   useEffect(() => {

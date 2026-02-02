@@ -18,3 +18,14 @@ export interface FormState<FormData> {
   /** @deprecated utiliser `valid` */
   isValid?: boolean;
 }
+
+export function createFormState<FormData>(values: FormData): FormState<FormData> {
+  return {
+    success: false,
+    valid: true,
+    message: '',
+    fieldErrors: {},
+    values,
+    isValid: undefined
+  };
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useActionState } from 'react';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -7,8 +8,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { ResetPasswordFormInput } from '@repo/application/forms';
-import { FormActionState } from '../../form-action-state';
-import { useFormActionStateWithValues } from '../../hooks';
+import { FormActionState } from '@repo/form/form-action-state';
+import { FormState } from '@repo/form/form-state';
 
 export interface ResetPasswordFormProps {
   handleSubmit: FormActionState<ResetPasswordFormInput>;
@@ -17,7 +18,7 @@ export interface ResetPasswordFormProps {
 export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
-  const [formState, formAction, pending] = useFormActionStateWithValues<ResetPasswordFormInput>(handleSubmit, {
+  const [formState, formAction, pending] = useActionState<FormState<ResetPasswordFormInput>, FormData>(handleSubmit, {
     success: false,
     valid: true,
     message: '',

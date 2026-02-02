@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useActionState } from 'react';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -10,8 +10,8 @@ import TextField from '@mui/material/TextField';
 import { ProfileFormInput } from '@repo/application/forms';
 import { UserProfile } from '@repo/view-models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
-import { FormAction } from '../../form-action-state';
-import { useFormActionStateWithValues } from '../../hooks';
+import { FormAction } from '@repo/form/form-action-state';
+import { FormState } from '@repo/form/form-state';
 import Link from '../link';
 
 export interface ProfileFormProps {
@@ -23,7 +23,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const profile = use(profilePromise);
-  const [formState, formAction, pending] = useFormActionStateWithValues<ProfileFormInput>(handleSubmit, {
+  const [formState, formAction, pending] = useActionState<FormState<ProfileFormInput>, FormData>(handleSubmit, {
     success: false,
     valid: true,
     message: '',

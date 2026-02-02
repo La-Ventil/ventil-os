@@ -22,9 +22,9 @@ import LevelChip from '../level-chip';
 import OpenBadgeLevelsEditor from './open-badge-levels-editor';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
-import { FormActionStateTuple } from '../../form-action-state';
-import { FormState } from '../../form-state';
-import { firstFieldError } from './form-errors';
+import { FormActionStateTuple } from '@repo/form/form-action-state';
+import { FormState } from '@repo/form/form-state';
+import { firstFieldError } from '@repo/form/form-errors';
 import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {

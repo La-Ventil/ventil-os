@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -11,30 +9,43 @@ import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
-import { FormActionStateTuple } from '../../form-action-state';
-import { FormState } from '../../form-state';
 import Link from '../link';
 import TextField from '@mui/material/TextField';
+import { FormActionStateTuple } from '@repo/form/use-form-action-state';
+import { createFormState } from '@repo/form/form-state';
+import FormAlert from './form-alert';
 
 export interface SignupFormProps {
-  actionState: FormActionStateTuple<FormState<SignupFormInput>>;
+  formState: FormActionStateTuple<SignupFormInput>;
 }
 
-export default function SignupForm({ actionState: [state, action, isPending] }: SignupFormProps) {
+export const signupFormInitialState = createFormState<SignupFormInput>({
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+  profile: '',
+  terms: '',
+  educationLevel: ''
+});
+
+export default function SignupForm({ formState }: SignupFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-
-  useEffect(() => {
-    setTermsAccepted(state.values.terms === 'on');
-  }, [state.values.terms]);
+  const [state, action, isPending, handleSubmit, handleRetry] = formState;
 
   return (
-    <form action={action}>
+    <form action={action} onSubmit={handleSubmit}>
       <Stack spacing={2}>
-        {state?.message && !isPending && (
-          <Alert severity={state?.success ? 'success' : 'error'}>{state?.message}</Alert>
-        )}
+        <FormAlert
+          message={state?.message}
+          success={state?.success}
+          isPending={isPending}
+          showRetry={state?.message === t('errors.network')}
+          retryLabel={tCommon('actions.retry')}
+          onRetry={handleRetry}
+        />
         <TextField
           name="firstName"
           defaultValue={state.values.firstName}
@@ -79,13 +90,7 @@ export default function SignupForm({ actionState: [state, action, isPending] }: 
 
         <FormControlLabel
           required
-          control={
-            <Checkbox
-              name="terms"
-              checked={termsAccepted}
-              onChange={(event) => setTermsAccepted(event.target.checked)}
-            />
-          }
+          control={<Checkbox name="terms" defaultChecked={state.values.terms === 'on'} />}
           label={t('fields.terms')}
         />
       </Stack>

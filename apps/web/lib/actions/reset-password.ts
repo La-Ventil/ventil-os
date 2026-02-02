@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import { requestPasswordReset } from '@repo/application';
 import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/application/forms';
-import { FormState } from '@repo/ui/form-state';
+import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 
 export async function resetPassword(

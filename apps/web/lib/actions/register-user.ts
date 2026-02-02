@@ -4,9 +4,9 @@ import { getTranslations } from 'next-intl/server';
 import { registerUserAccount } from '@repo/application';
 import { hashSecret } from '@repo/crypto';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
-import { FormState } from '@repo/ui/form-state';
+import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
-import { formDataToStringRecord } from '../form-data';
+import { formDataToStringRecord } from '@repo/form/form-data';
 
 export async function registerUser(
   previousState: FormState<SignupFormInput>,

@@ -8,47 +8,37 @@ import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { SignupFormInput } from '@repo/application/forms';
-import SignupForm from '@repo/ui/forms/signup.form';
-import { useFormActionStateWithValues } from '@repo/ui/hooks';
+import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
+import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
+import { useFormActionState } from '@repo/form/use-form-action-state';
 import { registerUser } from '../../../lib/actions/register-user';
 
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
-  const actionState = useFormActionStateWithValues<SignupFormInput>(registerUser, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      profile: '',
-      terms: '',
-      educationLevel: ''
-    },
-    isValid: undefined
+  const tCommon = useTranslations('common');
+  const formState = useFormActionState<SignupFormInput>({
+    action: registerUser,
+    initialState: signupFormInitialState,
+    schema: signupFormSchema,
+    translate: tCommon
   });
-  const [formState] = actionState;
+  const [currentState] = formState;
   const router = useRouter();
 
   useEffect(() => {
-    if (formState?.success) {
+    if (currentState?.success) {
       async function signInAndRedirect() {
         await signIn('credentials', {
           redirect: false,
-          email: formState.values.email,
-          password: formState.values.password
+          email: currentState.values.email,
+          password: currentState.values.password
         });
         router.push('/hub/profile');
       }
 
       signInAndRedirect();
     }
-  }, [formState, router]);
+  }, [currentState, router]);
 
   return (
     <Box>
@@ -57,7 +47,7 @@ export default function Page(): JSX.Element {
         <Typography variant="h3">{t('subtitle')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
-      <SignupForm actionState={actionState} />
+      <SignupForm formState={formState} />
     </Box>
   );
 }

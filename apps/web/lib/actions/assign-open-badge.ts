@@ -2,7 +2,7 @@
 
 import { awardOpenBadgeLevelUseCase, assignOpenBadgeFormInputSchema } from '@repo/application';
 import { getTranslations } from 'next-intl/server';
-import type { FormState } from '@repo/ui/form-state';
+import type { FormState } from '@repo/form/form-state';
 import { getServerSession } from '../auth';
 
 type AssignOpenBadgeInput = {

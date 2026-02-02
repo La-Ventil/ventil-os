@@ -26,6 +26,7 @@
     "@repo/application": "workspace:*",
     "@repo/crypto": "workspace:*",
     "@repo/domain": "workspace:*",
+    "@repo/form": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/view-models": "workspace:*",
     "nanoid": "^5.1.6",
