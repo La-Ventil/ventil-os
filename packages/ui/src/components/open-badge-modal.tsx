@@ -38,7 +38,6 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
     <Dialog
       open={open}
       onClose={onClose}
-      fullWidth
       maxWidth="sm"
       slotProps={{
         paper: {
@@ -46,11 +45,11 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
         }
       }}
     >
+      <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
+        <CloseIcon fontSize="small" />
+      </IconButton>
+      <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
       <DialogContent className={styles.modalContent}>
-        <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
-          <CloseIcon fontSize="small" />
-        </IconButton>
-        <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
         <Section>
           <div className={styles.modalIllustration}>
             {openBadge.coverImage ? (
