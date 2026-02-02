@@ -6,7 +6,7 @@ import { hashSecret } from '@repo/crypto';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
-import { formDataToStringRecord } from '@repo/form/form-data';
+import { formDataToValues } from '@repo/form/form-data';
 
 export async function registerUser(
   previousState: FormState<SignupFormInput>,
@@ -14,7 +14,7 @@ export async function registerUser(
 ): Promise<FormState<SignupFormInput>> {
   const t = await getTranslations();
   const { success, data, error } = signupFormSchema.safeParse(formData);
-  const values = formDataToStringRecord<SignupFormInput>(formData);
+  const values = formDataToValues(formData, signupFormSchema);
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);

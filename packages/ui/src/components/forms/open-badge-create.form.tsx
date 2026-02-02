@@ -10,11 +10,10 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useMemo } from 'react';
-import { OpenBadgeCreateData } from '@repo/application/forms';
+import { OpenBadgeCreateRequest } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
@@ -22,18 +21,38 @@ import LevelChip from '../level-chip';
 import OpenBadgeLevelsEditor from './open-badge-levels-editor';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
-import { FormActionStateTuple } from '@repo/form/form-action-state';
-import { FormState } from '@repo/form/form-state';
+import { FormActionStateTuple } from '@repo/form/use-form-action-state';
+import { createFormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
+import { useJsEnabled } from '@repo/form/use-js-enabled';
+import FormAlert from './form-alert';
 import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {
-  actionState: FormActionStateTuple<FormState<OpenBadgeCreateData>>;
+  formState: FormActionStateTuple<OpenBadgeCreateRequest>;
 }
 
-export default function OpenBadgeCreateForm({ actionState: [state, action, isPending] }: OpenBadgeCreateFormProps) {
+export const openBadgeCreateInitialState = createFormState<OpenBadgeCreateRequest>({
+  name: '',
+  description: '',
+  imageFile: undefined,
+  levels: [
+    {
+      title: '',
+      description: ''
+    }
+  ],
+  deliveryEnabled: true,
+  deliveryLevel: 'level-1',
+  activationEnabled: true
+});
+
+export default function OpenBadgeCreateForm({
+  formState: [state, action, isPending, handleSubmit, handleRetry]
+}: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
-  const fieldError = (field: keyof OpenBadgeCreateData) => firstFieldError(state, field);
+  const fieldError = (field: keyof OpenBadgeCreateRequest) => firstFieldError(state, field);
+  const jsEnabled = useJsEnabled();
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
@@ -41,8 +60,8 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
   );
 
   return (
-    <Stack component="form" action={action} spacing={2}>
-      {state.message && !isPending && <Alert severity={state.success ? 'success' : 'error'}>{state.message}</Alert>}
+    <Stack component="form" action={action} onSubmit={handleSubmit} noValidate={jsEnabled} spacing={2}>
+      <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
         <TextField
           name="name"
@@ -69,7 +88,6 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
       <FormSection>
         <div className={styles.imageRow}>
           <ImageUploadField
-            defaultValue={state.values.imageUrl}
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
@@ -77,10 +95,10 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
             tooLargeLabel={t('image.tooLarge')}
             clearLabel={t('image.clear')}
             maxSizeMb={5}
-            resetKey={state.success ? 'reset' : state.values.imageUrl}
+            resetKey={state.success ? 'reset' : undefined}
             required
-            error={Boolean(fieldError('imageUrl'))}
-            helperText={fieldError('imageUrl')}
+            error={Boolean(fieldError('imageFile'))}
+            helperText={fieldError('imageFile')}
           />
         </div>
       </FormSection>
@@ -90,7 +108,7 @@ export default function OpenBadgeCreateForm({ actionState: [state, action, isPen
       <OpenBadgeLevelsEditor
         initialLevels={initialLevels}
         maxLevels={5}
-        error={fieldError('levels' as keyof OpenBadgeCreateData)}
+        error={fieldError('levels' as keyof OpenBadgeCreateRequest)}
         labels={{
           add: t('levels.add'),
           title: t('fields.levelTitle'),

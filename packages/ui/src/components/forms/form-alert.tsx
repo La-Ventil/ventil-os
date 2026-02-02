@@ -3,13 +3,17 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import type { FormState } from '@repo/form/form-state';
 
-export interface FormAlertProps {
-  state?: FormState<Record<string, string | string[] | undefined>>;
+export interface FormAlertProps<Values = Record<string, unknown>> {
+  state?: FormState<Values>;
   isPending?: boolean;
   onRetry?: () => void;
 }
 
-export default function FormAlert({ state, isPending, onRetry }: FormAlertProps) {
+export default function FormAlert<Values = Record<string, unknown>>({
+  state,
+  isPending,
+  onRetry
+}: FormAlertProps<Values>) {
   const tCommon = useTranslations('common');
   const message = state?.message ?? '';
   const success = state?.success ?? false;

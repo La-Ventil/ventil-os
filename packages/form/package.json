@@ -15,10 +15,13 @@
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",
     "lint:dev": "eslint \"src/**/*.ts*\"",
     "check-types": "tsc --noEmit",
+    "test": "vitest run",
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "dependencies": {
-    "react": "^19.2.0"
+    "react": "^19.2.0",
+    "zod": "^4.1.12",
+    "zod-form-data": "3.0.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

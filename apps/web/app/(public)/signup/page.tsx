@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
+import { signupFormSchema } from '@repo/application/forms';
 import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { registerUser } from '../../../lib/actions/register-user';
@@ -17,7 +17,7 @@ export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
-  const formState = useFormActionState<SignupFormInput>({
+  const formState = useFormActionState({
     action: registerUser,
     initialState: signupFormInitialState,
     schema: signupFormSchema,

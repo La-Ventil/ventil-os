@@ -1,16 +1,12 @@
 import { startTransition, useActionState, useState } from 'react';
+import { z } from 'zod';
 import type { FormEventHandler } from 'react';
 import type { FormState } from './form-state';
 import type { FormAction, FormActionDispatch } from './form-action-state';
-import { formDataToStringRecord } from './form-data';
+import { formDataToValues } from './form-data';
 
-type SafeParseResult =
-  | { success: true; data: unknown }
-  | { success: false; error: { flatten: () => { fieldErrors: Record<string, string[]> } } };
-
-type SchemaLike = {
-  safeParse: (data: FormData) => SafeParseResult;
-};
+type SchemaLike = z.ZodType<Record<string, unknown>>;
+type InferSchema<Schema extends SchemaLike> = z.infer<Schema>;
 
 type Translator = (key: string, params?: Record<string, string>) => string;
 
@@ -18,20 +14,19 @@ type Translator = (key: string, params?: Record<string, string>) => string;
  * Config for useFormActionState: wraps React's useActionState with client-side
  * validation + retry handling while keeping a FormState shape.
  */
-export type FormActionStateConfig<Values extends Record<string, string | string[] | undefined>> = {
-  action: FormAction<Values>;
-  initialState: FormState<Values>;
-  schema: SchemaLike;
+export type FormActionStateConfig<Schema extends SchemaLike> = {
+  action: FormAction<InferSchema<Schema>>;
+  initialState: FormState<InferSchema<Schema>>;
+  schema: Schema;
   translate: Translator;
   translateFieldError?: Translator;
-  mapFormDataToValues?: (formData: FormData) => Values;
 };
 
 /**
  * Tuple returned by useFormActionState:
  * [state, action, isPending, handleSubmit, handleRetry]
  */
-export type FormActionStateTuple<Values extends Record<string, string | string[] | undefined>> = readonly [
+export type FormActionStateTuple<Values extends Record<string, unknown>> = readonly [
   FormState<Values>,
   FormActionDispatch,
   boolean,
@@ -47,14 +42,14 @@ export type FormActionStateTuple<Values extends Record<string, string | string[]
  *
  * The returned action should still be wired to the <form action={action}>.
  */
-export function useFormActionState<Values extends Record<string, string | string[] | undefined>>({
+export function useFormActionState<Schema extends SchemaLike>({
   action,
   initialState,
   schema,
   translate,
-  translateFieldError,
-  mapFormDataToValues
-}: FormActionStateConfig<Values>) {
+  translateFieldError
+}: FormActionStateConfig<Schema>) {
+  type Values = InferSchema<Schema>;
   const [state, actionStateAction, isPending] = useActionState<FormState<Values>, FormData>(
     action,
     initialState as Awaited<FormState<Values>>
@@ -63,8 +58,7 @@ export function useFormActionState<Values extends Record<string, string | string
   const [lastFormData, setLastFormData] = useState<FormData | null>(null);
 
   const effectiveState = clientState ?? state;
-  const toValues = (formData: FormData) =>
-    (mapFormDataToValues?.(formData) ?? formDataToStringRecord<Values>(formData)) as Values;
+  const toValues = (formData: FormData) => formDataToValues(formData, schema) as Values;
   const translateErrorMessage = (message: string) => {
     const looksLikeKey = message.includes('.') && !message.includes(' ');
     if (!looksLikeKey) return message;
@@ -77,12 +71,11 @@ export function useFormActionState<Values extends Record<string, string | string
       return message;
     }
   };
-  const translateFieldErrors = (fieldErrors: Record<string, string[]>) =>
+  const translateFieldErrors = (fieldErrors: Record<string, string[] | undefined>) =>
     Object.fromEntries(
-      Object.entries(fieldErrors).map(([field, messages]) => [
-        field,
-        messages.map((message) => translateErrorMessage(message))
-      ])
+      Object.entries(fieldErrors)
+        .filter(([, messages]) => messages && messages.length > 0)
+        .map(([field, messages]) => [field, (messages ?? []).map((message) => translateErrorMessage(message))])
     ) as FormState<Values>['fieldErrors'];
   const createNetworkErrorState = (formData: FormData): FormState<Values> => ({
     success: false,
@@ -111,7 +104,7 @@ export function useFormActionState<Values extends Record<string, string | string
         valid: false,
         message: translate('errors.invalid'),
         fieldErrors,
-        values: toValues(formData)
+        values: initialState.values
       });
       return;
     }
