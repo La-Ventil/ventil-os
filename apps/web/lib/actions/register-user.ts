@@ -14,7 +14,7 @@ export async function registerUser(
 ): Promise<FormState<SignupFormInput>> {
   const t = await getTranslations();
   const { success, data, error } = signupFormSchema.safeParse(formData);
-  const values = formDataToStringRecord(formData) as unknown as SignupFormInput;
+  const values = formDataToStringRecord<SignupFormInput>(formData);
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
