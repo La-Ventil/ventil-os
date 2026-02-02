@@ -22,10 +22,12 @@ export function formDataToObject(formData: FormData): FormDataObject {
  * Simplified helper for text‑only forms: flattens FormData to a string record.
  * Non‑string values are stringified via toString().
  */
-export function formDataToStringRecord(formData: FormData): Record<string, string> {
+export function formDataToStringRecord<T extends Record<string, string | undefined> = Record<string, string>>(
+  formData: FormData
+): T {
   const result: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
     result[key] = value.toString();
   }
-  return result;
+  return result as T;
 }
