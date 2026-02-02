@@ -1,16 +1,20 @@
+import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import type { FormState } from '@repo/form/form-state';
 
 export interface FormAlertProps {
-  message?: string;
-  success?: boolean;
+  state?: FormState<Record<string, string | string[] | undefined>>;
   isPending?: boolean;
-  showRetry?: boolean;
-  retryLabel?: string;
   onRetry?: () => void;
 }
 
-export default function FormAlert({ message, success, isPending, showRetry, retryLabel, onRetry }: FormAlertProps) {
+export default function FormAlert({ state, isPending, onRetry }: FormAlertProps) {
+  const tCommon = useTranslations('common');
+  const message = state?.message ?? '';
+  const success = state?.success ?? false;
+  const showRetry = message === tCommon('errors.network');
+
   if (!message || isPending) return null;
 
   return (
@@ -19,7 +23,7 @@ export default function FormAlert({ message, success, isPending, showRetry, retr
       action={
         showRetry ? (
           <Button color="inherit" size="small" onClick={onRetry}>
-            {retryLabel}
+            {tCommon('actions.retry')}
           </Button>
         ) : null
       }

@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import { ResetPasswordFormInput } from '@repo/application/forms';
 import { FormActionState } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
+import { firstFieldError } from '@repo/form/form-errors';
 
 export interface ResetPasswordFormProps {
   handleSubmit: FormActionState<ResetPasswordFormInput>;
@@ -27,6 +28,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
       email: ''
     }
   });
+  const fieldError = (field: keyof ResetPasswordFormInput) => firstFieldError(formState, field);
 
   return (
     <form action={formAction}>
@@ -40,6 +42,8 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
           label={t('fields.email')}
           placeholder={t('placeholders.email')}
           required
+          error={Boolean(fieldError('email'))}
+          helperText={fieldError('email')}
         />
       </Stack>
       <Grid container spacing={2}>

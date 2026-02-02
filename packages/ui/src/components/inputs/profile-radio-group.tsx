@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { FormControlLabel, FormControlLabelProps } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import type { FormControlLabelProps } from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup from '@mui/material/FormGroup';
 import Radio from '@mui/material/Radio';
 import { ProfileType } from '@repo/domain/profile-type';
@@ -40,11 +43,13 @@ export function ProfileRadio({ label, caption, value, ...props }: ProfileRadioPr
 
 export interface ProfileRadioGroupProps {
   defaultValue?: string;
+  error?: boolean;
+  helperText?: string;
 }
 
-export default function ProfileRadioGroup({ defaultValue }: ProfileRadioGroupProps) {
+export default function ProfileRadioGroup({ defaultValue, error = false, helperText }: ProfileRadioGroupProps) {
   const t = useTranslations('profileSelector');
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(defaultValue ?? ProfileType.Member);
   const optionKeyMap: Record<string, string> = {
     eleve_lycee: 'eleveLycee'
   };
@@ -54,25 +59,28 @@ export default function ProfileRadioGroup({ defaultValue }: ProfileRadioGroupPro
   }, [defaultValue]);
 
   return (
-    <FormGroup className={styles.profileRadioGroupContainer}>
+    <FormControl className={styles.profileRadioGroupContainer} error={error}>
       <FormLabel className={styles.profileRadioGroupLabel} id="profile-label">
         {t('title')}
       </FormLabel>
       <Typography variant="body1">{t('subtitle')}</Typography>
-      <RadioGroup
-        aria-labelledby="profile-label"
-        value={value}
-        onChange={(event) => setValue(String(event.target.value))}
-        name="profile"
-      >
-        {Object.values(ProfileType).map((key) => {
-          const optionKey = optionKeyMap[key] ?? key;
-          const label = t(`option.${optionKey}.label`);
-          const description = t(`option.${optionKey}.description`);
+      <FormGroup>
+        <RadioGroup
+          aria-labelledby="profile-label"
+          value={value}
+          onChange={(event) => setValue(String(event.target.value))}
+          name="profile"
+        >
+          {Object.values(ProfileType).map((key) => {
+            const optionKey = optionKeyMap[key] ?? key;
+            const label = t(`option.${optionKey}.label`);
+            const description = t(`option.${optionKey}.description`);
 
-          return <ProfileRadio key={key} label={label} value={key} caption={description} />;
-        })}
-      </RadioGroup>
-    </FormGroup>
+            return <ProfileRadio key={key} label={label} value={key} caption={description} />;
+          })}
+        </RadioGroup>
+      </FormGroup>
+      {helperText ? <FormHelperText>{helperText}</FormHelperText> : null}
+    </FormControl>
   );
 }

@@ -8,7 +8,8 @@
     "./form-errors": "./src/form-errors.ts",
     "./form-state": "./src/form-state.ts",
     "./form-action-state": "./src/form-action-state.ts",
-    "./use-form-action-state": "./src/use-form-action-state.ts"
+    "./use-form-action-state": "./src/use-form-action-state.ts",
+    "./use-js-enabled": "./src/use-js-enabled.ts"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",

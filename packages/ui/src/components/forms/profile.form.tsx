@@ -12,6 +12,7 @@ import { UserProfile } from '@repo/view-models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
 import { FormAction } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
+import { firstFieldError } from '@repo/form/form-errors';
 import Link from '../link';
 
 export interface ProfileFormProps {
@@ -34,6 +35,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
       educationLevel: profile.educationLevel ?? ''
     }
   });
+  const fieldError = (field: keyof ProfileFormInput) => firstFieldError(formState, field);
 
   return (
     <form action={formAction}>
@@ -47,6 +49,8 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
           label={t('fields.firstName')}
           placeholder={t('placeholders.firstName')}
           required
+          error={Boolean(fieldError('firstName'))}
+          helperText={fieldError('firstName')}
         />
         <TextField
           name="lastName"
@@ -54,8 +58,14 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
           label={t('fields.lastName')}
           placeholder={t('placeholders.lastName')}
           required
+          error={Boolean(fieldError('lastName'))}
+          helperText={fieldError('lastName')}
         />
-        <EducationLevelSelect defaultValue={formState.values.educationLevel} />
+        <EducationLevelSelect
+          defaultValue={formState.values.educationLevel}
+          error={Boolean(fieldError('educationLevel'))}
+          helperText={fieldError('educationLevel')}
+        />
       </Stack>
       <Grid container spacing={2}>
         <Grid>

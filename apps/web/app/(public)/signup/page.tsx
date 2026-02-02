@@ -16,11 +16,13 @@ import { registerUser } from '../../../lib/actions/register-user';
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
   const tCommon = useTranslations('common');
+  const tRoot = useTranslations();
   const formState = useFormActionState<SignupFormInput>({
     action: registerUser,
     initialState: signupFormInitialState,
     schema: signupFormSchema,
-    translate: tCommon
+    translate: tCommon,
+    translateFieldError: tRoot
   });
   const [currentState] = formState;
   const router = useRouter();

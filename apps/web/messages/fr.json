@@ -18,7 +18,12 @@
   },
   "common": {
     "actions": {
-      "back": "Retour"
+      "back": "Retour",
+      "retry": "Réessayer"
+    },
+    "errors": {
+      "invalid": "Veuillez vérifier les champs du formulaire.",
+      "network": "Impossible de contacter le serveur. Vérifiez votre connexion et réessayez."
     },
     "status": {
       "loading": "Chargement..."
@@ -85,6 +90,10 @@
       "updateProfile": "Modifier",
       "submitSignup": "S'inscrire",
       "submitLogin": "Se connecter"
+    },
+    "errors": {
+      "network": "Erreur réseau. Veuillez réessayer.",
+      "invalid": "Certains champs sont invalides."
     },
     "messages": {
       "signInSuccess": "Connexion réussie.",
@@ -210,18 +219,18 @@
             "levelDescription": "Niveau 1 : description"
           },
           "image": {
-      "placeholder": "Illustration en cours",
-      "upload": "Télécharger",
-      "maxSizeHint": "Max 5 Mo",
-      "tooLarge": "Fichier trop lourd (max {max}).",
-      "clear": "Effacer"
-    },
-    "levels": {
-      "add": "+ Ajouter un niveau",
-      "remove": "Supprimer",
-      "chipPrefix": "Niveau",
-      "min": "Au moins un niveau est requis"
-    },
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger",
+            "maxSizeHint": "Max 5 Mo",
+            "tooLarge": "Fichier trop lourd (max {max}).",
+            "clear": "Effacer"
+          },
+          "levels": {
+            "add": "+ Ajouter un niveau",
+            "remove": "Supprimer",
+            "chipPrefix": "Niveau",
+            "min": "Au moins un niveau est requis"
+          },
           "delivery": {
             "title": "Délivrance",
             "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
