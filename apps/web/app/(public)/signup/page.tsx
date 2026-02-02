@@ -43,7 +43,7 @@ export default function Page(): JSX.Element {
   }, [currentState, router]);
 
   return (
-    <Box>
+    <Box spacing={2}>
       <Stack spacing={2}>
         <Typography variant="h2">{t('title')}</Typography>
         <Typography variant="h3">{t('subtitle')}</Typography>

@@ -45,12 +45,18 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
         }
       }}
     >
-      <IconButton aria-label={t('detailsModal.closeLabel')} onClick={onClose} size="small">
+      <IconButton
+        aria-label={t('detailsModal.closeLabel')}
+        onClick={onClose}
+        size="small"
+        className={styles.cross}
+        color="primary"
+      >
         <CloseIcon fontSize="small" />
       </IconButton>
       <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
       <DialogContent className={styles.modalContent}>
-        <Section>
+        <Section p={2}>
           <div className={styles.modalIllustration}>
             {openBadge.coverImage ? (
               <img src={openBadge.coverImage} alt={openBadge.name} className={styles.modalIllustration} />
@@ -59,11 +65,10 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
             )}
           </div>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('detailsModal.sectionSubtitle')}</SectionSubtitle>
-
           <Typography variant="body1">{openBadge.description}</Typography>
         </Section>
 
-        <Section className={styles.modalActions} p={0}>
+        <Section className={styles.modalActions} p={2}>
           <Button variant="contained" size="large" fullWidth>
             {t('detailsModal.actions.assign')}
           </Button>
@@ -72,9 +77,10 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
           </Button>
         </Section>
 
-        <Section className={styles.levelList}>
+        <Section className={styles.levelList} p={0}>
           {levels.map((level) => (
             <Accordion
+              className={styles.accordion}
               key={`${openBadge.id}-detail-${level.level}`}
               defaultExpanded={level.level === openBadge.activeLevel}
             >
@@ -84,12 +90,12 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
                   isActive={level.level === openBadge.activeLevel}
                   className={styles.levelChip}
                 />
-                <Typography variant="subtitle2" className={styles.levelTitle}>
+                <Typography variant="h3" className={styles.levelTitle}>
                   {level.title}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body1" color="text.primary">
                   {level.description}
                 </Typography>
               </AccordionDetails>

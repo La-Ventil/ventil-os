@@ -68,4 +68,7 @@ a {
   height: 40px;
   min-width: 140px;
   box-shadow: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
