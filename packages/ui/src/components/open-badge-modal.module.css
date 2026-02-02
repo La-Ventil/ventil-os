@@ -3,7 +3,10 @@
 }
 
 .modalContent {
-  padding: 0 20px 20px 20px;
+  padding: 0;
+}
+.cross {
+  align-self: end;
 }
 
 .modalIllustration {
@@ -19,13 +22,17 @@
   margin-bottom: 20px;
 }
 
-.modalActions :global(.MuiButton-root) {
-  border-radius: 12px;
+.modalActions {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .levelList :global(.MuiAccordion-root) {
-  border: 1px solid var(--mui-palette-divider);
-  border-radius: 12px;
+  border-top: 1px solid var(--mui-palette-divider);
+  border-radius: 0;
   box-shadow: none;
   overflow: hidden;
 }
@@ -58,4 +65,9 @@
   width: 28px;
   height: 28px;
   min-width: 28px;
+}
+
+.accordion {
+  border-radius: 0px;
+  border: 0px transparent solid;
 }
