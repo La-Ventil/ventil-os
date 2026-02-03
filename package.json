@@ -6,6 +6,7 @@
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
+    "start": "pnpm --filter web start",
     "lint": "pnpm -r lint",
     "lint:dev": "pnpm -r lint:dev",
     "lint:staged": "pnpm -r --workspace-concurrency 1 lint:staged",
@@ -13,13 +14,14 @@
     "prepare": "husky",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
+    "deploy:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db exec prisma db seed",
     "test": "turbo run test",
     "prettier": "turbo run prettier"
   },
   "devDependencies": {
     "@playwright/test": "^1.45.1",
-    "eslint": "^9.36.0",
     "@types/node": "22.15.3",
+    "eslint": "^9.36.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.2.11",
     "prettier": "^3.2.5",
@@ -34,7 +36,18 @@
     "overrides": {
       "@types/react": "19.2.5",
       "@types/react-dom": "19.2.3"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "@serialport/bindings-cpp",
+      "@swc/core",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "workspaces": [
     "apps/*",

@@ -240,6 +240,7 @@ Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/la
 | `pnpm install`                    | Installe toutes les dépendances |
 | `pnpm dev --filter web`           | Lance l’application web |
 | `pnpm db:deploy --filter @repo/db` | Applique les migrations |
+| `pnpm deploy:seed`                | Applique les migrations et exécute le seed (déploiement) |
 | `pnpm lint --filter web`          | Vérifie la qualité du code |
 | `pnpm lint:dev`                   | Lint du monorepo (peut prendre ~2–3 min) |
 | `pnpm -C apps/web lint:dev`       | Lint ciblé (ex: uniquement web) |
@@ -247,6 +248,40 @@ Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/la
 | `pnpm test --filter web`          | Lance les tests Playwright |
 | `docker compose up -d`            | Lance la base de données |
 | `docker compose down`             | Stoppe les conteneurs |
+
+---
+
+## ☁️ Déploiement Clever Cloud (web)
+
+### Variables d’environnement (app web)
+
+```
+DATABASE_URL=...
+NEXTAUTH_SECRET=...
+NEXTAUTH_URL=https://...
+SECRET_PEPPER=...
+BREVO_API_KEY=...
+APP_NAME=VentilOS
+BASE_URL=https://...
+PORT=8080
+NODE_ENV=production
+CC_HEALTH_CHECK_PATH=/api/health
+```
+
+### Dossier d’application (monorepo)
+
+Configurer l’app pour exécuter `apps/web` :
+
+- `CC_APP_FOLDER=apps/web`, ou
+- `CC_RUN_COMMAND=pnpm --filter web start`
+
+### Seed au 1er déploiement
+
+Exécuter une seule fois :
+
+```bash
+pnpm deploy:seed
+```
 
 ---
 

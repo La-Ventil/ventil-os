@@ -30,12 +30,15 @@ export async function validateAndStoreImage(
 ): Promise<ImageValidationResult> {
   const maxMb = options?.maxMb ?? MAX_IMAGE_MB;
   const maxBytes = maxMb * 1024 * 1024;
+  const envUploadRoot = process.env.UPLOADS_DIR;
+  const envPublicPath = process.env.UPLOADS_PUBLIC_PATH;
   const uploadRoot =
     options?.uploadRoot ??
+    envUploadRoot ??
     (path.basename(process.cwd()) === 'web' && path.basename(path.dirname(process.cwd())) === 'apps'
       ? path.join(process.cwd(), 'public', 'uploads')
       : path.join(process.cwd(), 'apps', 'web', 'public', 'uploads'));
-  const publicPath = options?.publicPath ?? '/uploads';
+  const publicPath = options?.publicPath ?? envPublicPath ?? '/uploads';
   const field = options?.field;
 
   if (!(file instanceof File) || file.size === 0) {
