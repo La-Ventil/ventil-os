@@ -42,7 +42,18 @@ BASE_URL=http://localhost:3000
 Et un fichier `.env` dans `packages/db/` :
 ```env
 DATABASE_URL="postgresql://ventilos:ventilos@localhost:5433/ventilos?schema=public"
+SECRET_PEPPER=ThisIsTheVentilOSSecretPepperToSpiceThingsUpALittleBit
 ```
+
+---
+
+## 🔎 SEO & metadata (app)
+
+Le site expose automatiquement :
+- `app/robots.ts` → `robots.txt`
+- `app/sitemap.ts` → `sitemap.xml`
+
+Veillez à renseigner `BASE_URL` pour générer des URLs absolues correctes.
 
 ---
 

@@ -8,9 +8,40 @@ import './globals.css';
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
   const appName = process.env.APP_NAME ?? 'La-Ventil';
+  const baseUrl = process.env.BASE_URL ?? 'http://localhost:3000';
+  const title = t('root.title', { appName });
+  const description = t('root.description');
   return {
-    title: t('root.title', { appName }),
-    description: t('root.description')
+    metadataBase: new URL(baseUrl),
+    title,
+    description,
+    alternates: {
+      canonical: '/'
+    },
+    openGraph: {
+      title,
+      description,
+      url: '/',
+      siteName: appName,
+      type: 'website',
+      images: [
+        {
+          url: '/assets/static/cover-v0-1.svg',
+          width: 1200,
+          height: 630,
+          alt: appName
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/assets/static/cover-v0-1.svg']
+    },
+    icons: {
+      icon: '/favicon.ico'
+    }
   };
 }
 
