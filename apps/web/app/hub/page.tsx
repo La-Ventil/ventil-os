@@ -1,18 +1,5 @@
-import type { JSX } from 'react';
-import { getTranslations } from 'next-intl/server';
-import Typography from '@mui/material/Typography';
-import Section from '@repo/ui/section';
-import SectionTitle from '@repo/ui/section-title';
+import { redirect } from 'next/navigation';
 
-export default async function Page(): Promise<JSX.Element> {
-  const t = await getTranslations('pages.hub.home');
-
-  return (
-    <>
-      <SectionTitle>{t('title')}</SectionTitle>
-      <Section>
-        <Typography variant="body1">{t('intro')}</Typography>
-      </Section>
-    </>
-  );
+export default function Page(): never {
+  redirect('/hub/profile');
 }
