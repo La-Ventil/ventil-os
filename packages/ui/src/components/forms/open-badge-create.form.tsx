@@ -70,7 +70,6 @@ export default function OpenBadgeCreateForm({
       action={action}
       onSubmit={handleSubmit}
       noValidate={jsEnabled}
-      encType="multipart/form-data"
       spacing={2}
     >
       {badgeId ? <input type="hidden" name="id" value={badgeId} /> : null}

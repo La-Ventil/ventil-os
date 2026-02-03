@@ -32,7 +32,7 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
 
   return (
-    <Stack component="form" action={action} encType="multipart/form-data" spacing={2}>
+    <Stack component="form" action={action} spacing={2}>
       {state.message && !isPending && <Alert severity={state.success ? 'success' : 'error'}>{state.message}</Alert>}
       <FormSection>
         <TextField
