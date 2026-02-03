@@ -28,6 +28,7 @@ We will prefer operations that preserve file history and keep commits focused an
 - Pre-commit runs full typecheck only.
 - Lint-staged is manual, but the agent must run it after modifications.
 - The agent must run a targeted typecheck for affected package(s); full typecheck only when explicitly requested.
+- Do not rerun hooks when **only splitting commits** and **no files have changed since the last hook run** (same working tree content).
 
 ## Automation/Checks
 - Reviews should flag delete+recreate patterns when a move is intended.
