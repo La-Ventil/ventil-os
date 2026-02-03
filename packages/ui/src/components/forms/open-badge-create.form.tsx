@@ -30,6 +30,8 @@ import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {
   formState: FormActionStateTuple<OpenBadgeCreateRequest>;
+  badgeId?: string;
+  imagePreviewUrl?: string | null;
 }
 
 export const openBadgeCreateInitialState = createFormState<OpenBadgeCreateRequest>({
@@ -48,11 +50,14 @@ export const openBadgeCreateInitialState = createFormState<OpenBadgeCreateReques
 });
 
 export default function OpenBadgeCreateForm({
-  formState: [state, action, isPending, handleSubmit, handleRetry]
+  formState: [state, action, isPending, handleSubmit, handleRetry],
+  badgeId,
+  imagePreviewUrl
 }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const fieldError = (field: keyof OpenBadgeCreateRequest) => firstFieldError(state, field);
   const jsEnabled = useJsEnabled();
+  const isEdit = Boolean(badgeId);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
@@ -60,7 +65,15 @@ export default function OpenBadgeCreateForm({
   );
 
   return (
-    <Stack component="form" action={action} onSubmit={handleSubmit} noValidate={jsEnabled} spacing={2}>
+    <Stack
+      component="form"
+      action={action}
+      onSubmit={handleSubmit}
+      noValidate={jsEnabled}
+      encType="multipart/form-data"
+      spacing={2}
+    >
+      {badgeId ? <input type="hidden" name="id" value={badgeId} /> : null}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
         <TextField
@@ -88,15 +101,16 @@ export default function OpenBadgeCreateForm({
       <FormSection>
         <div className={styles.imageRow}>
           <ImageUploadField
+            previewUrl={imagePreviewUrl ?? undefined}
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
             maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge')}
+            tooLargeLabel={t('image.tooLarge', { max: '5MB' })}
             clearLabel={t('image.clear')}
             maxSizeMb={5}
             resetKey={state.success ? 'reset' : undefined}
-            required
+            required={!isEdit}
             error={Boolean(fieldError('imageFile'))}
             helperText={fieldError('imageFile')}
           />

@@ -1,8 +1,10 @@
 import { openBadgeRepository } from '@repo/db';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import type { OpenBadgeEditViewModel } from '@repo/view-models/open-badge-edit';
 import { mapOpenBadgeAdminToViewModel } from './mappers/open-badge-admin';
 import { mapOpenBadgeProgressToViewModel, mapOpenBadgeToViewModel } from './mappers/open-badge';
+import { mapOpenBadgeToEditViewModel } from './mappers/open-badge-edit';
 import { canManageBadgesUser } from './authorization';
 import { userExists } from './user';
 
@@ -19,6 +21,11 @@ export const listAdminOpenBadges = async (): Promise<OpenBadgeAdminViewModel[]> 
 export const getOpenBadgeById = async (id: string): Promise<OpenBadgeViewModel | null> => {
   const badge = await openBadgeRepository.getOpenBadgeById(id);
   return badge ? mapOpenBadgeToViewModel(badge) : null;
+};
+
+export const getOpenBadgeEditData = async (id: string): Promise<OpenBadgeEditViewModel | null> => {
+  const badge = await openBadgeRepository.getOpenBadgeById(id);
+  return badge ? mapOpenBadgeToEditViewModel(badge) : null;
 };
 
 export const listOpenBadgesForUser = async (userId: string): Promise<OpenBadgeViewModel[]> => {
@@ -96,4 +103,23 @@ export const createOpenBadge = async (input: CreateOpenBadgeInput) =>
     creatorId: input.creatorId,
     type: DEFAULT_BADGE_TYPE,
     category: DEFAULT_BADGE_CATEGORY
+  });
+
+export type UpdateOpenBadgeInput = {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl?: string | null;
+  levels: Array<{ title: string; description: string }>;
+  activationEnabled: boolean;
+};
+
+export const updateOpenBadge = async (input: UpdateOpenBadgeInput) =>
+  openBadgeRepository.updateOpenBadge({
+    id: input.id,
+    name: input.name,
+    description: input.description,
+    coverImage: input.imageUrl ?? null,
+    levels: input.levels,
+    status: input.activationEnabled ? 'active' : 'inactive'
   });

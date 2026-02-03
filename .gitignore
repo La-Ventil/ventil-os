@@ -27,6 +27,10 @@ out/
 build
 dist
 
+# Uploads
+apps/web/public/uploads/
+apps/web/apps/
+
 
 # Debug
 npm-debug.log*

@@ -59,6 +59,23 @@
       "profileRequired": "Veuillez sélectionner un profil.",
       "termsRequired": "Vous devez accepter les conditions générales d’utilisation.",
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
+    },
+    "openBadge": {
+      "imageRequired": "Veuillez ajouter une image.",
+      "idRequired": "Badge introuvable."
+    }
+  },
+  "openBadge": {
+    "create": {
+      "success": "Open badge créé.",
+      "error": "Impossible de créer l'open badge.",
+      "unauthorized": "Vous n'avez pas les droits pour créer un open badge."
+    },
+    "update": {
+      "success": "Open badge mis à jour.",
+      "error": "Impossible de mettre à jour l'open badge.",
+      "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
+      "notFound": "Open badge introuvable."
     }
   },
   "resetPassword": {

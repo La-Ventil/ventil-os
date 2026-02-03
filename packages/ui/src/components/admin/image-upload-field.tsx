@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -29,6 +29,7 @@ export type ImageUploadFieldProps = {
 };
 
 export default function ImageUploadField({
+  name,
   label,
   placeholder,
   uploadLabel,
@@ -57,11 +58,14 @@ export default function ImageUploadField({
     setPreview(previewUrl || defaultValue || null);
   }, [defaultValue, previewUrl]);
 
-  useEffect(() => () => {
-    if (preview && preview.startsWith('blob:')) {
-      URL.revokeObjectURL(preview);
-    }
-  }, [preview]);
+  useEffect(
+    () => () => {
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview);
+      }
+    },
+    [preview]
+  );
 
   // Reset when parent indicates success/refresh via resetKey
   useEffect(() => {
@@ -96,7 +100,9 @@ export default function ImageUploadField({
     const maxBytes = maxSizeMb * 1024 * 1024;
     if (file.size > maxBytes) {
       const formattedMax = `${maxSizeMb}MB`;
-      setLocalError(tooLargeLabel ? tooLargeLabel.replace('{max}', formattedMax) : `File too large (max ${formattedMax}).`);
+      setLocalError(
+        tooLargeLabel ? tooLargeLabel.replace('{max}', formattedMax) : `File too large (max ${formattedMax}).`
+      );
       event.target.value = '';
       notifyChange(null, preview);
       return;
