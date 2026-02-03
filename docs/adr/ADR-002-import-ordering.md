@@ -6,11 +6,6 @@ Accepted
 ## Date
 2026-01-15
 
-## Deciders
-Frontend team (developers & integrators)
-
----
-
 ## Context
 
 The codebase spans Next.js apps, MUI, and shared monorepo packages. Inconsistent import ordering makes files harder to scan, complicates reviews, and increases merge conflicts.
@@ -46,7 +41,6 @@ import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import List from '@mui/material/List';
-import { styled } from '@mui/material/styles';
 import Link from '@repo/ui/link';
 import type { Foo } from './types';
 import { bar } from './utils';

@@ -6,11 +6,6 @@ Accepted
 ## Date
 2026-01-22
 
-## Deciders
-Engineering team (developers and integrators)
-
----
-
 ## Context
 
 We need consistent commit messages to improve changelog generation, review clarity, and automated release tooling. The current commit history mixes styles, which makes it harder to understand intent and extract meaningful release notes.

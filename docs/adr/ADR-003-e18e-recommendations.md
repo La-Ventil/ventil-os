@@ -1,15 +1,10 @@
 # ADR-003 — e18e General Rules
 
 ## Status
-Proposed
+Accepted
 
 ## Date
 2026-01-22
-
-## Deciders
-Frontend team (developers & integrators)
-
----
 
 ## Why e18e
 
@@ -65,3 +60,16 @@ Tooling signals:
 Coding tips:
 - Avoid generators on hot paths.
 - Avoid chaining array methods in hot paths (prefer loops or single pass).
+
+---
+
+## Related ADRs
+
+- ADR-011 (Lint / typecheck / test policy)
+
+---
+
+## Consequences
+
+- Dependency choices are reviewed with size/perf in mind.
+- Tooling proposals favor lighter, modern alternatives when available.
