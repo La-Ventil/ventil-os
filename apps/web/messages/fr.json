@@ -1,7 +1,5 @@
 {
-  "home": {
-    "messageBienvenue": "Bienvenue sur l’application de La-Ventil."
-  },
+  "home": {},
   "metadata": {
     "root": {
       "title": "La-Ventil {appName}",
@@ -14,6 +12,14 @@
     "hub": {
       "title": "La-Ventil — Espace membre",
       "description": "Gérez votre profil, vos badges, vos machines et vos événements."
+    }
+  },
+  "pages": {
+    "public": {
+      "home": {
+        "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
+        "messageOnboarding": "Pour commencer l’aventure, merci de saisir les informations ci-dessous."
+      }
     }
   },
   "common": {

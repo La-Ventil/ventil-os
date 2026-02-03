@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,24 +10,32 @@ import Link from '@repo/ui/link';
 import styles from './page.module.css';
 
 export default function Home() {
-  const t = useTranslations('home');
-  const tHome = useTranslations('pages.public.home');
+  const t = useTranslations('pages.public.home');
   return (
     <Box>
       <Stack spacing={2}>
-        <img src="/assets/static/cover-v0-1.svg" alt="" aria-hidden="true" className={styles.cover} />
         <Typography variant="body1">{t('messageBienvenue')}</Typography>
+        <Typography variant="body1">{t('messageOnboarding')}</Typography>
+        <Image
+          src="/assets/static/cover-v0-1.svg"
+          alt=""
+          aria-hidden="true"
+          className={styles.cover}
+          width={640}
+          height={360}
+          priority
+        />
       </Stack>
       <BottomSlot>
         <Grid container spacing={2}>
           <Grid>
             <Button variant="outlined" component={Link} href="/signup">
-              {tHome('ctaSignup')}
+              {t('ctaSignup')}
             </Button>
           </Grid>
           <Grid>
             <Button variant="contained" component={Link} href="/login">
-              {tHome('ctaSignin')}
+              {t('ctaSignin')}
             </Button>
           </Grid>
         </Grid>

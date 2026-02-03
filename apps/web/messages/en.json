@@ -2,9 +2,7 @@
   "HomePage": {
     "title": "Hello world!"
   },
-  "home": {
-    "messageBienvenue": "Welcome to the La-Ventil app."
-  },
+  "home": {},
   "metadata": {
     "root": {
       "title": "La-Ventil {appName}",
@@ -17,6 +15,14 @@
     "hub": {
       "title": "La-Ventil — Member Space",
       "description": "Manage your profile, badges, machines, and events."
+    }
+  },
+  "pages": {
+    "public": {
+      "home": {
+        "messageBienvenue": "Welcome to the La-Ventil app.",
+        "messageOnboarding": "To get started, please fill in the information below."
+      }
     }
   },
   "common": {
