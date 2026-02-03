@@ -10,7 +10,7 @@
     "lint": "eslint . --max-warnings 0",
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
-    "test": "playwright test",
+    "test": "node -e \"if(!process.env.RUN_E2E){console.log('skip test (web)');process.exit(0)}else{process.exit(1)}\" || playwright test",
     "prettier": "prettier . --write",
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },

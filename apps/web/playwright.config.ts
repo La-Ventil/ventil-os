@@ -1,14 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-// Use process.env.PORT by default and fallback to port 3000
-const PORT = process.env.PORT || 3000;
+// Use process.env.PORT by default and fallback to port 3001
+const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '127.0.0.1';
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
-const baseURL = `http://localhost:${PORT}`;
+const baseURL = `http://${HOST}:${PORT}`;
 
 // Reference: https://playwright.dev/docs/test-configuration
 export default defineConfig({
@@ -33,7 +38,7 @@ export default defineConfig({
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
-    command: 'npm run dev',
+    command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI
