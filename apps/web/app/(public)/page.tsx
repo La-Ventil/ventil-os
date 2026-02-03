@@ -18,8 +18,7 @@ export default function Home() {
         <Typography variant="body1">{t('messageOnboarding')}</Typography>
         <Image
           src="/assets/static/cover-v0-1.svg"
-          alt=""
-          aria-hidden="true"
+          alt={t('coverAlt')}
           className={styles.cover}
           width={640}
           height={360}

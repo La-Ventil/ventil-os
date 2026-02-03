@@ -127,6 +127,9 @@
   "pages": {
     "public": {
       "home": {
+        "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
+        "messageOnboarding": "Pour commencer l’aventure, merci de saisir les informations ci-dessous.",
+        "coverAlt": "Illustration de La-Ventil, espace de fabrication et d'apprentissage du Repair Caf\u00e9.",
         "ctaSignup": "M'inscrire",
         "ctaSignin": "Connexion"
       },
@@ -156,7 +159,8 @@
         "fabLab": "Fab lab",
         "openBadges": "Open badges",
         "events": "Évènements",
-        "settings": "Paramètres"
+        "settings": "Paramètres",
+        "profileAvatarAlt": "Avatar de {email}"
       },
       "settings": {
         "title": "Paramètres",
