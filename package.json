@@ -12,6 +12,7 @@
     "check-types": "pnpm -r check-types",
     "prepare": "husky",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
     "test": "turbo run test",
     "prettier": "turbo run prettier"
   },
