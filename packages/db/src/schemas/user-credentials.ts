@@ -4,6 +4,7 @@ export type UserCredentialsSchema = Prisma.UserGetPayload<{
   select: {
     id: true;
     email: true;
+    image: true;
     password: true;
     salt: true;
     iterations: true;

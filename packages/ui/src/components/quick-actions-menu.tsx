@@ -6,18 +6,24 @@ import { useTranslations } from 'next-intl';
 import { BottomNavigationAction } from '@mui/material';
 import MuiBottomNavigation from '@mui/material/BottomNavigation';
 import BottomSlot from './bottom-slot';
-import { hubNavigationItems } from './hub-navigation';
+import { buildHubNavigationItems } from './hub-navigation';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
+import UserAvatar from './user-avatar';
 import styles from './quick-actions-menu.module.css';
 
 export type QuickActionsMenuProps = {
+  user?: {
+    email?: string | null;
+    image?: string | null;
+  } | null;
   isAdmin?: boolean;
   canManageUsers?: boolean;
   canManageBadges?: boolean;
 };
 
 export default function QuickActionsMenu({
+  user = null,
   isAdmin = false,
   canManageUsers = false,
   canManageBadges = false
@@ -26,6 +32,9 @@ export default function QuickActionsMenu({
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const hubNavigationItems = buildHubNavigationItems({
+    user
+  });
   const currentValue =
     hubNavigationItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ??
     hubNavigationItems[0]?.value;

@@ -31,7 +31,12 @@ export default async function RootLayout({
     <>
       <main className={styles.main}>{children}</main>
       <footer>
-        <QuickActionsMenu isAdmin={isAdmin} canManageUsers={canManageUsers} canManageBadges={canManageBadges} />
+        <QuickActionsMenu
+          user={{ email: session.user?.email, image: session.user?.image }}
+          isAdmin={isAdmin}
+          canManageUsers={canManageUsers}
+          canManageBadges={canManageBadges}
+        />
       </footer>
     </>
   );

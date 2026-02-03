@@ -1,11 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
+import UserAvatar from './user-avatar';
 
 export type HubNavigationItem = {
   value: string;
@@ -16,19 +16,19 @@ export type HubNavigationItem = {
   action?: 'drawer';
 };
 
-export const hubNavigationItems: HubNavigationItem[] = [
+export const buildHubNavigationItems = ({
+  user
+}: {
+  user?: {
+    email?: string | null;
+    image?: string | null;
+  } | null;
+} = {}): HubNavigationItem[] => [
   {
     labelKey: 'profile',
     value: 'profile',
     href: '/hub/profile',
-    icon: (
-      <Image
-        src="/avatar.svg"
-        alt={'profile.email'}
-        fill
-        style={{ objectFit: 'contain' }}
-      />
-    )
+    icon: <UserAvatar user={user} objectFit="contain" fill />
   },
   {
     labelKey: 'fabLab',

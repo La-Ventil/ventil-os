@@ -4,6 +4,7 @@ export type UserProfileSchema = Prisma.UserGetPayload<{
   select: {
     id: true;
     email: true;
+    image: true;
     profile: true;
     studentProfile: true;
     externalProfile: true;

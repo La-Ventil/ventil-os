@@ -7,21 +7,20 @@ import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import { UserProfile } from '@repo/view-models/user-profile';
+import UserAvatar from './user-avatar';
 import styles from './profile-card.module.css';
 
 export type ProfileCardProps = {
   profile: UserProfile;
-  imageSrc?: string;
 };
 
-export default function ProfileCard({ profile, imageSrc = '/avatar.svg' }: ProfileCardProps) {
+export default function ProfileCard({ profile }: ProfileCardProps) {
   const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(' ');
-
   return (
     <Card className={styles.card}>
       <CardMedia className={styles.media} title={profile.email}>
         <div className={styles.imageWrapper}>
-          <Image src={imageSrc} alt={profile.email} fill style={{ objectFit: 'contain' }} />
+          <UserAvatar user={profile} fill />
         </div>
       </CardMedia>
       <div className={styles.column}>

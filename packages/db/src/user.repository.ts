@@ -13,6 +13,7 @@ export class UserRepository {
       select: {
         id: true,
         email: true,
+        image: true,
         profile: true,
         studentProfile: true,
         externalProfile: true,
@@ -34,6 +35,7 @@ export class UserRepository {
       select: {
         id: true,
         email: true,
+        image: true,
         password: true,
         salt: true,
         iterations: true,

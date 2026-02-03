@@ -6,6 +6,7 @@ export interface UserProfile {
   id: string;
   profile: ProfileType;
   email: Email;
+  image?: string | null;
   username: string;
   educationLevel?: EducationLevel | null;
   lastName?: string;
