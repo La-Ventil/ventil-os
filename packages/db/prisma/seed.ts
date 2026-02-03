@@ -42,6 +42,7 @@ type SeedOpenBadge = {
   category: string;
   name: string;
   description: string;
+  coverImage: string | null;
   levels: SeedOpenBadgeLevel[];
   trainerThresholdLevel?: number;
 };
@@ -51,7 +52,7 @@ const seedMachinesData: SeedMachine[] = [
     category: 'Impression 3D',
     name: 'Bambu Lab X1C n°1',
     description: 'Imprimante 3D Bambu Lab pour pièces techniques.',
-    imageUrl: null,
+    imageUrl: '/assets/machine/bambu-lab.svg',
     requiredOpenBadgeName: 'Impression 3D Bambu Lab',
     requiredOpenBadgeLevel: 1
   },
@@ -59,7 +60,7 @@ const seedMachinesData: SeedMachine[] = [
     category: 'Impression 3D',
     name: 'Bambu Lab X1C n°2',
     description: 'Imprimante 3D Bambu Lab pour prototypage rapide.',
-    imageUrl: null,
+    imageUrl: '/assets/machine/bambu-lab.svg',
     requiredOpenBadgeName: 'Impression 3D Bambu Lab',
     requiredOpenBadgeLevel: 1
   },
@@ -67,7 +68,7 @@ const seedMachinesData: SeedMachine[] = [
     category: 'Découpe laser',
     name: 'Laserbox',
     description: 'Machine de découpe laser Laserbox.',
-    imageUrl: null,
+    imageUrl: '/assets/machine/laserbox.svg',
     requiredOpenBadgeName: 'découpe laser Laserbox',
     requiredOpenBadgeLevel: 1
   }
@@ -79,6 +80,7 @@ const seedOpenBadgesData: SeedOpenBadge[] = [
     category: 'machine',
     name: 'Impression 3D Bambu Lab',
     description: "Certification permettant d'utiliser les machines d'impression 3D Bambu lab du fab lab",
+    coverImage: '/assets/open-badge/3d-printing.svg',
     levels: [
       {
         level: 1,
@@ -140,6 +142,7 @@ haute technicité. Elle est capable d'assurer la maintenance avancée et d'accom
     category: 'machine',
     name: 'découpe laser Laserbox',
     description: "Certification permettant d'utiliser la machine de découpe laser Laserbox du fab lab",
+    coverImage: '/assets/open-badge/laser.svg',
     levels: [
       {
         level: 1,
@@ -212,6 +215,7 @@ avec des utilisateurs`
     category: 'réparation',
     name: 'réparation JoyCon Nintendo',
     description: 'Certification permettant de réparer les manettes de jeux Nintendo JoyCon pour Nintendo Switch',
+    coverImage: '/assets/open-badge/repair-joycon.svg',
     levels: [
       {
         level: 1,
@@ -241,6 +245,7 @@ avec des utilisateurs`
     category: 'gestion et organisation',
     name: 'organisation du Repair Café',
     description: 'Certification validant la gestion du repair café',
+    coverImage: '/assets/open-badge/repair-cafe-manager.svg',
     levels: [
       {
         level: 1,
@@ -405,6 +410,7 @@ async function seedOpenBadges(creatorId: string, openBadges: SeedOpenBadge[]) {
           category: badge.category,
           name: badge.name,
           description: badge.description,
+          coverImage: badge.coverImage,
           creatorId,
           levels: {
             create: badge.levels.map((level) => ({
