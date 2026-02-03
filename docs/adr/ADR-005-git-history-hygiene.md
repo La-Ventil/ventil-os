@@ -24,6 +24,7 @@ We will prefer operations that preserve file history and keep commits focused an
 - The agent must not commit unless explicitly asked.
 - When DB commands are needed, the agent must provide the exact command to run (relative to the project root) and must not execute it automatically.
 - When new dependencies are introduced, the agent must provide the `pnpm install` command to run (relative to the project root).
+- The agent must never run `pnpm install` (or any install command) and must ask the user to run it.
 - For verification/formatting commands (prettier, check, lint, test), the agent must run them, fix issues, and iterate until there are no errors.
 - Pre-commit runs full typecheck only.
 - Lint-staged is manual, but the agent must run it after modifications.
