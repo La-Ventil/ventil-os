@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import BottomSlot from '@repo/ui/bottom-slot';
 import Link from '@repo/ui/link';
+import styles from './page.module.css';
 
 export default function Home() {
   const t = useTranslations('home');
@@ -13,19 +14,20 @@ export default function Home() {
   return (
     <Box>
       <Stack spacing={2}>
+        <img src="/assets/static/cover-v0-1.svg" alt="" aria-hidden="true" className={styles.cover} />
         <Typography variant="body1">{t('messageBienvenue')}</Typography>
       </Stack>
       <BottomSlot>
         <Grid container spacing={2}>
           <Grid>
-          <Button variant="outlined" component={Link} href="/signup">
-            {tHome('ctaSignup')}
-          </Button>
+            <Button variant="outlined" component={Link} href="/signup">
+              {tHome('ctaSignup')}
+            </Button>
           </Grid>
           <Grid>
-          <Button variant="contained" component={Link} href="/login">
-            {tHome('ctaSignin')}
-          </Button>
+            <Button variant="contained" component={Link} href="/login">
+              {tHome('ctaSignin')}
+            </Button>
           </Grid>
         </Grid>
       </BottomSlot>
