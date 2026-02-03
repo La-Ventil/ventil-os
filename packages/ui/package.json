@@ -22,7 +22,6 @@
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "devDependencies": {
-    "@pigment-css/nextjs-plugin": "^0.0.30",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "22.15.3",
@@ -34,7 +33,6 @@
   "dependencies": {
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
-    "@mui/material-pigment-css": "^7.3.7",
     "@repo/application": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/form": "workspace:*",

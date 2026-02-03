@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { nunito, vg5000 } from '@repo/ui/fonts';
 import Providers from './providers';
-import '@mui/material-pigment-css/styles.css';
 import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
