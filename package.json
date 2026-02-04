@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
+    "build": "pnpm --filter web build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "start": "pnpm --filter web start",
