@@ -12,8 +12,8 @@ import styles from './page.module.css';
 export default function Home() {
   const t = useTranslations('pages.public.home');
   return (
-    <Box>
-      <Stack spacing={2}>
+    <Box p={2}>
+      <Stack spacing={0.5}>
         <Typography variant="body1">{t('messageBienvenue')}</Typography>
         <Typography variant="body1">{t('messageOnboarding')}</Typography>
         <Image
@@ -24,21 +24,15 @@ export default function Home() {
           height={360}
           priority
         />
+        <Stack spacing={1} className={styles.buttonGroup}>
+          <Button variant="outlined" component={Link} href="/signup">
+            {t('ctaSignup')}
+          </Button>
+          <Button variant="contained" component={Link} href="/login">
+            {t('ctaSignin')}
+          </Button>
+        </Stack>
       </Stack>
-      <BottomSlot>
-        <Grid container spacing={2}>
-          <Grid>
-            <Button variant="outlined" component={Link} href="/signup">
-              {t('ctaSignup')}
-            </Button>
-          </Grid>
-          <Grid>
-            <Button variant="contained" component={Link} href="/login">
-              {t('ctaSignin')}
-            </Button>
-          </Grid>
-        </Grid>
-      </BottomSlot>
     </Box>
   );
 }

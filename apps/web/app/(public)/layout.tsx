@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Typography } from '@mui/material';
 import Link from '@repo/ui/link';
+import { LogoIcon } from '@repo/ui/icons/logo-icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <>
       <Link href="/">
-        <Image src="/vercel.svg" alt="Vercel logomark" width={20} height={20} />
+        <LogoIcon />
         <Typography variant="h1">La-Ventil</Typography>
       </Link>
       {children}

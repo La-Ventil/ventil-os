@@ -1,7 +1,14 @@
 .cover {
   display: block;
-  width: 100%;
-  height: auto;
-  max-width: 640px;
-  margin: 0 auto;
+  height: calc(100svh - 200px);
+  width: auto;
+  margin: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 10px;
 }
