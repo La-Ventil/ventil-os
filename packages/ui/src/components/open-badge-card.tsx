@@ -22,38 +22,33 @@ export type OpenBadgeCardProps = {
 export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
   const content = (
     <Card className={styles.card}>
-
-       <CardHeader
+      <CardHeader
         icon={<OpenBadgeIcon color="secondary" />}
         overline={badge.type}
         overlineClassName={styles.category}
         title={badge.name}
       />
       <CardContent className={styles.content}>
-          <Box display="flex" gap={2}>
-            <CardMedia className={styles.illustration} component="div">
-              {badge.coverImage ? (
-                <img src={badge.coverImage} alt={badge.name} className={styles.illustration} />
-              ) : (
-                'Illustration en cours'
-              )}
-            </CardMedia>
-            <Stack flex={1}>
-              <div className={styles.levelRow}>
-                {badge.levels.map((levelEntry) => (
-                  <LevelChip
-                    key={`${badge.id}-level-${levelEntry.level}`}
-                    level={levelEntry.level}
-                    isActive={levelEntry.level <= badge.activeLevel}
-                    className={styles.levelChip}
-                  />
-                ))}
-              </div>
-              <Typography variant="body2" color="primary">
-                {badge.description}
-              </Typography>
-            </Stack>
-          </Box>
+        <Box display="flex" gap={2}>
+          <CardMedia className={styles.illustration} component="div">
+            {badge.coverImage ? <img src={badge.coverImage} alt={badge.name} /> : 'Illustration en cours'}
+          </CardMedia>
+          <Stack flex={1}>
+            <div className={styles.levelRow}>
+              {badge.levels.map((levelEntry) => (
+                <LevelChip
+                  key={`${badge.id}-level-${levelEntry.level}`}
+                  level={levelEntry.level}
+                  isActive={levelEntry.level <= badge.activeLevel}
+                  className={styles.levelChip}
+                />
+              ))}
+            </div>
+            <Typography variant="body2" color="primary">
+              {badge.description}
+            </Typography>
+          </Stack>
+        </Box>
       </CardContent>
     </Card>
   );

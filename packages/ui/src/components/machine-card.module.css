@@ -65,7 +65,6 @@
   width: 96px;
   height: 96px;
   border-radius: 12px;
-  background: var(--mui-palette-action-hover);
   display: grid;
   place-items: center;
   text-transform: uppercase;

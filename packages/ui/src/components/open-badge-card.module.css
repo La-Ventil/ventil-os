@@ -1,7 +1,8 @@
-
 .cardInteractive {
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .cardInteractive:hover {
@@ -18,7 +19,6 @@
   width: 96px;
   height: 96px;
   border-radius: 12px;
-  background: var(--mui-palette-action-hover);
   display: grid;
   place-items: center;
   text-transform: uppercase;
@@ -34,22 +34,22 @@
   align-items: center;
   gap: 9px;
   padding-bottom: 5px;
-  
-.levelChip {
-  &:after {
-    content:"";
-    position: absolute;
-    width: 7px;
-    height: 2px;
-    background-color: var(--mui-palette-secondary-main);
-    right: -8px;
-  }
-  &:last-of-type {
+
+  .levelChip {
     &:after {
-      display: none;
+      content: '';
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      background-color: var(--mui-palette-secondary-main);
+      right: -8px;
+    }
+    &:last-of-type {
+      &:after {
+        display: none;
+      }
     }
   }
-}
 }
 
 .levelChip {

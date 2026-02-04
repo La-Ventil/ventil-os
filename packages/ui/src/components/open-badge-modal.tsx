@@ -59,7 +59,7 @@ export default function OpenBadgeModal({ openBadge, open, onClose }: OpenBadgeMo
         <Section p={2}>
           <div className={styles.modalIllustration}>
             {openBadge.coverImage ? (
-              <img src={openBadge.coverImage} alt={openBadge.name} className={styles.modalIllustration} />
+              <img src={openBadge.coverImage} alt={openBadge.name} />
             ) : (
               t('detailsModal.illustrationPlaceholder')
             )}

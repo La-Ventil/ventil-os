@@ -64,11 +64,6 @@ export default function SignupForm({ formState }: SignupFormProps) {
           error={Boolean(fieldError('lastName'))}
           helperText={fieldError('lastName')}
         />
-        <EducationLevelSelect
-          defaultValue={state.values.educationLevel}
-          error={Boolean(fieldError('educationLevel'))}
-          helperText={fieldError('educationLevel')}
-        />
         <TextField
           name={'email'}
           type={'email'}
@@ -105,6 +100,11 @@ export default function SignupForm({ formState }: SignupFormProps) {
           error={Boolean(fieldError('profile'))}
           helperText={fieldError('profile')}
         />
+        <EducationLevelSelect
+          defaultValue={state.values.educationLevel}
+          error={Boolean(fieldError('educationLevel'))}
+          helperText={fieldError('educationLevel')}
+        />
 
         <FormControl error={Boolean(fieldError('terms'))}>
           <FormControlLabel
@@ -121,9 +121,15 @@ export default function SignupForm({ formState }: SignupFormProps) {
           {fieldError('terms') ? <FormHelperText>{fieldError('terms')}</FormHelperText> : null}
         </FormControl>
       </Stack>
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          justifyContent: 'flex-end'
+        }}
+      >
         <Grid>
-          <Button variant="outlined" color="secondary" component={Link} href="/">
+          <Button variant="outlined" color="main" component={Link} href="/">
             {tCommon('actions.back')}
           </Button>
         </Grid>

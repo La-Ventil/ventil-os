@@ -1,0 +1,13 @@
+.logoGroup {
+  display: flex;
+  gap: 5px;
+  margin: 20px 20px 0px 20px;
+}
+.logo {
+  width: 22px;
+  height: 34px;
+}
+.title {
+  font-size: 4.9rem;
+  line-height: 3.8rem;
+}

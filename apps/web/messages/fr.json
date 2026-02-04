@@ -128,7 +128,8 @@
     "public": {
       "home": {
         "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
-        "messageOnboarding": "Pour commencer l’aventure, merci de saisir les informations ci-dessous.",
+        "messageOnboarding": "Ventil O.S. vous permet d'utiliser tous les services avancées du tiers-lieu éducatif.",
+        "messageAccountCreation": "Pour commencer l’aventure, merci de saisir les informations ci-dessous.",
         "coverAlt": "Illustration de La-Ventil, espace de fabrication et d'apprentissage du Repair Caf\u00e9.",
         "ctaSignup": "M'inscrire",
         "ctaSignin": "Connexion"
@@ -144,7 +145,7 @@
       "signup": {
         "title": "Inscription",
         "subtitle": "Information",
-        "intro": "Bienvenue sur l’application de La-Ventil. Pour commencer l’aventure, merci de saisir les informations ci-dessous."
+        "intro": "Tout le monde peut se créer un compte ! Pour commencer l’aventure, merci de saisir les informations ci-dessous."
       },
       "login": {
         "title": "Connexion",
