@@ -11,7 +11,7 @@
     "lint:dev": "pnpm -r lint:dev",
     "lint:staged": "pnpm -r --workspace-concurrency 1 lint:staged",
     "check-types": "pnpm -r check-types",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
     "deploy:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db exec prisma db seed",
