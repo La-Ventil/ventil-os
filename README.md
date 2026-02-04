@@ -37,6 +37,9 @@ DATABASE_URL="postgresql://ventilos:ventilos@localhost:5433/ventilos?schema=publ
 BREVO_API_KEY=xkeysib-xxx
 APP_NAME=VentilOS
 BASE_URL=http://localhost:3000
+UPLOADS_DIR=apps/web/public/uploads
+UPLOADS_PUBLIC_PATH=/uploads
+PORT=3000
 ```
 
 Et un fichier `.env` dans `packages/db/` :

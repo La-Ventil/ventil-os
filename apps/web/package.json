@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "eslint . --max-warnings 0",
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
