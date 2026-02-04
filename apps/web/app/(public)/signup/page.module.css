@@ -1,0 +1,11 @@
+.title {
+  font-size: 2.2rem;
+}
+.subtitle {
+  margin-top: 20px;
+  color: var(--mui-palette-primary-light);
+}
+.text {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}

@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { Typography } from '@mui/material';
 import Link from '@repo/ui/link';
 import { LogoIcon } from '@repo/ui/icons/logo-icon';
+import styles from './layout.module.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
@@ -20,9 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Link href="/">
-        <LogoIcon />
-        <Typography variant="h1">La-Ventil</Typography>
+      <Link className={styles.logoGroup} href="/">
+        <LogoIcon className={styles.logo} />
+        <Typography className={styles.title} variant="h1">
+          La-Ventil
+        </Typography>
       </Link>
       {children}
     </>

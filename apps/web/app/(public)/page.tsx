@@ -13,7 +13,7 @@ export default function Home() {
   const t = useTranslations('pages.public.home');
   return (
     <Box p={2}>
-      <Stack spacing={0.5}>
+      <Stack>
         <Typography variant="body1">{t('messageBienvenue')}</Typography>
         <Typography variant="body1">{t('messageOnboarding')}</Typography>
         <Image

@@ -1,25 +1,30 @@
 .profileRadioGroupContainer {
-  color: Chartreuse;
-  border: 1px solid Chartreuse;
 }
 
 .profileRadioGroupLabel {
-  border: 1px solid Coral;
-  color: Coral;
+  color: var(--mui-palette-primary-light);
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.167;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  margin-bottom: 5px;
 }
 
 .profileRadioGroupContainer :global(.MuiTypography-body1) {
-  color: DarkCyan;
+  margin-bottom: 20px;
 }
 
 .profileRadioGroupContainer :global(.MuiRadioGroup-root) {
-  border: 1px solid DarkGoldenRod;
-  color: DarkGoldenRod;
 }
 
 .profileRadioContainer {
-  border: 1px solid plum;
-  color: DarkGoldenRod;
+  margin: 0;
+  border: 1px solid var(--mui-palette-primary-main);
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
 .profileRadioLabel {
@@ -29,9 +34,11 @@
 }
 
 .profileRadioContainer :global(.MuiTypography-body1) {
-  color: DarkCyan;
+  font-weight: bold;
+  margin-bottom: 1px;
 }
 
 .profileRadioContainer :global(.MuiTypography-caption) {
-  color: DarkGreen;
+  font-size: 1.4rem;
+  line-height: 1.3;
 }

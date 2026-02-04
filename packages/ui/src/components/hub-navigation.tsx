@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
+import { BurgerIcon } from './icons/burger-icon';
 import UserAvatar from './user-avatar';
 
 export type HubNavigationItem = {
@@ -51,7 +52,7 @@ export const buildHubNavigationItems = ({
   {
     labelKey: 'settings',
     value: 'settings',
-    icon: <MenuIcon />,
+    icon: <BurgerIcon />,
     action: 'drawer'
   }
 ];

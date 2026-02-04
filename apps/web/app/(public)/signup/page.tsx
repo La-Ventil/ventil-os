@@ -12,6 +12,7 @@ import { signupFormSchema } from '@repo/application/forms';
 import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { registerUser } from '../../../lib/actions/register-user';
+import styles from './page.module.css';
 
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.signup');
@@ -44,10 +45,16 @@ export default function Page(): JSX.Element {
 
   return (
     <Box p={2}>
-      <Stack spacing={2}>
-        <Typography variant="h2">{t('title')}</Typography>
-        <Typography variant="h3">{t('subtitle')}</Typography>
-        <Typography variant="body1">{t('intro')}</Typography>
+      <Stack>
+        <Typography className={styles.title} variant="h2">
+          {t('title')}
+        </Typography>
+        <Typography className={styles.subtitle} variant="h3">
+          {t('subtitle')}
+        </Typography>
+        <Typography variant="body1" className={styles.text}>
+          {t('intro')}
+        </Typography>
       </Stack>
       <SignupForm formState={formState} />
     </Box>

@@ -64,11 +64,7 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
       />
       <CardContent className={styles.content}>
         <CardMedia className={styles.illustration} component="div">
-          {machine.imageUrl ? (
-            <img src={machine.imageUrl} alt={machine.name} className={styles.illustration} />
-          ) : (
-            'Illustration en cours'
-          )}
+          {machine.imageUrl ? <img src={machine.imageUrl} alt={machine.name} /> : 'Illustration en cours'}
         </CardMedia>
         <div className={styles.details}>
           <Typography variant="body2" color="text.primary">
