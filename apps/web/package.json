@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
-    "start": "node -e \"console.log('cwd', process.cwd(), 'PORT', process.env.PORT)\" && next start -p $PORT",
+    "start": "next start -p $PORT",
     "lint": "eslint . --max-warnings 0",
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",

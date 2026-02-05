@@ -77,7 +77,6 @@ function authorize() {
 export async function getServerSession(
   ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
-  console.log('getServerSession', await getNextAuthServerSession(...args, authOptions));
   return getNextAuthServerSession(...args, authOptions);
 }
 
@@ -86,7 +85,7 @@ export async function getUserProfileFromSession() {
   if (!session?.user?.email) {
     redirect('/login');
   }
-  console.log('session', session);
+
   const profile = await getUserProfileByEmail(session.user.email);
   if (!profile) {
     redirect('/login');
