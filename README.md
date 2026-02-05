@@ -70,10 +70,10 @@ pnpm install
 docker compose up
 
 # Appliquer les migrations Prisma
-pnpm --filter @repo/db db:deploy
+pnpm db:deploy
 
 # Générer le client Prisma
-pnpm --filter=db db:generate
+pnpm db:generate
 
 # Lancer le front Next.js
 pnpm --filter=web dev
@@ -268,7 +268,7 @@ Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/la
 |-----------------------------------|-------------|
 | `pnpm install`                    | Installe toutes les dépendances |
 | `pnpm dev --filter web`           | Lance l’application web |
-| `pnpm db:deploy --filter @repo/db` | Applique les migrations |
+| `pnpm db:deploy` | Applique les migrations |
 | `pnpm deploy:seed`                | Applique les migrations et exécute le seed (déploiement) |
 | `pnpm lint --filter web`          | Vérifie la qualité du code |
 | `pnpm lint:dev`                   | Lint du monorepo (peut prendre ~2–3 min) |
