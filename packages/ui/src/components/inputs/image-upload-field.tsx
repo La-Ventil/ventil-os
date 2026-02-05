@@ -2,7 +2,7 @@
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import AdminButton from './admin-button';
+import AdminButton from '../admin/admin-button';
 import styles from './image-upload-field.module.css';
 import { ChangeEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
 import ImagePreview from './image-preview';

@@ -10,7 +10,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Radio from '@mui/material/Radio';
 import { ProfileType } from '@repo/domain/profile-type';
 import { FormLabel } from '../form-label';
-import { RadioGroup } from '../radio-group';
+import { RadioGroup } from './radio-group';
 import Typography from '@mui/material/Typography';
 import styles from './profile-radio-group.module.css';
 

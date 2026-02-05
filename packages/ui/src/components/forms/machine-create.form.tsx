@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { MachineCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
-import ImageUploadField from '../admin/image-upload-field';
+import ImageUploadField from '../inputs/image-upload-field';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/form-action-state';
