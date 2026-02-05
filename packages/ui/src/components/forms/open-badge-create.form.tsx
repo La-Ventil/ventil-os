@@ -17,7 +17,6 @@ import { OpenBadgeCreateRequest } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../admin/image-upload-field';
-import LevelChip from '../level-chip';
 import OpenBadgeLevelsEditor from './open-badge-levels-editor';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';

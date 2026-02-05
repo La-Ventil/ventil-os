@@ -1,12 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import BugReportIcon from '@mui/icons-material/BugReport';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Drawer from '@mui/material/Drawer';
 import type { PaperProps } from '@mui/material/Paper';
 import Link from './link';
-import Map from './map';
 import MenuList, { MenuListItem } from './menu-list';
 import styles from './drawer-menu.module.css';
 import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';

@@ -53,10 +53,6 @@ export default function OpenBadgeLevelsEditor({
     setLevels((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const updateLevel = (index: number, patch: Partial<OpenBadgeLevelDraft>) => {
-    setLevels((prev) => prev.map((lvl, i) => (i === index ? { ...lvl, ...patch } : lvl)));
-  };
-
   return (
     <Stack spacing={2}>
       {levels.map((level, index) => {

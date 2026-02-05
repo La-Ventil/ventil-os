@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Typography } from '@mui/material';
 import Link from '@repo/ui/link';

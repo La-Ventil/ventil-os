@@ -3,7 +3,6 @@
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
 import styles from './image-preview.module.css';
 
 export type ImagePreviewProps = {

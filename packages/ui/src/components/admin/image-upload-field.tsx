@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AdminButton from './admin-button';
 import styles from './image-upload-field.module.css';
-import { ChangeEvent, useEffect, useId, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
 import ImagePreview from './image-preview';
 
 export type ImageUploadFieldProps = {
@@ -53,10 +53,22 @@ export default function ImageUploadField({
   const [preview, setPreview] = useState<string | null>(previewUrl || defaultValue || null);
   const [localError, setLocalError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewRef = useRef<string | null>(preview);
+
+  const notifyChange = useCallback(
+    (file: File | null, newPreview: string | null) => {
+      onChange?.({ file, preview: newPreview });
+    },
+    [onChange]
+  );
 
   useEffect(() => {
     setPreview(previewUrl || defaultValue || null);
   }, [defaultValue, previewUrl]);
+
+  useEffect(() => {
+    previewRef.current = preview;
+  }, [preview]);
 
   useEffect(
     () => () => {
@@ -69,18 +81,15 @@ export default function ImageUploadField({
 
   // Reset when parent indicates success/refresh via resetKey
   useEffect(() => {
-    if (preview && preview.startsWith('blob:')) {
-      URL.revokeObjectURL(preview);
+    const currentPreview = previewRef.current;
+    if (currentPreview && currentPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(currentPreview);
     }
     setPreview(null);
     setLocalError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     notifyChange(null, null);
-  }, [resetKey]);
-
-  const notifyChange = (file: File | null, newPreview: string | null) => {
-    onChange?.({ file, preview: newPreview });
-  };
+  }, [notifyChange, resetKey]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -130,6 +139,7 @@ export default function ImageUploadField({
   const effectiveHelper = localError ?? helperText;
   const showHelper = Boolean(effectiveHelper);
   const hintText = maxSizeHint ?? `Max ${maxSizeMb}MB`;
+  const hasError = Boolean(localError) || error;
 
   return (
     <Stack spacing={1} className={styles.controls}>
@@ -152,7 +162,7 @@ export default function ImageUploadField({
         </AdminButton>
       </Stack>
       {showHelper ? (
-        <Typography variant="caption" color={localError ? 'error' : 'text.secondary'}>
+        <Typography variant="caption" color={hasError ? 'error' : 'text.secondary'}>
           {effectiveHelper}
         </Typography>
       ) : null}

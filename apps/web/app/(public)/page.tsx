@@ -2,10 +2,8 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import BottomSlot from '@repo/ui/bottom-slot';
 import Link from '@repo/ui/link';
 import styles from './page.module.css';
 

@@ -9,7 +9,6 @@ import BottomSlot from './bottom-slot';
 import { buildHubNavigationItems } from './hub-navigation';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
-import UserAvatar from './user-avatar';
 import styles from './quick-actions-menu.module.css';
 
 export type QuickActionsMenuProps = {

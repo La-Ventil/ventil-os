@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
 import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
