@@ -1,6 +1,8 @@
 'use client';
 
+import type { MouseEventHandler } from 'react';
 import { useTranslations } from 'next-intl';
+import { signOut } from 'next-auth/react';
 import Drawer from '@mui/material/Drawer';
 import type { PaperProps } from '@mui/material/Paper';
 import Link from './link';
@@ -33,6 +35,11 @@ export default function DrawerMenu({
   canManageBadges = false
 }: DrawerMenuProps) {
   const tDrawer = useTranslations('pages.hub.drawer');
+  const handleSignOut: MouseEventHandler<HTMLElement> = async (event) => {
+    event.preventDefault();
+    onClose();
+    await signOut({ callbackUrl: '/' });
+  };
 
   return (
     <Drawer
@@ -155,7 +162,7 @@ export default function DrawerMenu({
           href="/api/auth/signout"
           linkComponent={Link}
           className={getThemeSectionClassName(ThemeSection.Admin)}
-          onClick={onClose}
+          onClick={handleSignOut}
         />
       </MenuList>
     </Drawer>

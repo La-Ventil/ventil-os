@@ -61,6 +61,8 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           placeholder={t('placeholders.password')}
+          type="password"
+          autoComplete="current-password"
           required
         />
       </Stack>

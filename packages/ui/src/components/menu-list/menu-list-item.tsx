@@ -1,17 +1,18 @@
 'use client';
 
+import type { MouseEventHandler, ReactNode } from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import styles from './menu-list-item.module.css';
 
 export type MenuListItemProps = {
-  icon: React.ReactNode;
-  label: React.ReactNode;
+  icon: ReactNode;
+  label: ReactNode;
   href: string;
   linkComponent: React.ElementType;
   className?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLElement>;
 };
 
 export default function MenuListItem({ icon, label, href, linkComponent, className, onClick }: MenuListItemProps) {
