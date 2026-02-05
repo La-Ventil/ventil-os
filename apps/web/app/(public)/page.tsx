@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
 import Link from '@repo/ui/link';
 import styles from './page.module.css';
 
-export default function Home() {
-  const t = useTranslations('pages.public.home');
+export default async function Home() {
+  const t = await getTranslations('pages.public.home');
   return (
     <Box p={2}>
       <Stack>

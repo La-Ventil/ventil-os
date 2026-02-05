@@ -12,6 +12,7 @@ type ProvidersProps = {
   children: React.ReactNode;
   locale: string;
   messages: AbstractIntlMessages;
+  timeZone: string;
 };
 
 const sectionThemeStyles = Object.fromEntries(
@@ -26,12 +27,12 @@ const sectionThemeStyles = Object.fromEntries(
   ])
 );
 
-export default function Providers({ children, locale, messages }: ProvidersProps) {
+export default function Providers({ children, locale, messages, timeZone }: ProvidersProps) {
   return (
     <AppRouterCacheProvider options={{ key: 'mui', prepend: true }}>
       <ThemeProvider theme={theme} defaultMode="light">
         <GlobalStyles styles={sectionThemeStyles} />
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages} timeZone={timeZone}>
           {children}
         </NextIntlClientProvider>
       </ThemeProvider>
