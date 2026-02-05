@@ -9,6 +9,9 @@
     "BREVO_API_KEY",
     "NEXTAUTH_SECRET",
     "SECRET_PEPPER",
+    "UPLOADS_DIR",
+    "UPLOADS_PUBLIC_PATH",
+    "HOST",
     "CI",
     "PORT"
   ],
@@ -19,6 +22,15 @@
     },
     "check-types": {
       "dependsOn": ["^check-types"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "lint:dev": {
+      "dependsOn": ["^lint:dev"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
     },
     "prettier": {
       "dependsOn": ["^prettier"]

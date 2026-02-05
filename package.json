@@ -5,19 +5,20 @@
   "scripts": {
     "build": "pnpm --filter web build",
     "clean": "turbo run clean",
-    "dev": "turbo run dev",
+    "dev": "pnpm --filter web dev",
     "start": "pnpm --filter web start",
-    "lint": "pnpm -r lint",
-    "lint:dev": "pnpm -r lint:dev",
+    "lint": "turbo run lint",
+    "lint:dev": "turbo run lint:dev",
     "lint:staged": "pnpm -r --workspace-concurrency 1 lint:staged",
-    "check-types": "pnpm -r check-types",
+    "check-types": "turbo run check-types",
     "prepare": "husky || true",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:generate": "pnpm --filter @repo/db db:generate",
     "db:deploy": "pnpm --filter @repo/db exec prisma migrate deploy",
     "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
     "db:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db exec prisma db seed",
     "test": "turbo run test",
-    "prettier": "turbo run prettier"
+    "prettier": "pnpm format"
   },
   "devDependencies": {
     "@playwright/test": "^1.45.1",
