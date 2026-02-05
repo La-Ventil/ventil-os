@@ -13,8 +13,9 @@
     "check-types": "pnpm -r check-types",
     "prepare": "husky || true",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:deploy": "pnpm --filter @repo/db exec prisma migrate deploy",
     "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
-    "deploy:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db exec prisma db seed",
+    "db:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db exec prisma db seed",
     "test": "turbo run test",
     "prettier": "turbo run prettier"
   },

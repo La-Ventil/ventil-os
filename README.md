@@ -269,18 +269,7 @@ Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/la
 
 ### Variables d’environnement (app web)
 
-```
-DATABASE_URL=...
-NEXTAUTH_SECRET=...
-NEXTAUTH_URL=https://...
-SECRET_PEPPER=...
-BREVO_API_KEY=...
-APP_NAME=VentilOS
-BASE_URL=https://...
-PORT=8080
-NODE_ENV=production
-CC_HEALTH_CHECK_PATH=/api/health
-```
+Voir `apps/web/.env.production.example` pour la liste complète des variables utilisées.
 
 ### Dossier d’application (monorepo)
 
