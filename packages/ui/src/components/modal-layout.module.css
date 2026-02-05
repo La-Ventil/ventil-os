@@ -1,0 +1,13 @@
+.modal {
+  border-radius: 10px;
+}
+
+.modalContent {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cross {
+  align-self: end;
+}

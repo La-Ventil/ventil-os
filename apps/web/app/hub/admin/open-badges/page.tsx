@@ -33,7 +33,8 @@ export default async function AdminOpenBadgesPage() {
       name: t('columns.name'),
       levels: t('columns.levels'),
       assigned: t('columns.assigned'),
-      status: t('columns.status')
+      status: t('columns.status'),
+      assign: t('columns.assign')
     },
     status: {
       active: t('status.active'),

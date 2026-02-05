@@ -5,37 +5,34 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
 import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
 type AssignOpenBadgeModalRouteProps = {
-  user: UserAdminViewModel | null;
+  openBadge: OpenBadgeViewModel | null;
   users: Array<{ id: string; label: string }>;
-  openBadges: OpenBadgeViewModel[];
   translationNamespace?: string;
   closeHref: string;
 };
 
 export default function AssignOpenBadgeModalRoute({
-  user,
+  openBadge,
   users,
-  openBadges,
-  translationNamespace = 'pages.hub.admin.users.assignModal',
+  translationNamespace = 'pages.hub.admin.openBadges.assignModal',
   closeHref
 }: AssignOpenBadgeModalRouteProps): JSX.Element | null {
   const router = useRouter();
   const t = useTranslations(translationNamespace);
-  const [isOpen, setIsOpen] = useState(Boolean(user));
+  const [isOpen, setIsOpen] = useState(Boolean(openBadge));
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
 
   useEffect(() => {
-    setIsOpen(Boolean(user));
-  }, [user]);
+    setIsOpen(Boolean(openBadge));
+  }, [openBadge]);
 
-  if (!openBadges[0]) {
+  if (!openBadge) {
     return null;
   }
 
@@ -67,9 +64,9 @@ export default function AssignOpenBadgeModalRoute({
           router.push(closeHref);
         });
       }}
-      user={user}
+      user={null}
       users={users}
-      openBadge={openBadges[0]}
+      openBadge={openBadge}
       translationNamespace={translationNamespace}
       isSubmitting={isPending}
       feedback={feedback}

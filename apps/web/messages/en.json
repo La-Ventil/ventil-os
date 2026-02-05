@@ -206,7 +206,19 @@
             "name": "name",
             "levels": "level count",
             "assigned": "times assigned",
-            "status": "active"
+            "status": "active",
+            "assign": "assign"
+          },
+          "assignModal": {
+            "title": "Assign an open badge",
+            "subtitle": "Choose the level and the user.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Assigned level",
+            "userLabel": "User",
+            "cancel": "Back",
+            "confirm": "Assign",
+            "illustrationPlaceholder": "Illustration in progress",
+            "error": "Unable to assign the open badge."
           },
           "status": {
             "active": "yes",
@@ -365,8 +377,20 @@
           "sectionSubtitle": "Description",
           "actions": {
             "assign": "Assign the open badge",
-            "download": "Download my open badge"
+            "download": "Download my open badge",
+            "downloadUnavailable": "Coming soon"
           }
+        },
+        "assignModal": {
+          "title": "Assign an open badge",
+          "subtitle": "Choose the level and the user.",
+          "badgeLabel": "Open badge",
+          "levelLabel": "Assigned level",
+          "userLabel": "User",
+          "cancel": "Back",
+          "confirm": "Assign",
+          "illustrationPlaceholder": "Illustration in progress",
+          "error": "Unable to assign the open badge."
         }
       },
       "events": {

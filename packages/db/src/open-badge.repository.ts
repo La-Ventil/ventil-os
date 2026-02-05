@@ -32,6 +32,37 @@ export class OpenBadgeRepository {
     return badge ? (badge as OpenBadgeSchema) : null;
   }
 
+  async getTrainerThresholdLevel(openBadgeId: string): Promise<number | null> {
+    const badge = await this.prisma.openBadge.findUnique({
+      where: { id: openBadgeId },
+      select: {
+        trainerThresholdLevel: {
+          select: { level: true }
+        }
+      }
+    });
+
+    return badge?.trainerThresholdLevel?.level ?? null;
+  }
+
+  async getUserHighestOpenBadgeLevel(userId: string, openBadgeId: string): Promise<number | null> {
+    const progress = await this.prisma.openBadgeProgress.findUnique({
+      where: {
+        userId_openBadgeId: {
+          userId,
+          openBadgeId
+        }
+      },
+      select: {
+        highestLevel: {
+          select: { level: true }
+        }
+      }
+    });
+
+    return progress?.highestLevel?.level ?? null;
+  }
+
   async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminSchema[]> {
     const badges = await this.prisma.openBadge.findMany({
       select: {

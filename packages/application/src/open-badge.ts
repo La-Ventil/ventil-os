@@ -8,6 +8,35 @@ import { mapOpenBadgeToEditViewModel } from './mappers/open-badge-edit';
 import { canManageBadgesUser } from './authorization';
 import { userExists } from './user';
 
+export const canAssignOpenBadgeUser = async (
+  openBadgeId: string,
+  user?: {
+    id?: string;
+    globalAdmin?: boolean;
+    pedagogicalAdmin?: boolean;
+  } | null
+): Promise<boolean> => {
+  if (canManageBadgesUser(user)) {
+    return true;
+  }
+
+  if (!user?.id) {
+    return false;
+  }
+
+  const trainerThreshold = await openBadgeRepository.getTrainerThresholdLevel(openBadgeId);
+  if (trainerThreshold === null) {
+    return false;
+  }
+
+  const highestLevel = await openBadgeRepository.getUserHighestOpenBadgeLevel(user.id, openBadgeId);
+  if (highestLevel === null) {
+    return false;
+  }
+
+  return highestLevel >= trainerThreshold;
+};
+
 export const listOpenBadges = async (): Promise<OpenBadgeViewModel[]> => {
   const badges = await openBadgeRepository.listOpenBadges();
   return badges.map(mapOpenBadgeToViewModel);
@@ -57,7 +86,8 @@ export const awardOpenBadgeLevelUseCase = async (
     throw new Error('Unauthorized');
   }
 
-  if (!canManageBadgesUser(currentUser)) {
+  const canAssign = await canAssignOpenBadgeUser(input.openBadgeId, currentUser);
+  if (!canAssign) {
     throw new Error('Unauthorized');
   }
 

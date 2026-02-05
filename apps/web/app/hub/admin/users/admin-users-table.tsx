@@ -1,9 +1,7 @@
-import Button from '@mui/material/Button';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Link from 'next/link';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
 
@@ -19,13 +17,11 @@ type AdminUsersTableProps = {
     machines: string;
     events: string;
     openBadges: string;
-    assign: string;
   };
   adminLabelFor: (user: UserAdminViewModel) => string;
-  assignHrefFor?: (user: UserAdminViewModel) => string;
 };
 
-export default function AdminUsersTable({ users, columns, adminLabelFor, assignHrefFor }: AdminUsersTableProps) {
+export default function AdminUsersTable({ users, columns, adminLabelFor }: AdminUsersTableProps) {
   return (
     <AdminTable>
       <TableHead>
@@ -39,7 +35,6 @@ export default function AdminUsersTable({ users, columns, adminLabelFor, assignH
           <TableCell>{columns.machines}</TableCell>
           <TableCell>{columns.events}</TableCell>
           <TableCell>{columns.openBadges}</TableCell>
-          <TableCell align="right">{columns.assign}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -54,13 +49,6 @@ export default function AdminUsersTable({ users, columns, adminLabelFor, assignH
             <TableCell>{user.machinesCount}</TableCell>
             <TableCell>{user.eventsCount}</TableCell>
             <TableCell>{user.openBadgesCount}</TableCell>
-            <TableCell align="right">
-              <Link href={assignHrefFor ? assignHrefFor(user) : `/hub/admin/users/${user.id}`}>
-                <Button size="small" variant="contained" color="secondary" component="span">
-                  {columns.assign}
-                </Button>
-              </Link>
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>

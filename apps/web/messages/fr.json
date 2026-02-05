@@ -230,7 +230,19 @@
             "name": "nom",
             "levels": "nombre de niveau",
             "assigned": "nb de fois attribué",
-            "status": "actif"
+            "status": "actif",
+            "assign": "attribuer"
+          },
+          "assignModal": {
+            "title": "Attribution d’un open badge",
+            "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Niveau attribué",
+            "userLabel": "Utilisateur",
+            "cancel": "Retour",
+            "confirm": "Attribuer",
+            "illustrationPlaceholder": "Illustration en cours",
+            "error": "Impossible d’attribuer l’open badge."
           },
           "status": {
             "active": "oui",
@@ -389,8 +401,20 @@
           "sectionSubtitle": "Description",
           "actions": {
             "assign": "Attribuer l'open badge",
-            "download": "Télécharger mon open badge"
+            "download": "Télécharger mon open badge",
+            "downloadUnavailable": "Bientôt disponible"
           }
+        },
+        "assignModal": {
+          "title": "Attribution d’un open badge",
+          "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
+          "badgeLabel": "Open badge",
+          "levelLabel": "Niveau attribué",
+          "userLabel": "Utilisateur",
+          "cancel": "Retour",
+          "confirm": "Attribuer",
+          "illustrationPlaceholder": "Illustration en cours",
+          "error": "Impossible d’attribuer l’open badge."
         }
       },
       "events": {

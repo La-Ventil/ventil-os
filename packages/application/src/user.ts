@@ -11,8 +11,8 @@ export const getUserProfileByEmail = async (email: string): Promise<UserProfile 
   return profile ? mapUserProfileToViewModel(profile) : null;
 };
 
-export const listAdminUsers = async () => {
-  const users = await userRepository.listUsersForAdmin();
+export const listUsersForManagement = async () => {
+  const users = await userRepository.listUsersForManagement();
   return users.map(mapUserAdminToViewModel);
 };
 

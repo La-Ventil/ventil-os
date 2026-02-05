@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { listAdminUsers } from '@repo/application';
+import { listUsersForManagement } from '@repo/application';
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
@@ -8,7 +8,7 @@ import AdminUsersTable from './admin-users-table';
 
 export default async function AdminUsersPage() {
   const t = await getTranslations('pages.hub.admin.users');
-  const users = await listAdminUsers();
+  const users = await listUsersForManagement();
   const labels = {
     title: t('title'),
     subtitle: t('subtitle'),
@@ -22,8 +22,7 @@ export default async function AdminUsersPage() {
       admin: t('columns.admin'),
       machines: t('columns.machines'),
       events: t('columns.events'),
-      openBadges: t('columns.openBadges'),
-      assign: t('columns.assign')
+      openBadges: t('columns.openBadges')
     },
     adminStatus: {
       none: t('adminStatus.none'),

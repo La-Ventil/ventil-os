@@ -52,7 +52,7 @@ export class UserRepository {
     return user ? (user as UserCredentialsSchema) : null;
   }
 
-  async listUsersForAdmin(): Promise<UserAdminSchema[]> {
+  async listUsersForManagement(): Promise<UserAdminSchema[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
       select: {

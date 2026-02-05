@@ -2,6 +2,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import Link from 'next/link';
 import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
 
@@ -12,6 +14,7 @@ type AdminOpenBadgesTableProps = {
     levels: string;
     assigned: string;
     status: string;
+    assign: string;
   };
   statusLabelFor: (badge: OpenBadgeAdminViewModel) => string;
 };
@@ -29,6 +32,7 @@ export default function AdminOpenBadgesTable({
           <TableCell>{columns.levels}</TableCell>
           <TableCell>{columns.assigned}</TableCell>
           <TableCell>{columns.status}</TableCell>
+          <TableCell align="right">{columns.assign}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -38,6 +42,13 @@ export default function AdminOpenBadgesTable({
             <TableCell>{badge.levelsCount}</TableCell>
             <TableCell>{badge.assignedCount}</TableCell>
             <TableCell>{statusLabelFor(badge)}</TableCell>
+            <TableCell align="right">
+              <Link href={`/hub/admin/open-badges/${badge.id}`}>
+                <Button size="small" variant="contained" color="secondary" component="span">
+                  {columns.assign}
+                </Button>
+              </Link>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
