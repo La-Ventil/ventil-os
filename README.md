@@ -91,14 +91,18 @@ apps/
   web/        → application principale Next.js (App Router)
   docs/       → documentation interne (Next.js)
   sms/        → service Node.js (hors périmètre front)
+  storybook/  → catalogage UI (Storybook)
 
 packages/
-  ui/         → bibliothèque de composants React (MUI + Emotion)
+  ui/         → bibliothèque de composants React (MUI, CSS Modules)
+  form/       → helpers + hooks de formulaires partagés
   domain/     → modèles métier (types, enums, règles pures)
   view-models/→ DTOs orientés UI
   application/→ use-cases + schemas de formulaires + mappers
+  crypto/     → utilitaires de chiffrement/hachage
   db/         → Prisma (schéma, migrations, seed)
   logger/     → utilitaires de logs
+  jest-presets/→ presets Jest partagés
   eslint-config/, typescript-config/ → configurations partagées
 ```
 
@@ -118,6 +122,8 @@ se concentrer sur `apps/web` (pages, layouts) et `packages/ui` (thème + composa
 **Flux recommandé**
 UI → application → db → application (mappers) → view-models → UI
 
+📌 Voir ADR‑006 pour les règles d’architecture détaillées.
+
 ---
 
 ## 🧱 Structure du front (Next.js 15 + App Router)
@@ -126,8 +132,10 @@ UI → application → db → application (mappers) → view-models → UI
 apps/web/app/
  ├── (public)/              → pages publiques (connexion, inscription, mot de passe)
  ├── hub/                   → espace utilisateur connecté
- │    ├── profil/                   → fiche utilisateur
- │    ├── parametres/               → consentements, CGU
+ │    ├── profile/                  → fiche utilisateur
+ │    ├── settings/                 → paramètres
+ │    ├── events/                   → événements
+ │    ├── support/                  → support
  │    └── layout.tsx
  ├── layout.tsx              → layout global
  ├── api/                    → routes internes (auth, i18n, etc.)
@@ -144,6 +152,12 @@ apps/web/app/
 - [Material UI (MUI)](https://mui.com/)
 - [@emotion/react](https://emotion.sh/docs/introduction)
 - [React Hook Form](https://react-hook-form.com/) + [Zod](https://github.com/colinhacks/zod)
+
+### Règles de styling (ADR‑001)
+
+- **CSS Modules preferred** pour les composants partagés.
+- **Pas de `styled` / `sx`** dans la UI partagée (sauf exceptions explicites).
+- Le **thème MUI** reste la source de vérité (tokens, couleurs).
 
 ### Thème global
 
@@ -183,11 +197,10 @@ import { GlobalStyles } from "@mui/material";
 📚 Références utiles :
 - [Theming MUI](https://mui.com/material-ui/customization/theming/)
 - [GlobalStyles](https://mui.com/material-ui/react-css-baseline/#globalstyles)
-- [SX Prop](https://mui.com/system/getting-started/the-sx-prop/)
 
 ---
 
-## 🌐 Traductions (`next-intl`)
+## 🌐 Traductions i18n (`next-intl`)
 
 ### Fichiers de messages
 
@@ -203,25 +216,27 @@ Exemple :
 
 ```json
 {
-  "home": {
-    "message_bienvenue": "Bienvenue sur l’application de La-Ventil."
-  },
-  "profil": {
-    "screen": {
-      "title": "Profil d’utilisation",
-      "subtitle": "Sélectionnez le profil correspondant à votre usage du lieu"
-    },
-    "option": {
-      "ventilacteur": {
-        "label": "Ventil’acteur",
-        "description": "J’apprends et je participe chaque semaine au projet de La-Ventil"
-      },
-      "eleve_lycee": {
-        "label": "Élève du lycée",
-        "description": "Je veux profiter de La-Ventil en dehors des heures de cours"
+  "pages": {
+    "public": {
+      "home": {
+        "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
+        "messageOnboarding": "Pour commencer l’aventure, merci de saisir les informations ci-dessous."
       }
+    }
+  },
+  "common": {
+    "actions": {
+      "back": "Retour",
+      "retry": "Réessayer"
     },
-    "accept_terms": "J’accepte les conditions générales d’utilisation de l’application"
+    "errors": {
+      "invalid": "Veuillez vérifier les champs du formulaire."
+    }
+  },
+  "validation": {
+    "signup": {
+      "firstNameRequired": "Veuillez renseigner votre prénom."
+    }
   }
 }
 ```
@@ -231,18 +246,18 @@ Exemple :
 ```tsx
 import { useTranslations } from "next-intl";
 
-export default function ProfilPage() {
-  const t = useTranslations("profil.screen");
+export default function HomePage() {
+  const t = useTranslations("pages.public.home");
   return (
     <>
-      <h1>{t("title")}</h1>
-      <p>{t("subtitle")}</p>
+      <p>{t("messageBienvenue")}</p>
+      <p>{t("messageOnboarding")}</p>
     </>
   );
 }
 ```
 
-🧠 Clé complète → `"profil_selector.title"`  
+🧠 Clé complète → `"pages.public.home.messageBienvenue"`  
 Les fichiers JSON sont compatibles avec [Weblate](https://docs.weblate.org/en/latest/formats.html#json).
 
 ---

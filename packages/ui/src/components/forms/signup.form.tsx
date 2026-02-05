@@ -129,7 +129,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
         }}
       >
         <Grid>
-          <Button variant="outlined" color="main" component={Link} href="/">
+          <Button variant="outlined" color="primary" component={Link} href="/">
             {tCommon('actions.back')}
           </Button>
         </Grid>
