@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../uploads-constants';
@@ -19,6 +20,32 @@ export type ImageValidationResult =
       params?: Record<string, string>;
     };
 
+function resolveUploadRoot({
+  uploadRoot,
+  cwd
+}: {
+  uploadRoot: string;
+  cwd: string;
+}) {
+  if (path.isAbsolute(uploadRoot)) {
+    throw new Error('UPLOADS_DIR must be a relative path (no leading "/"). Example: public/uploads');
+  }
+
+  return path.join(cwd, uploadRoot);
+}
+
+async function ensureUploadRoot(uploadRoot: string) {
+  try {
+    await fs.mkdir(uploadRoot, { recursive: true });
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException;
+    if (err.code !== 'EACCES') {
+      throw err;
+    }
+    await fs.access(uploadRoot, fsConstants.W_OK);
+  }
+}
+
 export async function validateAndStoreImage(
   file: File | null,
   options?: {
@@ -32,12 +59,12 @@ export async function validateAndStoreImage(
   const maxBytes = maxMb * 1024 * 1024;
   const envUploadRoot = process.env.UPLOADS_DIR;
   const envPublicPath = process.env.UPLOADS_PUBLIC_PATH;
-  const uploadRoot =
-    options?.uploadRoot ??
-    envUploadRoot ??
-    (path.basename(process.cwd()) === 'web' && path.basename(path.dirname(process.cwd())) === 'apps'
-      ? path.join(process.cwd(), 'public', 'uploads')
-      : path.join(process.cwd(), 'apps', 'web', 'public', 'uploads'));
+  const uploadRootSetting = options?.uploadRoot ?? envUploadRoot;
+  if (!uploadRootSetting) {
+    throw new Error('UPLOADS_DIR is required. Use a relative path like "public/uploads".');
+  }
+
+  const uploadRoot = resolveUploadRoot({ uploadRoot: uploadRootSetting, cwd: process.cwd() });
   const publicPath = options?.publicPath ?? envPublicPath ?? '/uploads';
   const field = options?.field;
 
@@ -56,7 +83,7 @@ export async function validateAndStoreImage(
 
   const extension = ALLOWED_IMAGE_MIMES[file.type];
   const filename = `${randomUUID()}.${extension}`;
-  await fs.mkdir(uploadRoot, { recursive: true });
+  await ensureUploadRoot(uploadRoot);
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const filepath = path.join(uploadRoot, filename);
