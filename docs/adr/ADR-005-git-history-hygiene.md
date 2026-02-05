@@ -30,6 +30,8 @@ We will prefer operations that preserve file history and keep commits focused an
 - Lint-staged is manual, but the agent must run it after modifications.
 - The agent must run a targeted typecheck for affected package(s); full typecheck only when explicitly requested.
 - Do not rerun hooks when **only splitting commits** and **no files have changed since the last hook run** (same working tree content).
+- Always work on the `dev` branch or a feature branch.
+- Prefer fast-forward merges when syncing branches (no merge commits unless explicitly requested).
 
 ## Automation/Checks
 - Reviews should flag delete+recreate patterns when a move is intended.
