@@ -1,6 +1,6 @@
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import CardList from './card-list';
-import OpenBadgeCard from './open-badge-card';
+import OpenBadgeCard from './open-badge/open-badge-card';
 
 export type OpenBadgeListProps = {
   badges: OpenBadgeViewModel[];

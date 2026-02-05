@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { getOpenBadgeById } from '@repo/application';
-import OpenBadgeModalRoute from '@repo/ui/open-badge-modal-route';
+import OpenBadgeModalRoute from '@repo/ui/open-badge/open-badge-modal-route';
 import { isOpenBadgeTab } from '../../layout';
 
 type OpenBadgeModalPageProps = {

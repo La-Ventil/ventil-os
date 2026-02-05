@@ -12,13 +12,13 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import { OpenBadgeIcon } from './icons/open-badge-icon';
-import LevelChip from './level-chip';
+import { OpenBadgeIcon } from '../icons/open-badge-icon';
+import LevelChip from '../level-chip';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import Section from './section';
-import SectionSubtitle from './section-subtitle';
-import SectionTitle from './section-title';
-import { getThemeSectionClassName, ThemeSection } from '../theme';
+import Section from '../section';
+import SectionSubtitle from '../section-subtitle';
+import SectionTitle from '../section-title';
+import { getThemeSectionClassName, ThemeSection } from '../../theme';
 import styles from './open-badge-modal.module.css';
 
 export type OpenBadgeModalProps = {

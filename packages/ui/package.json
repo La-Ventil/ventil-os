@@ -11,7 +11,8 @@
     "./admin/*": "./src/components/admin/*.tsx",
     "./forms/*": "./src/components/forms/*.tsx",
     "./menu-list": "./src/components/menu-list/index.tsx",
-    "./menu-list/*": "./src/components/menu-list/*.tsx"
+    "./menu-list/*": "./src/components/menu-list/*.tsx",
+    "./open-badge/*": "./src/components/open-badge/*.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

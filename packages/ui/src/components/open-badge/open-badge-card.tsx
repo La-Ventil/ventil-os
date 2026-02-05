@@ -6,9 +6,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/view-models/open-badge';
 import Link from 'next/link';
-import CardHeader from './card-header';
-import { OpenBadgeIcon } from './icons/open-badge-icon';
-import LevelChip from './level-chip';
+import CardHeader from '../card-header';
+import { OpenBadgeIcon } from '../icons/open-badge-icon';
+import LevelChip from '../level-chip';
 import styles from './open-badge-card.module.css';
 
 export type OpenBadgeLevel = DomainOpenBadgeLevel;

@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { BottomNavigationAction } from '@mui/material';
 import MuiBottomNavigation from '@mui/material/BottomNavigation';
 import BottomSlot from './bottom-slot';
-import { buildHubNavigationItems } from './hub-navigation';
+import { buildQuickActionsMenuItems } from './quick-actions';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
 import styles from './quick-actions-menu.module.css';
@@ -31,17 +31,17 @@ export default function QuickActionsMenu({
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  const hubNavigationItems = buildHubNavigationItems({
+  const quickActionItems = buildQuickActionsMenuItems({
     user
   });
   const currentValue =
-    hubNavigationItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ??
-    hubNavigationItems[0]?.value;
+    quickActionItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ??
+    quickActionItems[0]?.value;
 
   return (
     <BottomSlot>
       <MuiBottomNavigation className={styles.root} value={currentValue} showLabels={false}>
-        {hubNavigationItems.map((item) => (
+        {quickActionItems.map((item) => (
           <BottomNavigationAction
             key={item.value}
             component={item.href ? Link : 'button'}

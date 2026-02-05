@@ -7,7 +7,7 @@ import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { BurgerIcon } from './icons/burger-icon';
 import UserAvatar from './user-avatar';
 
-export type HubNavigationItem = {
+export type QuickActionsItem = {
   value: string;
   labelKey: string;
   href?: string;
@@ -16,14 +16,14 @@ export type HubNavigationItem = {
   action?: 'drawer';
 };
 
-export const buildHubNavigationItems = ({
+export const buildQuickActionsMenuItems = ({
   user
 }: {
   user?: {
     email?: string | null;
     image?: string | null;
   } | null;
-} = {}): HubNavigationItem[] => [
+} = {}): QuickActionsItem[] => [
   {
     labelKey: 'profile',
     value: 'profile',
