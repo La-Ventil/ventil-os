@@ -1,26 +1,18 @@
-'use client';
-
-import type { NextPage } from 'next';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
+import { getServerSession } from '../../../lib/auth';
 
-const LoginPage: NextPage = () => {
-  const t = useTranslations('pages.public.login');
-  const router = useRouter();
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace('/hub/profile');
-    }
-  }, [router, status]);
+const LoginPage = async () => {
+  const session = await getServerSession();
+  if (session) {
+    redirect('/hub/profile');
+  }
+  const t = await getTranslations('pages.public.login');
 
   return (
     <Box>
