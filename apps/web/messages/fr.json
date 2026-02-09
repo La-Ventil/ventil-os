@@ -384,6 +384,24 @@
           "reserved": "Réservé aujourd'hui",
           "reservedToday": "Réservé aujourd'hui",
           "occupied": "Occupé"
+        },
+        "modal": {
+          "closeLabel": "Fermer",
+          "illustrationPlaceholder": "Illustration en cours",
+          "tabs": {
+            "ariaLabel": "Navigation des informations machines",
+            "info": "Informations",
+            "reservations": "Réservations"
+          },
+          "availabilityLabel": "Disponibilité",
+          "badgeRequirement": "Open badge nécessaire",
+          "descriptionLabel": "Description",
+          "locationLabel": "Localisation",
+          "reservationTitle": "Réservation de la machine",
+          "reservationIntro": "Visualisez le calendrier journalier de la machine. Cliquez sur une zone pour réserver.",
+          "schedule": {
+            "ariaLabel": "Calendrier journalier de la machine"
+          }
         }
       },
       "openBadges": {

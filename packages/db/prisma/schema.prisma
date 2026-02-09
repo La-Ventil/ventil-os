@@ -69,6 +69,8 @@ model User {
   createdEventTemplates EventTemplate[]  @relation("EventTemplateCreator")
   createdOpenBadges   OpenBadge[]        @relation("OpenBadgeCreator")
   createdMachines     Machine[]          @relation("MachineCreator")
+  createdMachineReservations MachineReservation[] @relation("MachineReservationCreator")
+  machineReservationParticipants MachineReservationParticipant[]
   openBadgeLevelAwards OpenBadgeLevelProgress[] @relation("OpenBadgeLevelProgressAwardedBy")
 }
 
@@ -314,9 +316,40 @@ model Machine {
   creatorId           String
   creator             User           @relation("MachineCreator", fields: [creatorId], references: [id])
   badgeRequirements   MachineOpenBadgeRequirement[]
+  reservations        MachineReservation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MachineReservation {
+  id        String   @id @default(cuid())
+  machineId String
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  creatorId String
+  creator   User     @relation("MachineReservationCreator", fields: [creatorId], references: [id])
+  startsAt  DateTime
+  endsAt    DateTime
+  status    MachineReservationStatus @default(confirmed)
+  participants MachineReservationParticipant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([machineId, startsAt])
+  @@index([creatorId, startsAt])
+}
+
+model MachineReservationParticipant {
+  id            String             @id @default(cuid())
+  reservationId String
+  reservation   MachineReservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime           @default(now())
+
+  @@unique([reservationId, userId])
+  @@index([userId])
 }
 
 model MachineOpenBadgeRequirement {
@@ -357,4 +390,9 @@ model Room {
 enum ActivityStatus {
   active
   inactive
+}
+
+enum MachineReservationStatus {
+  confirmed
+  cancelled
 }

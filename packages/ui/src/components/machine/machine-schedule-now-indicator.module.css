@@ -1,0 +1,23 @@
+.nowIndicator {
+  grid-column: 1 / -1;
+  height: var(--slot-height);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  transform: translateY(var(--now-offset));
+  z-index: 1;
+}
+
+.nowDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #ff4d4f;
+}
+
+.nowLine {
+  flex: 1;
+  height: 2px;
+  background: #ff4d4f;
+}

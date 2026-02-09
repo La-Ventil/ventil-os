@@ -1,0 +1,25 @@
+.schedule {
+  position: relative;
+  padding: 0 0 8px 0;
+  --slot-height: 36px;
+  --slot-gap: 8px;
+}
+
+.slotList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--slot-gap);
+}
+
+.reservationsLayer {
+  position: absolute;
+  left: calc(56px + 12px);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: grid;
+  grid-auto-rows: var(--slot-height);
+  row-gap: var(--slot-gap);
+  align-content: start;
+  pointer-events: none;
+}

@@ -19,7 +19,7 @@ export default async function Page(): Promise<JSX.Element> {
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>
-      <MachineTabs machines={machines} />
+      <MachineTabs machines={machines} machineHrefBase="/hub/fab-lab" />
     </>
   );
 }

@@ -360,6 +360,24 @@
           "reserved": "Reserved today",
           "reservedToday": "Reserved today",
           "occupied": "Occupied"
+        },
+        "modal": {
+          "closeLabel": "Close",
+          "illustrationPlaceholder": "Illustration in progress",
+          "tabs": {
+            "ariaLabel": "Machine details navigation",
+            "info": "Information",
+            "reservations": "Reservations"
+          },
+          "availabilityLabel": "Availability",
+          "badgeRequirement": "Required open badge",
+          "descriptionLabel": "Description",
+          "locationLabel": "Location",
+          "reservationTitle": "Machine reservation",
+          "reservationIntro": "View the machine daily schedule. Click a slot to reserve.",
+          "schedule": {
+            "ariaLabel": "Machine daily schedule"
+          }
         }
       },
       "openBadges": {

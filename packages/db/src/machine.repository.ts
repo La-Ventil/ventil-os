@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import type { ActivityStatus } from '@prisma/client';
-import type { MachineAdminSchema, MachineSchema } from './schemas/machine';
+import type { MachineAdminSchema, MachineDetailsSchema, MachineSchema } from './schemas';
 
 export class MachineRepository {
   constructor(private prisma: PrismaClient) {}
@@ -17,6 +17,39 @@ export class MachineRepository {
     const machine = await this.prisma.machine.findUnique({ where: { id } });
 
     return machine ? (machine as MachineSchema) : null;
+  }
+
+  async getMachineDetailsById(id: string): Promise<MachineDetailsSchema | null> {
+    const machine = await this.prisma.machine.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        category: true,
+        name: true,
+        description: true,
+        imageUrl: true,
+        status: true,
+        room: {
+          select: { name: true }
+        },
+        badgeRequirements: {
+          select: {
+            id: true,
+            ruleType: true,
+            requiredOpenBadgeId: true,
+            requiredOpenBadge: {
+              select: { name: true }
+            },
+            requiredOpenBadgeLevelId: true,
+            requiredOpenBadgeLevel: {
+              select: { title: true }
+            }
+          }
+        }
+      }
+    });
+
+    return machine ? (machine as MachineDetailsSchema) : null;
   }
 
   async listMachinesForAdmin(): Promise<MachineAdminSchema[]> {

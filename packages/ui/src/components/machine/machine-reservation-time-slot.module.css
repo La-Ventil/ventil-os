@@ -1,0 +1,16 @@
+.slotRow {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.timeLabel {
+  color: var(--mui-palette-text-secondary);
+}
+
+.slotCell {
+  height: var(--slot-height);
+  background: var(--mui-palette-grey-100);
+  border-radius: 12px;
+}

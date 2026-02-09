@@ -1,5 +1,4 @@
 import type { JSX } from 'react';
-import { getTranslations } from 'next-intl/server';
 import { canAssignOpenBadgeUser, getOpenBadgeById, listUsersForManagement } from '@repo/application';
 import OpenBadgeModalRouteClient from '../../../open-badge-modal-route.client';
 import { isOpenBadgeTab } from '../../layout';

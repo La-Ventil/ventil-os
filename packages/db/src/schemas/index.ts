@@ -1,5 +1,7 @@
 export type { EventSchema } from './event';
+export type { MachineDetailsSchema } from './machine-details';
 export type { MachineSchema, MachineAdminSchema } from './machine';
+export type { MachineReservationSchema } from './machine-reservation';
 export type { MessageSchema } from './message';
 export type {
   OpenBadgeSchema,
@@ -11,3 +13,4 @@ export type { UserCredentialsSchema } from './user-credentials';
 export type { UserAdminSchema } from './user-admin';
 export type { UserPasswordResetSchema } from './user-password-reset';
 export type { UserProfileSchema } from './user-profile';
+export type { UserSummarySchema } from './user-summary';

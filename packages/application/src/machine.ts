@@ -1,8 +1,10 @@
 import { machineRepository } from '@repo/db';
 import type { MachineAdminViewModel } from '@repo/view-models/machine-admin';
+import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineViewModel } from '@repo/view-models/machine';
 import { mapMachineToViewModel } from './mappers/machine';
 import { mapMachineAdminToViewModel } from './mappers/machine-admin';
+import { mapMachineDetailsToViewModel } from './mappers/machine-details';
 
 export const listMachines = async (): Promise<MachineViewModel[]> => {
   const machines = await machineRepository.listMachines();
@@ -17,6 +19,11 @@ export const listAdminMachines = async (): Promise<MachineAdminViewModel[]> => {
 export const getMachineById = async (id: string): Promise<MachineViewModel | null> => {
   const machine = await machineRepository.getMachineById(id);
   return machine ? mapMachineToViewModel(machine) : null;
+};
+
+export const getMachineDetailsById = async (id: string): Promise<MachineDetailsViewModel | null> => {
+  const machine = await machineRepository.getMachineDetailsById(id);
+  return machine ? mapMachineDetailsToViewModel(machine) : null;
 };
 
 const DEFAULT_MACHINE_CATEGORY = 'Machine';

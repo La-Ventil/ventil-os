@@ -2,21 +2,23 @@ import { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile } f
 import { EventRepository } from './event.repository';
 import { MessageRepository } from './message.repository';
 import { MachineRepository } from './machine.repository';
+import { MachineReservationRepository } from './machine-reservation.repository';
 import { OpenBadgeRepository } from './open-badge.repository';
 import { UserRepository } from './user.repository';
 
-const globalForPrisma = globalThis as unknown as { prismaClient: PrismaClient }
+const globalForPrisma = globalThis as unknown as { prismaClient: PrismaClient };
 
-export const prismaClient = globalForPrisma.prismaClient || new PrismaClient()
+export const prismaClient = globalForPrisma.prismaClient || new PrismaClient();
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prismaClient = prismaClient
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prismaClient = prismaClient;
 
-export * from "./schemas";
+export * from './schemas';
 
 export const userRepository = new UserRepository(prismaClient);
 export const eventRepository = new EventRepository(prismaClient);
 export const messageRepository = new MessageRepository(prismaClient);
 export const machineRepository = new MachineRepository(prismaClient);
+export const machineReservationRepository = new MachineReservationRepository(prismaClient);
 export const openBadgeRepository = new OpenBadgeRepository(prismaClient);
 
 export { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile };
