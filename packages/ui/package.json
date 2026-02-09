@@ -25,9 +25,8 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "22.15.3",
     "@types/react": "19.2.5",
-    "@types/react-dom": "19.2.3",
+    "@turbo/gen": "^2.7.6",
     "eslint": "^9.34.0",
     "typescript": "5.9.3"
   },
@@ -43,8 +42,6 @@
     "next-auth": "^4.24.13",
     "next-intl": "^4.8.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-hook-form": "^7.65.0",
-    "react-hook-form-mui": "^8.0.0"
+    "react-dom": "^19.2.0"
   }
 }
