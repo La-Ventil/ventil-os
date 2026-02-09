@@ -40,5 +40,7 @@ jobs:
           cache: 'pnpm'
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Prepare database client
+        run: pnpm --filter @repo/db db:generate
       - name: Build web
         run: pnpm --filter web build
