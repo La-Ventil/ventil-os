@@ -21,6 +21,7 @@ We will prefer operations that preserve file history and keep commits focused an
 - Use `git rebase` to keep branch history linear and tidy before merging.
 - Avoid mixing unrelated changes in one commit.
 - Keep commit messages aligned with `ADR-004-conventional-commits`.
+- Write meaningful commit messages (clear intent and scope) because they feed the changelog.
 - The agent must not commit unless explicitly asked.
 - When DB commands are needed, the agent must provide the exact command to run (relative to the project root) and must not execute it automatically.
 - When new dependencies are introduced, the agent must provide the `pnpm install` command to run (relative to the project root).
