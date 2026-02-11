@@ -1,0 +1,22 @@
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.optionAvatar {
+  flex-shrink: 0;
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionName {
+  color: var(--mui-palette-text-primary);
+}
+
+.optionMeta {
+  color: var(--mui-palette-text-secondary);
+}

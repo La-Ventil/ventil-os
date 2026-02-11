@@ -2,25 +2,23 @@ import { Typography } from '@mui/material';
 import type { CSSProperties } from 'react';
 
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
-import { formatInTimeZone } from 'date-fns-tz';
-
+import { listMachineReservationUsers } from '@repo/application';
+import { useFormatter } from 'next-intl';
+import useTimeZone from '../../hooks/use-time-zone';
 import UserAvatar from '../user-avatar';
 import styles from './machine-reservation-card.module.css';
 
 type MachineReservationCardProps = {
   reservation: MachineReservationViewModel;
-  timeZone: string;
   rowStart: number;
   rowEnd: number;
 };
 
-const formatTime = (date: Date, timeZone: string) => formatInTimeZone(date, timeZone, 'HH:mm');
-
-const MachineReservationCard = ({ reservation, timeZone, rowStart, rowEnd }: MachineReservationCardProps) => {
-  const start = reservation.startsAt;
-  const end = reservation.endsAt;
-  const users = [reservation.creator, ...reservation.participants.map((participant) => participant.user)];
-  const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values());
+const MachineReservationCard = ({ reservation, rowStart, rowEnd }: MachineReservationCardProps) => {
+  const timeZone = useTimeZone();
+  const format = useFormatter();
+  const { startsAt, endsAt } = reservation;
+  const uniqueUsers = listMachineReservationUsers(reservation);
   const visibleUsers = uniqueUsers.slice(0, 3);
   const extraUsers = uniqueUsers.length - visibleUsers.length;
 
@@ -34,7 +32,8 @@ const MachineReservationCard = ({ reservation, timeZone, rowStart, rowEnd }: Mac
           {extraUsers > 0 ? <span className={styles.avatarOverflow}>+{extraUsers}</span> : null}
         </div>
         <Typography variant="caption" className={styles.reservationTime}>
-          {formatTime(start, timeZone)} → {formatTime(end, timeZone)}
+          {format.dateTime(startsAt, { timeStyle: 'short', timeZone })} →{' '}
+          {format.dateTime(endsAt, { timeStyle: 'short', timeZone })}
         </Typography>
       </div>
     </div>

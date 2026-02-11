@@ -1,23 +1,39 @@
 import type { JSX } from 'react';
-import { getMachineDetailsById, listMachineReservationsForDay } from '@repo/application';
+import {
+  formatDayKey,
+  getMachineDetailsById,
+  listMachineReservationsForDayKey,
+  resolveDayKeyFromString
+} from '@repo/application';
+import { getTimeZone } from 'next-intl/server';
 import MachineModalRouteClient from '../../machine-modal-route.client';
 
 type MachineModalPageProps = {
   params: Promise<{ machineId: string }>;
+  searchParams?: Promise<{ day?: string }>;
 };
 
-export default async function MachineModalPage({ params }: MachineModalPageProps): Promise<JSX.Element | null> {
+export default async function MachineModalPage({
+  params,
+  searchParams
+}: MachineModalPageProps): Promise<JSX.Element | null> {
   const { machineId } = await params;
+  const { day } = searchParams ? await searchParams : {};
   const machine = await getMachineDetailsById(machineId);
   if (!machine) {
     return null;
   }
 
-  const today = new Date();
-  const dateKey = today.toISOString().slice(0, 10);
-  const reservations = await listMachineReservationsForDay(machineId, today);
+  const timeZone = await getTimeZone();
+  const selectedDateKey = resolveDayKeyFromString(day) ?? formatDayKey(new Date(), timeZone);
+  const reservations = await listMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
 
   return (
-    <MachineModalRouteClient machine={machine} reservations={reservations} date={dateKey} closeHref="/hub/fab-lab" />
+    <MachineModalRouteClient
+      machine={machine}
+      reservations={reservations}
+      dayKey={selectedDateKey}
+      closeHref="/hub/fab-lab"
+    />
   );
 }

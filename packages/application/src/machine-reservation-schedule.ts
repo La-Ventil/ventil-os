@@ -1,4 +1,5 @@
-import { addMinutes, clamp as clampDate, differenceInMinutes, startOfDay } from 'date-fns';
+import type { DayKey } from './date-time';
+import { addMinutesToDate, differenceInMinutes, parseDayKey } from './date-time';
 
 import type { DateInterval } from './date-interval';
 import { SCHEDULE_SLOT_MINUTES } from './reservation-time-slots';
@@ -16,12 +17,26 @@ export type NowIndicatorPosition = {
 export const SCHEDULE_START_HOUR = 8;
 export const SCHEDULE_END_HOUR = 23.5;
 
+const clampDate = (date: Date, bounds: DateInterval): Date => {
+  const min = bounds.start.getTime();
+  const max = bounds.end.getTime();
+  const value = date.getTime();
+  return new Date(Math.min(Math.max(value, min), max));
+};
+
 export const assertReservationInterval = (interval: DateInterval, context?: string): void => {
   if (interval.end <= interval.start) {
     const suffix = context ? ` (${context})` : '';
     throw new Error(`Invalid reservation interval: endsAt must be after startsAt${suffix}`);
   }
 };
+
+// Half-open interval overlap: [start, end)
+export const intervalsOverlap = (left: DateInterval, right: DateInterval): boolean =>
+  left.start < right.end && left.end > right.start;
+
+export const intervalOverlapsAny = (interval: DateInterval, intervals: DateInterval[]): boolean =>
+  intervals.some((candidate) => intervalsOverlap(interval, candidate));
 
 export const clampInterval = (interval: DateInterval, bounds: DateInterval): DateInterval | null => {
   const clampedStart = clampDate(interval.start, bounds);
@@ -80,24 +95,24 @@ export const reservationToClampedSlotRange = (
   return clampSlotRange(slotRange, totalSlots);
 };
 
-export const createScheduleInterval = (
-  date: Date,
+export const createScheduleIntervalForDayKey = (
+  dayKey: DayKey,
+  timeZone: string,
   startHour: number = SCHEDULE_START_HOUR,
   endHour: number = SCHEDULE_END_HOUR
 ): DateInterval => {
-  // Schedule times are computed in local time (no time zone conversion).
-  const startOfDayDate = startOfDay(date);
+  const startOfDayDate = parseDayKey(dayKey, timeZone);
   return {
-    start: addMinutes(startOfDayDate, Math.round(startHour * 60)),
-    end: addMinutes(startOfDayDate, Math.round(endHour * 60))
+    start: addMinutesToDate(startOfDayDate, Math.round(startHour * 60)),
+    end: addMinutesToDate(startOfDayDate, Math.round(endHour * 60))
   };
 };
 
 export const getNowIndicatorPosition = (
   scheduleInterval: DateInterval,
-  minutesPerSlot: number = SCHEDULE_SLOT_MINUTES
+  minutesPerSlot: number = SCHEDULE_SLOT_MINUTES,
+  now: Date = new Date()
 ): NowIndicatorPosition | null => {
-  const now = new Date();
   if (now < scheduleInterval.start || now >= scheduleInterval.end) return null;
 
   const minutes = differenceInMinutes(now, scheduleInterval.start);
@@ -110,3 +125,12 @@ export const getNowIndicatorPosition = (
     offsetPercent: `${Math.round(slotProgress * 100)}%`
   };
 };
+
+export const isReservationSlotInPast = (slot: Date, now: Date = new Date()): boolean =>
+  slot.getTime() < now.getTime();
+
+export const isSlotWithinInterval = (slot: Date, interval: DateInterval): boolean =>
+  slot >= interval.start && slot < interval.end;
+
+export const isSlotWithinIntervals = (slot: Date, intervals: DateInterval[]): boolean =>
+  intervals.some((interval) => isSlotWithinInterval(slot, interval));

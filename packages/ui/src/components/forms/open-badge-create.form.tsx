@@ -23,8 +23,8 @@ import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
-import { useJsEnabled } from '@repo/form/use-js-enabled';
 import FormAlert from './form-alert';
+import Form from './form';
 import styles from './open-badge-create.form.module.css';
 
 export interface OpenBadgeCreateFormProps {
@@ -55,7 +55,6 @@ export default function OpenBadgeCreateForm({
 }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const fieldError = (field: keyof OpenBadgeCreateRequest) => firstFieldError(state, field);
-  const jsEnabled = useJsEnabled();
   const isEdit = Boolean(badgeId);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const initialLevels = useMemo(
@@ -64,13 +63,7 @@ export default function OpenBadgeCreateForm({
   );
 
   return (
-    <Stack
-      component="form"
-      action={action}
-      onSubmit={handleSubmit}
-      noValidate={jsEnabled}
-      spacing={2}
-    >
+    <Form action={action} onSubmit={handleSubmit}>
       {badgeId ? <input type="hidden" name="id" value={badgeId} /> : null}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
@@ -184,6 +177,6 @@ export default function OpenBadgeCreateForm({
           {t('actions.save')}
         </AdminButton>
       </FormActions>
-    </Stack>
+    </Form>
   );
 }

@@ -1,0 +1,11 @@
+.description {
+  color: var(--mui-palette-text-secondary);
+}
+
+.participantsHint {
+  color: var(--mui-palette-text-secondary);
+}
+
+.actions > button {
+  flex: 1;
+}

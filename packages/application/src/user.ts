@@ -5,6 +5,7 @@ import { ProfileType } from '@repo/domain/profile-type';
 import type { UserProfile } from '@repo/view-models/user-profile';
 import { mapUserProfileToViewModel } from './mappers/user-profile';
 import { mapUserAdminToViewModel } from './mappers/user-admin';
+import { mapUserSummaryToViewModel } from './mappers/user-summary';
 
 export const getUserProfileByEmail = async (email: string): Promise<UserProfile | null> => {
   const profile = await userRepository.getUserProfileByEmail(email);
@@ -14,6 +15,11 @@ export const getUserProfileByEmail = async (email: string): Promise<UserProfile 
 export const listUsersForManagement = async () => {
   const users = await userRepository.listUsersForManagement();
   return users.map(mapUserAdminToViewModel);
+};
+
+export const listUsersForReservation = async () => {
+  const users = await userRepository.listUserSummaries();
+  return users.map(mapUserSummaryToViewModel);
 };
 
 export const getUserCredentialsByEmail = async (email: string): Promise<UserCredentialsSchema | null> =>

@@ -9,3 +9,4 @@ export * from './signup-form-input';
 export * from './update-password-form-input';
 export * from './assign-open-badge-form-input';
 export * from './image-upload';
+export * from './machine-reservation-form-input';

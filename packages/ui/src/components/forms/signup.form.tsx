@@ -15,10 +15,10 @@ import TextField from '@mui/material/TextField';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
-import { useJsEnabled } from '@repo/form/use-js-enabled';
 import FormAlert from './form-alert';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
+import Form from './form';
 
 export interface SignupFormProps {
   formState: FormActionStateTuple<SignupFormInput>;
@@ -39,11 +39,10 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
-  const jsEnabled = useJsEnabled();
   const fieldError = (field: keyof SignupFormInput) => firstFieldError(state, field);
 
   return (
-    <form action={action} onSubmit={handleSubmit} noValidate={jsEnabled}>
+    <Form action={action} onSubmit={handleSubmit}>
       <Stack spacing={2}>
         <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
         <TextField
@@ -139,6 +138,6 @@ export default function SignupForm({ formState }: SignupFormProps) {
           </Button>
         </Grid>
       </Grid>
-    </form>
+    </Form>
   );
 }

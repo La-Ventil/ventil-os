@@ -2,28 +2,36 @@
 
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { formatInTimeZone } from 'date-fns-tz';
+import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import type { Dayjs } from 'dayjs';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { MachineIcon } from '../icons/machine-icon';
 import ModalLayout from '../modal-layout';
+import ModalIllustration from '../modal-illustration';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
 import { ThemeSection } from '../../theme';
+import type { DayKey } from '@repo/application';
+import { formatDayKey } from '@repo/application';
+import { toZonedDayjs } from '../../utils/dayjs';
+import useTimeZone from '../../hooks/use-time-zone';
 import MachineReservationSchedule from './machine-reservation-schedule';
+import LocalizedDatePicker from '../inputs/localized-date-picker';
 import styles from './machine-modal.module.css';
 
 export type MachineModalProps = {
   machine: MachineDetailsViewModel | null;
   reservations: MachineReservationViewModel[];
-  date: string;
+  dayKey: DayKey;
   open: boolean;
   onClose: () => void;
+  onOpenReservation?: (slot: Date) => void;
+  onDateChange?: (dayKey: DayKey) => void;
 };
 
 type MachineModalTab = 'info' | 'reservations';
@@ -31,20 +39,16 @@ type MachineModalTab = 'info' | 'reservations';
 export default function MachineModal({
   machine,
   reservations,
-  date,
+  dayKey,
   open,
-  onClose
+  onClose,
+  onOpenReservation,
+  onDateChange
 }: MachineModalProps): JSX.Element | null {
   const t = useTranslations('pages.hub.fabLab');
-  const locale = useLocale();
   const [activeTab, setActiveTab] = useState<MachineModalTab>('reservations');
-  const modalDate = useMemo(() => new Date(`${date}T00:00:00`), [date]);
-  const timeZone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone, []);
-
-  const formattedDate = useMemo(
-    () => formatInTimeZone(modalDate, timeZone, locale.startsWith('fr') ? 'dd/MM/yy' : 'MM/dd/yy'),
-    [locale, modalDate, timeZone]
-  );
+  const timeZone = useTimeZone();
+  const modalDate = useMemo(() => toZonedDayjs(`${dayKey}T00:00:00`, timeZone), [dayKey, timeZone]);
 
   if (!machine) {
     return null;
@@ -58,14 +62,16 @@ export default function MachineModal({
       onClose={onClose}
       closeLabel={t('modal.closeLabel')}
       maxWidth="sm"
+      fullWidth
       themeSection={ThemeSection.FabLab}
     >
       <SectionTitle icon={<MachineIcon color="secondary" />}>{machine.name}</SectionTitle>
-      <Section p={2} className={styles.headerSection}>
-        <div className={styles.modalIllustration}>
-          {machine.imageUrl ? <img src={machine.imageUrl} alt={machine.name} /> : t('modal.illustrationPlaceholder')}
-        </div>
-      </Section>
+      <ModalIllustration
+        src={machine.imageUrl}
+        alt={machine.name}
+        fallback={t('modal.illustrationPlaceholder')}
+        className={styles.modalIllustration}
+      />
 
       <Tabs
         value={activeTab}
@@ -116,14 +122,33 @@ export default function MachineModal({
         </Section>
       ) : (
         <Section p={2} className={styles.reservationSection}>
-          <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
-          <Typography variant="body2" className={styles.reservationIntro}>
-            {t('modal.reservationIntro')}
-          </Typography>
-          <div className={styles.dateRow}>
-            <div className={styles.datePicker}>{formattedDate}</div>
-          </div>
-          <MachineReservationSchedule date={modalDate} reservations={reservations} />
+        <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
+        <Typography variant="body2" className={styles.reservationIntro}>
+          {t('modal.reservationIntro')}
+        </Typography>
+        <div className={styles.dateRow}>
+          <LocalizedDatePicker
+            label={t('modal.schedule.dateLabel')}
+            value={modalDate}
+            onChange={(value: Dayjs | null) => {
+              if (value && onDateChange) {
+                onDateChange(formatDayKey(value, timeZone));
+              }
+            }}
+            timezone={timeZone}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                className: styles.datePicker
+              }
+            }}
+          />
+        </div>
+          <MachineReservationSchedule
+            dayKey={dayKey}
+            reservations={reservations}
+            onSlotClick={onOpenReservation}
+          />
         </Section>
       )}
     </ModalLayout>

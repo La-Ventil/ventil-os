@@ -6,18 +6,19 @@ import { useRouter } from 'next/navigation';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import MachineModal from '@repo/ui/machine/machine-modal';
+import type { DayKey } from '@repo/application';
 
 type MachineModalRouteClientProps = {
   machine: MachineDetailsViewModel | null;
   reservations: MachineReservationViewModel[];
-  date: string;
+  dayKey: DayKey;
   closeHref: string;
 };
 
 export default function MachineModalRouteClient({
   machine,
   reservations,
-  date,
+  dayKey,
   closeHref
 }: MachineModalRouteClientProps): JSX.Element | null {
   const router = useRouter();
@@ -35,11 +36,17 @@ export default function MachineModalRouteClient({
     <MachineModal
       machine={machine}
       reservations={reservations}
-      date={date}
+      dayKey={dayKey}
       open={isOpen}
       onClose={() => {
         setIsOpen(false);
         router.push(closeHref);
+      }}
+      onOpenReservation={(slot) => {
+        router.push(`/hub/fab-lab/${machine.id}/reservation?start=${encodeURIComponent(slot.toISOString())}`);
+      }}
+      onDateChange={(dayKey) => {
+        router.push(`/hub/fab-lab/${machine.id}?day=${dayKey}`);
       }}
     />
   );

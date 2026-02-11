@@ -16,6 +16,7 @@ import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
 import ModalLayout from '../modal-layout';
+import ModalIllustration from '../modal-illustration';
 import { ThemeSection } from '../../theme';
 import styles from './open-badge-modal.module.css';
 
@@ -47,14 +48,13 @@ export default function OpenBadgeModal({
       themeSection={ThemeSection.OpenBadge}
     >
       <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
+      <ModalIllustration
+        src={openBadge.coverImage}
+        alt={openBadge.name}
+        fallback={t('detailsModal.illustrationPlaceholder')}
+        className={styles.modalIllustration}
+      />
       <Section p={2}>
-        <div className={styles.modalIllustration}>
-          {openBadge.coverImage ? (
-            <img src={openBadge.coverImage} alt={openBadge.name} />
-          ) : (
-            t('detailsModal.illustrationPlaceholder')
-          )}
-        </div>
         <SectionSubtitle className={styles.sectionSubtitle}>{t('detailsModal.sectionSubtitle')}</SectionSubtitle>
         <Typography variant="body1">{openBadge.description}</Typography>
       </Section>

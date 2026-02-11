@@ -69,6 +69,12 @@
     "openBadge": {
       "imageRequired": "Veuillez ajouter une image.",
       "idRequired": "Badge introuvable."
+    },
+    "machineReservation": {
+      "machineRequired": "Veuillez sélectionner une machine.",
+      "startsAtRequired": "Veuillez sélectionner un horaire de début.",
+      "startsAtInvalid": "La date de début est invalide.",
+      "durationRequired": "Veuillez sélectionner une durée."
     }
   },
   "openBadge": {
@@ -400,7 +406,25 @@
           "reservationTitle": "Réservation de la machine",
           "reservationIntro": "Visualisez le calendrier journalier de la machine. Cliquez sur une zone pour réserver.",
           "schedule": {
-            "ariaLabel": "Calendrier journalier de la machine"
+            "ariaLabel": "Calendrier journalier de la machine",
+            "dateLabel": "Date",
+            "slotLabel": "Réserver à {time}"
+          },
+          "reservationForm": {
+            "description": "Sélectionnez une heure de début et la durée de votre réservation.",
+            "startLabel": "Date de début",
+            "durationLabel": "Durée",
+            "durationOption": "{minutes} min",
+            "participantsLabel": "Participants",
+            "participantsHint": "Si vous devez utiliser la machine avec d’autres personnes, ajoutez-les ici.",
+            "participantsPlaceholder": "Rechercher un nom ou un pseudo",
+            "back": "Retour",
+            "confirm": "Réserver",
+            "success": "Réservation créée.",
+            "error": "Impossible de créer la réservation.",
+            "unauthorized": "Vous devez être connecté pour réserver une machine.",
+            "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
+            "overlap": "Ce créneau est déjà réservé."
           }
         }
       },

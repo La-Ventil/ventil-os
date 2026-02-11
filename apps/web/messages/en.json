@@ -27,7 +27,12 @@
   },
   "common": {
     "actions": {
-      "back": "Back"
+      "back": "Back",
+      "retry": "Retry"
+    },
+    "errors": {
+      "invalid": "Please check the form fields.",
+      "network": "Unable to reach the server. Check your connection and try again."
     },
     "status": {
       "loading": "Loading..."
@@ -63,6 +68,12 @@
       "profileRequired": "Please select a profile.",
       "termsRequired": "You must accept the terms and conditions.",
       "educationLevelRequired": "Please select a school level."
+    },
+    "machineReservation": {
+      "machineRequired": "Please select a machine.",
+      "startsAtRequired": "Please select a start time.",
+      "startsAtInvalid": "Start time is invalid.",
+      "durationRequired": "Please select a duration."
     }
   },
   "resetPassword": {
@@ -376,7 +387,25 @@
           "reservationTitle": "Machine reservation",
           "reservationIntro": "View the machine daily schedule. Click a slot to reserve.",
           "schedule": {
-            "ariaLabel": "Machine daily schedule"
+            "ariaLabel": "Machine daily schedule",
+            "dateLabel": "Date",
+            "slotLabel": "Reserve at {time}"
+          },
+          "reservationForm": {
+            "description": "Select a start time and the duration of your reservation.",
+            "startLabel": "Start time",
+            "durationLabel": "Duration",
+            "durationOption": "{minutes} min",
+            "participantsLabel": "Participants",
+            "participantsHint": "If you need other people for this reservation, add them here.",
+            "participantsPlaceholder": "Search a name or username",
+            "back": "Back",
+            "confirm": "Reserve",
+            "success": "Reservation created.",
+            "error": "Unable to create the reservation.",
+            "unauthorized": "You must be signed in to reserve a machine.",
+            "startsAtInPast": "You cannot reserve a past time slot.",
+            "overlap": "This time slot is already reserved."
           }
         }
       },

@@ -1,7 +1,3 @@
-.headerSection {
-  padding-bottom: 0;
-}
-
 .modalIllustration {
   border-radius: 16px;
   background: var(--mui-palette-grey-100);
@@ -64,9 +60,9 @@
 }
 
 .datePicker {
-  padding: 8px 12px;
-  border: 1px solid var(--mui-palette-grey-300);
+  flex: 1;
+}
+
+.datePicker :global(.MuiInputBase-root) {
   border-radius: 10px;
-  font-size: 14px;
-  color: var(--mui-palette-text-primary);
 }

@@ -3,6 +3,7 @@ import type { UserCredentialsSchema } from './schemas/user-credentials';
 import type { UserAdminSchema } from './schemas/user-admin';
 import type { UserPasswordResetSchema } from './schemas/user-password-reset';
 import type { UserProfileSchema } from './schemas/user-profile';
+import type { UserSummarySchema } from './schemas/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -76,6 +77,22 @@ export class UserRepository {
     });
 
     return users as UserAdminSchema[];
+  }
+
+  async listUserSummaries(): Promise<UserSummarySchema[]> {
+    const users = await this.prisma.user.findMany({
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        image: true,
+        email: true
+      }
+    });
+
+    return users as UserSummarySchema[];
   }
 
   async createUser(data: Prisma.UserCreateInput) {

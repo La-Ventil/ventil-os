@@ -13,4 +13,29 @@
   height: var(--slot-height);
   background: var(--mui-palette-grey-100);
   border-radius: 12px;
+  border: none;
+  padding: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.slotCellAvailable:hover {
+  background: var(--mui-palette-grey-200);
+}
+
+.slotCellPast {
+  background: var(--mui-palette-grey-300);
+}
+
+.slotCellBooked {
+  background: var(--mui-palette-grey-100);
+}
+
+.slotCell:disabled {
+  cursor: default;
+}
+
+.slotCell:focus-visible {
+  outline: 2px solid var(--mui-palette-primary-main);
+  outline-offset: 2px;
 }

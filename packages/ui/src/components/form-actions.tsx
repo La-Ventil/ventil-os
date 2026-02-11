@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Stack, { type StackProps } from '@mui/material/Stack';
 import styles from './form-actions.module.css';
 
@@ -8,6 +9,7 @@ export default function FormActions({
   direction = 'row',
   spacing = 2,
   justifyContent = 'center',
+  className,
   ...props
 }: FormActionsProps) {
   return (
@@ -16,7 +18,7 @@ export default function FormActions({
       direction={direction}
       spacing={spacing}
       justifyContent={justifyContent}
-      className={styles.root}
+      className={clsx(styles.root, className)}
       {...props}
     />
   );
