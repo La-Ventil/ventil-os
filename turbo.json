@@ -11,6 +11,8 @@
     "SECRET_PEPPER",
     "UPLOADS_DIR",
     "UPLOADS_PUBLIC_PATH",
+    "APP_LOCALE",
+    "APP_TIME_ZONE",
     "HOST",
     "CI",
     "PORT"

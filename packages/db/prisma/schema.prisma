@@ -22,22 +22,22 @@ model User {
   id            String          @id @default(cuid())
   name          String?
   email         String          @unique
-  emailVerified DateTime?
+  emailVerified DateTime? @db.Timestamptz
   image         String?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   // security
   password         String
   salt             String
   iterations       Int
   resetToken       String?
-  resetTokenExpiry DateTime?
+  resetTokenExpiry DateTime? @db.Timestamptz
 
   // custom
   username  String @unique
@@ -87,8 +87,8 @@ model Account {
   id_token          String?
   session_state     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -98,17 +98,17 @@ model Account {
 model Session {
   sessionToken String   @unique
   userId       String
-  expires      DateTime
+  expires      DateTime @db.Timestamptz
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 model VerificationToken {
   identifier String
   token      String
-  expires    DateTime
+  expires    DateTime @db.Timestamptz
 
   @@id([identifier, token])
 }
@@ -135,8 +135,8 @@ model UserConsent {
   userId    String
   type      ConsentType
   accepted  Boolean     @default(false) // current state (not full history)
-  acceptedAt DateTime?
-  revokedAt  DateTime?
+  acceptedAt DateTime? @db.Timestamptz
+  revokedAt  DateTime? @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 
@@ -176,8 +176,8 @@ model Event {
   name      String
   description String
   audience  String
-  startDate DateTime
-  endDate   DateTime
+  startDate DateTime @db.Timestamptz
+  endDate   DateTime @db.Timestamptz
   maxParticipants Int?
   creatorId String
   creator   User     @relation("EventCreator", fields: [creatorId], references: [id])
@@ -189,8 +189,8 @@ model Event {
   templateId String
   template   EventTemplate @relation(fields: [templateId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 model EventTemplate {
@@ -206,8 +206,8 @@ model EventTemplate {
 
   events Event[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 model EventRegistration {
@@ -217,8 +217,8 @@ model EventRegistration {
   userId    String
   user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   status    RegistrationStatus @default(registered)
-  registeredAt DateTime    @default(now())
-  attendedAt DateTime?
+  registeredAt DateTime    @default(now()) @db.Timestamptz
+  attendedAt DateTime? @db.Timestamptz
 
   @@unique([eventId, userId])
 }
@@ -252,8 +252,8 @@ model OpenBadge {
 
   levels OpenBadgeLevel[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 model OpenBadgeLevel {
@@ -281,8 +281,8 @@ model OpenBadgeProgress {
   highestLevel   OpenBadgeLevel? @relation("OpenBadgeProgressHighestLevel", fields: [highestLevelId], references: [id])
   levelHistory   OpenBadgeLevelProgress[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@unique([userId, openBadgeId])
   @@index([openBadgeId, highestLevelId])
@@ -294,7 +294,7 @@ model OpenBadgeLevelProgress {
   progress         OpenBadgeProgress @relation(fields: [progressId], references: [id], onDelete: Cascade)
   openBadgeLevelId String
   openBadgeLevel   OpenBadgeLevel  @relation("OpenBadgeLevelProgressLevel", fields: [openBadgeLevelId], references: [id], onDelete: Cascade)
-  awardedAt        DateTime        @default(now())
+  awardedAt        DateTime        @default(now()) @db.Timestamptz
   awardedById      String
   awardedBy        User            @relation("OpenBadgeLevelProgressAwardedBy", fields: [awardedById], references: [id])
 
@@ -318,8 +318,8 @@ model Machine {
   badgeRequirements   MachineOpenBadgeRequirement[]
   reservations        MachineReservation[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 }
 
 model MachineReservation {
@@ -328,13 +328,13 @@ model MachineReservation {
   machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
   creatorId String
   creator   User     @relation("MachineReservationCreator", fields: [creatorId], references: [id])
-  startsAt  DateTime
-  endsAt    DateTime
+  startsAt  DateTime @db.Timestamptz
+  endsAt    DateTime @db.Timestamptz
   status    MachineReservationStatus @default(confirmed)
   participants MachineReservationParticipant[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
 
   @@index([machineId, startsAt])
   @@index([creatorId, startsAt])
@@ -346,7 +346,7 @@ model MachineReservationParticipant {
   reservation   MachineReservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
   userId        String
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt     DateTime           @default(now())
+  createdAt     DateTime           @default(now()) @db.Timestamptz
 
   @@unique([reservationId, userId])
   @@index([userId])

@@ -24,7 +24,7 @@
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/view-models": "workspace:*",
-    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.19",
     "zod": "^4.1.12",
     "zod-form-data": "^3.0.1"
   },
