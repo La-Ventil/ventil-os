@@ -50,16 +50,6 @@ SECRET_PEPPER=ThisIsTheVentilOSSecretPepperToSpiceThingsUpALittleBit
 
 ---
 
-## 🔎 SEO & metadata (app)
-
-Le site expose automatiquement :
-- `app/robots.ts` → `robots.txt`
-- `app/sitemap.ts` → `sitemap.xml`
-
-Veillez à renseigner `BASE_URL` pour générer des URLs absolues correctes.
-
----
-
 ## 🚀 Démarrage rapide 
 
 ```bash
