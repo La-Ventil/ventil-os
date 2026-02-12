@@ -23,6 +23,7 @@
     "@prisma/client": "^5.22.0",
     "@repo/application": "workspace:*",
     "@repo/crypto": "workspace:*",
+    "@repo/domain": "workspace:*",
     "@repo/form": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/view-models": "workspace:*",
