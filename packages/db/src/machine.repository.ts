@@ -38,11 +38,11 @@ export class MachineRepository {
             ruleType: true,
             requiredOpenBadgeId: true,
             requiredOpenBadge: {
-              select: { name: true }
+              select: { name: true, type: true, coverImage: true }
             },
             requiredOpenBadgeLevelId: true,
             requiredOpenBadgeLevel: {
-              select: { title: true }
+              select: { title: true, level: true }
             }
           }
         }

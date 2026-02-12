@@ -69,6 +69,9 @@ export async function createMachineReservation(
       if (err.message === 'machineReservation.overlap') {
         return t('pages.hub.fabLab.modal.reservationForm.overlap');
       }
+      if (err.message === 'machineReservation.badgeRequired') {
+        return t('pages.hub.fabLab.modal.reservationForm.badgeRequired');
+      }
       return t('pages.hub.fabLab.modal.reservationForm.error');
     })();
 

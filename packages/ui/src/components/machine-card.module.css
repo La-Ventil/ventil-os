@@ -32,34 +32,6 @@
   gap: 8px;
 }
 
-.statusRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.statusDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  flex: 0 0 auto;
-}
-
-.available {
-  background: var(--mui-palette-success-main);
-}
-
-.reserved {
-  background: var(--mui-palette-warning-main);
-}
-
-.occupied {
-  background: var(--mui-palette-error-main);
-}
-
-.statusLabel {
-  text-transform: uppercase;
-}
 
 .illustration {
   width: 96px;

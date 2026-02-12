@@ -31,7 +31,11 @@
   background: var(--mui-palette-grey-100);
 }
 
-.slotCell:disabled {
+.slotCellLocked {
+  cursor: not-allowed;
+}
+
+.slotCell:disabled:not(.slotCellLocked) {
   cursor: default;
 }
 

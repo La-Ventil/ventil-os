@@ -17,6 +17,8 @@ const mapBadgeRequirement = (requirement: MachineDetailsSchema['badgeRequirement
   id: requirement.id,
   badgeId: requirement.requiredOpenBadgeId,
   badgeName: requirement.requiredOpenBadge.name,
+  badgeType: requirement.requiredOpenBadge.type ?? null,
+  badgeImageUrl: requirement.requiredOpenBadge.coverImage ?? null,
   badgeLevelId: requirement.requiredOpenBadgeLevelId ?? null,
   badgeLevelTitle: requirement.requiredOpenBadgeLevel?.title ?? null,
   ruleType: requirement.ruleType

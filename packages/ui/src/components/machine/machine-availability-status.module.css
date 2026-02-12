@@ -1,0 +1,35 @@
+.root {
+  text-transform: uppercase;
+  align-self: flex-start;
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+  background: transparent;
+}
+
+.root :global(.MuiChip-label) {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.root :global(.MuiChip-icon) {
+  color: inherit;
+}
+
+.available {
+  background: var(--mui-palette-success-main);
+}
+
+.reserved {
+  background: var(--mui-palette-warning-main);
+}
+
+.occupied {
+  background: var(--mui-palette-error-main);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}

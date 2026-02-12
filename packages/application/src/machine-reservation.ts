@@ -1,6 +1,6 @@
 import type { DayKey } from './date-time';
 import { addMinutesToDate, formatDayKey, getDayIntervalForDayKey } from './date-time';
-import { machineReservationRepository } from '@repo/db';
+import { machineReservationRepository, machineRepository, openBadgeRepository } from '@repo/db';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { mapMachineReservationToViewModel } from './mappers/machine-reservation';
 import type { DateInterval } from './date-interval';
@@ -44,6 +44,11 @@ type MachineReservationCreateInput = {
 export const createMachineReservation = async (
   input: MachineReservationCreateInput
 ): Promise<MachineReservationViewModel> => {
+  const canReserve = await canUserReserveMachine(input.machineId, input.creatorId);
+  if (!canReserve) {
+    throw new Error('machineReservation.badgeRequired');
+  }
+
   const reservationInterval: DateInterval = {
     start: input.startsAt,
     end: addMinutesToDate(input.startsAt, input.durationMinutes)
@@ -75,4 +80,36 @@ export const createMachineReservation = async (
   });
 
   return mapMachineReservationToViewModel(reservation);
+};
+
+export const canUserReserveMachine = async (machineId: string, userId?: string | null): Promise<boolean> => {
+  const machine = await machineRepository.getMachineDetailsById(machineId);
+  if (!machine) {
+    return false;
+  }
+
+  if (!machine.badgeRequirements.length) {
+    return true;
+  }
+
+  if (!userId) {
+    return false;
+  }
+
+  const requiresAny = machine.badgeRequirements.some((requirement) => requirement.ruleType === 'any');
+  const checks = await Promise.all(
+    machine.badgeRequirements.map(async (requirement) => {
+      const requiredLevel = requirement.requiredOpenBadgeLevel?.level ?? 0;
+      const highestLevel = await openBadgeRepository.getUserHighestOpenBadgeLevel(
+        userId,
+        requirement.requiredOpenBadgeId
+      );
+      if (highestLevel === null) {
+        return false;
+      }
+      return highestLevel >= requiredLevel;
+    })
+  );
+
+  return requiresAny ? checks.some(Boolean) : checks.every(Boolean);
 };

@@ -5,9 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { MachineAvailability, type MachineViewModel } from '@repo/view-models/machine';
+import { type MachineViewModel } from '@repo/view-models/machine';
 import CardHeader from './card-header';
 import { MachineIcon } from './icons/machine-icon';
+import MachineAvailabilityStatus from './machine/machine-availability-status';
 import styles from './machine-card.module.css';
 
 export type MachineCardData = MachineViewModel;
@@ -17,24 +18,6 @@ export type MachineCardProps = {
   onClick?: () => void;
   t: (key: string) => string;
 };
-
-type MachineAvailabilityStatusProps = {
-  availability: MachineAvailability;
-  t: (key: string) => string;
-};
-
-function MachineAvailabilityStatus({ availability, t }: MachineAvailabilityStatusProps) {
-  const label = t(`status.${availability}`);
-
-  return (
-    <div className={styles.statusRow}>
-      <span className={clsx(styles.statusDot, styles[availability])} />
-      <Typography variant="caption" className={styles.statusLabel}>
-        {label}
-      </Typography>
-    </div>
-  );
-}
 
 export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
   const isInteractive = Boolean(onClick);
@@ -70,7 +53,10 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
           <Typography variant="body2" color="text.primary">
             {machine.description}
           </Typography>
-          <MachineAvailabilityStatus availability={machine.availability} t={t} />
+          <MachineAvailabilityStatus
+            availability={machine.availability}
+            label={t(`status.${machine.availability}`)}
+          />
         </div>
       </CardContent>
     </Card>

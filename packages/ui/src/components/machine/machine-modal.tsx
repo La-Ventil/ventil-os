@@ -22,6 +22,8 @@ import { toZonedDayjs } from '../../utils/dayjs';
 import useTimeZone from '../../hooks/use-time-zone';
 import MachineReservationSchedule from './machine-reservation-schedule';
 import LocalizedDatePicker from '../inputs/localized-date-picker';
+import MachineAvailabilityStatus from './machine-availability-status';
+import MachineBadgeRequirementCard from './machine-badge-requirement-card';
 import styles from './machine-modal.module.css';
 
 export type MachineModalProps = {
@@ -29,6 +31,7 @@ export type MachineModalProps = {
   reservations: MachineReservationViewModel[];
   dayKey: DayKey;
   open: boolean;
+  canReserve?: boolean;
   onClose: () => void;
   onOpenReservation?: (slot: Date) => void;
   onDateChange?: (dayKey: DayKey) => void;
@@ -41,6 +44,7 @@ export default function MachineModal({
   reservations,
   dayKey,
   open,
+  canReserve = true,
   onClose,
   onOpenReservation,
   onDateChange
@@ -55,6 +59,7 @@ export default function MachineModal({
   }
 
   const badgeRequirement = machine.badgeRequirements[0];
+  const showBadgeLock = Boolean(badgeRequirement && !canReserve);
 
   return (
     <ModalLayout
@@ -86,23 +91,20 @@ export default function MachineModal({
       {activeTab === 'info' ? (
         <Section p={2} className={styles.infoSection}>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.availabilityLabel')}</SectionSubtitle>
-          <Typography variant="body2" className={styles.availabilityValue}>
-            {t(`status.${machine.availability}`)}
-          </Typography>
+          <MachineAvailabilityStatus
+            availability={machine.availability}
+            label={t(`status.${machine.availability}`)}
+          />
 
           {badgeRequirement ? (
             <>
               <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.badgeRequirement')}</SectionSubtitle>
-              <div className={styles.badgeRequirementCard}>
-                <Typography variant="subtitle2" className={styles.badgeLabel}>
-                  {badgeRequirement.badgeName}
-                </Typography>
-                {badgeRequirement.badgeLevelTitle ? (
-                  <Typography variant="caption" color="text.secondary">
-                    {badgeRequirement.badgeLevelTitle}
-                  </Typography>
-                ) : null}
-              </div>
+              <MachineBadgeRequirementCard
+                requirement={badgeRequirement}
+                badgeTypeLabel={t('modal.badgeType')}
+                illustrationPlaceholder={t('modal.illustrationPlaceholder')}
+                showLock={showBadgeLock}
+              />
             </>
           ) : null}
 

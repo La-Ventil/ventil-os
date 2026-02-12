@@ -21,12 +21,15 @@ export type MachineDetailsSchema = Prisma.MachineGetPayload<{
         requiredOpenBadge: {
           select: {
             name: true;
+            type: true;
+            coverImage: true;
           };
         };
         requiredOpenBadgeLevelId: true;
         requiredOpenBadgeLevel: {
           select: {
             title: true;
+            level: true;
           };
         };
       };

@@ -1,8 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import MachineModal from '@repo/ui/machine/machine-modal';
@@ -13,38 +12,42 @@ type MachineModalRouteClientProps = {
   reservations: MachineReservationViewModel[];
   dayKey: DayKey;
   closeHref: string;
+  canReserve?: boolean;
 };
 
 export default function MachineModalRouteClient({
   machine,
   reservations,
   dayKey,
-  closeHref
+  closeHref,
+  canReserve = true
 }: MachineModalRouteClientProps): JSX.Element | null {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(Boolean(machine));
-
-  useEffect(() => {
-    setIsOpen(Boolean(machine));
-  }, [machine]);
+  const pathname = usePathname();
 
   if (!machine) {
     return null;
   }
+
+  const isOpen = pathname === `/hub/fab-lab/${machine.id}`;
 
   return (
     <MachineModal
       machine={machine}
       reservations={reservations}
       dayKey={dayKey}
+      canReserve={canReserve}
       open={isOpen}
       onClose={() => {
-        setIsOpen(false);
         router.push(closeHref);
       }}
-      onOpenReservation={(slot) => {
-        router.push(`/hub/fab-lab/${machine.id}/reservation?start=${encodeURIComponent(slot.toISOString())}`);
-      }}
+      onOpenReservation={
+        canReserve
+          ? (slot) => {
+              router.push(`/hub/fab-lab/${machine.id}/reservation?start=${encodeURIComponent(slot.toISOString())}`);
+            }
+          : undefined
+      }
       onDateChange={(dayKey) => {
         router.push(`/hub/fab-lab/${machine.id}?day=${dayKey}`);
       }}

@@ -36,6 +36,7 @@ export default function MachineReservationSchedule({
   const t = useTranslations('pages.hub.fabLab');
   const timeZone = useTimeZone();
   const format = useFormatter();
+  const isLocked = !onSlotClick;
   const scheduleInterval = useMemo(
     () => createScheduleIntervalForDayKey(dayKey, timeZone, SCHEDULE_START_HOUR, SCHEDULE_END_HOUR),
     [dayKey, timeZone]
@@ -68,6 +69,7 @@ export default function MachineReservationSchedule({
               ariaLabel={t('modal.schedule.slotLabel', { time: label })}
               isPast={isPast}
               isBooked={isBooked}
+              isLocked={isLocked}
               onSelect={canSelect ? () => onSlotClick?.(slot) : undefined}
             />
           );

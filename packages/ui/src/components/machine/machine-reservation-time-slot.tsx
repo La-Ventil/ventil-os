@@ -11,6 +11,7 @@ export type MachineReservationTimeSlotProps = {
   onSelect?: () => void;
   isPast?: boolean;
   isBooked?: boolean;
+  isLocked?: boolean;
 };
 
 export default function MachineReservationTimeSlot({
@@ -18,7 +19,8 @@ export default function MachineReservationTimeSlot({
   ariaLabel,
   onSelect,
   isPast = false,
-  isBooked = false
+  isBooked = false,
+  isLocked = false
 }: MachineReservationTimeSlotProps): JSX.Element {
   const isAvailable = Boolean(onSelect) && !isPast && !isBooked;
   const isDisabled = !isAvailable;
@@ -34,7 +36,8 @@ export default function MachineReservationTimeSlot({
           styles.slotCell,
           isAvailable && styles.slotCellAvailable,
           isPast && styles.slotCellPast,
-          isBooked && styles.slotCellBooked
+          isBooked && styles.slotCellBooked,
+          isLocked && styles.slotCellLocked
         )}
         aria-label={ariaLabel ?? label}
         onClick={onSelect}

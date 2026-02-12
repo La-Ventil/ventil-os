@@ -450,6 +450,7 @@
             "reservations": "Réservations"
           },
           "availabilityLabel": "Disponibilité",
+          "badgeType": "Type de badge",
           "badgeRequirement": "Open badge nécessaire",
           "descriptionLabel": "Description",
           "locationLabel": "Localisation",
@@ -473,6 +474,7 @@
             "success": "Réservation créée.",
             "error": "Impossible de créer la réservation.",
             "unauthorized": "Vous devez être connecté pour réserver une machine.",
+            "badgeRequired": "Vous devez obtenir l'open badge requis pour réserver cette machine.",
             "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
             "overlap": "Ce créneau est déjà réservé."
           }

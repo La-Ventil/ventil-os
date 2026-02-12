@@ -4,6 +4,8 @@ export type MachineOpenBadgeRequirementViewModel = {
   id: string;
   badgeId: string;
   badgeName: string;
+  badgeType?: string | null;
+  badgeImageUrl?: string | null;
   badgeLevelId?: string | null;
   badgeLevelTitle?: string | null;
   ruleType: 'all' | 'any';

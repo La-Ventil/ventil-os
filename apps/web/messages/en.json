@@ -431,6 +431,7 @@
             "reservations": "Reservations"
           },
           "availabilityLabel": "Availability",
+          "badgeType": "Badge type",
           "badgeRequirement": "Required open badge",
           "descriptionLabel": "Description",
           "locationLabel": "Location",
@@ -454,6 +455,7 @@
             "success": "Reservation created.",
             "error": "Unable to create the reservation.",
             "unauthorized": "You must be signed in to reserve a machine.",
+            "badgeRequired": "You need the required open badge to reserve this machine.",
             "startsAtInPast": "You cannot reserve a past time slot.",
             "overlap": "This time slot is already reserved."
           }
