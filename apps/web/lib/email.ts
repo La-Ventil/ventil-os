@@ -14,6 +14,8 @@ export const sendEmailVerification = async ({ email, firstName, lastName, token,
   const verifyUrl = new URL(`/verify-email/${token}`, process.env.BASE_URL);
   verifyUrl.searchParams.set('email', email);
   const fullName = [firstName, lastName].filter(Boolean).join(' ');
+  const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
+  const body = t('verifyEmail.emailText', { name: fullName, verifyUrl: verifyUrl.toString() });
 
   await sendTransactionalEmail({
     to: [
@@ -23,7 +25,7 @@ export const sendEmailVerification = async ({ email, firstName, lastName, token,
       }
     ],
     subject: t('verifyEmail.emailSubject', { appName: process.env.APP_NAME ?? 'VentilOS' }),
-    text: t('verifyEmail.emailText', { name: fullName, verifyUrl: verifyUrl.toString() })
+    text: `${body.trimEnd()}\n\n${signature}`
   });
 };
 
@@ -37,6 +39,8 @@ type PasswordResetEmailInput = {
 
 export const sendPasswordResetEmail = async ({ email, firstName, lastName, token, t }: PasswordResetEmailInput) => {
   const resetUrl = new URL(`/update-password/${token}`, process.env.BASE_URL).toString();
+  const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
+  const body = t('resetPassword.emailText', { name: firstName, resetUrl });
 
   await sendTransactionalEmail({
     to: [
@@ -46,6 +50,6 @@ export const sendPasswordResetEmail = async ({ email, firstName, lastName, token
       }
     ],
     subject: t('resetPassword.emailSubject', { appName: process.env.APP_NAME ?? 'VentilOS' }),
-    text: t('resetPassword.emailText', { name: firstName, resetUrl })
+    text: `${body.trimEnd()}\n\n${signature}`
   });
 };

@@ -85,6 +85,7 @@
     "emailSubject": "[{appName}] Reset your password",
     "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
   },
+  "emailSignature": "— The {appName} team",
   "verifyEmail": {
     "emailSubject": "[{appName}] Verify your email",
     "emailText": "Hello {name}!\nPlease verify your email by clicking the link below:\n{verifyUrl}\n"

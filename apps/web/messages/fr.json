@@ -99,6 +99,7 @@
     "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
     "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
   },
+  "emailSignature": "— L’équipe {appName}",
   "verifyEmail": {
     "emailSubject": "[{appName}] Vérification de votre email",
     "emailText": "Bonjour {name} !\nVeuillez vérifier votre email en cliquant sur le lien ci-dessous :\n{verifyUrl}\n"
