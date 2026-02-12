@@ -108,6 +108,55 @@ export class MachineReservationRepository {
     return reservation as MachineReservationSchema;
   }
 
+  async listForUser(userId: string): Promise<MachineReservationSchema[]> {
+    const reservations = await this.prisma.machineReservation.findMany({
+      where: {
+        OR: [
+          { creatorId: userId },
+          {
+            participants: {
+              some: {
+                userId
+              }
+            }
+          }
+        ]
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            username: true,
+            image: true,
+            email: true
+          }
+        },
+        participants: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                username: true,
+                image: true,
+                email: true
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        startsAt: 'asc'
+      }
+    });
+
+    return reservations as MachineReservationSchema[];
+  }
+
   async hasOverlap(machineId: string, rangeStart: Date, rangeEnd: Date): Promise<boolean> {
     const count = await this.prisma.machineReservation.count({
       where: {

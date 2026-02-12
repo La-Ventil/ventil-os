@@ -6,6 +6,6 @@ ALTER TABLE "MachineReservation"
 ADD CONSTRAINT "machine_reservation_no_overlap"
 EXCLUDE USING gist (
   "machineId" WITH =,
-  tstzrange("startsAt", "endsAt", '[)') WITH &&
+  tsrange("startsAt", "endsAt", '[)') WITH &&
 )
 WHERE ("status" = 'confirmed');

@@ -1,4 +1,7 @@
 -- Convert timestamps to timestamptz (assumes existing values are in Europe/Paris local time)
+-- Drop overlap constraint before altering timestamps to avoid tsrange/timestamptz mismatch
+ALTER TABLE "MachineReservation"
+  DROP CONSTRAINT IF EXISTS "machine_reservation_no_overlap";
 ALTER TABLE "User"
   ALTER COLUMN "emailVerified" TYPE timestamptz USING "emailVerified" AT TIME ZONE 'Europe/Paris',
   ALTER COLUMN "createdAt" TYPE timestamptz USING "createdAt" AT TIME ZONE 'Europe/Paris',
@@ -55,6 +58,14 @@ ALTER TABLE "MachineReservation"
   ALTER COLUMN "endsAt" TYPE timestamptz USING "endsAt" AT TIME ZONE 'Europe/Paris',
   ALTER COLUMN "createdAt" TYPE timestamptz USING "createdAt" AT TIME ZONE 'Europe/Paris',
   ALTER COLUMN "updatedAt" TYPE timestamptz USING "updatedAt" AT TIME ZONE 'Europe/Paris';
+
+ALTER TABLE "MachineReservation"
+  ADD CONSTRAINT "machine_reservation_no_overlap"
+  EXCLUDE USING gist (
+    "machineId" WITH =,
+    tstzrange("startsAt", "endsAt", '[)') WITH &&
+  )
+  WHERE ("status" = 'confirmed');
 
 ALTER TABLE "MachineReservationParticipant"
   ALTER COLUMN "createdAt" TYPE timestamptz USING "createdAt" AT TIME ZONE 'Europe/Paris';

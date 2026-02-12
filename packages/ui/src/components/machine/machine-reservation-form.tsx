@@ -126,6 +126,7 @@ export default function MachineReservationForm({
           labelId="machine-reservation-duration-label"
           name="durationMinutes"
           defaultValue={state.values.durationMinutes ?? DEFAULT_RESERVATION_DURATION_MINUTES}
+          key={state.values.durationMinutes ?? DEFAULT_RESERVATION_DURATION_MINUTES}
           label={t('modal.reservationForm.durationLabel')}
         >
           {RESERVATION_DURATION_OPTIONS.map((minutes) => (

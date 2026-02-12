@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import type { JSX, Key } from 'react';
 import type { HTMLAttributes } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -49,8 +49,10 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
       renderInput={(params) => (
         <TextField {...params} label={label} placeholder={placeholder} helperText={helperText} />
       )}
-      renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
-        <li {...props} className={clsx(styles.option, props.className)}>
+      renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => {
+        const { key, ...optionProps } = props as HTMLAttributes<HTMLLIElement> & { key: Key };
+        return (
+          <li key={key} {...optionProps} className={clsx(styles.option, optionProps.className)}>
           <UserAvatar user={option} size={28} className={styles.optionAvatar} />
           <div className={styles.optionText}>
             <Typography variant="body2" className={styles.optionName}>
@@ -60,8 +62,9 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
               {option.username}
             </Typography>
           </div>
-        </li>
-      )}
+          </li>
+        );
+      }}
     />
   );
 }

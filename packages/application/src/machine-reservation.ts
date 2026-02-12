@@ -26,6 +26,13 @@ export const listMachineReservationsForDayKey = async (
   return reservations.map(mapMachineReservationToViewModel);
 };
 
+export const listMachineReservationsForUser = async (
+  userId: string
+): Promise<MachineReservationViewModel[]> => {
+  const reservations = await machineReservationRepository.listForUser(userId);
+  return reservations.map(mapMachineReservationToViewModel);
+};
+
 type MachineReservationCreateInput = {
   machineId: string;
   creatorId: string;
