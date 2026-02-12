@@ -126,7 +126,9 @@ export default function SignupForm({ formState }: SignupFormProps) {
                 key={state.values.terms === 'on' ? 'terms-on' : 'terms-off'}
               />
             }
-            label={t('fields.terms')}
+            label={t.rich('fields.terms', {
+              link: (chunks) => <Link href="/privacy-policy">{chunks}</Link>
+            })}
           />
           {fieldError('terms') ? <FormHelperText>{fieldError('terms')}</FormHelperText> : null}
         </FormControl>

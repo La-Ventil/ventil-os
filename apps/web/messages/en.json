@@ -63,14 +63,14 @@
       "firstNameRequired": "Please enter your first name.",
       "lastNameRequired": "Please enter your last name.",
       "profileRequired": "Please select a profile.",
-      "termsRequired": "You must accept the terms and conditions.",
+      "termsRequired": "You must accept the privacy policy.",
       "educationLevelRequired": "Please select a school level."
     },
     "profile": {
       "firstNameRequired": "Please enter your first name.",
       "lastNameRequired": "Please enter your last name.",
       "profileRequired": "Please select a profile.",
-      "termsRequired": "You must accept the terms and conditions.",
+      "termsRequired": "You must accept the privacy policy.",
       "educationLevelRequired": "Please select a school level."
     },
     "machineReservation": {
@@ -105,7 +105,7 @@
       "newPasswordConfirmation": "Confirm new password",
       "educationLevel": "School level",
       "profile": "Usage profile",
-      "terms": "I accept the application's terms and conditions"
+      "terms": "I accept the <link>privacy policy</link>"
     },
     "placeholders": {
       "email": "email@email.com",
@@ -182,6 +182,42 @@
         "intro": "Sign in",
         "forgotPassword": "I forgot my password.",
         "emailVerifiedNotice": "Your email has been confirmed. Please sign in again."
+      },
+      "legalNotice": {
+        "title": "Legal notice",
+        "intro": "The following information is provided in accordance with applicable law.",
+        "publisher": {
+          "title": "Publisher",
+          "content": "La Ventil — association / organization. To be completed."
+        },
+        "hosting": {
+          "title": "Hosting",
+          "content": "To be completed (host, address, contact)."
+        },
+        "contact": {
+          "title": "Contact",
+          "content": "contact@laventil.fr"
+        }
+      },
+      "privacyPolicy": {
+        "title": "Privacy policy",
+        "intro": "This page explains how your data is collected and used.",
+        "dataCollected": {
+          "title": "Data collected",
+          "content": "User account, profile information, reservations, badges."
+        },
+        "purposes": {
+          "title": "Purposes",
+          "content": "Account management, reservations, badges and communications."
+        },
+        "retention": {
+          "title": "Retention",
+          "content": "Data is kept for as long as the account remains active."
+        },
+        "rights": {
+          "title": "Your rights",
+          "content": "You can request access, correction or deletion of your data."
+        }
       }
     },
     "hub": {
