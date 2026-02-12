@@ -1,11 +1,11 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { TransactionalEmailsApi, SendSmtpEmail, TransactionalEmailsApiApiKeys } from '@getbrevo/brevo';
 import { requestPasswordReset } from '@repo/application';
 import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
+import { sendPasswordResetEmail } from '../email';
 
 export async function resetPassword(
   previousState: FormState<ResetPasswordFormInput>,
@@ -36,28 +36,13 @@ export async function resetPassword(
       return { success: true, valid: true, message: okMessage, fieldErrors: {}, values: { email } };
     }
 
-    const emailAPI = new TransactionalEmailsApi();
-    emailAPI.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY!);
-
-    const resetUrl = new URL(`/update-password/${resetToken}`, process.env.BASE_URL).toString();
-
-    const message = new SendSmtpEmail();
-    const appName = process.env.APP_NAME!;
-
-    message.subject = t('resetPassword.emailSubject', { appName });
-    message.textContent = t('resetPassword.emailText', { name: user.firstName, resetUrl });
-    message.sender = {
-      name: appName,
-      email: 'no-reply@laventil.org'
-    };
-    message.to = [
-      {
-        email: user.email,
-        name: `${user.firstName} ${user.lastName}`
-      }
-    ];
-
-    await emailAPI.sendTransacEmail(message);
+    await sendPasswordResetEmail({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      token: resetToken,
+      t
+    });
 
     return {
       success: true,

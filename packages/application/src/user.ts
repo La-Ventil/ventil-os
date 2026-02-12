@@ -129,6 +129,8 @@ export type UpdateUserProfileInput = {
   educationLevel: string;
 };
 
+export type UpdateUserEmailResult = { ok: true } | { ok: false; reason: 'email-already-used' };
+
 export const updateUserProfile = async (userId: string, input: UpdateUserProfileInput): Promise<void> => {
   await userRepository.updateUserProfile(userId, {
     name: input.lastName,
@@ -136,6 +138,18 @@ export const updateUserProfile = async (userId: string, input: UpdateUserProfile
     lastName: input.lastName,
     educationLevel: input.educationLevel
   });
+};
+
+export const updateUserEmail = async (userId: string, email: string): Promise<UpdateUserEmailResult> => {
+  try {
+    await userRepository.updateUserEmail(userId, email);
+    return { ok: true };
+  } catch (error) {
+    if (isUniqueConstraintError(error)) {
+      return { ok: false, reason: 'email-already-used' };
+    }
+    throw error;
+  }
 };
 
 export const findUserForPasswordReset = async (email: string): Promise<UserPasswordResetSchema | null> =>
@@ -159,6 +173,160 @@ export const requestPasswordReset = async (email: string) => {
   await userRepository.setResetToken(user.id, resetToken, resetTokenExpiry);
 
   return { user, resetToken, resetTokenExpiry };
+};
+
+const EMAIL_VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
+
+const createEmailVerificationToken = async (email: string) => {
+  const token = generateToken(24);
+  const expires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_TTL_MS);
+
+  await prismaClient.verificationToken.deleteMany({
+    where: { identifier: email }
+  });
+
+  await prismaClient.verificationToken.create({
+    data: {
+      identifier: email,
+      token,
+      expires
+    }
+  });
+
+  return { token, expires };
+};
+
+export type EmailVerificationResult =
+  | { ok: true; email: string }
+  | { ok: false; reason: 'invalid' | 'expired' | 'not-found' };
+
+export const requestEmailVerification = async (email: string) => {
+  return createEmailVerificationToken(email);
+};
+
+export type RequestEmailChangeResult = { ok: true; email: string; token: string } | { ok: false; reason: 'email-already-used' };
+
+export const requestEmailChange = async (userId: string, email: string): Promise<RequestEmailChangeResult> => {
+  const existing = await prismaClient.user.findFirst({
+    where: {
+      OR: [{ email }, { pendingEmail: email }]
+    },
+    select: { id: true }
+  });
+
+  if (existing && existing.id !== userId) {
+    return { ok: false, reason: 'email-already-used' };
+  }
+
+  await prismaClient.user.update({
+    where: { id: userId },
+    data: { pendingEmail: email }
+  });
+
+  const { token } = await createEmailVerificationToken(email);
+
+  return { ok: true, email, token };
+};
+
+export type ResendEmailChangeVerificationResult =
+  | { ok: true; email: string; token: string }
+  | { ok: false; reason: 'no-pending-email' };
+
+export const resendEmailChangeVerification = async (
+  userId: string
+): Promise<ResendEmailChangeVerificationResult> => {
+  const user = await prismaClient.user.findUnique({
+    where: { id: userId },
+    select: { pendingEmail: true }
+  });
+
+  if (!user?.pendingEmail) {
+    return { ok: false, reason: 'no-pending-email' };
+  }
+
+  const { token } = await createEmailVerificationToken(user.pendingEmail);
+  return { ok: true, email: user.pendingEmail, token };
+};
+
+export type CancelEmailChangeResult = { ok: true } | { ok: false; reason: 'no-pending-email' };
+
+export const cancelEmailChange = async (userId: string): Promise<CancelEmailChangeResult> => {
+  const user = await prismaClient.user.findUnique({
+    where: { id: userId },
+    select: { pendingEmail: true }
+  });
+
+  if (!user?.pendingEmail) {
+    return { ok: false, reason: 'no-pending-email' };
+  }
+
+  await prismaClient.user.update({
+    where: { id: userId },
+    data: { pendingEmail: null }
+  });
+
+  await prismaClient.verificationToken.deleteMany({
+    where: { identifier: user.pendingEmail }
+  });
+
+  return { ok: true };
+};
+
+export const verifyEmailToken = async (email: string, token: string): Promise<EmailVerificationResult> => {
+  const record = await prismaClient.verificationToken.findUnique({
+    where: {
+      identifier_token: {
+        identifier: email,
+        token
+      }
+    }
+  });
+
+  if (!record) {
+    return { ok: false, reason: 'invalid' };
+  }
+
+  if (record.expires < new Date()) {
+    await prismaClient.verificationToken.delete({
+      where: {
+        identifier_token: {
+          identifier: email,
+          token
+        }
+      }
+    });
+    return { ok: false, reason: 'expired' };
+  }
+
+  const user = await prismaClient.user.findFirst({
+    where: {
+      OR: [{ email }, { pendingEmail: email }]
+    },
+    select: { id: true, email: true, pendingEmail: true }
+  });
+
+  if (!user) {
+    return { ok: false, reason: 'not-found' };
+  }
+
+  await prismaClient.user.update({
+    where: { id: user.id },
+    data:
+      user.pendingEmail === email
+        ? { email, pendingEmail: null, emailVerified: new Date() }
+        : { emailVerified: new Date() }
+  });
+
+  await prismaClient.verificationToken.delete({
+    where: {
+      identifier_token: {
+        identifier: email,
+        token
+      }
+    }
+  });
+
+  return { ok: true, email };
 };
 
 export const setUserResetToken = async (userId: string, resetToken: string, resetTokenExpiry: Date): Promise<void> => {

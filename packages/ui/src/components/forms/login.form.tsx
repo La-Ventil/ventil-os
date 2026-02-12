@@ -11,10 +11,15 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Link from '../link';
 
-export default function LoginForm() {
+export type LoginFormProps = {
+  initialEmail?: string;
+  noticeMessage?: string;
+};
+
+export default function LoginForm({ initialEmail = '', noticeMessage }: LoginFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [formState, setFormState] = useState<{ message: string; success?: boolean }>({
     message: ''
@@ -46,6 +51,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={(e) => void onSignin(e)}>
       <Stack spacing={2}>
+        {noticeMessage && <Alert severity="info">{noticeMessage}</Alert>}
         {formState?.message && <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>}
         <TextField
           name={'email'}

@@ -45,6 +45,9 @@
     "imageInvalidType": "Invalid image type. Please upload png, jpg, gif or webp.",
     "emailRequired": "Please enter your email address.",
     "emailInvalid": "The email address is not valid.",
+    "email": {
+      "confirmationMismatch": "Email addresses do not match."
+    },
     "password": {
       "minLength": "Your password must be at least 6 characters.",
       "maxLength": "Your password must be at most 20 characters.",
@@ -53,6 +56,7 @@
       "numberRequired": "Your password must include at least one number.",
       "specialCharacterRequired": "Your password must include at least one special character (!@#$%^&*).",
       "confirmationRequired": "Please confirm your password.",
+      "invalid": "The current password is incorrect.",
       "confirmationMismatch": "Passwords do not match."
     },
     "signup": {
@@ -81,27 +85,47 @@
     "emailSubject": "[{appName}] Reset your password",
     "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
   },
+  "verifyEmail": {
+    "emailSubject": "[{appName}] Verify your email",
+    "emailText": "Hello {name}!\nPlease verify your email by clicking the link below:\n{verifyUrl}\n"
+  },
   "forms": {
     "fields": {
       "email": "Email",
+      "currentEmail": "Current email",
+      "currentPassword": "Current password",
       "firstName": "First name",
       "lastName": "Last name",
       "password": "Password",
       "passwordConfirmation": "Confirm password",
+      "newEmail": "New email",
+      "newEmailConfirmation": "Confirm new email",
+      "newPassword": "New password",
+      "newPasswordConfirmation": "Confirm new password",
       "educationLevel": "School level",
       "profile": "Usage profile",
       "terms": "I accept the application's terms and conditions"
     },
     "placeholders": {
       "email": "email@email.com",
+      "currentEmail": "current email",
+      "currentPassword": "current password",
       "firstName": "my first name",
       "lastName": "my last name",
       "password": "minimum 5 characters",
-      "passwordConfirmation": "same password as the previous field"
+      "passwordConfirmation": "same password as the previous field",
+      "newEmail": "new email address",
+      "newEmailConfirmation": "confirm new email",
+      "newPassword": "minimum 5 characters",
+      "newPasswordConfirmation": "confirm new password"
     },
     "actions": {
       "submitResetPassword": "Send reset link",
       "submitUpdatePassword": "Change my password",
+      "resendEmailVerification": "Resend link",
+      "cancelEmailChange": "Cancel change",
+      "updateEmail": "Update email",
+      "updatePassword": "Update password",
       "updateProfile": "Update",
       "submitSignup": "Sign up",
       "submitLogin": "Sign in"
@@ -109,7 +133,13 @@
     "messages": {
       "signInSuccess": "Signed in successfully.",
       "signInFailed": "Sign-in failed.",
-      "profileUpdated": "Your profile has been updated."
+      "profileUpdated": "Your profile has been updated.",
+      "emailVerificationSent": "A verification email has been sent.",
+      "emailChangePending": "An email change is pending for {email}.",
+      "emailChangeCanceled": "The email change has been canceled.",
+      "emailVerificationNotPending": "No email change is pending.",
+      "emailUpdated": "Your email has been updated.",
+      "passwordUpdated": "Your password has been updated."
     }
   },
   "pages": {
@@ -129,6 +159,17 @@
         "title": "Update my password",
         "intro": "Update my password"
       },
+      "verifyEmail": {
+        "title": "Verify my email",
+        "missingEmail": "Missing email address.",
+        "missingToken": "Missing verification token.",
+        "success": "Your email has been verified.",
+        "redirecting": "Redirecting…",
+        "continue": "Continue",
+        "expired": "This verification link has expired.",
+        "invalid": "This verification link is invalid.",
+        "notFound": "No account matches this email."
+      },
       "signup": {
         "title": "Sign up",
         "subtitle": "Information",
@@ -138,7 +179,8 @@
         "title": "Sign in",
         "subtitle": "Sign in",
         "intro": "Sign in",
-        "forgotPassword": "I forgot my password."
+        "forgotPassword": "I forgot my password.",
+        "emailVerifiedNotice": "Your email has been confirmed. Please sign in again."
       }
     },
     "hub": {
@@ -349,7 +391,11 @@
       "profileSettings": {
         "title": "User profile",
         "subtitle": "Information",
-        "intro": "Update your account information with the sections below."
+        "intro": "Update your account information with the sections below.",
+        "emailSubtitle": "Email address",
+        "emailIntro": "Update the email address associated with your account.",
+        "passwordSubtitle": "Password",
+        "passwordIntro": "Change your password to keep your account secure."
       },
       "fabLab": {
         "title": "Fab lab",
@@ -359,6 +405,9 @@
           "ariaLabel": "Filter machines",
           "available": "Available machines",
           "reservations": "My reservations"
+        },
+        "reservations": {
+          "empty": "No reservations yet."
         },
         "card": {
           "category": "Machine",
@@ -526,7 +575,7 @@
     }
   },
   "signup": {
-    "success": "Registration successful!",
+    "success": "Registration successful! Check your email to verify your account.",
     "error": "An unexpected error occurred :("
   }
 }

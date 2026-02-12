@@ -12,15 +12,16 @@ export const formatDayKey = (value: ConfigType, timeZone: string): DayKey =>
 type DayjsTzStrictParser = (value: string, format: string, timeZone: string, strict?: boolean) => Dayjs;
 
 const parseDayKeyDayjsStrict = (dayKey: DayKey, timeZone: string) => {
+  const strictLocal = dayjs(dayKey, DAY_KEY_FORMAT, true);
+  if (!strictLocal.isValid()) {
+    throw new Error(`Invalid day key: ${dayKey}`);
+  }
   const parsed = (dayjs as typeof dayjs & { tz: DayjsTzStrictParser }).tz(
     dayKey,
     DAY_KEY_FORMAT,
     timeZone,
     true
   );
-  if (!parsed.isValid()) {
-    throw new Error(`Invalid day key: ${dayKey}`);
-  }
   return parsed.startOf('day');
 };
 

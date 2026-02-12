@@ -42,6 +42,9 @@
     "emailInvalid": "L'adresse email n'est pas valide.",
     "genericError": "Une erreur inattendue est survenue :(",
     "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
+    "email": {
+      "confirmationMismatch": "Les adresses email ne correspondent pas."
+    },
     "password": {
       "minLength": "Votre mot de passe doit contenir au moins 6 caractères.",
       "maxLength": "Votre mot de passe ne peut pas dépasser 20 caractères.",
@@ -50,6 +53,7 @@
       "numberRequired": "Votre mot de passe doit contenir au moins un chiffre.",
       "specialCharacterRequired": "Votre mot de passe doit contenir au moins un caractère spécial (!@#$%^&*).",
       "confirmationRequired": "Veuillez confirmer votre mot de passe.",
+      "invalid": "Le mot de passe actuel est incorrect.",
       "confirmationMismatch": "Les mots de passe ne correspondent pas."
     },
     "signup": {
@@ -95,27 +99,47 @@
     "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
     "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
   },
+  "verifyEmail": {
+    "emailSubject": "[{appName}] Vérification de votre email",
+    "emailText": "Bonjour {name} !\nVeuillez vérifier votre email en cliquant sur le lien ci-dessous :\n{verifyUrl}\n"
+  },
   "forms": {
     "fields": {
       "email": "Email",
+      "currentEmail": "Email actuel",
+      "currentPassword": "Mot de passe actuel",
       "firstName": "Prénom",
       "lastName": "Nom",
       "password": "Mot de passe",
       "passwordConfirmation": "Confirmation du mot de passe",
+      "newEmail": "Nouvel email",
+      "newEmailConfirmation": "Confirmation du nouvel email",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordConfirmation": "Confirmation du nouveau mot de passe",
       "educationLevel": "Niveau scolaire",
       "profile": "Profil d’utilisation",
       "terms": "J’accepte les conditions générales d’utilisation de l’application"
     },
     "placeholders": {
       "email": "email@email.com",
+      "currentEmail": "email actuel",
+      "currentPassword": "mot de passe actuel",
       "firstName": "mon prénom",
       "lastName": "mon nom",
       "password": "minimum 5 caractères",
-      "passwordConfirmation": "même mot de passe que le champ précédent"
+      "passwordConfirmation": "même mot de passe que le champ précédent",
+      "newEmail": "nouvel email",
+      "newEmailConfirmation": "confirmer le nouvel email",
+      "newPassword": "minimum 5 caractères",
+      "newPasswordConfirmation": "confirmer le nouveau mot de passe"
     },
     "actions": {
       "submitResetPassword": "Envoyer le lien de réinitialisation.",
       "submitUpdatePassword": "Changer mon mot de passe",
+      "resendEmailVerification": "Renvoyer le lien",
+      "cancelEmailChange": "Annuler le changement",
+      "updateEmail": "Modifier l’email",
+      "updatePassword": "Modifier le mot de passe",
       "updateProfile": "Modifier",
       "submitSignup": "S'inscrire",
       "submitLogin": "Se connecter"
@@ -127,7 +151,13 @@
     "messages": {
       "signInSuccess": "Connexion réussie.",
       "signInFailed": "Identifiants invalides.",
-      "profileUpdated": "Votre profil a été mis à jour."
+      "profileUpdated": "Votre profil a été mis à jour.",
+      "emailVerificationSent": "Un email de vérification a été envoyé.",
+      "emailChangePending": "Un changement d’email est en attente pour {email}.",
+      "emailChangeCanceled": "Le changement d’email a été annulé.",
+      "emailVerificationNotPending": "Aucun changement d’email en attente.",
+      "emailUpdated": "Votre email a bien été mis à jour.",
+      "passwordUpdated": "Votre mot de passe a bien été mis à jour."
     }
   },
   "pages": {
@@ -148,6 +178,17 @@
         "title": "Mettre à jour mon mot de passe",
         "intro": "Mettre à jour mon mot de passe"
       },
+      "verifyEmail": {
+        "title": "Vérifier mon email",
+        "missingEmail": "Adresse email manquante.",
+        "missingToken": "Jeton de vérification manquant.",
+        "success": "Votre email a bien été vérifié.",
+        "redirecting": "Redirection…",
+        "continue": "Continuer",
+        "expired": "Ce lien de vérification a expiré.",
+        "invalid": "Ce lien de vérification est invalide.",
+        "notFound": "Aucun compte ne correspond à cet email."
+      },
       "signup": {
         "title": "Inscription",
         "subtitle": "Information",
@@ -157,7 +198,8 @@
         "title": "Connexion",
         "subtitle": "Connexion",
         "intro": "Connexion",
-        "forgotPassword": "J'ai oublié mon mot de passe."
+        "forgotPassword": "J'ai oublié mon mot de passe.",
+        "emailVerifiedNotice": "Votre email a été confirmé. Merci de vous reconnecter."
       }
     },
     "hub": {
@@ -368,7 +410,11 @@
       "profileSettings": {
         "title": "Profil utilisateur",
         "subtitle": "Information",
-        "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous."
+        "intro": "Modifiez les informations de votre compte avec les rubriques ci-dessous.",
+        "emailSubtitle": "Adresse email",
+        "emailIntro": "Mettez à jour l’adresse email associée à votre compte.",
+        "passwordSubtitle": "Mot de passe",
+        "passwordIntro": "Modifiez votre mot de passe pour sécuriser votre compte."
       },
       "fabLab": {
         "title": "Fab lab",
@@ -378,6 +424,9 @@
           "ariaLabel": "Filtrer les machines",
           "available": "Machines disponibles",
           "reservations": "Mes réservations"
+        },
+        "reservations": {
+          "empty": "Aucune réservation pour le moment."
         },
         "card": {
           "category": "Machine",
@@ -545,7 +594,7 @@
     }
   },
   "signup": {
-    "success": "Inscription réussie !",
+    "success": "Inscription réussie ! Vérifiez votre email pour activer votre compte.",
     "error": "Une erreur inattendu est survenue :("
   }
 }

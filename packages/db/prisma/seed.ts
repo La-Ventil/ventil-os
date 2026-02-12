@@ -349,11 +349,19 @@ async function seedUsers(defaultPassword: string) {
       where: { email: user.email },
       update: {
         ...user,
-        ...security
+        password: security.password,
+        salt: security.salt,
+        iterations: security.iterations,
+        emailVerified: emailVerifiedAt,
+        pendingEmail: null
       },
       create: {
         ...user,
-        ...security
+        password: security.password,
+        salt: security.salt,
+        iterations: security.iterations,
+        emailVerified: emailVerifiedAt,
+        pendingEmail: null
       }
     });
   }

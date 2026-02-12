@@ -3,6 +3,8 @@ set -euo pipefail
 
 git fetch origin
 
+git push origin dev main
+
 git checkout main
 git merge --ff-only origin/dev
 

@@ -1,11 +1,12 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { registerUserAccount } from '@repo/application';
+import { registerUserAccount, requestEmailVerification } from '@repo/application';
 import { hashSecret } from '@repo/crypto';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
 
 export async function registerUser(
@@ -54,6 +55,15 @@ export async function registerUser(
         values
       };
     }
+
+    const { token } = await requestEmailVerification(signupFormData.email);
+    await sendEmailVerification({
+      email: signupFormData.email,
+      firstName: signupFormData.firstName,
+      lastName: signupFormData.lastName,
+      token,
+      t
+    });
 
     return {
       success: true,

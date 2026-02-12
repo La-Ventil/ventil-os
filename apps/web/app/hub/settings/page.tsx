@@ -14,8 +14,8 @@ export default async function Page(): Promise<JSX.Element> {
   const tSettings = await getTranslations('pages.hub.settings');
   return (
     <>
-      <Section>
-        <SectionTitle>{tSettings('title')}</SectionTitle>
+      <SectionTitle>{tSettings('title')}</SectionTitle>
+      <Section>  
         <SectionSubtitle>{tSettings('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{tSettings('intro')}</Typography>
       </Section>

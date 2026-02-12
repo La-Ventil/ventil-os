@@ -14,6 +14,8 @@ export class UserRepository {
       select: {
         id: true,
         email: true,
+        pendingEmail: true,
+        emailVerified: true,
         image: true,
         profile: true,
         studentProfile: true,
@@ -36,6 +38,7 @@ export class UserRepository {
       select: {
         id: true,
         email: true,
+        emailVerified: true,
         image: true,
         password: true,
         salt: true,
@@ -110,6 +113,17 @@ export class UserRepository {
       where: { id: userId },
       data,
       select: { id: true }
+    });
+  }
+
+  async updateUserEmail(userId: string, email: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        email,
+        emailVerified: null
+      },
+      select: { id: true, email: true }
     });
   }
 

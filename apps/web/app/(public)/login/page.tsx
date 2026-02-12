@@ -5,14 +5,34 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
+import { getUserProfileByEmail } from '@repo/application';
 import { getServerSession } from '../../../lib/auth';
 
-const LoginPage = async () => {
+type LoginPageProps = {
+  searchParams:
+    | Promise<{
+        email?: string;
+        reason?: string;
+      }>
+    | {
+        email?: string;
+        reason?: string;
+      };
+};
+
+const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const session = await getServerSession();
-  if (session) {
-    redirect('/hub/profile');
+  if (session?.user?.email) {
+    const profile = await getUserProfileByEmail(session.user.email);
+    if (profile) {
+      redirect('/hub/profile');
+    }
   }
   const t = await getTranslations('pages.public.login');
+  const resolvedSearchParams = await Promise.resolve(searchParams);
+  const email = resolvedSearchParams?.email;
+  const reason = resolvedSearchParams?.reason;
+  const noticeMessage = reason === 'verified' ? t('emailVerifiedNotice') : undefined;
 
   return (
     <Box>
@@ -21,7 +41,7 @@ const LoginPage = async () => {
         <Typography variant="h3">{t('subtitle')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
-      <LoginForm />
+      <LoginForm initialEmail={email ?? ''} noticeMessage={noticeMessage} />
       <Stack spacing={2}>
         <Link href="/forgot-password">{t('forgotPassword')}</Link>
       </Stack>

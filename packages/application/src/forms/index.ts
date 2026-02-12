@@ -8,5 +8,7 @@ export * from './reset-password-form-input';
 export * from './signup-form-input';
 export * from './update-password-form-input';
 export * from './assign-open-badge-form-input';
+export * from './change-email-form-input';
+export * from './change-password-form-input';
 export * from './image-upload';
 export * from './machine-reservation-form-input';

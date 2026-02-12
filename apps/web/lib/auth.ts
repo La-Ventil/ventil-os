@@ -67,6 +67,7 @@ function authorize() {
     }
     const maybeUser = await getUserCredentialsByEmail(credentials.email);
     if (!maybeUser?.password) return null;
+    if (!maybeUser.emailVerified) return null;
     // verify the input password with stored hash
     const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);
 
