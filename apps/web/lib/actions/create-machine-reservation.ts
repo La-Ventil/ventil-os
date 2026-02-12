@@ -6,6 +6,7 @@ import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
+import { revalidatePath } from 'next/cache';
 
 export async function createMachineReservation(
   previousState: FormState<MachineReservationFormInput>,
@@ -48,6 +49,7 @@ export async function createMachineReservation(
       durationMinutes: data.durationMinutes,
       participantIds
     });
+    revalidatePath('/hub/fab-lab');
 
     return {
       success: true,

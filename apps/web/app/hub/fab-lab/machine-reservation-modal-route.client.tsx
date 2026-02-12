@@ -53,6 +53,7 @@ export default function MachineReservationModalRouteClient({
     if (!state.success) return;
     setIsOpen(false);
     router.push(closeHref);
+    router.refresh();
   }, [closeHref, router, state.success]);
 
   if (!machine) {
