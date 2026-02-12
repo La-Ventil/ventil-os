@@ -33,6 +33,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.globalAdmin = (user as UserProfile).globalAdmin;
         token.pedagogicalAdmin = (user as UserProfile).pedagogicalAdmin;
+        token.image = (user as UserProfile).image ?? null;
       }
       return token;
     },
@@ -41,6 +42,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.globalAdmin = token.globalAdmin;
         session.user.pedagogicalAdmin = token.pedagogicalAdmin;
+        session.user.image = (token.image as string | null | undefined) ?? session.user.image ?? null;
       }
       return session;
     }

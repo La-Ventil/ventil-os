@@ -15,6 +15,8 @@ type SeedUser = {
   firstName: string;
   lastName: string;
   profile: Profile;
+  image?: string | null;
+  emailVerified?: Date | null;
   studentProfile?: StudentProfile;
   externalProfile?: ExternalProfile;
   educationLevel?: string;
@@ -262,6 +264,7 @@ avec des utilisateurs`
 ];
 
 async function seedUsers(defaultPassword: string) {
+  const emailVerifiedAt = new Date();
   const users: SeedUser[] = [
     {
       email: 'admin@ventil.local',
@@ -270,7 +273,9 @@ async function seedUsers(defaultPassword: string) {
       lastName: 'Global',
       profile: Profile.teacher,
       globalAdmin: true,
-      pedagogicalAdmin: false
+      pedagogicalAdmin: false,
+      image: '/assets/avatar/admin-global.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'pedago@ventil.local',
@@ -279,7 +284,9 @@ async function seedUsers(defaultPassword: string) {
       lastName: 'Pédagogique',
       profile: Profile.teacher,
       globalAdmin: false,
-      pedagogicalAdmin: true
+      pedagogicalAdmin: true,
+      image: '/assets/avatar/admin-pedagogical.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'student@ventil.local',
@@ -288,7 +295,9 @@ async function seedUsers(defaultPassword: string) {
       lastName: 'Dupont',
       profile: Profile.student,
       studentProfile: StudentProfile.member,
-      educationLevel: 'BTS 1ère année'
+      educationLevel: 'BTS 1ère année',
+      image: '/assets/avatar/claude-dupont.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'student.visitor@ventil.local',
@@ -297,7 +306,9 @@ async function seedUsers(defaultPassword: string) {
       lastName: 'Leroy',
       profile: Profile.student,
       studentProfile: StudentProfile.visitor,
-      educationLevel: 'Terminale'
+      educationLevel: 'Terminale',
+      image: '/assets/avatar/nina-leroy.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'student.alumni@ventil.local',
@@ -306,7 +317,9 @@ async function seedUsers(defaultPassword: string) {
       lastName: 'Moreau',
       profile: Profile.student,
       studentProfile: StudentProfile.alumni,
-      educationLevel: 'BTS 2ème année'
+      educationLevel: 'BTS 2ème année',
+      image: '/assets/avatar/alex-moreau.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'external@ventil.local',
@@ -314,7 +327,9 @@ async function seedUsers(defaultPassword: string) {
       firstName: 'Martin',
       lastName: 'Dubois',
       profile: Profile.external,
-      externalProfile: ExternalProfile.contributor
+      externalProfile: ExternalProfile.contributor,
+      image: '/assets/avatar/martin-dubois.svg',
+      emailVerified: emailVerifiedAt
     },
     {
       email: 'external.visitor@ventil.local',
@@ -322,7 +337,9 @@ async function seedUsers(defaultPassword: string) {
       firstName: 'Lina',
       lastName: 'Roux',
       profile: Profile.external,
-      externalProfile: ExternalProfile.visitor
+      externalProfile: ExternalProfile.visitor,
+      image: '/assets/avatar/lina-roux.svg',
+      emailVerified: emailVerifiedAt
     }
   ];
 

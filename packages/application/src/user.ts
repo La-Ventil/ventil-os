@@ -6,6 +6,7 @@ import type { UserProfile } from '@repo/view-models/user-profile';
 import { mapUserProfileToViewModel } from './mappers/user-profile';
 import { mapUserAdminToViewModel } from './mappers/user-admin';
 import { mapUserSummaryToViewModel } from './mappers/user-summary';
+import { prismaClient } from './prisma';
 
 export const getUserProfileByEmail = async (email: string): Promise<UserProfile | null> => {
   const profile = await userRepository.getUserProfileByEmail(email);
@@ -174,3 +175,41 @@ export const updateUserPassword = async (
     iterations: number;
   }
 ) => userRepository.updateUserPassword(userId, data);
+
+export type UserProfileStats = {
+  events: number;
+  openBadges: number;
+  machines: number;
+};
+
+export const getUserProfileStats = async (userId: string): Promise<UserProfileStats> => {
+  const now = new Date();
+  const [events, openBadges, machines] = await Promise.all([
+    prismaClient.eventRegistration.count({
+      where: { userId }
+    }),
+    prismaClient.openBadgeProgress.count({
+      where: { userId }
+    }),
+    prismaClient.machineReservation.count({
+      where: {
+        status: 'confirmed',
+        endsAt: {
+          lt: now
+        },
+        OR: [
+          { creatorId: userId },
+          {
+            participants: {
+              some: {
+                userId
+              }
+            }
+          }
+        ]
+      }
+    })
+  ]);
+
+  return { events, openBadges, machines };
+};

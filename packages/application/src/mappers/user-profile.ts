@@ -10,6 +10,7 @@ export const mapUserProfileToViewModel = (
   id: user.id,
   profile: resolveProfileType(user),
   email: Email.from(user.email),
+  image: user.image ?? null,
   username: user.username,
   educationLevel: parseEducationLevel(user.educationLevel),
   globalAdmin: user.globalAdmin,
