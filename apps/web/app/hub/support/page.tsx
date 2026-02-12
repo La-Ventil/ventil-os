@@ -37,6 +37,16 @@ export default async function Page(): Promise<ReactElement> {
       </Section>
 
       <Section>
+        <SectionSubtitle>{t('repository.title')}</SectionSubtitle>
+        <Typography variant="body1">{t('repository.text')}</Typography>
+        <Typography variant="body2">
+          <a href="https://github.com/La-Ventil/ventil-os" target="_blank" rel="noreferrer">
+            https://github.com/La-Ventil/ventil-os
+          </a>
+        </Typography>
+      </Section>
+
+      <Section>
         <SectionSubtitle>{t('session.title')}</SectionSubtitle>
         <pre className={styles.sessionBlock}>{JSON.stringify(session, null, 2)}</pre>
       </Section>

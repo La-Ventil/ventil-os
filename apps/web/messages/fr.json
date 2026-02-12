@@ -573,6 +573,10 @@
         "subtitle": "Information",
         "intro": "Aidez-nous à améliorer l'application de La-Ventil !",
         "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marleix@gmail.com",
+        "repository": {
+          "title": "Open source",
+          "text": "Le projet est open source. Retrouvez le code sur GitHub :"
+        },
         "illustrationPlaceholder": "Illustration en cours",
         "session": {
           "title": "Informations de session"

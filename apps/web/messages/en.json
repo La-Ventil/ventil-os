@@ -554,6 +554,10 @@
         "subtitle": "Information",
         "intro": "Help us improve the La-Ventil app!",
         "contact": "Found a bug? Send an email to loic.marleix@gmail.com",
+        "repository": {
+          "title": "Open source",
+          "text": "This project is open source. Find the code on GitHub:"
+        },
         "illustrationPlaceholder": "Illustration in progress",
         "session": {
           "title": "Session information"
