@@ -17,3 +17,6 @@ export const ProfileType = {
 } as const;
 
 export type ProfileType = (typeof ProfileType)[keyof typeof ProfileType];
+
+export const requiresEducationLevel = (profileType: ProfileType): boolean =>
+  profileType === ProfileType.Member || profileType === ProfileType.Alumni;
