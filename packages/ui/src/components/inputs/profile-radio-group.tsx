@@ -45,9 +45,15 @@ export interface ProfileRadioGroupProps {
   defaultValue?: string;
   error?: boolean;
   helperText?: string;
+  onChange?: (value: string) => void;
 }
 
-export default function ProfileRadioGroup({ defaultValue, error = false, helperText }: ProfileRadioGroupProps) {
+export default function ProfileRadioGroup({
+  defaultValue,
+  error = false,
+  helperText,
+  onChange
+}: ProfileRadioGroupProps) {
   const t = useTranslations('profileSelector');
   const [value, setValue] = useState<string>(defaultValue ?? ProfileType.Member);
   const optionKeyMap: Record<string, string> = {
@@ -68,7 +74,11 @@ export default function ProfileRadioGroup({ defaultValue, error = false, helperT
         <RadioGroup
           aria-labelledby="profile-label"
           value={value}
-          onChange={(event) => setValue(String(event.target.value))}
+          onChange={(event) => {
+            const nextValue = String(event.target.value);
+            setValue(nextValue);
+            onChange?.(nextValue);
+          }}
           name="profile"
         >
           {Object.values(ProfileType).map((key) => {

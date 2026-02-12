@@ -14,6 +14,7 @@ import { FormAction } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
 import Link from '../link';
+import { requiresEducationLevel } from '@repo/domain/profile-type';
 
 export interface ProfileFormProps {
   profilePromise: Promise<UserProfile>;
@@ -36,6 +37,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
     }
   });
   const fieldError = (field: keyof ProfileFormInput) => firstFieldError(formState, field);
+  const showEducationLevel = requiresEducationLevel(profile.profile);
 
   return (
     <form action={formAction}>
@@ -61,11 +63,13 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
           error={Boolean(fieldError('lastName'))}
           helperText={fieldError('lastName')}
         />
-        <EducationLevelSelect
-          defaultValue={formState.values.educationLevel}
-          error={Boolean(fieldError('educationLevel'))}
-          helperText={fieldError('educationLevel')}
-        />
+        {showEducationLevel ? (
+          <EducationLevelSelect
+            defaultValue={formState.values.educationLevel}
+            error={Boolean(fieldError('educationLevel'))}
+            helperText={fieldError('educationLevel')}
+          />
+        ) : null}
       </Stack>
       <Grid container spacing={2}>
         <Grid>

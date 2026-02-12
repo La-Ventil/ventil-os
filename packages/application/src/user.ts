@@ -31,7 +31,7 @@ export type RegisterUserAccountInput = {
   username?: string;
   firstName: string;
   lastName: string;
-  educationLevel: string;
+  educationLevel?: string | null;
   profileType: string;
   hashedSecret: string;
   salt: string;
@@ -97,7 +97,7 @@ export const registerUserAccount = async (input: RegisterUserAccountInput): Prom
       username,
       firstName: input.firstName,
       lastName: input.lastName,
-      educationLevel: input.educationLevel,
+      educationLevel: input.educationLevel ?? null,
       password: input.hashedSecret,
       salt: input.salt,
       iterations: input.iterations,
@@ -126,7 +126,7 @@ export const registerUserAccount = async (input: RegisterUserAccountInput): Prom
 export type UpdateUserProfileInput = {
   firstName: string;
   lastName: string;
-  educationLevel: string;
+  educationLevel?: string | null;
 };
 
 export type UpdateUserEmailResult = { ok: true } | { ok: false; reason: 'email-already-used' };
@@ -136,7 +136,7 @@ export const updateUserProfile = async (userId: string, input: UpdateUserProfile
     name: input.lastName,
     firstName: input.firstName,
     lastName: input.lastName,
-    educationLevel: input.educationLevel
+    ...(input.educationLevel !== undefined ? { educationLevel: input.educationLevel } : {})
   });
 };
 

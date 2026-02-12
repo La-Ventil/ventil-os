@@ -7,7 +7,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
-import { ProfileType } from '@repo/domain/profile-type';
+import { ProfileType, requiresEducationLevel } from '@repo/domain/profile-type';
+import { useEffect, useState } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import Link from '../link';
@@ -40,6 +41,13 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const tCommon = useTranslations('common');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
   const fieldError = (field: keyof SignupFormInput) => firstFieldError(state, field);
+  const resolveProfileType = (value?: string): ProfileType =>
+    Object.values(ProfileType).includes(value as ProfileType) ? (value as ProfileType) : ProfileType.Member;
+  const [selectedProfile, setSelectedProfile] = useState<ProfileType>(() => resolveProfileType(state.values.profile));
+
+  useEffect(() => {
+    setSelectedProfile(resolveProfileType(state.values.profile));
+  }, [state.values.profile]);
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
@@ -98,12 +106,15 @@ export default function SignupForm({ formState }: SignupFormProps) {
           defaultValue={state.values.profile}
           error={Boolean(fieldError('profile'))}
           helperText={fieldError('profile')}
+          onChange={(value) => setSelectedProfile(resolveProfileType(value))}
         />
-        <EducationLevelSelect
-          defaultValue={state.values.educationLevel}
-          error={Boolean(fieldError('educationLevel'))}
-          helperText={fieldError('educationLevel')}
-        />
+        {requiresEducationLevel(selectedProfile) ? (
+          <EducationLevelSelect
+            defaultValue={state.values.educationLevel}
+            error={Boolean(fieldError('educationLevel'))}
+            helperText={fieldError('educationLevel')}
+          />
+        ) : null}
 
         <FormControl error={Boolean(fieldError('terms'))}>
           <FormControlLabel

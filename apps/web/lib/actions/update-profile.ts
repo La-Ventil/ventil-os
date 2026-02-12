@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
 import { ProfileFormInput, profileFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
+import { requiresEducationLevel } from '@repo/domain/profile-type';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 
@@ -29,6 +30,19 @@ export async function updateProfile(
     const userProfile = await getUserProfileFromSession();
 
     const profileFormData: ProfileFormInput = data;
+    if (requiresEducationLevel(userProfile.profile) && !profileFormData.educationLevel) {
+      const fieldErrors = {
+        educationLevel: [t('validation.profile.educationLevelRequired')]
+      };
+
+      return {
+        success: false,
+        valid: false,
+        message: fieldErrorsToSingleMessage(fieldErrors),
+        fieldErrors,
+        values
+      };
+    }
     await updateUserProfile(userProfile.id, {
       firstName: profileFormData.firstName,
       lastName: profileFormData.lastName,
