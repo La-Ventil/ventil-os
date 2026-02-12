@@ -469,6 +469,12 @@ async function seedOpenBadges(creatorId: string, openBadges: SeedOpenBadge[]) {
 }
 
 async function main() {
+  const existingUsers = await prisma.user.count();
+  if (existingUsers > 0) {
+    console.log('Seed skipped: database already contains users.');
+    return;
+  }
+
   await seedUsers(DEFAULT_PASSWORD);
 
   const admin = await prisma.user.findUnique({
