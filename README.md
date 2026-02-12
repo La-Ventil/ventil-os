@@ -135,12 +135,11 @@ apps/web/app/
 
 ---
 
-## 🎨 Intégration UI (Material UI + Emotion)
+## 🎨 Intégration UI (Material UI + CSS Modules)
 
 ### Technologies
 
 - [Material UI (MUI)](https://mui.com/)
-- [@emotion/react](https://emotion.sh/docs/introduction)
 - [React Hook Form](https://react-hook-form.com/) + [Zod](https://github.com/colinhacks/zod)
 
 ### Règles de styling (ADR‑001)
@@ -161,23 +160,12 @@ Contient :
 - Typographies
 - Overrides de composants (ex: `MuiButton`, `MuiInputBase`)
 
-### Styles globaux (`GlobalStyles`)
+### Styles globaux
 
-Utiliser l’API `GlobalStyles` de MUI pour les styles de base :
-
-```tsx
-// apps/web/app/layout.tsx
-import { GlobalStyles } from "@mui/material";
-
-<GlobalStyles
-  styles={{
-    body: { margin: 0, backgroundColor: "#f7f7f7", fontFamily: "Roboto, sans-serif" },
-    a: { color: "inherit", textDecoration: "none" }
-  }}
-/>
+Les styles globaux doivent passer par :
 ```
-
-👉 C’est la méthode idiomatique MUI (préférée à un `globals.css`).
+apps/web/app/globals.css
+```
 
 ### Modifier ou ajouter un composant
 
@@ -186,7 +174,6 @@ import { GlobalStyles } from "@mui/material";
 
 📚 Références utiles :
 - [Theming MUI](https://mui.com/material-ui/customization/theming/)
-- [GlobalStyles](https://mui.com/material-ui/react-css-baseline/#globalstyles)
 
 ---
 
