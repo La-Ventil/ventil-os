@@ -48,11 +48,7 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "standard-version": {
-    "skip": {
-      "tag": true
-    }
-  },
+  "standard-version": {},
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.5",

@@ -405,6 +405,7 @@
           "title": "Administration des utilisateurs",
           "subtitle": "Information",
           "intro": "Gérez les comptes et les accès des utilisateurs.",
+          "assignSuccess": "Open badge attribué.",
           "columns": {
             "firstName": "prénom",
             "lastName": "nom",

@@ -386,6 +386,7 @@
           "title": "User administration",
           "subtitle": "Information",
           "intro": "Manage user accounts and access.",
+          "assignSuccess": "Open badge assigned.",
           "columns": {
             "firstName": "first name",
             "lastName": "last name",
