@@ -8,6 +8,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminMachinesTable from './admin-machines-table';
+import { adminFablabIcon as AdminFablabIcon } from '@repo/ui/icons/admin-fablab-icon';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -47,7 +48,7 @@ export default async function AdminMachinesPage() {
 
   return (
     <>
-      <SectionTitle>{labels.title}</SectionTitle>
+      <SectionTitle icon={<AdminFablabIcon color="secondary" />}>{t('title')}</SectionTitle>
       <Section>
         <SectionSubtitle>{labels.subtitle}</SectionSubtitle>
         <Typography variant="body1">{labels.intro}</Typography>
@@ -55,7 +56,7 @@ export default async function AdminMachinesPage() {
 
       <AdminActionsSection>
         <Link href="/hub/admin/machines/create">
-          <AdminButton variant="contained" component="span">
+          <AdminButton variant="contained" component="span" color="secondary">
             {labels.actions.create}
           </AdminButton>
         </Link>

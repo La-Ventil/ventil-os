@@ -288,6 +288,9 @@ importers:
       '@repo/crypto':
         specifier: workspace:*
         version: link:../../packages/crypto
+      '@repo/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@repo/form':
         specifier: workspace:*
         version: link:../../packages/form

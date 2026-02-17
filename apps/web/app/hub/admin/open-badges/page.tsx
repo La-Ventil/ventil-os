@@ -8,6 +8,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminOpenBadgesTable from './admin-open-badges-table';
+import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from '@repo/ui/icons/admin-open-badge-icon';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -47,7 +48,7 @@ export default async function AdminOpenBadgesPage() {
 
   return (
     <>
-      <SectionTitle>{labels.title}</SectionTitle>
+      <SectionTitle icon={<AdminOpenBadgeIcon color="secondary" />}>{t('title')}</SectionTitle>
       <Section>
         <SectionSubtitle>{labels.subtitle}</SectionSubtitle>
         <Typography variant="body1">{labels.intro}</Typography>
