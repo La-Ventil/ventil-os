@@ -1,21 +1,22 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { canManageBadgesUser, listAdminOpenBadges } from '@repo/application';
+import { canManageBadges, listAdminOpenBadges } from '@repo/application';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import { OpenBadgeAdminStatus } from '@repo/view-models/open-badge-admin';
 import AdminOpenBadgesTable from './admin-open-badges-table';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function AdminOpenBadgesPage() {
   const session = await getServerSession();
-  const canManageBadges = canManageBadgesUser(session?.user);
+  const userCanManageBadges = canManageBadges(session?.user);
 
-  if (!session || !canManageBadges) {
+  if (!session || !userCanManageBadges) {
     redirect('/hub/profile');
   }
 
@@ -43,7 +44,7 @@ export default async function AdminOpenBadgesPage() {
   };
 
   const statusLabelFor = (badge: (typeof badges)[number]) =>
-    badge.status === 'active' ? labels.status.active : labels.status.inactive;
+    badge.status === OpenBadgeAdminStatus.Active ? labels.status.active : labels.status.inactive;
 
   return (
     <>

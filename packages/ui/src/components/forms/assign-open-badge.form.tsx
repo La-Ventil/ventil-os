@@ -72,14 +72,14 @@ export default function AssignOpenBadgeForm({
 
   return (
     <>
-      {feedback ? (
-        <Alert severity={feedback.type} className={styles.feedback}>
-          {feedback.message}
-        </Alert>
-      ) : null}
       <SectionTitle>{t('title')}</SectionTitle>
       <Section>
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        {feedback ? (
+          <Alert severity={feedback.type} className={styles.feedback}>
+            {feedback.message}
+          </Alert>
+        ) : null}
         <Typography variant="body1">
           {user ? `${user.firstName} ${user.lastName ?? ''}`.trim() : t('userLabel')}
         </Typography>

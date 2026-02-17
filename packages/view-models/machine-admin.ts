@@ -1,4 +1,5 @@
-export type MachineAdminStatus = 'active' | 'inactive';
+import type { ActivityStatus } from '@repo/domain/activity-status';
+export { ActivityStatus as MachineAdminStatus } from '@repo/domain/activity-status';
 
 export type MachineAdminViewModel = {
   id: string;
@@ -6,5 +7,5 @@ export type MachineAdminViewModel = {
   category: string;
   room: string;
   badgeRequirementsCount: number;
-  status: MachineAdminStatus;
+  status: ActivityStatus;
 };

@@ -8,8 +8,8 @@ import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
-import type { ProfileType } from '@repo/domain/profile-type';
-import { requiresEducationLevel } from '@repo/domain/profile-type';
+import type { ProfileType } from '@repo/domain/user/profile-type';
+import { requiresEducationLevel } from '@repo/domain/user/profile-type';
 
 export async function registerUser(
   previousState: FormState<SignupFormInput>,

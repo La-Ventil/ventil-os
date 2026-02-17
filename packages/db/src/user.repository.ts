@@ -1,12 +1,94 @@
-import type { Prisma, PrismaClient } from '@prisma/client';
-import type { UserCredentialsSchema } from './schemas/user-credentials';
-import type { UserAdminSchema } from './schemas/user-admin';
-import type { UserPasswordResetSchema } from './schemas/user-password-reset';
-import type { UserProfileSchema } from './schemas/user-profile';
-import type { UserSummarySchema } from './schemas/user-summary';
+import { ExternalProfile, Profile, StudentProfile, type Prisma, type PrismaClient } from '@prisma/client';
+import { parseEducationLevel } from '@repo/domain/user/education-level';
+import { Email } from '@repo/domain/user/email';
+import { ProfileType } from '@repo/domain/user/profile-type';
+import type { UserCredentialsSchema, UserCredentialsSchemaRaw } from './schemas/user-credentials';
+import type { UserAdminSchema, UserAdminSchemaRaw } from './schemas/user-admin';
+import type { UserPasswordResetSchema, UserPasswordResetSchemaRaw } from './schemas/user-password-reset';
+import type { UserProfileSchema, UserProfileSchemaRaw } from './schemas/user-profile';
+import type { UserSummarySchema, UserSummarySchemaRaw } from './schemas/user-summary';
+
+const resolveProfileType = (user: {
+  profile: Profile;
+  studentProfile: StudentProfile | null;
+  externalProfile: ExternalProfile | null;
+}): ProfileType => {
+  if (user.profile === Profile.teacher) {
+    return ProfileType.Teacher;
+  }
+
+  if (user.profile === Profile.external) {
+    if (user.externalProfile === ExternalProfile.contributor) {
+      return ProfileType.Contributor;
+    }
+
+    return ProfileType.Visitor;
+  }
+
+  if (user.studentProfile === StudentProfile.member) {
+    return ProfileType.Member;
+  }
+
+  if (user.studentProfile === StudentProfile.alumni) {
+    return ProfileType.Alumni;
+  }
+
+  return ProfileType.Visitor;
+};
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
+
+  private normalizeUserProfile(user: UserProfileSchemaRaw): UserProfileSchema {
+    const { email, pendingEmail, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
+
+    return {
+      ...rest,
+      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      email: Email.from(email),
+      pendingEmail: pendingEmail ? Email.from(pendingEmail) : null,
+      educationLevel: parseEducationLevel(educationLevel)
+    };
+  }
+
+  private normalizeUserCredentials(user: UserCredentialsSchemaRaw): UserCredentialsSchema {
+    const { email, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
+
+    return {
+      ...rest,
+      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      email: Email.from(email),
+      educationLevel: parseEducationLevel(educationLevel)
+    };
+  }
+
+  private normalizeUserAdmin(user: UserAdminSchemaRaw): UserAdminSchema {
+    const { email, profile, studentProfile, externalProfile, ...rest } = user;
+
+    return {
+      ...rest,
+      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      email: Email.from(email)
+    };
+  }
+
+  private normalizeUserSummary(user: UserSummarySchemaRaw): UserSummarySchema {
+    const { email, ...rest } = user;
+
+    return {
+      ...rest,
+      email: Email.from(email)
+    };
+  }
+
+  private normalizeUserPasswordReset(user: UserPasswordResetSchemaRaw): UserPasswordResetSchema {
+    const { email, ...rest } = user;
+
+    return {
+      ...rest,
+      email: Email.from(email)
+    };
+  }
 
   async getUserProfileByEmail(email: string): Promise<UserProfileSchema | null> {
     const maybeUser = await this.prisma.user.findFirst({
@@ -29,7 +111,7 @@ export class UserRepository {
       }
     });
 
-    return maybeUser ? (maybeUser as UserProfileSchema) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
   }
 
   async findUserCredentialsByEmail(email: string): Promise<UserCredentialsSchema | null> {
@@ -44,6 +126,8 @@ export class UserRepository {
         salt: true,
         iterations: true,
         profile: true,
+        studentProfile: true,
+        externalProfile: true,
         username: true,
         educationLevel: true,
         pedagogicalAdmin: true,
@@ -53,7 +137,7 @@ export class UserRepository {
       }
     });
 
-    return user ? (user as UserCredentialsSchema) : null;
+    return user ? this.normalizeUserCredentials(user as UserCredentialsSchemaRaw) : null;
   }
 
   async listUsersForManagement(): Promise<UserAdminSchema[]> {
@@ -79,7 +163,7 @@ export class UserRepository {
       }
     });
 
-    return users as UserAdminSchema[];
+    return users.map((user) => this.normalizeUserAdmin(user as UserAdminSchemaRaw));
   }
 
   async listUserSummaries(): Promise<UserSummarySchema[]> {
@@ -95,7 +179,7 @@ export class UserRepository {
       }
     });
 
-    return users as UserSummarySchema[];
+    return users.map((user) => this.normalizeUserSummary(user as UserSummarySchemaRaw));
   }
 
   async createUser(data: Prisma.UserCreateInput) {
@@ -138,7 +222,7 @@ export class UserRepository {
       }
     });
 
-    return user ? (user as UserPasswordResetSchema) : null;
+    return user ? this.normalizeUserPasswordReset(user as UserPasswordResetSchemaRaw) : null;
   }
 
   async setResetToken(userId: string, resetToken: string, resetTokenExpiry: Date) {
@@ -190,6 +274,60 @@ export class UserRepository {
     return this.prisma.user.findUnique({
       where: { id: userId },
       select: { id: true }
+    });
+  }
+
+  async getDeleteDependencies(userId: string): Promise<{
+    id: string;
+    createdMachines: number;
+    createdOpenBadges: number;
+    createdEvents: number;
+    createdEventTemplates: number;
+    createdMachineReservations: number;
+    openBadgeLevelAwards: number;
+  } | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        _count: {
+          select: {
+            createdMachines: true,
+            createdOpenBadges: true,
+            createdEvents: true,
+            createdEventTemplates: true,
+            createdMachineReservations: true,
+            openBadgeLevelAwards: true
+          }
+        }
+      }
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      createdMachines: user._count.createdMachines,
+      createdOpenBadges: user._count.createdOpenBadges,
+      createdEvents: user._count.createdEvents,
+      createdEventTemplates: user._count.createdEventTemplates,
+      createdMachineReservations: user._count.createdMachineReservations,
+      openBadgeLevelAwards: user._count.openBadgeLevelAwards
+    };
+  }
+
+  async deleteUser(userId: string): Promise<{ id: string }> {
+    return this.prisma.$transaction(async (tx) => {
+      await tx.userConsent.deleteMany({
+        where: { userId }
+      });
+
+      return tx.user.delete({
+        where: { id: userId },
+        select: { id: true }
+      });
     });
   }
 }

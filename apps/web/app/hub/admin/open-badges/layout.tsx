@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
-import { canManageBadgesUser } from '@repo/application';
+import { canManageBadges } from '@repo/application';
 import { getServerSession } from '../../../../lib/auth';
 
 type AdminOpenBadgesLayoutProps = {
@@ -10,9 +10,9 @@ type AdminOpenBadgesLayoutProps = {
 
 export default async function AdminOpenBadgesLayout({ children, modal }: AdminOpenBadgesLayoutProps) {
   const session = await getServerSession();
-  const canManageBadges = canManageBadgesUser(session?.user);
+  const userCanManageBadges = canManageBadges(session?.user);
 
-  if (!session || !canManageBadges) {
+  if (!session || !userCanManageBadges) {
     redirect('/hub/profile');
   }
 

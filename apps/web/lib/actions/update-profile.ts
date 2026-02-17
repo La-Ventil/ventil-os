@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
 import { ProfileFormInput, profileFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
-import { requiresEducationLevel } from '@repo/domain/profile-type';
+import { requiresEducationLevel } from '@repo/domain/user/profile-type';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 

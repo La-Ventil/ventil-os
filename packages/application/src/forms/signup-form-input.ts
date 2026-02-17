@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { passwordConfirmationSchema, passwordSchema } from './password';
-import type { ProfileType } from '@repo/domain/profile-type';
-import { requiresEducationLevel } from '@repo/domain/profile-type';
+import type { ProfileType } from '@repo/domain/user/profile-type';
+import { requiresEducationLevel } from '@repo/domain/user/profile-type';
 
 export const signupFormSchema = zfd
   .formData({

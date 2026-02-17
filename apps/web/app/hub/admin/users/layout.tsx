@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
-import { canManageUsersUser } from '@repo/application';
+import { canManageUsers } from '@repo/application';
 import { getServerSession } from '../../../../lib/auth';
 
 type AdminUsersLayoutProps = {
@@ -10,9 +10,9 @@ type AdminUsersLayoutProps = {
 
 export default async function AdminUsersLayout({ children, modal }: AdminUsersLayoutProps) {
   const session = await getServerSession();
-  const canManageUsers = canManageUsersUser(session?.user);
+  const canManageUsersForUser = canManageUsers(session?.user);
 
-  if (!session || !canManageUsers) {
+  if (!session || !canManageUsersForUser) {
     redirect('/hub/profile');
   }
 

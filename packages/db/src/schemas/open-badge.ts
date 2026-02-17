@@ -1,6 +1,8 @@
 import type { Prisma } from '@prisma/client';
+import type { ActivityStatus } from '@repo/domain/activity-status';
+import type { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 
-export type OpenBadgeSchema = Prisma.OpenBadgeGetPayload<{
+export type OpenBadgeSchemaRaw = Prisma.OpenBadgeGetPayload<{
   include: {
     levels: {
       select: {
@@ -12,9 +14,13 @@ export type OpenBadgeSchema = Prisma.OpenBadgeGetPayload<{
   };
 }>;
 
+export type OpenBadgeSchema = Omit<OpenBadgeSchemaRaw, 'levels'> & {
+  levels: OpenBadgeLevel[];
+};
+
 export type OpenBadgeLevelSchema = OpenBadgeSchema['levels'][number];
 
-export type OpenBadgeProgressSchema = Prisma.OpenBadgeProgressGetPayload<{
+export type OpenBadgeProgressSchemaRaw = Prisma.OpenBadgeProgressGetPayload<{
   include: {
     highestLevel: {
       select: {
@@ -35,7 +41,11 @@ export type OpenBadgeProgressSchema = Prisma.OpenBadgeProgressGetPayload<{
   };
 }>;
 
-export type OpenBadgeAdminSchema = Prisma.OpenBadgeGetPayload<{
+export type OpenBadgeProgressSchema = Omit<OpenBadgeProgressSchemaRaw, 'openBadge'> & {
+  openBadge: OpenBadgeSchema;
+};
+
+export type OpenBadgeAdminSchemaRaw = Prisma.OpenBadgeGetPayload<{
   select: {
     id: true;
     name: true;
@@ -48,3 +58,7 @@ export type OpenBadgeAdminSchema = Prisma.OpenBadgeGetPayload<{
     };
   };
 }>;
+
+export type OpenBadgeAdminSchema = Omit<OpenBadgeAdminSchemaRaw, 'status'> & {
+  status: ActivityStatus;
+};

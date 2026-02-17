@@ -2,9 +2,8 @@
 
 import { getTranslations } from 'next-intl/server';
 import { machineCreateFormSchema, type MachineCreateFormInput } from '@repo/application/forms';
-import { canManageBadgesUser, createMachine as createMachineRecord } from '@repo/application';
-import { validateAndStoreImage } from '@repo/application/server/uploads';
-import { MAX_IMAGE_MB } from '@repo/application/uploads-constants';
+import { addMachine, canManageBadges } from '@repo/application';
+import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
@@ -15,9 +14,9 @@ export async function createMachine(
 ): Promise<FormState<MachineCreateFormInput>> {
   const t = await getTranslations();
   const session = await getServerSession();
-  const canManageBadges = canManageBadgesUser(session?.user);
+  const userCanManageBadges = canManageBadges(session?.user);
 
-  if (!session || !canManageBadges) {
+  if (!session || !userCanManageBadges) {
     return {
       success: false,
       valid: true,
@@ -56,7 +55,7 @@ export async function createMachine(
   }
 
   try {
-    await createMachineRecord({
+    await addMachine({
       ...data,
       creatorId: session.user.id
     });

@@ -3,18 +3,18 @@
 import { useMemo } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import useTimeZone from '../../hooks/use-time-zone';
+import { createScheduleIntervalForDayKey } from '@repo/application';
+import type { DayKey } from '@repo/application';
 import {
   createReservationTimeSlotsForInterval,
-  createScheduleIntervalForDayKey,
-  isReservationSlotInPast,
+  getNowIndicatorPosition,
   isSlotWithinIntervals,
   reservationToClampedSlotRange,
-  getNowIndicatorPosition,
   SCHEDULE_END_HOUR,
   SCHEDULE_SLOT_MINUTES,
   SCHEDULE_START_HOUR
-} from '@repo/application';
-import type { DayKey } from '@repo/application';
+} from '@repo/domain/machine/reservation-schedule';
+import { isReservationSlotInPast } from '@repo/domain/machine/reservation-rules';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import MachineReservationCard from './machine-reservation-card';
 import MachineScheduleNowIndicator from './machine-schedule-now-indicator';

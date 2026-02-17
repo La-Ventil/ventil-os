@@ -46,9 +46,9 @@ export default function AdminUsersTable({ users, columns, adminLabelFor }: Admin
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.profile}</TableCell>
             <TableCell>{adminLabelFor(user)}</TableCell>
-            <TableCell>{user.machinesCount}</TableCell>
-            <TableCell>{user.eventsCount}</TableCell>
-            <TableCell>{user.openBadgesCount}</TableCell>
+            <TableCell>{user.stats.machinesCount}</TableCell>
+            <TableCell>{user.stats.eventsCount}</TableCell>
+            <TableCell>{user.stats.openBadgesCount}</TableCell>
           </TableRow>
         ))}
       </TableBody>

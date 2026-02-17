@@ -10,7 +10,7 @@ import { machineReservationFormSchema } from '@repo/application/forms';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import MachineReservationModal from '@repo/ui/machine/machine-reservation-modal';
 import { createMachineReservationInitialState } from '@repo/ui/machine/machine-reservation-form';
-import { createMachineReservation } from '../../../lib/actions/create-machine-reservation';
+import { reserveMachine } from '../../../lib/actions/reserve-machine';
 
 type MachineReservationModalRouteClientProps = {
   machine: MachineDetailsViewModel | null;
@@ -32,12 +32,9 @@ export default function MachineReservationModalRouteClient({
   const tRoot = useTranslations();
   const [isOpen, setIsOpen] = useState(Boolean(machine));
   const machineId = machine?.id ?? '';
-  const initialState = useMemo(
-    () => createMachineReservationInitialState(machineId, startAt),
-    [machineId, startAt]
-  );
+  const initialState = useMemo(() => createMachineReservationInitialState(machineId, startAt), [machineId, startAt]);
   const formState = useFormActionState({
-    action: createMachineReservation,
+    action: reserveMachine,
     initialState,
     schema: machineReservationFormSchema,
     translate: tCommon,

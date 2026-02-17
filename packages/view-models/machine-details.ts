@@ -1,23 +1,7 @@
-import { MachineAvailability } from './machine';
+import type { MachineDetails } from '@repo/domain/machine/machine-details';
+import type { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
+export { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
+export { ActivityStatus } from '@repo/domain/activity-status';
 
-export type MachineOpenBadgeRequirementViewModel = {
-  id: string;
-  badgeId: string;
-  badgeName: string;
-  badgeType?: string | null;
-  badgeImageUrl?: string | null;
-  badgeLevelId?: string | null;
-  badgeLevelTitle?: string | null;
-  ruleType: 'all' | 'any';
-};
-
-export type MachineDetailsViewModel = {
-  id: string;
-  category: string;
-  name: string;
-  description?: string | null;
-  imageUrl?: string | null;
-  availability: MachineAvailability;
-  roomName?: string | null;
-  badgeRequirements: MachineOpenBadgeRequirementViewModel[];
-};
+export type MachineOpenBadgeRequirementViewModel = OpenBadgeRequirement;
+export type MachineDetailsViewModel = MachineDetails;

@@ -99,6 +99,14 @@
     "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
     "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
   },
+  "machineReservation": {
+    "badgeRequired": "Vous devez avoir le badge requis pour réserver cette machine.",
+    "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
+    "overlap": "Ce créneau est déjà réservé.",
+    "inactive": "Cette machine n'est pas disponible pour le moment.",
+    "machineRequired": "La machine sélectionnée est introuvable.",
+    "notFound": "Réservation introuvable."
+  },
   "emailSignature": "— L’équipe {appName}",
   "verifyEmail": {
     "emailSubject": "[{appName}] Vérification de votre email",
@@ -381,7 +389,10 @@
           },
           "image": {
             "placeholder": "Illustration en cours",
-            "upload": "Télécharger"
+            "upload": "Télécharger",
+            "maxSizeHint": "Max 5 Mo",
+            "tooLarge": "Fichier trop lourd (max {max}).",
+            "clear": "Effacer"
           },
           "badgeRequirement": {
             "title": "Open badge pour utiliser la machine",

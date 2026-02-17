@@ -1,21 +1,5 @@
-import type { UserSummaryViewModel } from './user-summary';
+import type { MachineReservation, MachineReservationParticipant } from '@repo/domain/machine/machine-reservation';
+export { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
 
-export enum MachineReservationStatus {
-  Confirmed = 'confirmed',
-  Cancelled = 'cancelled'
-}
-
-export type MachineReservationParticipantViewModel = {
-  id: string;
-  user: UserSummaryViewModel;
-};
-
-export type MachineReservationViewModel = {
-  id: string;
-  machineId: string;
-  creator: UserSummaryViewModel;
-  participants: MachineReservationParticipantViewModel[];
-  startsAt: Date;
-  endsAt: Date;
-  status: MachineReservationStatus;
-};
+export type MachineReservationParticipantViewModel = MachineReservationParticipant;
+export type MachineReservationViewModel = MachineReservation;

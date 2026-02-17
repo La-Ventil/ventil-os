@@ -21,13 +21,13 @@ export default function MachineBadgeRequirementCard({
   illustrationPlaceholder,
   showLock = false
 }: MachineBadgeRequirementCardProps) {
-  const typeLabel = requirement.badgeType ?? badgeTypeLabel;
+  const typeLabel = requirement.badge.type ?? badgeTypeLabel;
 
   return (
     <Card className={styles.card} variant="outlined">
       <CardMedia className={styles.illustration} component="div">
-        {requirement.badgeImageUrl ? (
-          <img src={requirement.badgeImageUrl} alt={requirement.badgeName} />
+        {requirement.badge.imageUrl ? (
+          <img src={requirement.badge.imageUrl} alt={requirement.badge.name} />
         ) : (
           illustrationPlaceholder
         )}
@@ -37,11 +37,11 @@ export default function MachineBadgeRequirementCard({
           {typeLabel}
         </Typography>
         <Typography variant="subtitle2" className={styles.name}>
-          {requirement.badgeName}
+          {requirement.badge.name}
         </Typography>
-        {requirement.badgeLevelTitle ? (
+        {requirement.level?.title ? (
           <Typography variant="caption" className={styles.level}>
-            {requirement.badgeLevelTitle}
+            {requirement.level.title}
           </Typography>
         ) : null}
       </CardContent>

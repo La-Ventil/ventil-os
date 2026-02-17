@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
-import { ProfileType, requiresEducationLevel } from '@repo/domain/profile-type';
+import { ProfileType, requiresEducationLevel } from '@repo/domain/user/profile-type';
 import { useEffect, useState } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';

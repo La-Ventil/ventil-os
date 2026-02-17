@@ -1,19 +1,18 @@
-import { BadgeLevel } from '@repo/domain/badge-level';
-import { Level } from '@repo/domain/level';
+import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 
 const badgeLevels = [
-  BadgeLevel.from(
+  OpenBadgeLevel.from(
     1,
     'Niveau decouverte',
     "Decouvrez les bases de l'outil et les regles de securite essentielles."
   ),
-  BadgeLevel.from(
+  OpenBadgeLevel.from(
     2,
     'Niveau intermediaire',
     'Rendez-vous autonome sur les usages courants et les bons reglages.'
   ),
-  BadgeLevel.from(
+  OpenBadgeLevel.from(
     3,
     'Niveau avance',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
@@ -28,7 +27,7 @@ const badges: OpenBadgeViewModel[] = [
     description:
       "Open badge permettant de se former a l'utilisation de la perceuse a colonne disponible dans le fab lab.",
     levels: badgeLevels,
-    activeLevel: Level.from(2)
+    activeLevel: 2
   },
   {
     id: 'badge-2',
@@ -37,7 +36,7 @@ const badges: OpenBadgeViewModel[] = [
     description:
       "Open badge permettant de se former a l'utilisation de la perceuse a colonne disponible dans le fab lab.",
     levels: badgeLevels,
-    activeLevel: Level.from(1)
+    activeLevel: 1
   }
 ];
 

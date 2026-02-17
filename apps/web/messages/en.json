@@ -85,6 +85,14 @@
     "emailSubject": "[{appName}] Reset your password",
     "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
   },
+  "machineReservation": {
+    "badgeRequired": "You need the required open badge to reserve this machine.",
+    "startsAtInPast": "You cannot reserve a past time slot.",
+    "overlap": "This time slot is already reserved.",
+    "inactive": "This machine is currently unavailable.",
+    "machineRequired": "Selected machine was not found.",
+    "notFound": "Reservation not found."
+  },
   "emailSignature": "— The {appName} team",
   "verifyEmail": {
     "emailSubject": "[{appName}] Verify your email",
@@ -362,7 +370,10 @@
           },
           "image": {
             "placeholder": "Illustration in progress",
-            "upload": "Upload"
+            "upload": "Upload",
+            "maxSizeHint": "Max 5MB",
+            "tooLarge": "File too large (max {max}).",
+            "clear": "Clear"
           },
           "badgeRequirement": {
             "title": "Open badge required to use the machine",

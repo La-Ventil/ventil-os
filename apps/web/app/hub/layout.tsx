@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import QuickActionsMenu from '@repo/ui/quick-actions-menu';
-import { canManageBadgesUser, canManageUsersUser, isAdminUser } from '@repo/application';
+import { canManageBadges, canManageUsers, isAdmin } from '@repo/application';
 import { getServerSession } from '../../lib/auth';
 import styles from './layout.module.css';
 
@@ -23,9 +23,9 @@ export default async function RootLayout({
   if (!session) {
     redirect('/login');
   }
-  const isAdmin = isAdminUser(session.user);
-  const canManageUsers = canManageUsersUser(session.user);
-  const canManageBadges = canManageBadgesUser(session.user);
+  const userIsAdmin = isAdmin(session.user);
+  const userCanManageUsers = canManageUsers(session.user);
+  const userCanManageBadges = canManageBadges(session.user);
 
   return (
     <>
@@ -33,9 +33,9 @@ export default async function RootLayout({
       <footer>
         <QuickActionsMenu
           user={{ email: session.user?.email, image: session.user?.image }}
-          isAdmin={isAdmin}
-          canManageUsers={canManageUsers}
-          canManageBadges={canManageBadges}
+          isAdmin={userIsAdmin}
+          canManageUsers={userCanManageUsers}
+          canManageBadges={userCanManageBadges}
         />
       </footer>
     </>

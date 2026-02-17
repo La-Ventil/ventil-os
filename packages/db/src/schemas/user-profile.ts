@@ -1,10 +1,14 @@
 import type { Prisma } from '@prisma/client';
+import type { EducationLevel } from '@repo/domain/user/education-level';
+import type { Email } from '@repo/domain/user/email';
+import type { ProfileType } from '@repo/domain/user/profile-type';
 
-export type UserProfileSchema = Prisma.UserGetPayload<{
+export type UserProfileSchemaRaw = Prisma.UserGetPayload<{
   select: {
     id: true;
     email: true;
     pendingEmail: true;
+    emailVerified: true;
     image: true;
     profile: true;
     studentProfile: true;
@@ -17,3 +21,13 @@ export type UserProfileSchema = Prisma.UserGetPayload<{
     firstName: true;
   };
 }>;
+
+export type UserProfileSchema = Omit<
+  UserProfileSchemaRaw,
+  'email' | 'pendingEmail' | 'educationLevel' | 'profile' | 'studentProfile' | 'externalProfile'
+> & {
+  email: Email;
+  pendingEmail: Email | null;
+  educationLevel: EducationLevel | null;
+  profile: ProfileType;
+};

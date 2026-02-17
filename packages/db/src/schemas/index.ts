@@ -1,7 +1,7 @@
 export type { EventSchema } from './event';
 export type { MachineDetailsSchema } from './machine-details';
 export type { MachineSchema, MachineAdminSchema } from './machine';
-export type { MachineReservationSchema } from './machine-reservation';
+export type { MachineReservationSchema, MachineReservationAvailabilitySchema } from './machine-reservation';
 export type { MessageSchema } from './message';
 export type {
   OpenBadgeSchema,

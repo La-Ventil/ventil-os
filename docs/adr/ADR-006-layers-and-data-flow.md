@@ -22,6 +22,11 @@ We keep a simple 3-layer rule:
 - **DB (Prisma repositories)**: data access + transactions only. Not imported in Web. Should expose DTO/VO, not raw Prisma types.
 - **Mocks**: kept for demo; same contract as real use-cases.
 
+Use-case intent & naming:
+- We keep **user-story verbs** to express intent (e.g., `reserveMachine`, `browseMachines`, `viewMachineDetails`).
+- We distinguish **command** vs **query** by file suffix: `*.command.ts` / `*.query.ts`.
+- Use-cases are exported from `packages/application/src/machines/usecases/` and represent intent, not CRUD.
+
 Constraints / pragmatic choices:
 - Single mapping DB → VM/VO in Application; avoid leaking Prisma schemas upward.
 - Next actions call only use-cases; they transform FormData to DTO and manage redirect/feedback but never touch repos directly.

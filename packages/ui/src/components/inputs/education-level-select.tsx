@@ -8,7 +8,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { EducationLevel } from '@repo/domain/education-level';
+import { EducationLevel } from '@repo/domain/user/education-level';
 import styles from './education-level-select.module.css';
 
 export interface EducationLevelSelectProps {

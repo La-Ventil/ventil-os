@@ -11,8 +11,7 @@ import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
 import type { Dayjs } from 'dayjs';
-import { parseIsoDate } from '@repo/application';
-import { excludeUserFromList } from '@repo/application';
+import { excludeBy, parseIsoDate } from '@repo/application';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
@@ -66,12 +65,12 @@ export default function MachineReservationForm({
   const [participants, setParticipants] = useState<UserSummaryViewModel[]>([]);
   const [startDate, setStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const filteredParticipants = useMemo(
-    () => excludeUserFromList(participants, currentUserId),
+    () => excludeBy(participants, (user) => user.id, currentUserId),
     [participants, currentUserId]
   );
 
   const filteredOptions = useMemo(
-    () => excludeUserFromList(participantOptions, currentUserId),
+    () => excludeBy(participantOptions, (user) => user.id, currentUserId),
     [participantOptions, currentUserId]
   );
 
@@ -86,7 +85,7 @@ export default function MachineReservationForm({
   );
 
   const handleParticipantsChange = (nextParticipants: UserSummaryViewModel[]) => {
-    setParticipants(excludeUserFromList(nextParticipants, currentUserId));
+    setParticipants(excludeBy(nextParticipants, (user) => user.id, currentUserId));
   };
 
   return (

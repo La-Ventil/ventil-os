@@ -18,9 +18,9 @@ export default async function Page(): Promise<JSX.Element> {
   const statsCounts = await getUserProfileStats(userProfile.id);
   const t = await getTranslations('pages.hub.profile');
   const stats: StatsListEntry[] = [
-    { id: 'events', icon: <EventIcon />, label: t('stats.events'), count: statsCounts.events },
-    { id: 'open-badge', icon: <OpenBadgeIcon />, label: t('stats.openBadge'), count: statsCounts.openBadges },
-    { id: 'machine', icon: <MachineIcon />, label: t('stats.machine'), count: statsCounts.machines }
+    { id: 'events', icon: <EventIcon />, label: t('stats.events'), count: statsCounts.eventsCount },
+    { id: 'open-badge', icon: <OpenBadgeIcon />, label: t('stats.openBadge'), count: statsCounts.openBadgesCount },
+    { id: 'machine', icon: <MachineIcon />, label: t('stats.machine'), count: statsCounts.machinesCount }
   ];
 
   return (

@@ -2,10 +2,11 @@ import { openBadgeRepository } from '@repo/db';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import type { OpenBadgeEditViewModel } from '@repo/view-models/open-badge-edit';
-import { mapOpenBadgeAdminToViewModel } from './mappers/open-badge-admin';
-import { mapOpenBadgeProgressToViewModel, mapOpenBadgeToViewModel } from './mappers/open-badge';
-import { mapOpenBadgeToEditViewModel } from './mappers/open-badge-edit';
-import { canManageBadgesUser } from './authorization';
+import { mapOpenBadgeAdminToViewModel } from './presenters/open-badge-admin';
+import { mapOpenBadgeProgressToViewModel, mapOpenBadgeToViewModel } from './presenters/open-badge';
+import { mapOpenBadgeToEditViewModel } from './presenters/open-badge-edit';
+import { ActivityStatus } from '@repo/domain/activity-status';
+import { canManageBadges } from './authorization';
 import { userExists } from './user';
 
 export const canAssignOpenBadgeUser = async (
@@ -16,7 +17,7 @@ export const canAssignOpenBadgeUser = async (
     pedagogicalAdmin?: boolean;
   } | null
 ): Promise<boolean> => {
-  if (canManageBadgesUser(user)) {
+  if (canManageBadges(user)) {
     return true;
   }
 
@@ -129,7 +130,7 @@ export const createOpenBadge = async (input: CreateOpenBadgeInput) =>
     description: input.description,
     coverImage: input.imageUrl,
     levels: input.levels,
-    status: input.activationEnabled ? 'active' : 'inactive',
+    status: input.activationEnabled ? ActivityStatus.Active : ActivityStatus.Inactive,
     creatorId: input.creatorId,
     type: DEFAULT_BADGE_TYPE,
     category: DEFAULT_BADGE_CATEGORY
@@ -151,5 +152,5 @@ export const updateOpenBadge = async (input: UpdateOpenBadgeInput) =>
     description: input.description,
     coverImage: input.imageUrl ?? null,
     levels: input.levels,
-    status: input.activationEnabled ? 'active' : 'inactive'
+    status: input.activationEnabled ? ActivityStatus.Active : ActivityStatus.Inactive
   });

@@ -4,7 +4,14 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./*.ts"
+    "./machine/*": "./machine/*.ts",
+    "./badge/*": "./badge/*.ts",
+    "./user/*": "./user/*.ts",
+    "./authorization": "./authorization.ts",
+    "./date-interval": "./date-interval.ts",
+    "./activity-status": "./activity-status.ts",
+    "./i18n": "./i18n.ts",
+    "./events": "./events.ts"
   },
   "scripts": {
     "lint:staged": "echo \"skip lint:staged (domain)\""

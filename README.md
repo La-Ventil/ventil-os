@@ -106,6 +106,7 @@ se concentrer sur `apps/web` (pages, layouts) et `packages/ui` (thème + composa
 **Couches**
 - **Domain** : types métier stables, pas de dépendance DB/UI.
 - **Application** : use-cases, validation (schemas), mappers vers view-models.
+  - Use-cases suivent l’intention “user story” et sont suffixés `*.command.ts` / `*.query.ts`.
 - **DB** : accès données (Prisma, repositories).
 - **UI** : composants + pages Next.js.
 

@@ -64,7 +64,7 @@ export default function OpenBadgeModalRouteClient({
           onClose={() => {
             setIsAssignOpen(false);
             setFeedback(null);
-            setIsOpen(true);
+            router.push(closeHref);
           }}
           user={null}
           users={users}
@@ -90,6 +90,7 @@ export default function OpenBadgeModalRouteClient({
 
               setFeedback({ type: 'success', message: result.message ?? t('confirm') });
               setIsAssignOpen(false);
+              router.push(closeHref);
             });
           }}
         />

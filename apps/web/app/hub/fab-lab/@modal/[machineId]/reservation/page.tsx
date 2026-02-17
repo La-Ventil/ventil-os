@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import {
-  getMachineDetailsById,
+  viewMachineDetails,
   listUsersForReservation
 } from '@repo/application';
 import { resolveIsoDateFromQuery } from '@repo/application/infra/iso-date';
@@ -18,7 +18,7 @@ export default async function MachineReservationModalPage({
 }: MachineReservationModalPageProps): Promise<JSX.Element | null> {
   const { machineId } = await params;
   const { start } = searchParams ? await searchParams : {};
-  const machine = await getMachineDetailsById(machineId);
+  const machine = await viewMachineDetails(machineId);
   if (!machine) {
     return null;
   }

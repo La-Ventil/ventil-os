@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import type { DayKey } from '../date-time';
-import { formatDayKey, parseDayKey, tryParseDayKey } from '../date-time';
+import type { DayKey } from '../time/date-time';
+import { formatDayKey, parseDayKey, tryParseDayKey } from '../time/date-time';
 
 describe('date-time', () => {
   it('round-trips day keys in a timezone', () => {

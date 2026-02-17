@@ -1,9 +1,11 @@
 import type { JSX } from 'react';
 import {
-  canUserReserveMachine,
+  checkReservationEligibility,
   formatDayKey,
-  getMachineDetailsById,
-  listMachineReservationsForDayKey,
+  getDayIntervalForDayKey,
+  viewMachineDetails,
+  viewMachineReservationsForDayKey,
+  resolveMachineAvailability,
   resolveDayKeyFromString
 } from '@repo/application';
 import { getTimeZone } from 'next-intl/server';
@@ -21,20 +23,28 @@ export default async function MachineModalPage({
 }: MachineModalPageProps): Promise<JSX.Element | null> {
   const { machineId } = await params;
   const { day } = searchParams ? await searchParams : {};
-  const machine = await getMachineDetailsById(machineId);
+  const machine = await viewMachineDetails(machineId);
   if (!machine) {
     return null;
   }
 
   const timeZone = await getTimeZone();
-  const selectedDateKey = resolveDayKeyFromString(day) ?? formatDayKey(new Date(), timeZone);
-  const reservations = await listMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
+  const todayKey = formatDayKey(new Date(), timeZone);
+  const selectedDateKey = resolveDayKeyFromString(day) ?? todayKey;
+  const reservations = await viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
+  const reservationsToday =
+    selectedDateKey === todayKey
+      ? reservations
+      : await viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
+  const { end } = getDayIntervalForDayKey(todayKey, timeZone);
+  const availability = resolveMachineAvailability(machine.availability, reservationsToday, new Date(), end);
+  const machineWithAvailability = { ...machine, availability };
   const session = await getServerSession();
-  const canReserve = await canUserReserveMachine(machineId, session?.user?.id);
+  const canReserve = await checkReservationEligibility(machineId, session?.user?.id);
 
   return (
     <MachineModalRouteClient
-      machine={machine}
+      machine={machineWithAvailability}
       reservations={reservations}
       dayKey={selectedDateKey}
       canReserve={canReserve}

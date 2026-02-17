@@ -1,26 +1,27 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { canManageBadgesUser, listAdminMachines } from '@repo/application';
+import { browseMachinesAsAdmin, canManageBadges } from '@repo/application';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import { MachineAdminStatus } from '@repo/view-models/machine-admin';
 import AdminMachinesTable from './admin-machines-table';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function AdminMachinesPage() {
   const session = await getServerSession();
-  const canManageBadges = canManageBadgesUser(session?.user);
+  const userCanManageBadges = canManageBadges(session?.user);
 
-  if (!session || !canManageBadges) {
+  if (!session || !userCanManageBadges) {
     redirect('/hub/profile');
   }
 
   const t = await getTranslations('pages.hub.admin.machines');
-  const machines = await listAdminMachines();
+  const machines = await browseMachinesAsAdmin();
 
   const labels = {
     title: t('title'),
@@ -43,7 +44,7 @@ export default async function AdminMachinesPage() {
   };
 
   const statusLabelFor = (machine: (typeof machines)[number]) =>
-    machine.status === 'active' ? labels.status.active : labels.status.inactive;
+    machine.status === MachineAdminStatus.Active ? labels.status.active : labels.status.inactive;
 
   return (
     <>

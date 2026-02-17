@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
-import { listMachineReservationsForUser, listMachines } from '@repo/application';
-import { getTranslations } from 'next-intl/server';
+import { browseMachines, viewMachineReservationsForUser } from '@repo/application';
+import { getTimeZone, getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
@@ -13,8 +13,9 @@ import styles from './page.module.css';
 export default async function Page(): Promise<JSX.Element> {
   const t = await getTranslations('pages.hub.fabLab');
   const session = await getServerSession();
-  const machines = await listMachines();
-  const reservations = session?.user?.id ? await listMachineReservationsForUser(session.user.id) : [];
+  const timeZone = await getTimeZone();
+  const machines = await browseMachines(timeZone);
+  const reservations = session?.user?.id ? await viewMachineReservationsForUser(session.user.id) : [];
   return (
     <>
       <SectionTitle icon={<MachineIcon color="secondary" />}>{t('title')}</SectionTitle>

@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client';
+import type { Email } from '@repo/domain/user/email';
 
-export type UserSummarySchema = Prisma.UserGetPayload<{
+export type UserSummarySchemaRaw = Prisma.UserGetPayload<{
   select: {
     id: true;
     firstName: true;
@@ -10,3 +11,7 @@ export type UserSummarySchema = Prisma.UserGetPayload<{
     email: true;
   };
 }>;
+
+export type UserSummarySchema = Omit<UserSummarySchemaRaw, 'email'> & {
+  email: Email;
+};

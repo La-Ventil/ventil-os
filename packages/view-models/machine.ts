@@ -1,14 +1,4 @@
-export enum MachineAvailability {
-  Available = 'available',
-  Reserved = 'reserved',
-  Occupied = 'occupied'
-}
+import type { MachineSummary } from '@repo/domain/machine/machine-summary';
+export { MachineAvailability } from '@repo/domain/machine/machine-availability';
 
-export type MachineViewModel = {
-  id: string;
-  category: string;
-  name: string;
-  description: string;
-  availability: MachineAvailability;
-  imageUrl?: string;
-};
+export type MachineViewModel = MachineSummary;

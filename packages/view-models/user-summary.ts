@@ -1,8 +1,3 @@
-export type UserSummaryViewModel = {
-  id: string;
-  firstName: string;
-  lastName?: string | null;
-  username: string;
-  image?: string | null;
-  email?: string | null;
-};
+import type { UserSummary } from '@repo/domain/user/user-summary';
+
+export type UserSummaryViewModel = UserSummary;

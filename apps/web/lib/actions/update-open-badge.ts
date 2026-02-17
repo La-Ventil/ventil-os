@@ -6,9 +6,8 @@ import {
   type OpenBadgeUpdateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import { canManageBadgesUser, updateOpenBadge as updateOpenBadgeRecord, getOpenBadgeById } from '@repo/application';
-import { validateAndStoreImage } from '@repo/application/server/uploads';
-import { MAX_IMAGE_MB } from '@repo/application/uploads-constants';
+import { canManageBadges, updateOpenBadge as updateOpenBadgeRecord, getOpenBadgeById } from '@repo/application';
+import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
@@ -19,9 +18,9 @@ export async function updateOpenBadge(
 ): Promise<FormState<OpenBadgeUpdateRequest>> {
   const t = await getTranslations();
   const session = await getServerSession();
-  const canManageBadges = canManageBadgesUser(session?.user);
+  const userCanManageBadges = canManageBadges(session?.user);
 
-  if (!session || !canManageBadges) {
+  if (!session || !userCanManageBadges) {
     return {
       success: false,
       valid: true,

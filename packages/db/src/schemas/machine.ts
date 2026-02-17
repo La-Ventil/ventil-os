@@ -1,8 +1,13 @@
 import type { Prisma } from '@prisma/client';
+import type { ActivityStatus } from '@repo/domain/activity-status';
 
-export type MachineSchema = Prisma.MachineGetPayload<Prisma.MachineDefaultArgs>;
+export type MachineSchemaRaw = Prisma.MachineGetPayload<Prisma.MachineDefaultArgs>;
 
-export type MachineAdminSchema = Prisma.MachineGetPayload<{
+export type MachineSchema = Omit<MachineSchemaRaw, 'status'> & {
+  status: ActivityStatus;
+};
+
+export type MachineAdminSchemaRaw = Prisma.MachineGetPayload<{
   select: {
     id: true;
     name: true;
@@ -20,3 +25,7 @@ export type MachineAdminSchema = Prisma.MachineGetPayload<{
     };
   };
 }>;
+
+export type MachineAdminSchema = Omit<MachineAdminSchemaRaw, 'status'> & {
+  status: ActivityStatus;
+};

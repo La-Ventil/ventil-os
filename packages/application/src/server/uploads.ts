@@ -2,7 +2,9 @@ import fs from 'fs/promises';
 import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
-import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../uploads-constants';
+import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from './uploads-constants';
+
+export { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB };
 
 export type ImageValidationError = 'imageRequired' | 'imageInvalidType' | 'imageTooLarge';
 
@@ -20,13 +22,7 @@ export type ImageValidationResult =
       params?: Record<string, string>;
     };
 
-function resolveUploadRoot({
-  uploadRoot,
-  cwd
-}: {
-  uploadRoot: string;
-  cwd: string;
-}) {
+function resolveUploadRoot({ uploadRoot, cwd }: { uploadRoot: string; cwd: string }) {
   if (path.isAbsolute(uploadRoot)) {
     throw new Error('UPLOADS_DIR must be a relative path (no leading "/"). Example: public/uploads');
   }

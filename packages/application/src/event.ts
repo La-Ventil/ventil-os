@@ -1,6 +1,6 @@
 import { eventRepository } from '@repo/db';
 import type { EventViewModel } from '@repo/view-models/event';
-import { mapEventToViewModel } from './mappers/event';
+import { mapEventToViewModel } from './presenters/event';
 
 export const listEvents = async (): Promise<EventViewModel[]> => {
   const events = await eventRepository.listEvents();
