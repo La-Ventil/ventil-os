@@ -14,23 +14,5 @@ export const mapMachineDetailsToViewModel = (
   status: machine.status,
   availability,
   roomName: machine.room?.name ?? null,
-  badgeRequirements: machine.badgeRequirements.map(mapBadgeRequirement)
-});
-
-const mapBadgeRequirement = (requirement: MachineDetailsSchema['badgeRequirements'][number]) => ({
-  id: requirement.id,
-  badge: {
-    id: requirement.requiredOpenBadge.id,
-    name: requirement.requiredOpenBadge.name,
-    type: requirement.requiredOpenBadge.type ?? null,
-    imageUrl: requirement.requiredOpenBadge.coverImage ?? null
-  },
-  level: requirement.requiredOpenBadgeLevel
-    ? {
-        id: requirement.requiredOpenBadgeLevel.id,
-        title: requirement.requiredOpenBadgeLevel.title ?? null,
-        level: requirement.requiredOpenBadgeLevel.level
-      }
-    : null,
-  rule: requirement.ruleType
+  badgeRequirements: machine.badgeRequirements
 });

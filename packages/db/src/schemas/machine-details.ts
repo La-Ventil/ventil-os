@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import type { ActivityStatus } from '@repo/domain/activity-status';
-import type { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
+import type { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
 
 export type MachineDetailsSchemaRaw = Prisma.MachineGetPayload<{
   select: {
@@ -18,7 +18,7 @@ export type MachineDetailsSchemaRaw = Prisma.MachineGetPayload<{
     badgeRequirements: {
       select: {
         id: true;
-        ruleType: true;
+        rule: true;
         requiredOpenBadge: {
           select: {
             id: true;
@@ -39,13 +39,7 @@ export type MachineDetailsSchemaRaw = Prisma.MachineGetPayload<{
   };
 }>;
 
-type BadgeRequirementRaw = MachineDetailsSchemaRaw['badgeRequirements'][number];
-
-type BadgeRequirement = Omit<BadgeRequirementRaw, 'ruleType'> & {
-  ruleType: OpenBadgeRequirementRule;
-};
-
 export type MachineDetailsSchema = Omit<MachineDetailsSchemaRaw, 'status' | 'badgeRequirements'> & {
   status: ActivityStatus;
-  badgeRequirements: BadgeRequirement[];
+  badgeRequirements: OpenBadgeRequirement[];
 };

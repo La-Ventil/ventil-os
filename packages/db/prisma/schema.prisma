@@ -361,7 +361,7 @@ model MachineOpenBadgeRequirement {
   requiredOpenBadge        OpenBadge       @relation(fields: [requiredOpenBadgeId], references: [id], onDelete: Cascade)
   requiredOpenBadgeLevelId String?
   requiredOpenBadgeLevel   OpenBadgeLevel? @relation("RequiredOpenBadgeLevel", fields: [requiredOpenBadgeLevelId], references: [id])
-  ruleType                 OpenBadgeRequirementRule @default(all)
+  rule                     OpenBadgeRequirementRule @default(all)
 
   @@unique([machineId, requiredOpenBadgeId, requiredOpenBadgeLevelId])
 }

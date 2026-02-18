@@ -27,8 +27,21 @@ export class MachineRepository {
       ...machine,
       status: toActivityStatus(machine.status),
       badgeRequirements: machine.badgeRequirements.map((requirement) => ({
-        ...requirement,
-        ruleType: toOpenBadgeRequirementRule(requirement.ruleType)
+        id: requirement.id,
+        rule: toOpenBadgeRequirementRule(requirement.rule),
+        openBadge: {
+          id: requirement.requiredOpenBadge.id,
+          name: requirement.requiredOpenBadge.name,
+          type: requirement.requiredOpenBadge.type ?? null,
+          imageUrl: requirement.requiredOpenBadge.coverImage ?? null
+        },
+        level: requirement.requiredOpenBadgeLevel
+          ? {
+              id: requirement.requiredOpenBadgeLevel.id,
+              title: requirement.requiredOpenBadgeLevel.title ?? null,
+              level: requirement.requiredOpenBadgeLevel.level
+            }
+          : null
       }))
     };
   }
@@ -63,7 +76,7 @@ export class MachineRepository {
         badgeRequirements: {
           select: {
             id: true,
-            ruleType: true,
+            rule: true,
             requiredOpenBadge: {
               select: { id: true, name: true, type: true, coverImage: true }
             },
