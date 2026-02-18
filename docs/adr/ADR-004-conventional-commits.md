@@ -24,15 +24,20 @@ Rules:
 - Keep the subject line under 72 characters when possible.
 - Use optional body/footer to add context.
 - Mark breaking changes with `!` in the type or with a `BREAKING CHANGE:` footer.
+- Use `pnpm commit` (commitizen) to generate compliant messages when unsure.
 
 Common types:
 - `feat`: new feature
 - `fix`: bug fix
-- `chore`: maintenance tasks
+- `perf`: performance
+- `style`: styles
 - `docs`: documentation
-- `refactor`: refactoring with no behavior change
-- `test`: adding or updating tests
-- `ci`: CI configuration or scripts
+- `refactor`: refactoring with no behavior change (hidden in changelog)
+- `test`: adding or updating tests (hidden in changelog)
+- `build`: build tooling (hidden in changelog)
+- `ci`: CI configuration or scripts (hidden in changelog)
+- `revert`: revert commits (hidden in changelog)
+- `chore`: maintenance tasks (hidden in changelog)
 
 Examples:
 - `feat(ui): add open badge modal`

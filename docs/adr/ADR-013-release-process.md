@@ -23,6 +23,12 @@ Release cycle:
 3. Fast‑forward `staging` → `main` to realign branches.
 4. Return to `dev` for continued work.
 
+Changelog configuration:
+- Source of truth: `.versionrc.cjs` (standard-version).
+- Sections shown: `feat` (Features), `fix` (Bug Fixes), `perf` (Performance), `style` (Styles), `docs` (Docs).
+- Hidden from changelog: `refactor`, `test`, `build`, `ci`, `revert`, `chore`.
+- Commit body is included when present (rendered as an indented line under the entry).
+
 Commands (from repo root):
 - `git fetch origin`
 - `git checkout main`
