@@ -2,68 +2,36 @@
 
 import { getTranslations } from 'next-intl/server';
 import { updateUserProfile } from '@repo/application';
-import { ProfileFormInput, profileFormSchema } from '@repo/application/forms';
+import { ProfileFormInput, parseProfileFormInput } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
-import { requiresEducationLevel } from '@repo/domain/user/user-role';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function updateProfile(
   previousState: FormState<ProfileFormInput>,
   formData: FormData
 ): Promise<FormState<ProfileFormInput>> {
   const t = await getTranslations();
-  const { success, data, error } = profileFormSchema.safeParse(formData);
+  const userProfile = await getUserProfileFromSession();
+  const { success, data, error } = parseProfileFormInput(formData, userProfile.profile);
   const values = Object.fromEntries(formData) as unknown as ProfileFormInput;
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      return {
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors),
-        fieldErrors,
-        values
-      };
+      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
     }
-
-    const userProfile = await getUserProfileFromSession();
 
     const profileFormData: ProfileFormInput = data;
-    if (requiresEducationLevel(userProfile.profile) && !profileFormData.educationLevel) {
-      const fieldErrors = {
-        educationLevel: [t('validation.profile.educationLevelRequired')]
-      };
-
-      return {
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors),
-        fieldErrors,
-        values
-      };
-    }
     await updateUserProfile(userProfile.id, {
       firstName: profileFormData.firstName,
       lastName: profileFormData.lastName,
       educationLevel: profileFormData.educationLevel
     });
 
-    return {
-      success: true,
-      valid: true,
-      values,
-      message: t('forms.messages.profileUpdated'),
-      fieldErrors: {}
-    };
+    return formSuccess(values, t('forms.messages.profileUpdated'));
   } catch (e) {
     console.error(e);
-    return {
-      success: false,
-      valid: true,
-      message: t('validation.genericError'),
-      fieldErrors: {},
-      values
-    };
+    return formError(values, { message: t('validation.genericError') });
   }
 }

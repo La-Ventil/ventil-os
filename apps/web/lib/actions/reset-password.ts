@@ -6,6 +6,7 @@ import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/applicati
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
 import { sendPasswordResetEmail } from '../email';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function resetPassword(
   previousState: FormState<ResetPasswordFormInput>,
@@ -18,13 +19,11 @@ export async function resetPassword(
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
       const values = Object.fromEntries(formData) as unknown as ResetPasswordFormInput;
-      return {
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+      return formValidationError(
+        values,
         fieldErrors,
-        values
-      };
+        fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 })
+      );
     }
 
     const { email } = data;
@@ -33,7 +32,7 @@ export async function resetPassword(
     const okMessage = t('resetPassword.success');
 
     if (!user || !resetToken) {
-      return { success: true, valid: true, message: okMessage, fieldErrors: {}, values: { email } };
+      return formSuccess({ email }, okMessage);
     }
 
     await sendPasswordResetEmail({
@@ -44,22 +43,10 @@ export async function resetPassword(
       t
     });
 
-    return {
-      success: true,
-      valid: true,
-      message: okMessage,
-      fieldErrors: {},
-      values: { email }
-    };
+    return formSuccess({ email }, okMessage);
   } catch (err) {
     console.error(err);
 
-    return {
-      success: false,
-      valid: true,
-      message: t('validation.genericError'),
-      fieldErrors: {},
-      values: previousState.values
-    };
+    return formError(previousState.values, { message: t('validation.genericError') });
   }
 }

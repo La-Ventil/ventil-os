@@ -4,6 +4,7 @@ import { awardOpenBadgeLevelUseCase, assignOpenBadgeFormInputSchema } from '@rep
 import { getTranslations } from 'next-intl/server';
 import type { FormState } from '@repo/form/form-state';
 import { getServerSession } from '../auth';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 type AssignOpenBadgeInput = {
   userId: string;
@@ -16,24 +17,18 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<Form
   const session = await getServerSession();
 
   if (!session || !session.user?.id) {
-    return {
-      success: false,
-      valid: true,
-      message: t('validation.unauthorized', { defaultMessage: 'Unauthorized' }),
-      fieldErrors: {},
-      values: input
-    };
+    return formError(input, {
+      message: t('validation.unauthorized', { defaultMessage: 'Unauthorized' })
+    });
   }
 
   const parsed = assignOpenBadgeFormInputSchema.safeParse(input);
   if (!parsed.success) {
-    return {
-      success: false,
-      valid: false,
-      message: t('validation.invalidInput', { defaultMessage: 'Invalid input' }),
-      fieldErrors: parsed.error.flatten().fieldErrors,
-      values: input
-    };
+    return formValidationError(
+      input,
+      parsed.error.flatten().fieldErrors,
+      t('validation.invalidInput', { defaultMessage: 'Invalid input' })
+    );
   }
 
   await awardOpenBadgeLevelUseCase(parsed.data, {
@@ -43,11 +38,8 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<Form
     pedagogicalAdmin: session.user.pedagogicalAdmin
   });
 
-  return {
-    success: true,
-    valid: true,
-    message: t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' }),
-    fieldErrors: {},
-    values: parsed.data
-  };
+  return formSuccess(
+    parsed.data,
+    t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
+  );
 }

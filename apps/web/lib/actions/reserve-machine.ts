@@ -7,6 +7,7 @@ import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { revalidatePath } from 'next/cache';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function reserveMachine(
   previousState: FormState<MachineReservationFormInput>,
@@ -16,26 +17,16 @@ export async function reserveMachine(
   const session = await getServerSession();
 
   if (!session || !session.user?.id) {
-    return {
-      success: false,
-      valid: true,
-      message: t('pages.hub.fabLab.modal.reservationForm.unauthorized'),
-      fieldErrors: {},
-      values: previousState.values
-    };
+    return formError(previousState.values, {
+      message: t('pages.hub.fabLab.modal.reservationForm.unauthorized')
+    });
   }
 
   const { success, data, error } = machineReservationFormSchema.safeParse(formData);
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
-    return {
-      success: false,
-      valid: false,
-      message: fieldErrorsToSingleMessage(fieldErrors),
-      fieldErrors,
-      values: previousState.values
-    };
+    return formValidationError(previousState.values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
   }
 
   const startsAt = new Date(data.startsAt);
@@ -51,13 +42,7 @@ export async function reserveMachine(
     });
     revalidatePath('/hub/fab-lab');
 
-    return {
-      success: true,
-      valid: true,
-      message: t('pages.hub.fabLab.modal.reservationForm.success'),
-      fieldErrors: {},
-      values: data
-    };
+    return formSuccess(data, t('pages.hub.fabLab.modal.reservationForm.success'));
   } catch (err) {
     const message = (() => {
       if (!(err instanceof Error)) {
@@ -71,12 +56,6 @@ export async function reserveMachine(
       return t('pages.hub.fabLab.modal.reservationForm.error');
     })();
 
-    return {
-      success: false,
-      valid: true,
-      message,
-      fieldErrors: {},
-      values: data
-    };
+    return formError(data, { message });
   }
 }

@@ -11,6 +11,7 @@ import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/up
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function createOpenBadge(
   previousState: FormState<OpenBadgeCreateRequest>,
@@ -21,13 +22,7 @@ export async function createOpenBadge(
   const userCanManageBadges = canManageBadges(session?.user);
 
   if (!session || !userCanManageBadges) {
-    return {
-      success: false,
-      valid: true,
-      message: t('openBadge.create.unauthorized'),
-      fieldErrors: {},
-      values: previousState.values
-    };
+    return formError(previousState.values, { message: t('openBadge.create.unauthorized') });
   }
   const userId = session.user.id;
 
@@ -35,13 +30,7 @@ export async function createOpenBadge(
   const parseResult = openBadgeCreateRequestSchema.safeParse(formData);
   if (!parseResult.success) {
     const fieldErrors = zodErrorToFieldErrors(parseResult.error, t);
-    return {
-      success: false,
-      valid: false,
-      message: fieldErrorsToSingleMessage(fieldErrors),
-      fieldErrors,
-      values: previousState.values
-    };
+    return formValidationError(previousState.values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
   }
   const request = parseResult.data as OpenBadgeCreateRequest;
   const responseValues: OpenBadgeCreateRequest = { ...request, imageFile: undefined };
@@ -51,13 +40,7 @@ export async function createOpenBadge(
   if ('error' in imageResult) {
     const fieldKey = imageResult.field ?? 'imageUrl';
     const msg = t(`validation.${imageResult.error}`, imageResult.params);
-    return {
-      success: false,
-      valid: false,
-      message: msg,
-      fieldErrors: { [fieldKey]: [msg] },
-      values: responseValues
-    };
+    return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
   }
 
   // 3) Build final values
@@ -77,21 +60,9 @@ export async function createOpenBadge(
       creatorId: userId
     });
 
-    return {
-      success: true,
-      valid: true,
-      values: responseValues,
-      message: t('openBadge.create.success'),
-      fieldErrors: {}
-    };
+    return formSuccess(responseValues, t('openBadge.create.success'));
   } catch (err) {
     console.error(err);
-    return {
-      success: false,
-      valid: true,
-      message: t('openBadge.create.error'),
-      fieldErrors: {},
-      values: responseValues ?? previousState.values
-    };
+    return formError(responseValues ?? previousState.values, { message: t('openBadge.create.error') });
   }
 }

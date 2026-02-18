@@ -2,14 +2,12 @@
 
 import { getTranslations } from 'next-intl/server';
 import { registerUserAccount, requestEmailVerification } from '@repo/application';
-import { hashSecret } from '@repo/crypto';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
-import type { UserRole } from '@repo/domain/user/user-role';
-import { requiresEducationLevel } from '@repo/domain/user/user-role';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function registerUser(
   previousState: FormState<SignupFormInput>,
@@ -21,39 +19,17 @@ export async function registerUser(
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      return {
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors),
-        fieldErrors,
-        values
-      };
+      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
     }
 
     const signupFormData: SignupFormInput = data;
-    if (requiresEducationLevel(signupFormData.profile as UserRole) && !signupFormData.educationLevel) {
-      const fieldErrors = {
-        educationLevel: [t('validation.signup.educationLevelRequired')]
-      };
-
-      return {
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors),
-        fieldErrors,
-        values
-      };
-    }
-    const { salt, hashedSecret, iterations } = await hashSecret(signupFormData.password);
     const result = await registerUserAccount({
       email: signupFormData.email,
       firstName: signupFormData.firstName,
       lastName: signupFormData.lastName,
       educationLevel: signupFormData.educationLevel,
       profileType: signupFormData.profile,
-      hashedSecret,
-      salt,
-      iterations,
+      password: signupFormData.password,
       termsAccepted: signupFormData.terms === 'on'
     });
 
@@ -62,13 +38,10 @@ export async function registerUser(
         email: [t('validation.emailAlreadyUsed')]
       };
 
-      return {
-        success: false,
-        valid: true,
+      return formError(values, {
         message: fieldErrorsToSingleMessage(fieldErrors),
-        fieldErrors,
-        values
-      };
+        fieldErrors
+      });
     }
 
     const { token } = await requestEmailVerification(signupFormData.email);
@@ -80,21 +53,9 @@ export async function registerUser(
       t
     });
 
-    return {
-      success: true,
-      valid: true,
-      values,
-      message: t('signup.success'),
-      fieldErrors: {}
-    };
+    return formSuccess(values, t('signup.success'));
   } catch (e) {
     console.error(e);
-    return {
-      success: false,
-      valid: true,
-      message: t('signup.error'),
-      fieldErrors: {},
-      values
-    };
+    return formError(values, { message: t('signup.error') });
   }
 }

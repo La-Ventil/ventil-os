@@ -355,6 +355,9 @@ importers:
 
   packages/application:
     dependencies:
+      '@repo/crypto':
+        specifier: workspace:*
+        version: link:../crypto
       '@repo/db':
         specifier: workspace:*
         version: link:../db

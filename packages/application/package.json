@@ -21,6 +21,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@repo/crypto": "workspace:*",
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/view-models": "workspace:*",

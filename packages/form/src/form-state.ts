@@ -19,6 +19,10 @@ export interface FormState<FormData> {
   isValid?: boolean;
 }
 
+/**
+ * For common helpers that build FormState consistently, see:
+ * `@repo/form/form-state-builders`.
+ */
 export function createFormState<FormData>(values: FormData): FormState<FormData> {
   return {
     success: false,

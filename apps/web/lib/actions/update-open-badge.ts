@@ -11,6 +11,7 @@ import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/up
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function updateOpenBadge(
   previousState: FormState<OpenBadgeUpdateRequest>,
@@ -21,25 +22,13 @@ export async function updateOpenBadge(
   const userCanManageBadges = canManageBadges(session?.user);
 
   if (!session || !userCanManageBadges) {
-    return {
-      success: false,
-      valid: true,
-      message: t('openBadge.update.unauthorized'),
-      fieldErrors: {},
-      values: previousState.values
-    };
+    return formError(previousState.values, { message: t('openBadge.update.unauthorized') });
   }
 
   const parseResult = openBadgeUpdateRequestSchema.safeParse(formData);
   if (!parseResult.success) {
     const fieldErrors = zodErrorToFieldErrors(parseResult.error, t);
-    return {
-      success: false,
-      valid: false,
-      message: fieldErrorsToSingleMessage(fieldErrors),
-      fieldErrors,
-      values: previousState.values
-    };
+    return formValidationError(previousState.values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
   }
 
   const request = parseResult.data as OpenBadgeUpdateRequest;
@@ -48,13 +37,7 @@ export async function updateOpenBadge(
   const current = await getOpenBadgeById(request.id);
   if (!current) {
     const msg = t('openBadge.update.notFound');
-    return {
-      success: false,
-      valid: true,
-      message: msg,
-      fieldErrors: {},
-      values: responseValues
-    };
+    return formError(responseValues, { message: msg });
   }
 
   let imageUrl = current.coverImage ?? null;
@@ -63,13 +46,7 @@ export async function updateOpenBadge(
     if ('error' in imageResult) {
       const fieldKey = imageResult.field ?? 'imageUrl';
       const msg = t(`validation.${imageResult.error}`, imageResult.params);
-      return {
-        success: false,
-        valid: false,
-        message: msg,
-        fieldErrors: { [fieldKey]: [msg] },
-        values: responseValues
-      };
+      return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
     }
     imageUrl = imageResult.url;
   }
@@ -94,21 +71,9 @@ export async function updateOpenBadge(
       activationEnabled: values.activationEnabled
     });
 
-    return {
-      success: true,
-      valid: true,
-      values: responseValues,
-      message: t('openBadge.update.success'),
-      fieldErrors: {}
-    };
+    return formSuccess(responseValues, t('openBadge.update.success'));
   } catch (err) {
     console.error(err);
-    return {
-      success: false,
-      valid: true,
-      message: t('openBadge.update.error'),
-      fieldErrors: {},
-      values: responseValues
-    };
+    return formError(responseValues, { message: t('openBadge.update.error') });
   }
 }

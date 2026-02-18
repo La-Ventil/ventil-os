@@ -5,6 +5,7 @@ import { resendEmailChangeVerification } from '@repo/application';
 import type { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { sendEmailVerification } from '../email';
+import { formError, formSuccess } from '@repo/form/form-state-builders';
 
 type EmptyForm = Record<string, never>;
 
@@ -18,13 +19,9 @@ export async function resendEmailChange(
   const result = await resendEmailChangeVerification(userProfile.id);
 
   if (!result.ok) {
-    return {
-      ...previousState,
-      success: false,
-      valid: true,
-      message: t('forms.messages.emailVerificationNotPending'),
-      fieldErrors: {}
-    };
+    return formError(previousState.values, {
+      message: t('forms.messages.emailVerificationNotPending')
+    });
   }
 
   await sendEmailVerification({
@@ -35,11 +32,5 @@ export async function resendEmailChange(
     t
   });
 
-  return {
-    ...previousState,
-    success: true,
-    valid: true,
-    message: t('forms.messages.emailVerificationSent'),
-    fieldErrors: {}
-  };
+  return formSuccess(previousState.values, t('forms.messages.emailVerificationSent'));
 }

@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { cancelEmailChange } from '@repo/application';
 import type { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
+import { formError, formSuccess } from '@repo/form/form-state-builders';
 
 type EmptyForm = Record<string, never>;
 
@@ -17,20 +18,10 @@ export async function cancelEmailChangeAction(
   const result = await cancelEmailChange(userProfile.id);
 
   if (!result.ok) {
-    return {
-      ...previousState,
-      success: false,
-      valid: true,
-      message: t('forms.messages.emailVerificationNotPending'),
-      fieldErrors: {}
-    };
+    return formError(previousState.values, {
+      message: t('forms.messages.emailVerificationNotPending')
+    });
   }
 
-  return {
-    ...previousState,
-    success: true,
-    valid: true,
-    message: t('forms.messages.emailChangeCanceled'),
-    fieldErrors: {}
-  };
+  return formSuccess(previousState.values, t('forms.messages.emailChangeCanceled'));
 }

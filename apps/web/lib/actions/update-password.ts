@@ -2,10 +2,10 @@
 
 import { getTranslations } from 'next-intl/server';
 import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
-import { hashSecret } from '@repo/crypto';
 import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export type UpdatePasswordActionValues = UpdatePasswordFormInput & {
   email?: string;
@@ -26,14 +26,12 @@ export async function updatePassword(
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
       const values = Object.fromEntries(formData) as unknown as UpdatePasswordActionValues;
-      return {
-        token: previousState.token,
-        success: false,
-        valid: false,
-        message: fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+      return formValidationError(
+        values,
         fieldErrors,
-        values
-      };
+        fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+        { token: previousState.token }
+      );
     }
 
     const updatePasswordFormData: UpdatePasswordFormInput = data;
@@ -41,52 +39,35 @@ export async function updatePassword(
     const user = await findUserByValidResetToken(previousState.token);
 
     if (!user) {
-      return {
-        token: previousState.token,
-        success: false,
-        valid: true,
-        message: t('updatePassword.invalidToken', {
-          defaultMessage: "Ce lien de réinitialisation n'existe pas ou n'est plus valide."
-        }),
-        fieldErrors: {},
-        values: previousState.values
-      };
+      return formError(
+        previousState.values,
+        {
+          message: t('updatePassword.invalidToken', {
+            defaultMessage: "Ce lien de réinitialisation n'existe pas ou n'est plus valide."
+          })
+        },
+        { token: previousState.token }
+      );
     }
 
-    const { salt, hashedSecret, iterations } = await hashSecret(updatePasswordFormData.password);
+    await updateUserPassword(user.id, updatePasswordFormData.password);
 
-    await updateUserPassword(user.id, {
-      password: hashedSecret,
-      salt,
-      iterations
-    });
-
-    return {
-      token: previousState.token,
-      success: true,
-      valid: true,
-      message: t('updatePassword.success', {
-        defaultMessage: 'Votre mot de passe a bien été changé.'
-      }),
-      fieldErrors: {},
-      values: {
+    return formSuccess(
+      {
         email: user.email,
         password: '',
         passwordConfirmation: ''
-      }
-    };
+      },
+      t('updatePassword.success', {
+        defaultMessage: 'Votre mot de passe a bien été changé.'
+      }),
+      { token: previousState.token }
+    );
   } catch (err) {
     console.error(err);
 
     const fallback = t('validation.genericError');
 
-    return {
-      token: previousState.token,
-      success: false,
-      valid: true,
-      message: fallback,
-      fieldErrors: {},
-      values: previousState.values
-    };
+    return formError(previousState.values, { message: fallback }, { token: previousState.token });
   }
 }
