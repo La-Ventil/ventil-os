@@ -1,7 +1,7 @@
-import type { UserProfileSchema } from '@repo/db/schemas';
+import type { UserProfileReadModel } from '@repo/db/schemas';
 import type { UserProfile } from '@repo/view-models/user-profile';
 
-export const mapUserProfileToViewModel = (user: UserProfileSchema): UserProfile => ({
+export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfile => ({
   id: user.id,
   profile: user.profile,
   email: user.email,

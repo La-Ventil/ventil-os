@@ -1,35 +1,35 @@
 import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import type { ActivityStatus } from '@repo/domain/activity-status';
 import type {
-  OpenBadgeAdminSchemaRaw,
-  OpenBadgeProgressSchemaRaw,
-  OpenBadgeSchemaRaw
+  OpenBadgeAdminRow,
+  OpenBadgeProgressRow,
+  OpenBadgeRow
 } from '../schemas/open-badge';
 import {
-  includeOpenBadgeProgressSchemaRaw,
-  includeOpenBadgeSchemaRaw,
-  selectOpenBadgeAdminSchemaRaw
+  openBadgeProgressInclude,
+  openBadgeInclude,
+  openBadgeAdminSelect
 } from '../schemas/open-badge';
 
 export class OpenBadgeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async listOpenBadges(): Promise<OpenBadgeSchemaRaw[]> {
+  async listOpenBadges(): Promise<OpenBadgeRow[]> {
     const badges = await this.prisma.openBadge.findMany({
-      include: includeOpenBadgeSchemaRaw,
+      include: openBadgeInclude,
       orderBy: { name: 'asc' }
     });
 
-    return badges as OpenBadgeSchemaRaw[];
+    return badges as OpenBadgeRow[];
   }
 
-  async getOpenBadgeById(id: string): Promise<OpenBadgeSchemaRaw | null> {
+  async getOpenBadgeById(id: string): Promise<OpenBadgeRow | null> {
     const badge = await this.prisma.openBadge.findUnique({
       where: { id },
-      include: includeOpenBadgeSchemaRaw
+      include: openBadgeInclude
     });
 
-    return (badge as OpenBadgeSchemaRaw) ?? null;
+    return (badge as OpenBadgeRow) ?? null;
   }
 
   async getTrainerThresholdLevel(openBadgeId: string): Promise<number | null> {
@@ -94,23 +94,23 @@ export class OpenBadgeRepository {
     return levels;
   }
 
-  async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminSchemaRaw[]> {
+  async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminRow[]> {
     const badges = await this.prisma.openBadge.findMany({
-      select: selectOpenBadgeAdminSchemaRaw,
+      select: openBadgeAdminSelect,
       orderBy: { name: 'asc' }
     });
 
-    return badges as OpenBadgeAdminSchemaRaw[];
+    return badges as OpenBadgeAdminRow[];
   }
 
-  async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressSchemaRaw[]> {
+  async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressRow[]> {
     const progresses = await this.prisma.openBadgeProgress.findMany({
       where: { userId },
-      include: includeOpenBadgeProgressSchemaRaw,
+      include: openBadgeProgressInclude,
       orderBy: { openBadge: { name: 'asc' } }
     });
 
-    return progresses as OpenBadgeProgressSchemaRaw[];
+    return progresses as OpenBadgeProgressRow[];
   }
 
   async awardOpenBadgeLevel(input: { userId: string; openBadgeId: string; level: number; awardedById: string }) {
@@ -192,7 +192,7 @@ export class OpenBadgeRepository {
     status: ActivityStatus;
     creatorId: string;
     levels: Array<{ title: string; description: string }>;
-  }): Promise<OpenBadgeSchemaRaw> {
+  }): Promise<OpenBadgeRow> {
     const badge = await this.prisma.openBadge.create({
       data: {
         name: input.name,
@@ -210,10 +210,10 @@ export class OpenBadgeRepository {
           }))
         }
       },
-      include: includeOpenBadgeSchemaRaw
+      include: openBadgeInclude
     });
 
-    return badge as OpenBadgeSchemaRaw;
+    return badge as OpenBadgeRow;
   }
 
   async updateOpenBadge(input: {
@@ -223,7 +223,7 @@ export class OpenBadgeRepository {
     coverImage?: string | null;
     status: ActivityStatus;
     levels: Array<{ title: string; description: string }>;
-  }): Promise<OpenBadgeSchemaRaw> {
+  }): Promise<OpenBadgeRow> {
     const badge = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.openBadge.update({
         where: { id: input.id },
@@ -263,10 +263,10 @@ export class OpenBadgeRepository {
 
     const full = await this.prisma.openBadge.findUnique({
       where: { id: badge.id },
-      include: includeOpenBadgeSchemaRaw
+      include: openBadgeInclude
     });
 
-    return full as OpenBadgeSchemaRaw;
+    return full as OpenBadgeRow;
   }
 
   async deleteOpenBadge(id: string): Promise<{ id: string }> {

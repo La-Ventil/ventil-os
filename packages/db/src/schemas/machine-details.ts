@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { ActivityStatus } from '@repo/domain/activity-status';
 import type { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
 
-export const selectMachineDetailsSchemaRaw = {
+export const machineDetailsSelect = {
   id: true,
   category: true,
   name: true,
@@ -37,11 +37,11 @@ export const selectMachineDetailsSchemaRaw = {
   }
 } as const;
 
-export type MachineDetailsSchemaRaw = Prisma.MachineGetPayload<{
-  select: typeof selectMachineDetailsSchemaRaw;
+export type MachineDetailsRow = Prisma.MachineGetPayload<{
+  select: typeof machineDetailsSelect;
 }>;
 
-export type MachineDetailsSchema = Omit<MachineDetailsSchemaRaw, 'status' | 'badgeRequirements'> & {
+export type MachineDetailsReadModel = Omit<MachineDetailsRow, 'status' | 'badgeRequirements'> & {
   status: ActivityStatus;
   badgeRequirements: OpenBadgeRequirement[];
 };

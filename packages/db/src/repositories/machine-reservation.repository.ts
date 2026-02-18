@@ -1,23 +1,23 @@
 import type { PrismaClient } from '@prisma/client';
 import {
-  type MachineReservationAvailabilitySchema,
-  type MachineReservationAvailabilitySchemaRaw,
-  type MachineReservationParticipantSchema,
-  type MachineReservationSchema,
-  type MachineReservationSchemaRaw
+  type MachineReservationAvailabilityReadModel,
+  type MachineReservationAvailabilityRow,
+  type MachineReservationParticipantReadModel,
+  type MachineReservationReadModel,
+  type MachineReservationRow
 } from '../schemas/machine-reservation';
 import {
-  includeMachineReservationSchemaRaw,
-  selectMachineReservationAvailabilitySchemaRaw
+  machineReservationInclude,
+  machineReservationAvailabilitySelect
 } from '../schemas/machine-reservation';
 import { toMachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
-import type { UserSummarySchema } from '../schemas/user-summary';
+import type { UserSummaryReadModel } from '../schemas/user-summary';
 import { Email } from '@repo/domain/user/email';
 
 export class MachineReservationRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeUserSummary(user: MachineReservationSchemaRaw['creator']): UserSummarySchema {
+  private normalizeUserSummary(user: MachineReservationRow['creator']): UserSummaryReadModel {
     return {
       ...user,
       email: Email.from(user.email)
@@ -25,15 +25,15 @@ export class MachineReservationRepository {
   }
 
   private normalizeParticipant(
-    participant: MachineReservationSchemaRaw['participants'][number]
-  ): MachineReservationParticipantSchema {
+    participant: MachineReservationRow['participants'][number]
+  ): MachineReservationParticipantReadModel {
     return {
       id: participant.id,
       user: this.normalizeUserSummary(participant.user)
     };
   }
 
-  private normalizeReservation(reservation: MachineReservationSchemaRaw): MachineReservationSchema {
+  private normalizeReservation(reservation: MachineReservationRow): MachineReservationReadModel {
     return {
       ...reservation,
       status: toMachineReservationStatus(reservation.status),
@@ -43,8 +43,8 @@ export class MachineReservationRepository {
   }
 
   private normalizeReservationAvailability(
-    reservation: MachineReservationAvailabilitySchemaRaw
-  ): MachineReservationAvailabilitySchema {
+    reservation: MachineReservationAvailabilityRow
+  ): MachineReservationAvailabilityReadModel {
     return {
       ...reservation,
       status: toMachineReservationStatus(reservation.status)
@@ -55,7 +55,7 @@ export class MachineReservationRepository {
     machineId: string,
     rangeStart: Date,
     rangeEnd: Date
-  ): Promise<MachineReservationSchema[]> {
+  ): Promise<MachineReservationReadModel[]> {
     const reservations = await this.prisma.machineReservation.findMany({
       where: {
         machineId,
@@ -66,13 +66,13 @@ export class MachineReservationRepository {
           gt: rangeStart
         }
       },
-      include: includeMachineReservationSchemaRaw,
+      include: machineReservationInclude,
       orderBy: {
         startsAt: 'asc'
       }
     });
 
-    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationSchemaRaw));
+    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationRow));
   }
 
   async createMachineReservation(input: {
@@ -81,7 +81,7 @@ export class MachineReservationRepository {
     startsAt: Date;
     endsAt: Date;
     participantIds?: string[];
-  }): Promise<MachineReservationSchema> {
+  }): Promise<MachineReservationReadModel> {
     const participantIds = Array.from(new Set(input.participantIds ?? []));
     const reservation = await this.prisma.machineReservation.create({
       data: {
@@ -97,13 +97,13 @@ export class MachineReservationRepository {
             }
           : undefined
       },
-      include: includeMachineReservationSchemaRaw
+      include: machineReservationInclude
     });
 
-    return this.normalizeReservation(reservation as MachineReservationSchemaRaw);
+    return this.normalizeReservation(reservation as MachineReservationRow);
   }
 
-  async listForUser(userId: string): Promise<MachineReservationSchema[]> {
+  async listForUser(userId: string): Promise<MachineReservationReadModel[]> {
     const reservations = await this.prisma.machineReservation.findMany({
       where: {
         OR: [
@@ -117,16 +117,16 @@ export class MachineReservationRepository {
           }
         ]
       },
-      include: includeMachineReservationSchemaRaw,
+      include: machineReservationInclude,
       orderBy: {
         startsAt: 'asc'
       }
     });
 
-    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationSchemaRaw));
+    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationRow));
   }
 
-  async listForMachinesBetween(rangeStart: Date, rangeEnd: Date): Promise<MachineReservationAvailabilitySchema[]> {
+  async listForMachinesBetween(rangeStart: Date, rangeEnd: Date): Promise<MachineReservationAvailabilityReadModel[]> {
     const reservations = await this.prisma.machineReservation.findMany({
       where: {
         status: 'confirmed',
@@ -137,33 +137,33 @@ export class MachineReservationRepository {
           gt: rangeStart
         }
       },
-      select: selectMachineReservationAvailabilitySchemaRaw
+      select: machineReservationAvailabilitySelect
     });
 
     return reservations.map((reservation) =>
-      this.normalizeReservationAvailability(reservation as MachineReservationAvailabilitySchemaRaw)
+      this.normalizeReservationAvailability(reservation as MachineReservationAvailabilityRow)
     );
   }
 
-  async getById(reservationId: string): Promise<MachineReservationSchema | null> {
+  async getById(reservationId: string): Promise<MachineReservationReadModel | null> {
     const reservation = await this.prisma.machineReservation.findUnique({
       where: { id: reservationId },
-      include: includeMachineReservationSchemaRaw
+      include: machineReservationInclude
     });
 
-    return reservation ? this.normalizeReservation(reservation as MachineReservationSchemaRaw) : null;
+    return reservation ? this.normalizeReservation(reservation as MachineReservationRow) : null;
   }
 
-  async cancelReservation(reservationId: string): Promise<MachineReservationSchema> {
+  async cancelReservation(reservationId: string): Promise<MachineReservationReadModel> {
     const reservation = await this.prisma.machineReservation.update({
       where: { id: reservationId },
       data: {
         status: 'cancelled'
       },
-      include: includeMachineReservationSchemaRaw
+      include: machineReservationInclude
     });
 
-    return this.normalizeReservation(reservation as MachineReservationSchemaRaw);
+    return this.normalizeReservation(reservation as MachineReservationRow);
   }
 
   async hasOverlap(machineId: string, rangeStart: Date, rangeEnd: Date): Promise<boolean> {

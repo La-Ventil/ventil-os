@@ -1,7 +1,7 @@
-import type { UserProfileSchema } from '@repo/db/schemas';
+import type { UserProfileReadModel } from '@repo/db/schemas';
 import { User } from '@repo/domain/user/user';
 
-export const toDomainUser = (user: UserProfileSchema): User =>
+export const toDomainUser = (user: UserProfileReadModel): User =>
   User.from({
     id: user.id,
     profile: user.profile,

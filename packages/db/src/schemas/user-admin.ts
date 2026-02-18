@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { Email } from '@repo/domain/user/email';
 import type { UserRole } from '@repo/domain/user/user-role';
 
-export const selectUserAdminSchemaRaw = {
+export const userAdminSelect = {
   id: true,
   email: true,
   firstName: true,
@@ -21,12 +21,12 @@ export const selectUserAdminSchemaRaw = {
   }
 } as const;
 
-export type UserAdminSchemaRaw = Prisma.UserGetPayload<{
-  select: typeof selectUserAdminSchemaRaw;
+export type UserAdminRow = Prisma.UserGetPayload<{
+  select: typeof userAdminSelect;
 }>;
 
-export type UserAdminSchema = Omit<
-  UserAdminSchemaRaw,
+export type UserAdminReadModel = Omit<
+  UserAdminRow,
   'email' | 'profile' | 'studentProfile' | 'externalProfile'
 > & {
   email: Email;

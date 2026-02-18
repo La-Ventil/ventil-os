@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
-export const includeEventSchemaRaw = {
+export const eventInclude = {
   template: {
     select: {
       type: true
@@ -18,6 +18,6 @@ export const includeEventSchemaRaw = {
   }
 } as const;
 
-export type EventSchema = Prisma.EventGetPayload<{
-  include: typeof includeEventSchemaRaw;
+export type EventReadModel = Prisma.EventGetPayload<{
+  include: typeof eventInclude;
 }>;

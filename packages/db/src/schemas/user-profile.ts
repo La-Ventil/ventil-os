@@ -3,7 +3,7 @@ import type { EducationLevel } from '@repo/domain/user/education-level';
 import type { Email } from '@repo/domain/user/email';
 import type { UserRole } from '@repo/domain/user/user-role';
 
-export const selectUserProfileSchemaRaw = {
+export const userProfileSelect = {
   id: true,
   email: true,
   pendingEmail: true,
@@ -20,12 +20,12 @@ export const selectUserProfileSchemaRaw = {
   firstName: true
 } as const;
 
-export type UserProfileSchemaRaw = Prisma.UserGetPayload<{
-  select: typeof selectUserProfileSchemaRaw;
+export type UserProfileRow = Prisma.UserGetPayload<{
+  select: typeof userProfileSelect;
 }>;
 
-export type UserProfileSchema = Omit<
-  UserProfileSchemaRaw,
+export type UserProfileReadModel = Omit<
+  UserProfileRow,
   'email' | 'pendingEmail' | 'educationLevel' | 'profile' | 'studentProfile' | 'externalProfile'
 > & {
   email: Email;

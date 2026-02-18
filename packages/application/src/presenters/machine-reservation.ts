@@ -1,10 +1,10 @@
-import type { MachineReservationSchema } from '@repo/db/schemas';
+import type { MachineReservationReadModel } from '@repo/db/schemas';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { assertReservationInterval } from '@repo/domain/machine/reservation-rules';
 import { mapUserSummaryToViewModel } from './user-summary';
 
 export const mapMachineReservationToViewModel = (
-  reservation: MachineReservationSchema
+  reservation: MachineReservationReadModel
 ): MachineReservationViewModel => {
   assertReservationInterval(
     { start: reservation.startsAt, end: reservation.endsAt },

@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import type { ActivityStatus } from '@repo/domain/activity-status';
 
-export const selectMachineSummarySchemaRaw = {
+export const machineSummarySelect = {
   id: true,
   name: true,
   category: true,
@@ -10,15 +10,15 @@ export const selectMachineSummarySchemaRaw = {
   status: true
 } as const;
 
-export type MachineSummarySchemaRaw = Prisma.MachineGetPayload<{
-  select: typeof selectMachineSummarySchemaRaw;
+export type MachineSummaryRow = Prisma.MachineGetPayload<{
+  select: typeof machineSummarySelect;
 }>;
 
-export type MachineSummarySchema = Omit<MachineSummarySchemaRaw, 'status'> & {
+export type MachineSummaryReadModel = Omit<MachineSummaryRow, 'status'> & {
   status: ActivityStatus;
 };
 
-export const selectMachineAdminSchemaRaw = {
+export const machineAdminSelect = {
   id: true,
   name: true,
   category: true,
@@ -35,10 +35,10 @@ export const selectMachineAdminSchemaRaw = {
   }
 } as const;
 
-export type MachineAdminSchemaRaw = Prisma.MachineGetPayload<{
-  select: typeof selectMachineAdminSchemaRaw;
+export type MachineAdminRow = Prisma.MachineGetPayload<{
+  select: typeof machineAdminSelect;
 }>;
 
-export type MachineAdminSchema = Omit<MachineAdminSchemaRaw, 'status'> & {
+export type MachineAdminReadModel = Omit<MachineAdminRow, 'status'> & {
   status: ActivityStatus;
 };

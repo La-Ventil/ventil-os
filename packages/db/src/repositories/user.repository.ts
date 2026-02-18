@@ -2,21 +2,21 @@ import { type Prisma, type PrismaClient } from '@prisma/client';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
 import { deriveUserRole } from '@repo/domain/user/user-role';
-import { selectUserProfileSchemaRaw } from '../schemas/user-profile';
-import { selectUserCredentialsSchemaRaw } from '../schemas/user-credentials';
-import { selectUserAdminSchemaRaw } from '../schemas/user-admin';
-import { selectUserPasswordResetSchemaRaw } from '../schemas/user-password-reset';
-import { selectUserSummarySchemaRaw } from '../schemas/user-summary';
-import type { UserCredentialsSchema, UserCredentialsSchemaRaw } from '../schemas/user-credentials';
-import type { UserAdminSchema, UserAdminSchemaRaw } from '../schemas/user-admin';
-import type { UserPasswordResetSchema, UserPasswordResetSchemaRaw } from '../schemas/user-password-reset';
-import type { UserProfileSchema, UserProfileSchemaRaw } from '../schemas/user-profile';
-import type { UserSummarySchema, UserSummarySchemaRaw } from '../schemas/user-summary';
+import { userProfileSelect } from '../schemas/user-profile';
+import { userCredentialsSelect } from '../schemas/user-credentials';
+import { userAdminSelect } from '../schemas/user-admin';
+import { userPasswordResetSelect } from '../schemas/user-password-reset';
+import { userSummarySelect } from '../schemas/user-summary';
+import type { UserCredentialsReadModel, UserCredentialsRow } from '../schemas/user-credentials';
+import type { UserAdminReadModel, UserAdminRow } from '../schemas/user-admin';
+import type { UserPasswordResetReadModel, UserPasswordResetRow } from '../schemas/user-password-reset';
+import type { UserProfileReadModel, UserProfileRow } from '../schemas/user-profile';
+import type { UserSummaryReadModel, UserSummaryRow } from '../schemas/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeUserProfile(user: UserProfileSchemaRaw): UserProfileSchema {
+  private normalizeUserProfile(user: UserProfileRow): UserProfileReadModel {
     const { email, pendingEmail, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
 
     return {
@@ -28,7 +28,7 @@ export class UserRepository {
     };
   }
 
-  private normalizeUserCredentials(user: UserCredentialsSchemaRaw): UserCredentialsSchema {
+  private normalizeUserCredentials(user: UserCredentialsRow): UserCredentialsReadModel {
     const { email, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
 
     return {
@@ -39,7 +39,7 @@ export class UserRepository {
     };
   }
 
-  private normalizeUserAdmin(user: UserAdminSchemaRaw): UserAdminSchema {
+  private normalizeUserAdmin(user: UserAdminRow): UserAdminReadModel {
     const { email, profile, studentProfile, externalProfile, ...rest } = user;
 
     return {
@@ -49,7 +49,7 @@ export class UserRepository {
     };
   }
 
-  private normalizeUserSummary(user: UserSummarySchemaRaw): UserSummarySchema {
+  private normalizeUserSummary(user: UserSummaryRow): UserSummaryReadModel {
     const { email, ...rest } = user;
 
     return {
@@ -58,7 +58,7 @@ export class UserRepository {
     };
   }
 
-  private normalizeUserPasswordReset(user: UserPasswordResetSchemaRaw): UserPasswordResetSchema {
+  private normalizeUserPasswordReset(user: UserPasswordResetRow): UserPasswordResetReadModel {
     const { email, ...rest } = user;
 
     return {
@@ -67,60 +67,60 @@ export class UserRepository {
     };
   }
 
-  async getUserProfileByEmail(email: string): Promise<UserProfileSchema | null> {
+  async getUserProfileByEmail(email: string): Promise<UserProfileReadModel | null> {
     const maybeUser = await this.prisma.user.findFirst({
       where: { email },
-      select: selectUserProfileSchemaRaw
+      select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
   }
 
-  async getUserProfileById(userId: string): Promise<UserProfileSchema | null> {
+  async getUserProfileById(userId: string): Promise<UserProfileReadModel | null> {
     const maybeUser = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: selectUserProfileSchemaRaw
+      select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
   }
 
-  async getUserProfileByEmailOrPending(email: string): Promise<UserProfileSchema | null> {
+  async getUserProfileByEmailOrPending(email: string): Promise<UserProfileReadModel | null> {
     const maybeUser = await this.prisma.user.findFirst({
       where: {
         OR: [{ email }, { pendingEmail: email }]
       },
-      select: selectUserProfileSchemaRaw
+      select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
   }
 
-  async findUserCredentialsByEmail(email: string): Promise<UserCredentialsSchema | null> {
+  async findUserCredentialsByEmail(email: string): Promise<UserCredentialsReadModel | null> {
     const user = await this.prisma.user.findFirst({
       where: { email },
-      select: selectUserCredentialsSchemaRaw
+      select: userCredentialsSelect
     });
 
-    return user ? this.normalizeUserCredentials(user as UserCredentialsSchemaRaw) : null;
+    return user ? this.normalizeUserCredentials(user as UserCredentialsRow) : null;
   }
 
-  async listUsersForManagement(): Promise<UserAdminSchema[]> {
+  async listUsersForManagement(): Promise<UserAdminReadModel[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      select: selectUserAdminSchemaRaw
+      select: userAdminSelect
     });
 
-    return users.map((user) => this.normalizeUserAdmin(user as UserAdminSchemaRaw));
+    return users.map((user) => this.normalizeUserAdmin(user as UserAdminRow));
   }
 
-  async listUserSummaries(): Promise<UserSummarySchema[]> {
+  async listUserSummaries(): Promise<UserSummaryReadModel[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      select: selectUserSummarySchemaRaw
+      select: userSummarySelect
     });
 
-    return users.map((user) => this.normalizeUserSummary(user as UserSummarySchemaRaw));
+    return users.map((user) => this.normalizeUserSummary(user as UserSummaryRow));
   }
 
   async createUser(data: Prisma.UserCreateInput) {
@@ -188,13 +188,13 @@ export class UserRepository {
     });
   }
 
-  async findUserForPasswordReset(email: string): Promise<UserPasswordResetSchema | null> {
+  async findUserForPasswordReset(email: string): Promise<UserPasswordResetReadModel | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: selectUserPasswordResetSchemaRaw
+      select: userPasswordResetSelect
     });
 
-    return user ? this.normalizeUserPasswordReset(user as UserPasswordResetSchemaRaw) : null;
+    return user ? this.normalizeUserPasswordReset(user as UserPasswordResetRow) : null;
   }
 
   async getUserStats(

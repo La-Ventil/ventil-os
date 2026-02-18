@@ -1,3 +1,3 @@
 import type { Prisma } from '@prisma/client';
 
-export type MessageSchema = Prisma.MessageGetPayload<Prisma.MessageDefaultArgs>;
+export type MessageReadModel = Prisma.MessageGetPayload<Prisma.MessageDefaultArgs>;

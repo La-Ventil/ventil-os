@@ -2,34 +2,34 @@ import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@pris
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { Machine, MachineReservationSlot } from '@repo/domain/machine/machine';
 import { toOpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
-import type { MachineAdminSchema, MachineDetailsSchema, MachineSummarySchema } from '../schemas';
-import { selectMachineAdminSchemaRaw, selectMachineSummarySchemaRaw } from '../schemas/machine';
+import type { MachineAdminReadModel, MachineDetailsReadModel, MachineSummaryReadModel } from '../schemas';
+import { machineAdminSelect, machineSummarySelect } from '../schemas/machine';
 import {
-  selectMachineReservationSlotSchemaRaw,
-  type MachineReservationSlotSchemaRaw
+  machineReservationSlotSelect,
+  type MachineReservationSlotRow
 } from '../schemas/machine-reservation';
-import { selectMachineDetailsSchemaRaw } from '../schemas/machine-details';
-import type { MachineAdminSchemaRaw, MachineSummarySchemaRaw } from '../schemas/machine';
-import type { MachineDetailsSchemaRaw } from '../schemas/machine-details';
+import { machineDetailsSelect } from '../schemas/machine-details';
+import type { MachineAdminRow, MachineSummaryRow } from '../schemas/machine';
+import type { MachineDetailsRow } from '../schemas/machine-details';
 
 export class MachineRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeMachineSummary(machine: MachineSummarySchemaRaw): MachineSummarySchema {
+  private normalizeMachineSummary(machine: MachineSummaryRow): MachineSummaryReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status)
     };
   }
 
-  private normalizeMachineAdmin(machine: MachineAdminSchemaRaw): MachineAdminSchema {
+  private normalizeMachineAdmin(machine: MachineAdminRow): MachineAdminReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status)
     };
   }
 
-  private normalizeMachineDetails(machine: MachineDetailsSchemaRaw): MachineDetailsSchema {
+  private normalizeMachineDetails(machine: MachineDetailsRow): MachineDetailsReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status),
@@ -53,40 +53,40 @@ export class MachineRepository {
     };
   }
 
-  async listMachines(): Promise<MachineSummarySchema[]> {
+  async listMachines(): Promise<MachineSummaryReadModel[]> {
     const machines = await this.prisma.machine.findMany({
-      select: selectMachineSummarySchemaRaw,
+      select: machineSummarySelect,
       orderBy: { name: 'asc' }
     });
 
-    return machines.map((machine) => this.normalizeMachineSummary(machine as MachineSummarySchemaRaw));
+    return machines.map((machine) => this.normalizeMachineSummary(machine as MachineSummaryRow));
   }
 
-  async getMachineById(id: string): Promise<MachineSummarySchema | null> {
+  async getMachineById(id: string): Promise<MachineSummaryReadModel | null> {
     const machine = await this.prisma.machine.findUnique({
       where: { id },
-      select: selectMachineSummarySchemaRaw
+      select: machineSummarySelect
     });
 
-    return machine ? this.normalizeMachineSummary(machine as MachineSummarySchemaRaw) : null;
+    return machine ? this.normalizeMachineSummary(machine as MachineSummaryRow) : null;
   }
 
-  async getMachineDetailsById(id: string): Promise<MachineDetailsSchema | null> {
+  async getMachineDetailsById(id: string): Promise<MachineDetailsReadModel | null> {
     const machine = await this.prisma.machine.findUnique({
       where: { id },
-      select: selectMachineDetailsSchemaRaw
+      select: machineDetailsSelect
     });
 
-    return machine ? this.normalizeMachineDetails(machine as MachineDetailsSchemaRaw) : null;
+    return machine ? this.normalizeMachineDetails(machine as MachineDetailsRow) : null;
   }
 
-  async listMachinesForAdmin(): Promise<MachineAdminSchema[]> {
+  async listMachinesForAdmin(): Promise<MachineAdminReadModel[]> {
     const machines = await this.prisma.machine.findMany({
-      select: selectMachineAdminSchemaRaw,
+      select: machineAdminSelect,
       orderBy: { name: 'asc' }
     });
 
-    return machines.map((machine) => this.normalizeMachineAdmin(machine as MachineAdminSchemaRaw));
+    return machines.map((machine) => this.normalizeMachineAdmin(machine as MachineAdminRow));
   }
 
   async createMachine(input: {
@@ -96,7 +96,7 @@ export class MachineRepository {
     imageUrl?: string | null;
     status: ActivityStatus;
     creatorId: string;
-  }): Promise<MachineSummarySchema> {
+  }): Promise<{ id: string }> {
     const machine = await this.prisma.machine.create({
       data: {
         name: input.name,
@@ -106,10 +106,10 @@ export class MachineRepository {
         status: input.status as PrismaActivityStatus,
         creatorId: input.creatorId
       },
-      select: selectMachineSummarySchemaRaw
+      select: { id: true }
     });
 
-    return this.normalizeMachineSummary(machine as MachineSummarySchemaRaw);
+    return { id: machine.id };
   }
 
   async deleteMachine(id: string): Promise<{ id: string }> {
@@ -127,7 +127,7 @@ export class MachineRepository {
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },
       select: {
-        ...selectMachineSummarySchemaRaw,
+        ...machineSummarySelect,
         reservations: {
           where: {
             startsAt: {
@@ -137,7 +137,7 @@ export class MachineRepository {
               gt: windowStart
             }
           },
-          select: selectMachineReservationSlotSchemaRaw
+          select: machineReservationSlotSelect
         }
       }
     });
@@ -146,7 +146,7 @@ export class MachineRepository {
       return null;
     }
 
-    const reservations = (machine.reservations as MachineReservationSlotSchemaRaw[]).map((reservation) =>
+    const reservations = (machine.reservations as MachineReservationSlotRow[]).map((reservation) =>
       MachineReservationSlot.from(reservation)
     );
 

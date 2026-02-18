@@ -1,8 +1,8 @@
-import type { UserSummarySchema } from '@repo/db/schemas';
+import type { UserSummaryReadModel } from '@repo/db/schemas';
 import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
 
 type UserSummarySource =
-  | UserSummarySchema
+  | UserSummaryReadModel
   | {
       id: string;
       firstName: string;

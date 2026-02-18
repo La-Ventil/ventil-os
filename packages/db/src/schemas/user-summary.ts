@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import type { Email } from '@repo/domain/user/email';
 
-export const selectUserSummarySchemaRaw = {
+export const userSummarySelect = {
   id: true,
   firstName: true,
   lastName: true,
@@ -10,10 +10,10 @@ export const selectUserSummarySchemaRaw = {
   email: true
 } as const;
 
-export type UserSummarySchemaRaw = Prisma.UserGetPayload<{
-  select: typeof selectUserSummarySchemaRaw;
+export type UserSummaryRow = Prisma.UserGetPayload<{
+  select: typeof userSummarySelect;
 }>;
 
-export type UserSummarySchema = Omit<UserSummarySchemaRaw, 'email'> & {
+export type UserSummaryReadModel = Omit<UserSummaryRow, 'email'> & {
   email: Email;
 };

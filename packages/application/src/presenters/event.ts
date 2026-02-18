@@ -1,7 +1,7 @@
-import type { EventSchema } from '@repo/db/schemas';
+import type { EventReadModel } from '@repo/db/schemas';
 import type { EventViewModel } from '@repo/view-models/event';
 
-export const mapEventToViewModel = (event: EventSchema): EventViewModel => {
+export const mapEventToViewModel = (event: EventReadModel): EventViewModel => {
   const registrationCount = event._count.registrations;
   const capacity = event.maxParticipants ?? 0;
   const location = event.room.name;

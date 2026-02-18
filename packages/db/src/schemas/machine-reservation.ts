@@ -1,62 +1,62 @@
 import type { Prisma } from '@prisma/client';
 import type { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
-import type { UserSummarySchema } from './user-summary';
-import { selectUserSummarySchemaRaw } from './user-summary';
+import type { UserSummaryReadModel } from './user-summary';
+import { userSummarySelect } from './user-summary';
 
-export const includeMachineReservationSchemaRaw = {
+export const machineReservationInclude = {
   creator: {
-    select: selectUserSummarySchemaRaw
+    select: userSummarySelect
   },
   participants: {
     select: {
       id: true,
       user: {
-        select: selectUserSummarySchemaRaw
+        select: userSummarySelect
       }
     }
   }
 } as const;
 
-export type MachineReservationSchemaRaw = Prisma.MachineReservationGetPayload<{
-  include: typeof includeMachineReservationSchemaRaw;
+export type MachineReservationRow = Prisma.MachineReservationGetPayload<{
+  include: typeof machineReservationInclude;
 }>;
 
-export type MachineReservationParticipantSchema = {
+export type MachineReservationParticipantReadModel = {
   id: string;
-  user: UserSummarySchema;
+  user: UserSummaryReadModel;
 };
 
-export type MachineReservationSchema = Omit<
-  MachineReservationSchemaRaw,
+export type MachineReservationReadModel = Omit<
+  MachineReservationRow,
   'status' | 'creator' | 'participants'
 > & {
   status: MachineReservationStatus;
-  creator: UserSummarySchema;
-  participants: MachineReservationParticipantSchema[];
+  creator: UserSummaryReadModel;
+  participants: MachineReservationParticipantReadModel[];
 };
 
-export const selectMachineReservationAvailabilitySchemaRaw = {
+export const machineReservationAvailabilitySelect = {
   machineId: true,
   startsAt: true,
   endsAt: true,
   status: true
 } as const;
 
-export type MachineReservationAvailabilitySchemaRaw = Prisma.MachineReservationGetPayload<{
-  select: typeof selectMachineReservationAvailabilitySchemaRaw;
+export type MachineReservationAvailabilityRow = Prisma.MachineReservationGetPayload<{
+  select: typeof machineReservationAvailabilitySelect;
 }>;
 
-export type MachineReservationAvailabilitySchema = Omit<MachineReservationAvailabilitySchemaRaw, 'status'> & {
+export type MachineReservationAvailabilityReadModel = Omit<MachineReservationAvailabilityRow, 'status'> & {
   status: MachineReservationStatus;
 };
 
-export const selectMachineReservationSlotSchemaRaw = {
+export const machineReservationSlotSelect = {
   id: true,
   startsAt: true,
   endsAt: true,
   status: true
 } as const;
 
-export type MachineReservationSlotSchemaRaw = Prisma.MachineReservationGetPayload<{
-  select: typeof selectMachineReservationSlotSchemaRaw;
+export type MachineReservationSlotRow = Prisma.MachineReservationGetPayload<{
+  select: typeof machineReservationSlotSelect;
 }>;

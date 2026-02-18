@@ -1,7 +1,7 @@
-import type { UserAdminSchema } from '@repo/db/schemas';
+import type { UserAdminReadModel } from '@repo/db/schemas';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 
-export const mapUserAdminToViewModel = (user: UserAdminSchema): UserAdminViewModel => ({
+export const mapUserAdminToViewModel = (user: UserAdminReadModel): UserAdminViewModel => ({
   id: user.id,
   email: user.email,
   firstName: user.firstName,

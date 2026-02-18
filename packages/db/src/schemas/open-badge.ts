@@ -2,49 +2,49 @@ import type { Prisma } from '@prisma/client';
 import type { ActivityStatus } from '@repo/domain/activity-status';
 import type { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 
-export const selectOpenBadgeLevelSchemaRaw = {
+export const openBadgeLevelSelect = {
   level: true,
   title: true,
   description: true
 } as const;
 
-export const includeOpenBadgeSchemaRaw = {
+export const openBadgeInclude = {
   levels: {
-    select: selectOpenBadgeLevelSchemaRaw,
+    select: openBadgeLevelSelect,
     orderBy: { level: 'asc' }
   }
 } as const;
 
-export type OpenBadgeSchemaRaw = Prisma.OpenBadgeGetPayload<{
-  include: typeof includeOpenBadgeSchemaRaw;
+export type OpenBadgeRow = Prisma.OpenBadgeGetPayload<{
+  include: typeof openBadgeInclude;
 }>;
 
-export type OpenBadgeSchema = Omit<OpenBadgeSchemaRaw, 'levels'> & {
+export type OpenBadgeReadModel = Omit<OpenBadgeRow, 'levels'> & {
   levels: OpenBadgeLevel[];
 };
 
-export type OpenBadgeLevelSchema = OpenBadgeSchema['levels'][number];
+export type OpenBadgeLevelReadModel = OpenBadgeReadModel['levels'][number];
 
-export const includeOpenBadgeProgressSchemaRaw = {
+export const openBadgeProgressInclude = {
   highestLevel: {
     select: {
       level: true
     }
   },
   openBadge: {
-    include: includeOpenBadgeSchemaRaw
+    include: openBadgeInclude
   }
 } as const;
 
-export type OpenBadgeProgressSchemaRaw = Prisma.OpenBadgeProgressGetPayload<{
-  include: typeof includeOpenBadgeProgressSchemaRaw;
+export type OpenBadgeProgressRow = Prisma.OpenBadgeProgressGetPayload<{
+  include: typeof openBadgeProgressInclude;
 }>;
 
-export type OpenBadgeProgressSchema = Omit<OpenBadgeProgressSchemaRaw, 'openBadge'> & {
-  openBadge: OpenBadgeSchema;
+export type OpenBadgeProgressReadModel = Omit<OpenBadgeProgressRow, 'openBadge'> & {
+  openBadge: OpenBadgeReadModel;
 };
 
-export const selectOpenBadgeAdminSchemaRaw = {
+export const openBadgeAdminSelect = {
   id: true,
   name: true,
   status: true,
@@ -56,10 +56,10 @@ export const selectOpenBadgeAdminSchemaRaw = {
   }
 } as const;
 
-export type OpenBadgeAdminSchemaRaw = Prisma.OpenBadgeGetPayload<{
-  select: typeof selectOpenBadgeAdminSchemaRaw;
+export type OpenBadgeAdminRow = Prisma.OpenBadgeGetPayload<{
+  select: typeof openBadgeAdminSelect;
 }>;
 
-export type OpenBadgeAdminSchema = Omit<OpenBadgeAdminSchemaRaw, 'status'> & {
+export type OpenBadgeAdminReadModel = Omit<OpenBadgeAdminRow, 'status'> & {
   status: ActivityStatus;
 };

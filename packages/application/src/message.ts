@@ -1,5 +1,5 @@
 import { messageRepository } from '@repo/db';
-import type { MessageSchema } from '@repo/db/schemas';
+import type { MessageReadModel } from '@repo/db/schemas';
 
-export const createMessage = async (content: string): Promise<MessageSchema> =>
+export const createMessage = async (content: string): Promise<MessageReadModel> =>
   messageRepository.createMessage(content);

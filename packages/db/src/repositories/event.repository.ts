@@ -1,24 +1,24 @@
 import type { PrismaClient } from '@prisma/client';
-import { includeEventSchemaRaw, type EventSchema } from '../schemas/event';
+import { eventInclude, type EventReadModel } from '../schemas/event';
 
 export class EventRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async listEvents(): Promise<EventSchema[]> {
+  async listEvents(): Promise<EventReadModel[]> {
     const events = await this.prisma.event.findMany({
-      include: includeEventSchemaRaw,
+      include: eventInclude,
       orderBy: { startDate: 'desc' }
     });
 
-    return events as EventSchema[];
+    return events as EventReadModel[];
   }
 
-  async getEventById(id: string): Promise<EventSchema | null> {
+  async getEventById(id: string): Promise<EventReadModel | null> {
     const event = await this.prisma.event.findUnique({
       where: { id },
-      include: includeEventSchemaRaw
+      include: eventInclude
     });
 
-    return event ? (event as EventSchema) : null;
+    return event ? (event as EventReadModel) : null;
   }
 }

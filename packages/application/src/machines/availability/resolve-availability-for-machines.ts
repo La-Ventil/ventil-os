@@ -1,10 +1,10 @@
 import type { MachineViewModel } from '@repo/view-models/machine';
-import type { MachineReservationAvailabilitySchema } from '@repo/db/schemas';
+import type { MachineReservationAvailabilityReadModel } from '@repo/db/schemas';
 import { resolveAvailabilityByMachineId } from '@repo/domain/machine/machine-availability-rules';
 
 export const resolveAvailabilityForMachines = (
   machines: MachineViewModel[],
-  reservations: MachineReservationAvailabilitySchema[],
+  reservations: MachineReservationAvailabilityReadModel[],
   date: Date,
   dayEnd: Date
 ): Map<string, MachineViewModel['availability']> => {
