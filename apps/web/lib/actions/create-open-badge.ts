@@ -6,7 +6,7 @@ import {
   type OpenBadgeCreateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import { canManageBadges, createOpenBadge as createOpenBadgeRecord } from '@repo/application';
+import { canManageBadges, addOpenBadge as addOpenBadgeRecord } from '@repo/application';
 import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -55,7 +55,7 @@ export async function createOpenBadge(
   };
 
   try {
-    await createOpenBadgeRecord({
+    await addOpenBadgeRecord({
       ...values,
       creatorId: userId
     });

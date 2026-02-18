@@ -1,4 +1,4 @@
-import type { OpenBadgeRequirementRule } from './open-badge-requirement-rule.js';
+import type { OpenBadgeRequirementRule } from './open-badge-requirement-rule';
 
 export type OpenBadgeRequirement = {
   id: string;

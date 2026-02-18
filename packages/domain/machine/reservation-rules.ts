@@ -7,7 +7,7 @@ export const assertReservationInterval = (interval: DateInterval, context?: stri
   }
 };
 
-export const createReservationInterval = (startsAt: Date, durationMinutes: number): DateInterval => ({
+export const reservationWindowFor = (startsAt: Date, durationMinutes: number): DateInterval => ({
   start: startsAt,
   end: new Date(startsAt.getTime() + durationMinutes * 60 * 1000)
 });

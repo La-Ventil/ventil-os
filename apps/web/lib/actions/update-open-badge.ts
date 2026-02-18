@@ -6,7 +6,7 @@ import {
   type OpenBadgeUpdateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import { canManageBadges, updateOpenBadge as updateOpenBadgeRecord, getOpenBadgeById } from '@repo/application';
+import { canManageBadges, updateOpenBadge as updateOpenBadgeRecord, viewOpenBadge } from '@repo/application';
 import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -34,7 +34,7 @@ export async function updateOpenBadge(
   const request = parseResult.data as OpenBadgeUpdateRequest;
   const responseValues: OpenBadgeUpdateRequest = { ...request, imageFile: undefined };
 
-  const current = await getOpenBadgeById(request.id);
+  const current = await viewOpenBadge(request.id);
   if (!current) {
     const msg = t('openBadge.update.notFound');
     return formError(responseValues, { message: msg });

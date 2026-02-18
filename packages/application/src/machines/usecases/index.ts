@@ -6,5 +6,5 @@ export * from './check-reservation-eligibility.query';
 export * from './view-machine-reservations.query';
 export * from './browse-machines.query';
 export * from './browse-machines-as-admin.query';
-export * from './view-machine.query';
 export * from './view-machine-details.query';
+export * from './resolve-machines-availability.query';

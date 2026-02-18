@@ -1,12 +1,17 @@
-import { ExternalProfile, Profile, StudentProfile, type Prisma, type PrismaClient } from '@prisma/client';
+import { type Prisma, type PrismaClient } from '@prisma/client';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
 import { deriveUserRole } from '@repo/domain/user/user-role';
-import type { UserCredentialsSchema, UserCredentialsSchemaRaw } from './schemas/user-credentials';
-import type { UserAdminSchema, UserAdminSchemaRaw } from './schemas/user-admin';
-import type { UserPasswordResetSchema, UserPasswordResetSchemaRaw } from './schemas/user-password-reset';
-import type { UserProfileSchema, UserProfileSchemaRaw } from './schemas/user-profile';
-import type { UserSummarySchema, UserSummarySchemaRaw } from './schemas/user-summary';
+import { selectUserProfileSchemaRaw } from '../schemas/user-profile';
+import { selectUserCredentialsSchemaRaw } from '../schemas/user-credentials';
+import { selectUserAdminSchemaRaw } from '../schemas/user-admin';
+import { selectUserPasswordResetSchemaRaw } from '../schemas/user-password-reset';
+import { selectUserSummarySchemaRaw } from '../schemas/user-summary';
+import type { UserCredentialsSchema, UserCredentialsSchemaRaw } from '../schemas/user-credentials';
+import type { UserAdminSchema, UserAdminSchemaRaw } from '../schemas/user-admin';
+import type { UserPasswordResetSchema, UserPasswordResetSchemaRaw } from '../schemas/user-password-reset';
+import type { UserProfileSchema, UserProfileSchemaRaw } from '../schemas/user-profile';
+import type { UserSummarySchema, UserSummarySchemaRaw } from '../schemas/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -65,22 +70,27 @@ export class UserRepository {
   async getUserProfileByEmail(email: string): Promise<UserProfileSchema | null> {
     const maybeUser = await this.prisma.user.findFirst({
       where: { email },
-      select: {
-        id: true,
-        email: true,
-        pendingEmail: true,
-        emailVerified: true,
-        image: true,
-        profile: true,
-        studentProfile: true,
-        externalProfile: true,
-        username: true,
-        educationLevel: true,
-        pedagogicalAdmin: true,
-        globalAdmin: true,
-        lastName: true,
-        firstName: true
-      }
+      select: selectUserProfileSchemaRaw
+    });
+
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
+  }
+
+  async getUserProfileById(userId: string): Promise<UserProfileSchema | null> {
+    const maybeUser = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: selectUserProfileSchemaRaw
+    });
+
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
+  }
+
+  async getUserProfileByEmailOrPending(email: string): Promise<UserProfileSchema | null> {
+    const maybeUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { pendingEmail: email }]
+      },
+      select: selectUserProfileSchemaRaw
     });
 
     return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileSchemaRaw) : null;
@@ -89,24 +99,7 @@ export class UserRepository {
   async findUserCredentialsByEmail(email: string): Promise<UserCredentialsSchema | null> {
     const user = await this.prisma.user.findFirst({
       where: { email },
-      select: {
-        id: true,
-        email: true,
-        emailVerified: true,
-        image: true,
-        password: true,
-        salt: true,
-        iterations: true,
-        profile: true,
-        studentProfile: true,
-        externalProfile: true,
-        username: true,
-        educationLevel: true,
-        pedagogicalAdmin: true,
-        globalAdmin: true,
-        lastName: true,
-        firstName: true
-      }
+      select: selectUserCredentialsSchemaRaw
     });
 
     return user ? this.normalizeUserCredentials(user as UserCredentialsSchemaRaw) : null;
@@ -115,24 +108,7 @@ export class UserRepository {
   async listUsersForManagement(): Promise<UserAdminSchema[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        username: true,
-        profile: true,
-        studentProfile: true,
-        externalProfile: true,
-        pedagogicalAdmin: true,
-        globalAdmin: true,
-        _count: {
-          select: {
-            eventRegistrations: true,
-            openBadgeProgresses: true
-          }
-        }
-      }
+      select: selectUserAdminSchemaRaw
     });
 
     return users.map((user) => this.normalizeUserAdmin(user as UserAdminSchemaRaw));
@@ -141,14 +117,7 @@ export class UserRepository {
   async listUserSummaries(): Promise<UserSummarySchema[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        username: true,
-        image: true,
-        email: true
-      }
+      select: selectUserSummarySchemaRaw
     });
 
     return users.map((user) => this.normalizeUserSummary(user as UserSummarySchemaRaw));
@@ -183,18 +152,83 @@ export class UserRepository {
     });
   }
 
+  async isEmailAvailableForUser(userId: string, email: string): Promise<boolean> {
+    const existing = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { pendingEmail: email }]
+      },
+      select: { id: true }
+    });
+
+    if (!existing) {
+      return true;
+    }
+
+    return existing.id === userId;
+  }
+
+  async updatePendingEmail(userId: string, pendingEmail: string | null): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { pendingEmail }
+    });
+  }
+
+  async confirmUserEmail(
+    userId: string,
+    data: { email: string; pendingEmail: string | null; emailVerifiedAt: Date }
+  ): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        email: data.email,
+        pendingEmail: data.pendingEmail,
+        emailVerified: data.emailVerifiedAt
+      }
+    });
+  }
+
   async findUserForPasswordReset(email: string): Promise<UserPasswordResetSchema | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true
-      }
+      select: selectUserPasswordResetSchemaRaw
     });
 
     return user ? this.normalizeUserPasswordReset(user as UserPasswordResetSchemaRaw) : null;
+  }
+
+  async getUserStats(
+    userId: string,
+    now: Date
+  ): Promise<{ eventsCount: number; openBadgesCount: number; machinesCount: number }> {
+    const [eventsCount, openBadgesCount, machinesCount] = await Promise.all([
+      this.prisma.eventRegistration.count({
+        where: { userId }
+      }),
+      this.prisma.openBadgeProgress.count({
+        where: { userId }
+      }),
+      this.prisma.machineReservation.count({
+        where: {
+          status: 'confirmed',
+          endsAt: {
+            lt: now
+          },
+          OR: [
+            { creatorId: userId },
+            {
+              participants: {
+                some: {
+                  userId
+                }
+              }
+            }
+          ]
+        }
+      })
+    ]);
+
+    return { eventsCount, openBadgesCount, machinesCount };
   }
 
   async setResetToken(userId: string, resetToken: string, resetTokenExpiry: Date) {

@@ -5,9 +5,13 @@ import {
   type MachineReservationParticipantSchema,
   type MachineReservationSchema,
   type MachineReservationSchemaRaw
-} from './schemas/machine-reservation';
+} from '../schemas/machine-reservation';
+import {
+  includeMachineReservationSchemaRaw,
+  selectMachineReservationAvailabilitySchemaRaw
+} from '../schemas/machine-reservation';
 import { toMachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
-import type { UserSummarySchema } from './schemas/user-summary';
+import type { UserSummarySchema } from '../schemas/user-summary';
 import { Email } from '@repo/domain/user/email';
 
 export class MachineReservationRepository {
@@ -62,33 +66,7 @@ export class MachineReservationRepository {
           gt: rangeStart
         }
       },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            image: true,
-            email: true
-          }
-        },
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                image: true,
-                email: true
-              }
-            }
-          }
-        }
-      },
+      include: includeMachineReservationSchemaRaw,
       orderBy: {
         startsAt: 'asc'
       }
@@ -119,33 +97,7 @@ export class MachineReservationRepository {
             }
           : undefined
       },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            image: true,
-            email: true
-          }
-        },
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                image: true,
-                email: true
-              }
-            }
-          }
-        }
-      }
+      include: includeMachineReservationSchemaRaw
     });
 
     return this.normalizeReservation(reservation as MachineReservationSchemaRaw);
@@ -165,33 +117,7 @@ export class MachineReservationRepository {
           }
         ]
       },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            image: true,
-            email: true
-          }
-        },
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                image: true,
-                email: true
-              }
-            }
-          }
-        }
-      },
+      include: includeMachineReservationSchemaRaw,
       orderBy: {
         startsAt: 'asc'
       }
@@ -211,12 +137,7 @@ export class MachineReservationRepository {
           gt: rangeStart
         }
       },
-      select: {
-        machineId: true,
-        startsAt: true,
-        endsAt: true,
-        status: true
-      }
+      select: selectMachineReservationAvailabilitySchemaRaw
     });
 
     return reservations.map((reservation) =>
@@ -227,33 +148,7 @@ export class MachineReservationRepository {
   async getById(reservationId: string): Promise<MachineReservationSchema | null> {
     const reservation = await this.prisma.machineReservation.findUnique({
       where: { id: reservationId },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            image: true,
-            email: true
-          }
-        },
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                image: true,
-                email: true
-              }
-            }
-          }
-        }
-      }
+      include: includeMachineReservationSchemaRaw
     });
 
     return reservation ? this.normalizeReservation(reservation as MachineReservationSchemaRaw) : null;
@@ -265,33 +160,7 @@ export class MachineReservationRepository {
       data: {
         status: 'cancelled'
       },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            username: true,
-            image: true,
-            email: true
-          }
-        },
-        participants: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                username: true,
-                image: true,
-                email: true
-              }
-            }
-          }
-        }
-      }
+      include: includeMachineReservationSchemaRaw
     });
 
     return this.normalizeReservation(reservation as MachineReservationSchemaRaw);

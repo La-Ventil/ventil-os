@@ -15,15 +15,24 @@ import {
 import {
   assertReservationInterval,
   intervalOverlapsAny,
-  isReservationSlotInPast
+  isReservationSlotInPast,
+  reservationWindowFor
 } from './reservation-rules';
 import { MachineReservationError } from './machine-reservation-errors';
+import { uniqueParticipantIds } from './machine-reservation-participants';
 
 export type MachineReservationSlot = {
   id: string;
   startsAt: Date;
   endsAt: Date;
   status: MachineReservationStatus;
+};
+
+export type MachineReservationCommand = {
+  creatorId: string;
+  startsAt: Date;
+  durationMinutes: number;
+  participantIds?: string[];
 };
 
 export const MachineReservationSlot = {
@@ -87,6 +96,28 @@ export const Machine = {
       ...input,
       badgeRequirements: input.badgeRequirements ?? [],
       reservations: input.reservations ?? []
+    };
+  },
+  createReservationCandidate(
+    startsAt: Date,
+    durationMinutes: number,
+    status?: MachineReservationStatus | string
+  ): ReservationCandidate {
+    const interval = reservationWindowFor(startsAt, durationMinutes);
+    return {
+      startsAt: interval.start,
+      endsAt: interval.end,
+      status
+    };
+  },
+  planReservation(input: MachineReservationCommand): {
+    candidate: ReservationCandidate;
+    participantIds: string[];
+  } {
+    const candidate = Machine.createReservationCandidate(input.startsAt, input.durationMinutes);
+    return {
+      candidate,
+      participantIds: uniqueParticipantIds(input.participantIds, input.creatorId)
     };
   },
   assertReservable(machine: Machine): void {

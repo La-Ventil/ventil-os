@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Alert from '@mui/material/Alert';
-import { verifyEmailToken } from '@repo/application';
+import { verifyEmail } from '@repo/application';
 import { getServerSession } from '../../../../lib/auth';
 import AutoRedirect from '@repo/ui/auto-redirect';
 
@@ -28,7 +28,7 @@ export default async function Page({ params, searchParams }: VerifyEmailPageProp
     return <Alert severity="error">{t('missingEmail')}</Alert>;
   }
 
-  const result = await verifyEmailToken(email, token);
+  const result = await verifyEmail(email, token);
 
   if (result.ok) {
     const session = await getServerSession();

@@ -92,6 +92,11 @@
       "error": "Impossible de mettre à jour l'open badge.",
       "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
       "notFound": "Open badge introuvable."
+    },
+    "assign": {
+      "unauthorized": "Vous n'avez pas les droits pour attribuer cet open badge.",
+      "awarderNotFound": "L'utilisateur attribuant le badge est introuvable.",
+      "targetNotFound": "L'utilisateur ciblé est introuvable."
     }
   },
   "resetPassword": {
@@ -105,7 +110,11 @@
     "overlap": "Ce créneau est déjà réservé.",
     "inactive": "Cette machine n'est pas disponible pour le moment.",
     "machineRequired": "La machine sélectionnée est introuvable.",
-    "notFound": "Réservation introuvable."
+    "notFound": "Réservation introuvable.",
+    "unauthorized": "Vous ne pouvez pas annuler cette réservation."
+  },
+  "user": {
+    "notFound": "Utilisateur introuvable."
   },
   "emailSignature": "— L’équipe {appName}",
   "verifyEmail": {

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { canAssignOpenBadgeUser, getOpenBadgeById, listUsersForManagement } from '@repo/application';
+import { browseUsersAsAdmin, canAssignOpenBadge, viewOpenBadge } from '@repo/application';
 import OpenBadgeModalRouteClient from '../../../open-badge-modal-route.client';
 import { isOpenBadgeTab } from '../../layout';
 import { getServerSession } from '../../../../../../lib/auth';
@@ -16,13 +16,13 @@ export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageP
   }
 
   const session = await getServerSession();
-  const openBadge = await getOpenBadgeById(badgeId);
+  const openBadge = await viewOpenBadge(badgeId);
   if (!openBadge) {
     return null;
   }
 
-  const canAssign = await canAssignOpenBadgeUser(badgeId, session?.user);
-  const users = canAssign ? await listUsersForManagement() : [];
+  const canAssign = await canAssignOpenBadge(badgeId, session?.user);
+  const users = canAssign ? await browseUsersAsAdmin() : [];
   const userOptions = canAssign
     ? users.map((entry) => ({
         id: entry.id,

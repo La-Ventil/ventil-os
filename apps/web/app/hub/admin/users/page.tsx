@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { listUsersForManagement } from '@repo/application';
+import { browseUsersAsAdmin } from '@repo/application';
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
@@ -8,7 +8,7 @@ import AdminUsersTable from './admin-users-table';
 
 export default async function AdminUsersPage() {
   const t = await getTranslations('pages.hub.admin.users');
-  const users = await listUsersForManagement();
+  const users = await browseUsersAsAdmin();
   const labels = {
     title: t('title'),
     subtitle: t('subtitle'),

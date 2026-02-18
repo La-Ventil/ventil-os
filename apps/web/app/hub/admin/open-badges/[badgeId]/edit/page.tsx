@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import SectionTitle from '@repo/ui/section-title';
-import { getOpenBadgeEditData } from '@repo/application';
+import { viewOpenBadgeEdit } from '@repo/application';
 import OpenBadgeEditFormClient from './open-badge-edit-form.client';
 
 type AdminOpenBadgeEditPageProps = {
@@ -10,7 +10,7 @@ type AdminOpenBadgeEditPageProps = {
 
 export default async function AdminOpenBadgeEditPage({ params }: AdminOpenBadgeEditPageProps) {
   const t = await getTranslations('pages.hub.admin.openBadgesCreate');
-  const badge = await getOpenBadgeEditData(params.badgeId);
+  const badge = await viewOpenBadgeEdit(params.badgeId);
 
   if (!badge) {
     notFound();

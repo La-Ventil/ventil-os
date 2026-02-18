@@ -27,8 +27,18 @@ Use-case intent & naming:
 - We distinguish **command** vs **query** by file suffix: `*.command.ts` / `*.query.ts`.
 - Use-cases are exported from `packages/application/src/machines/usecases/` and represent intent, not CRUD.
 
+Use-cases as orchestrators:
+- Use-cases **orchestrate**: they fetch data from repositories, call domain policies/aggregates, and map to VM/VO.
+- Domain stays **pure** (no I/O) and owns invariants; repositories stay **thin** (data access only).
+- When a use-case grows, extract pure logic into domain policies/services instead of duplicating rules in application.
+
+Command vs query mapping (CQRS-lite):
+- **Commands (write path)**: repositories **rehydrate domain aggregates**. Use-cases call domain rules and persist changes.
+- **Queries (read path)**: repositories return **read models/DTOs**. Presenters map DTOs to View Models for UI.
+- Domain types are required on the command path; they are optional on the query path.
+
 Constraints / pragmatic choices:
-- Single mapping DB → VM/VO in Application; avoid leaking Prisma schemas upward.
+- Avoid leaking Prisma types upward; expose stable DTOs (query path) or domain aggregates (command path).
 - Next actions call only use-cases; they transform FormData to DTO and manage redirect/feedback but never touch repos directly.
 - Seeds provide known admin users and coherent data (badges, machines) to avoid FK issues in demo/test.
 - Mocks stay available but are not the default path for final pages.

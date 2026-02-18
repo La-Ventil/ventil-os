@@ -2,12 +2,13 @@
 
 import { getTranslations } from 'next-intl/server';
 import { changeEmailFormSchema, type ChangeEmailFormInput } from '@repo/application/forms';
-import { requestEmailChangeWithPassword } from '@repo/application';
+import { requestEmailChange } from '@repo/application';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getUserProfileFromSession } from '../auth';
 import { sendEmailVerification } from '../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { isUserError } from '@repo/domain/user/user-errors';
 
 export async function updateEmail(
   previousState: FormState<ChangeEmailFormInput>,
@@ -23,11 +24,17 @@ export async function updateEmail(
   }
 
   const userProfile = await getUserProfileFromSession();
-  const result = await requestEmailChangeWithPassword(
-    userProfile.email,
-    data.currentPassword,
-    data.newEmail
-  );
+  let result: Awaited<ReturnType<typeof requestEmailChange>>;
+  try {
+    result = await requestEmailChange(userProfile.email, data.currentPassword, data.newEmail);
+  } catch (error) {
+    if (isUserError(error)) {
+      return formError(values, { message: t(error.code) });
+    }
+
+    console.error(error);
+    return formError(values, { message: t('validation.genericError') });
+  }
 
   if (!result.ok) {
     if (result.reason === 'invalid-password') {

@@ -16,11 +16,13 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 export const requiresEducationLevel = (role: UserRole): boolean =>
   role === UserRole.Member || role === UserRole.Alumni;
 
-export const deriveUserRole = (user: {
+export type UserProfileFlags = {
   profile: 'student' | 'teacher' | 'external';
   studentProfile?: 'visitor' | 'member' | 'alumni' | null;
   externalProfile?: 'contributor' | 'visitor' | null;
-}): UserRole => {
+};
+
+export const deriveUserRole = (user: UserProfileFlags): UserRole => {
   if (user.profile === 'teacher') {
     return UserRole.Teacher;
   }

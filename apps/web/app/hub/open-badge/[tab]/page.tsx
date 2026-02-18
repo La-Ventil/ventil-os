@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import { listOpenBadges, listOpenBadgesForUser } from '@repo/application';
+import { browseOpenBadges, viewUserOpenBadges } from '@repo/application';
 import OpenBadgeList from '@repo/ui/open-badge-list';
 import { getServerSession } from '../../../../lib/auth';
 import { isOpenBadgeTab, type OpenBadgeTab } from './layout';
@@ -17,7 +17,7 @@ export default async function OpenBadgeTabPage({ params }: OpenBadgeTabPageProps
   }
 
   const tab: OpenBadgeTab = rawTab;
-  const badges = tab === 'mine' ? await listUserBadges() : await listOpenBadges();
+  const badges = tab === 'mine' ? await listUserBadges() : await browseOpenBadges();
 
   return <OpenBadgeList badges={badges} getBadgeHref={(badgeId) => `/hub/open-badge/${tab}/${badgeId}`} />;
 }
@@ -28,5 +28,5 @@ async function listUserBadges() {
     redirect('/login');
   }
 
-  return listOpenBadgesForUser(session.user.id);
+  return viewUserOpenBadges(session.user.id);
 }

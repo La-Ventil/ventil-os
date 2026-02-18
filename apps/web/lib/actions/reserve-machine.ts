@@ -8,6 +8,7 @@ import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation
 import { getServerSession } from '../auth';
 import { revalidatePath } from 'next/cache';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 
 export async function reserveMachine(
   previousState: FormState<MachineReservationFormInput>,
@@ -44,18 +45,11 @@ export async function reserveMachine(
 
     return formSuccess(data, t('pages.hub.fabLab.modal.reservationForm.success'));
   } catch (err) {
-    const message = (() => {
-      if (!(err instanceof Error)) {
-        return t('pages.hub.fabLab.modal.reservationForm.error');
-      }
+    if (isMachineReservationError(err)) {
+      return formError(data, { message: t(err.code) });
+    }
 
-      if (err.message.startsWith('machineReservation.')) {
-        return t(err.message);
-      }
-
-      return t('pages.hub.fabLab.modal.reservationForm.error');
-    })();
-
-    return formError(data, { message });
+    console.error(err);
+    return formError(data, { message: t('pages.hub.fabLab.modal.reservationForm.error') });
   }
 }

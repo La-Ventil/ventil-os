@@ -1,65 +1,35 @@
 import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
-import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
-import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
+import type { ActivityStatus } from '@repo/domain/activity-status';
 import type {
-  OpenBadgeAdminSchema,
   OpenBadgeAdminSchemaRaw,
-  OpenBadgeProgressSchema,
   OpenBadgeProgressSchemaRaw,
-  OpenBadgeSchema,
   OpenBadgeSchemaRaw
-} from './schemas/open-badge';
+} from '../schemas/open-badge';
+import {
+  includeOpenBadgeProgressSchemaRaw,
+  includeOpenBadgeSchemaRaw,
+  selectOpenBadgeAdminSchemaRaw
+} from '../schemas/open-badge';
 
 export class OpenBadgeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeOpenBadge(badge: OpenBadgeSchemaRaw): OpenBadgeSchema {
-    return {
-      ...badge,
-      levels: badge.levels.map((level) => OpenBadgeLevel.fromObject(level))
-    };
-  }
-
-  private normalizeOpenBadgeProgress(progress: OpenBadgeProgressSchemaRaw): OpenBadgeProgressSchema {
-    return {
-      ...progress,
-      openBadge: this.normalizeOpenBadge(progress.openBadge)
-    };
-  }
-
-  private normalizeOpenBadgeAdmin(badge: OpenBadgeAdminSchemaRaw): OpenBadgeAdminSchema {
-    return {
-      ...badge,
-      status: toActivityStatus(badge.status)
-    };
-  }
-
-  async listOpenBadges(): Promise<OpenBadgeSchema[]> {
+  async listOpenBadges(): Promise<OpenBadgeSchemaRaw[]> {
     const badges = await this.prisma.openBadge.findMany({
-      include: {
-        levels: {
-          select: { level: true, title: true, description: true },
-          orderBy: { level: 'asc' }
-        }
-      },
+      include: includeOpenBadgeSchemaRaw,
       orderBy: { name: 'asc' }
     });
 
-    return badges.map((badge) => this.normalizeOpenBadge(badge as OpenBadgeSchemaRaw));
+    return badges as OpenBadgeSchemaRaw[];
   }
 
-  async getOpenBadgeById(id: string): Promise<OpenBadgeSchema | null> {
+  async getOpenBadgeById(id: string): Promise<OpenBadgeSchemaRaw | null> {
     const badge = await this.prisma.openBadge.findUnique({
       where: { id },
-      include: {
-        levels: {
-          select: { level: true, title: true, description: true },
-          orderBy: { level: 'asc' }
-        }
-      }
+      include: includeOpenBadgeSchemaRaw
     });
 
-    return badge ? this.normalizeOpenBadge(badge as OpenBadgeSchemaRaw) : null;
+    return (badge as OpenBadgeSchemaRaw) ?? null;
   }
 
   async getTrainerThresholdLevel(openBadgeId: string): Promise<number | null> {
@@ -93,47 +63,54 @@ export class OpenBadgeRepository {
     return progress?.highestLevel?.level ?? null;
   }
 
-  async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminSchema[]> {
-    const badges = await this.prisma.openBadge.findMany({
-      select: {
-        id: true,
-        name: true,
-        status: true,
-        _count: {
-          select: {
-            levels: true,
-            openBadgeProgresses: true
-          }
+  async getUserHighestOpenBadgeLevels(
+    userId: string,
+    openBadgeIds: string[]
+  ): Promise<Map<string, number | null>> {
+    if (!openBadgeIds.length) {
+      return new Map();
+    }
+
+    const progresses = await this.prisma.openBadgeProgress.findMany({
+      where: {
+        userId,
+        openBadgeId: {
+          in: openBadgeIds
         }
       },
+      select: {
+        openBadgeId: true,
+        highestLevel: {
+          select: { level: true }
+        }
+      }
+    });
+
+    const levels = new Map<string, number | null>(openBadgeIds.map((openBadgeId) => [openBadgeId, null]));
+    progresses.forEach((progress) => {
+      levels.set(progress.openBadgeId, progress.highestLevel?.level ?? null);
+    });
+
+    return levels;
+  }
+
+  async listOpenBadgesForAdmin(): Promise<OpenBadgeAdminSchemaRaw[]> {
+    const badges = await this.prisma.openBadge.findMany({
+      select: selectOpenBadgeAdminSchemaRaw,
       orderBy: { name: 'asc' }
     });
 
-    return badges.map((badge) => this.normalizeOpenBadgeAdmin(badge as OpenBadgeAdminSchemaRaw));
+    return badges as OpenBadgeAdminSchemaRaw[];
   }
 
-  async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressSchema[]> {
+  async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressSchemaRaw[]> {
     const progresses = await this.prisma.openBadgeProgress.findMany({
       where: { userId },
-      include: {
-        highestLevel: {
-          select: { level: true }
-        },
-        openBadge: {
-          include: {
-            levels: {
-              select: { level: true, title: true, description: true },
-              orderBy: { level: 'asc' }
-            }
-          }
-        }
-      },
+      include: includeOpenBadgeProgressSchemaRaw,
       orderBy: { openBadge: { name: 'asc' } }
     });
 
-    return progresses.map((progress) =>
-      this.normalizeOpenBadgeProgress(progress as OpenBadgeProgressSchemaRaw)
-    );
+    return progresses as OpenBadgeProgressSchemaRaw[];
   }
 
   async awardOpenBadgeLevel(input: { userId: string; openBadgeId: string; level: number; awardedById: string }) {
@@ -215,7 +192,7 @@ export class OpenBadgeRepository {
     status: ActivityStatus;
     creatorId: string;
     levels: Array<{ title: string; description: string }>;
-  }): Promise<OpenBadgeSchema> {
+  }): Promise<OpenBadgeSchemaRaw> {
     const badge = await this.prisma.openBadge.create({
       data: {
         name: input.name,
@@ -233,15 +210,10 @@ export class OpenBadgeRepository {
           }))
         }
       },
-      include: {
-        levels: {
-          select: { level: true, title: true, description: true },
-          orderBy: { level: 'asc' }
-        }
-      }
+      include: includeOpenBadgeSchemaRaw
     });
 
-    return this.normalizeOpenBadge(badge as OpenBadgeSchemaRaw);
+    return badge as OpenBadgeSchemaRaw;
   }
 
   async updateOpenBadge(input: {
@@ -251,7 +223,7 @@ export class OpenBadgeRepository {
     coverImage?: string | null;
     status: ActivityStatus;
     levels: Array<{ title: string; description: string }>;
-  }): Promise<OpenBadgeSchema> {
+  }): Promise<OpenBadgeSchemaRaw> {
     const badge = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.openBadge.update({
         where: { id: input.id },
@@ -291,15 +263,10 @@ export class OpenBadgeRepository {
 
     const full = await this.prisma.openBadge.findUnique({
       where: { id: badge.id },
-      include: {
-        levels: {
-          select: { level: true, title: true, description: true },
-          orderBy: { level: 'asc' }
-        }
-      }
+      include: includeOpenBadgeSchemaRaw
     });
 
-    return this.normalizeOpenBadge(full as OpenBadgeSchemaRaw);
+    return full as OpenBadgeSchemaRaw;
   }
 
   async deleteOpenBadge(id: string): Promise<{ id: string }> {

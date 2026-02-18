@@ -8,3 +8,16 @@ export const resolveReservationParticipants = <T extends ParticipantRef>(creator
   });
   return Array.from(unique.values());
 };
+
+export const uniqueParticipantIds = (
+  participantIds: string[] | undefined,
+  creatorId: string
+): string[] => {
+  const unique = new Set<string>();
+  (participantIds ?? []).forEach((participantId) => {
+    if (participantId !== creatorId) {
+      unique.add(participantId);
+    }
+  });
+  return Array.from(unique);
+};

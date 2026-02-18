@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { getOpenBadgeById, listUsersForManagement } from '@repo/application';
+import { browseUsersAsAdmin, viewOpenBadge } from '@repo/application';
 import AssignOpenBadgeModalRoute from '../../assign-open-badge-modal-route';
 
 type AdminOpenBadgesModalPageProps = {
@@ -10,12 +10,12 @@ export default async function AdminOpenBadgesModalPage({
   params
 }: AdminOpenBadgesModalPageProps): Promise<JSX.Element | null> {
   const { badgeId } = await params;
-  const openBadge = await getOpenBadgeById(badgeId);
+  const openBadge = await viewOpenBadge(badgeId);
   if (!openBadge) {
     return null;
   }
 
-  const users = await listUsersForManagement();
+  const users = await browseUsersAsAdmin();
   const userOptions = users.map((entry) => ({
     id: entry.id,
     label: `${entry.firstName} ${entry.lastName ?? ''}`.trim()

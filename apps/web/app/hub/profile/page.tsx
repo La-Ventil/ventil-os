@@ -10,12 +10,12 @@ import Section from '@repo/ui/section';
 import SectionTitle from '@repo/ui/section-title';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import StatsList, { StatsListEntry } from '@repo/ui/stats-list';
-import { getUserProfileStats } from '@repo/application';
+import { viewUserStats } from '@repo/application';
 import { getUserProfileFromSession } from '../../../lib/auth';
 
 export default async function Page(): Promise<JSX.Element> {
   const userProfile = await getUserProfileFromSession();
-  const statsCounts = await getUserProfileStats(userProfile.id);
+  const statsCounts = await viewUserStats(userProfile.id);
   const t = await getTranslations('pages.hub.profile');
   const stats: StatsListEntry[] = [
     { id: 'events', icon: <EventIcon />, label: t('stats.events'), count: statsCounts.eventsCount },

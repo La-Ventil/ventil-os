@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { findUserByValidResetToken, updateUserPassword } from '@repo/application';
+import { resetPassword } from '@repo/application';
 import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
@@ -36,9 +36,9 @@ export async function updatePassword(
 
     const updatePasswordFormData: UpdatePasswordFormInput = data;
 
-    const user = await findUserByValidResetToken(previousState.token);
+    const result = await resetPassword(previousState.token, updatePasswordFormData.password);
 
-    if (!user) {
+    if (!result.ok) {
       return formError(
         previousState.values,
         {
@@ -50,11 +50,9 @@ export async function updatePassword(
       );
     }
 
-    await updateUserPassword(user.id, updatePasswordFormData.password);
-
     return formSuccess(
       {
-        email: user.email,
+        email: result.email,
         password: '',
         passwordConfirmation: ''
       },

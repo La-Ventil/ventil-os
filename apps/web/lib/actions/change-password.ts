@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { changePasswordFormSchema, type ChangePasswordFormInput } from '@repo/application/forms';
-import { changeUserPassword } from '@repo/application';
+import { changePassword as changeUserPassword } from '@repo/application';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getUserProfileFromSession } from '../auth';

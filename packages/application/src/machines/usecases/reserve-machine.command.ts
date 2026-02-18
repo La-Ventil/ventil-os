@@ -1,12 +1,11 @@
 import { machineRepository, machineReservationRepository } from '@repo/db';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
-import { createReservationInterval } from '@repo/domain/machine/reservation-rules';
-import { Machine } from '@repo/domain/machine/machine';
+import { MachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
+import { planReservationForMachine } from '@repo/domain/machine/machine-reservation-plan';
+import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
 import type { Command } from '../../usecase';
-import { uniqueValuesWithout } from '../../utils/collection';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
 import { checkReservationEligibility } from './check-reservation-eligibility.query';
-import { buildMachineAggregate } from '../machine-aggregate';
 
 export type ReserveMachineInput = {
   machineId: string;
@@ -21,34 +20,25 @@ export const reserveMachine: Command<[ReserveMachineInput], MachineReservationVi
 ) => {
   const canReserve = await checkReservationEligibility(input.machineId, input.creatorId);
   if (!canReserve) {
-    throw new Error('machineReservation.badgeRequired');
+    throw new MachineReservationError('machineReservation.badgeRequired');
   }
 
-  const reservationInterval = createReservationInterval(input.startsAt, input.durationMinutes);
-  const machineRecord = await machineRepository.getMachineById(input.machineId);
-  if (!machineRecord) {
-    throw new Error('machineReservation.machineRequired');
-  }
-
-  const existingReservations = await machineReservationRepository.listForMachineBetween(
+  const reservationWindow = reservationWindowFor(input.startsAt, input.durationMinutes);
+  const machine = await machineRepository.getReservableMachine(
     input.machineId,
-    reservationInterval.start,
-    reservationInterval.end
+    reservationWindow.start,
+    reservationWindow.end
   );
+  if (!machine) {
+    throw new MachineReservationError('machineReservation.machineRequired');
+  }
 
-  const machine = buildMachineAggregate(machineRecord, existingReservations);
-
-  Machine.assertCanReserve(machine, {
-    startsAt: reservationInterval.start,
-    endsAt: reservationInterval.end
-  });
-
-  const participantIds = uniqueValuesWithout(input.participantIds, input.creatorId);
+  const { candidate, participantIds } = planReservationForMachine(machine, input);
   const reservation = await machineReservationRepository.createMachineReservation({
     machineId: input.machineId,
     creatorId: input.creatorId,
-    startsAt: reservationInterval.start,
-    endsAt: reservationInterval.end,
+    startsAt: candidate.startsAt,
+    endsAt: candidate.endsAt,
     participantIds
   });
 

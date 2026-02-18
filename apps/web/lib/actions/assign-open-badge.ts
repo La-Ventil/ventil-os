@@ -1,10 +1,11 @@
 'use server';
 
-import { awardOpenBadgeLevelUseCase, assignOpenBadgeFormInputSchema } from '@repo/application';
+import { assignOpenBadge as assignOpenBadgeUseCase, assignOpenBadgeFormInputSchema } from '@repo/application';
 import { getTranslations } from 'next-intl/server';
 import type { FormState } from '@repo/form/form-state';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 
 type AssignOpenBadgeInput = {
   userId: string;
@@ -31,15 +32,24 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<Form
     );
   }
 
-  await awardOpenBadgeLevelUseCase(parsed.data, {
-    id: session.user.id,
-    email: session.user.email ?? null,
-    globalAdmin: session.user.globalAdmin,
-    pedagogicalAdmin: session.user.pedagogicalAdmin
-  });
+  try {
+    await assignOpenBadgeUseCase(parsed.data, {
+      id: session.user.id,
+      email: session.user.email ?? null,
+      globalAdmin: session.user.globalAdmin,
+      pedagogicalAdmin: session.user.pedagogicalAdmin
+    });
 
-  return formSuccess(
-    parsed.data,
-    t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
-  );
+    return formSuccess(
+      parsed.data,
+      t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
+    );
+  } catch (error) {
+    if (isOpenBadgeError(error)) {
+      return formError(parsed.data, { message: t(error.code) });
+    }
+
+    console.error(error);
+    return formError(parsed.data, { message: t('validation.genericError') });
+  }
 }

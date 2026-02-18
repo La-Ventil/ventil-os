@@ -1,10 +1,11 @@
-import type { OpenBadgeAdminSchema } from '@repo/db/schemas';
+import type { OpenBadgeAdminSchemaRaw } from '@repo/db/schemas';
+import { toActivityStatus } from '@repo/domain/activity-status';
 import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 
-export const mapOpenBadgeAdminToViewModel = (badge: OpenBadgeAdminSchema): OpenBadgeAdminViewModel => ({
+export const mapOpenBadgeAdminToViewModel = (badge: OpenBadgeAdminSchemaRaw): OpenBadgeAdminViewModel => ({
   id: badge.id,
   name: badge.name,
   levelsCount: badge._count.levels,
   assignedCount: badge._count.openBadgeProgresses,
-  status: badge.status
+  status: toActivityStatus(badge.status)
 });

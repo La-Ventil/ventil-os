@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
-import { getUserProfileByEmail } from '@repo/application';
+import { viewUserProfile } from '@repo/application';
 import { getServerSession } from '../../../lib/auth';
 
 type LoginPageProps = {
@@ -23,7 +23,7 @@ type LoginPageProps = {
 const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const session = await getServerSession();
   if (session?.user?.email) {
-    const profile = await getUserProfileByEmail(session.user.email);
+    const profile = await viewUserProfile(session.user.email);
     if (profile) {
       redirect('/hub/profile');
     }

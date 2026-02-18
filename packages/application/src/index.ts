@@ -1,4 +1,4 @@
-export * from './open-badge';
+export * from './open-badges/usecases';
 export * from './event';
 export * from './machines/machine-reservation-users';
 export * from './time/date-time';

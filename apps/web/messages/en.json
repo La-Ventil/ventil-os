@@ -91,7 +91,18 @@
     "overlap": "This time slot is already reserved.",
     "inactive": "This machine is currently unavailable.",
     "machineRequired": "Selected machine was not found.",
-    "notFound": "Reservation not found."
+    "notFound": "Reservation not found.",
+    "unauthorized": "You cannot cancel this reservation."
+  },
+  "openBadge": {
+    "assign": {
+      "unauthorized": "You are not allowed to assign this open badge.",
+      "awarderNotFound": "Assigning user was not found.",
+      "targetNotFound": "Target user was not found."
+    }
+  },
+  "user": {
+    "notFound": "User not found."
   },
   "emailSignature": "— The {appName} team",
   "verifyEmail": {

@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { registerUserAccount, requestEmailVerification } from '@repo/application';
+import { signUp } from '@repo/application';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -23,7 +23,7 @@ export async function registerUser(
     }
 
     const signupFormData: SignupFormInput = data;
-    const result = await registerUserAccount({
+    const result = await signUp({
       email: signupFormData.email,
       firstName: signupFormData.firstName,
       lastName: signupFormData.lastName,
@@ -44,7 +44,7 @@ export async function registerUser(
       });
     }
 
-    const { token } = await requestEmailVerification(signupFormData.email);
+    const { token } = result;
     await sendEmailVerification({
       email: signupFormData.email,
       firstName: signupFormData.firstName,

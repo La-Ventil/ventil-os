@@ -1,8 +1,5 @@
 import type { JSX } from 'react';
-import {
-  viewMachineDetails,
-  listUsersForReservation
-} from '@repo/application';
+import { browseUsersForReservation, viewMachineDetails } from '@repo/application';
 import { resolveIsoDateFromQuery } from '@repo/application/infra/iso-date';
 import { getServerSession } from '../../../../../../lib/auth';
 import MachineReservationModalRouteClient from '../../../machine-reservation-modal-route.client';
@@ -23,7 +20,7 @@ export default async function MachineReservationModalPage({
     return null;
   }
   const session = await getServerSession();
-  const participantOptions = await listUsersForReservation();
+  const participantOptions = await browseUsersForReservation();
   const startAt = resolveIsoDateFromQuery(start) ?? new Date();
 
   return (

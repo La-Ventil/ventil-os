@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { canManageBadges, listAdminOpenBadges } from '@repo/application';
+import { canManageBadges, browseOpenBadgesAsAdmin } from '@repo/application';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';
@@ -21,7 +21,7 @@ export default async function AdminOpenBadgesPage() {
   }
 
   const t = await getTranslations('pages.hub.admin.openBadges');
-  const badges = await listAdminOpenBadges();
+  const badges = await browseOpenBadgesAsAdmin();
 
   const labels = {
     title: t('title'),

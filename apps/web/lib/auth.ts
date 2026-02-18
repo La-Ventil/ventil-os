@@ -6,10 +6,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { redirect } from 'next/navigation';
-import { getUserCredentialsByEmail, getUserProfileByEmail } from '@repo/application';
-import { prismaClient } from '@repo/application/prisma';
+import { signIn as signInUser, viewUserProfile } from '@repo/application';
+import { prismaClient } from '@repo/db';
 import type { UserProfile } from '@repo/view-models/user-profile';
-import { verifySecret } from '@repo/crypto';
 
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
@@ -65,14 +64,7 @@ function authorize() {
     if (typeof credentials.password !== 'string') {
       throw new Error('"password" is required in credentials');
     }
-    const maybeUser = await getUserCredentialsByEmail(credentials.email);
-    if (!maybeUser?.password) return null;
-    if (!maybeUser.emailVerified) return null;
-    // verify the input password with stored hash
-    const isValid = await verifySecret(credentials.password, maybeUser.password, maybeUser.salt, maybeUser.iterations);
-
-    if (!isValid) return null;
-    return getUserProfileByEmail(maybeUser.email);
+    return signInUser(credentials.email, credentials.password);
   };
 }
 
@@ -89,7 +81,7 @@ export async function getUserProfileFromSession() {
     redirect('/login');
   }
 
-  const profile = await getUserProfileByEmail(session.user.email);
+  const profile = await viewUserProfile(session.user.email);
   if (!profile) {
     redirect('/login');
   }

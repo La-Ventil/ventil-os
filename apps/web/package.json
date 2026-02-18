@@ -22,6 +22,7 @@
     "@mui/x-date-pickers": "^8.27.0",
     "@prisma/client": "^5.22.0",
     "@repo/application": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/crypto": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/form": "workspace:*",

@@ -2,7 +2,10 @@ export type MachineReservationErrorCode =
   | 'machineReservation.inactive'
   | 'machineReservation.startsAtInPast'
   | 'machineReservation.overlap'
-  | 'machineReservation.notFound';
+  | 'machineReservation.notFound'
+  | 'machineReservation.unauthorized'
+  | 'machineReservation.badgeRequired'
+  | 'machineReservation.machineRequired';
 
 export class MachineReservationError extends Error {
   readonly code: MachineReservationErrorCode;

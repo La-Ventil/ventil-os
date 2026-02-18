@@ -1,5 +1,8 @@
 import { machineRepository, openBadgeRepository } from '@repo/db';
-import { isMachineReservationEligible } from '@repo/domain/machine/machine-reservation-eligibility';
+import {
+  buildReservationEligibilityChecks,
+  isMachineReservationEligible
+} from '@repo/domain/machine/machine-reservation-eligibility';
 import type { Query } from '../../usecase';
 
 type CheckReservationEligibilityArgs = [machineId: string, userId?: string | null];
@@ -21,17 +24,9 @@ export const checkReservationEligibility: Query<CheckReservationEligibilityArgs,
     return false;
   }
 
-  const checks = await Promise.all(
-    machine.badgeRequirements.map(async (requirement) => {
-      const requiredLevel = requirement.level?.level ?? 0;
-      const highestLevel = await openBadgeRepository.getUserHighestOpenBadgeLevel(
-        userId,
-        requirement.openBadge.id
-      );
-      return { requiredLevel, userLevel: highestLevel };
-    })
-  );
-
+  const openBadgeIds = machine.badgeRequirements.map((requirement) => requirement.openBadge.id);
+  const userLevels = await openBadgeRepository.getUserHighestOpenBadgeLevels(userId, openBadgeIds);
+  const checks = buildReservationEligibilityChecks(machine.badgeRequirements, userLevels);
   const rules = machine.badgeRequirements.map((requirement) => requirement.rule);
 
   return isMachineReservationEligible(rules, checks);

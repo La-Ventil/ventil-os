@@ -1,5 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
-import type { MessageSchema } from './schemas/message';
+import type { MessageSchema } from '../schemas/message';
 
 export class MessageRepository {
   constructor(private prisma: PrismaClient) {}

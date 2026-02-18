@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { updateUserProfile } from '@repo/application';
+import { updateProfile as updateUserProfile } from '@repo/application';
 import { ProfileFormInput, parseProfileFormInput } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
