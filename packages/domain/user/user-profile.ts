@@ -1,10 +1,10 @@
 import type { EducationLevel } from './education-level';
 import type { Email } from './email';
-import type { ProfileType } from './profile-type';
+import type { UserRole } from './user-role';
 
 export type UserProfile = {
   id: string;
-  profile: ProfileType;
+  profile: UserRole;
   email: Email;
   pendingEmail?: Email | null;
   image?: string | null;

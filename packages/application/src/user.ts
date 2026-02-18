@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { ConsentType, ExternalProfile, Profile, StudentProfile, userRepository } from '@repo/db';
 import type { UserCredentialsSchema, UserPasswordResetSchema } from '@repo/db/schemas';
-import { ProfileType } from '@repo/domain/user/profile-type';
+import { UserRole, deriveUserRole } from '@repo/domain/user/user-role';
 import { Email } from '@repo/domain/user/email';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { User } from '@repo/domain/user/user';
@@ -10,7 +10,6 @@ import type { UserProfile } from '@repo/view-models/user-profile';
 import { mapUserProfileToViewModel } from './presenters/user-profile';
 import { mapUserAdminToViewModel } from './presenters/user-admin';
 import { mapUserSummaryToViewModel } from './presenters/user-summary';
-import { resolveProfileType } from './presenters/profile-type';
 import { prismaClient } from './prisma';
 
 export const getUserProfileByEmail = async (email: string): Promise<UserProfile | null> => {
@@ -55,7 +54,7 @@ const selectDomainUser = {
 const toDomainUser = (user: DomainUserRecord): User =>
   User.from({
     id: user.id,
-    profile: resolveProfileType(user),
+    profile: deriveUserRole(user),
     email: Email.from(user.email),
     pendingEmail: user.pendingEmail ? Email.from(user.pendingEmail) : null,
     emailVerifiedAt: user.emailVerified ?? null,
@@ -110,22 +109,22 @@ const resolveProfile = (profileType: string) => {
   let externalProfile: ExternalProfile | null = null;
 
   switch (profileType) {
-    case ProfileType.Member:
+    case UserRole.Member:
       profile = Profile.student;
       studentProfile = StudentProfile.member;
       break;
-    case ProfileType.Alumni:
+    case UserRole.Alumni:
       profile = Profile.student;
       studentProfile = StudentProfile.alumni;
       break;
-    case ProfileType.Teacher:
+    case UserRole.Teacher:
       profile = Profile.teacher;
       break;
-    case ProfileType.Contributor:
+    case UserRole.Contributor:
       profile = Profile.external;
       externalProfile = ExternalProfile.contributor;
       break;
-    case ProfileType.Visitor:
+    case UserRole.Visitor:
       profile = Profile.external;
       externalProfile = ExternalProfile.visitor;
       break;

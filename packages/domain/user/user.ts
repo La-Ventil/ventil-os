@@ -1,11 +1,11 @@
 import type { AdminFlags } from '../authorization';
 import type { EducationLevel } from './education-level';
 import type { Email } from './email';
-import type { ProfileType } from './profile-type';
+import type { UserRole } from './user-role';
 
 export type User = {
   id: string;
-  profile: ProfileType;
+  profile: UserRole;
   email: Email;
   pendingEmail?: Email | null;
   emailVerifiedAt?: Date | null;

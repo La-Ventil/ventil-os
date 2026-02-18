@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { passwordConfirmationSchema, passwordSchema } from './password';
-import type { ProfileType } from '@repo/domain/user/profile-type';
-import { requiresEducationLevel } from '@repo/domain/user/profile-type';
+import type { UserRole } from '@repo/domain/user/user-role';
+import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
 export const signupFormSchema = zfd
   .formData({
@@ -21,7 +21,7 @@ export const signupFormSchema = zfd
     path: ['passwordConfirmation']
   })
   .superRefine(({ profile, educationLevel }, ctx) => {
-    if (requiresEducationLevel(profile as ProfileType) && !educationLevel) {
+    if (requiresEducationLevel(profile as UserRole) && !educationLevel) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'validation.signup.educationLevelRequired',

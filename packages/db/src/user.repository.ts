@@ -1,40 +1,12 @@
 import { ExternalProfile, Profile, StudentProfile, type Prisma, type PrismaClient } from '@prisma/client';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
-import { ProfileType } from '@repo/domain/user/profile-type';
+import { deriveUserRole } from '@repo/domain/user/user-role';
 import type { UserCredentialsSchema, UserCredentialsSchemaRaw } from './schemas/user-credentials';
 import type { UserAdminSchema, UserAdminSchemaRaw } from './schemas/user-admin';
 import type { UserPasswordResetSchema, UserPasswordResetSchemaRaw } from './schemas/user-password-reset';
 import type { UserProfileSchema, UserProfileSchemaRaw } from './schemas/user-profile';
 import type { UserSummarySchema, UserSummarySchemaRaw } from './schemas/user-summary';
-
-const resolveProfileType = (user: {
-  profile: Profile;
-  studentProfile: StudentProfile | null;
-  externalProfile: ExternalProfile | null;
-}): ProfileType => {
-  if (user.profile === Profile.teacher) {
-    return ProfileType.Teacher;
-  }
-
-  if (user.profile === Profile.external) {
-    if (user.externalProfile === ExternalProfile.contributor) {
-      return ProfileType.Contributor;
-    }
-
-    return ProfileType.Visitor;
-  }
-
-  if (user.studentProfile === StudentProfile.member) {
-    return ProfileType.Member;
-  }
-
-  if (user.studentProfile === StudentProfile.alumni) {
-    return ProfileType.Alumni;
-  }
-
-  return ProfileType.Visitor;
-};
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -44,7 +16,7 @@ export class UserRepository {
 
     return {
       ...rest,
-      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
       pendingEmail: pendingEmail ? Email.from(pendingEmail) : null,
       educationLevel: parseEducationLevel(educationLevel)
@@ -56,7 +28,7 @@ export class UserRepository {
 
     return {
       ...rest,
-      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
       educationLevel: parseEducationLevel(educationLevel)
     };
@@ -67,7 +39,7 @@ export class UserRepository {
 
     return {
       ...rest,
-      profile: resolveProfileType({ profile, studentProfile, externalProfile }),
+      profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email)
     };
   }

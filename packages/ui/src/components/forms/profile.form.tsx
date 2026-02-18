@@ -14,7 +14,7 @@ import { FormAction } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
 import Link from '../link';
-import { requiresEducationLevel } from '@repo/domain/user/profile-type';
+import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
 export interface ProfileFormProps {
   profilePromise: Promise<UserProfile>;

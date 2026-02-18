@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import type { Email } from '@repo/domain/user/email';
-import type { ProfileType } from '@repo/domain/user/profile-type';
+import type { UserRole } from '@repo/domain/user/user-role';
 
 export type UserAdminSchemaRaw = Prisma.UserGetPayload<{
   select: {
@@ -28,5 +28,5 @@ export type UserAdminSchema = Omit<
   'email' | 'profile' | 'studentProfile' | 'externalProfile'
 > & {
   email: Email;
-  profile: ProfileType;
+  profile: UserRole;
 };

@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import type { EducationLevel } from '@repo/domain/user/education-level';
 import type { Email } from '@repo/domain/user/email';
-import type { ProfileType } from '@repo/domain/user/profile-type';
+import type { UserRole } from '@repo/domain/user/user-role';
 
 export type UserProfileSchemaRaw = Prisma.UserGetPayload<{
   select: {
@@ -29,5 +29,5 @@ export type UserProfileSchema = Omit<
   email: Email;
   pendingEmail: Email | null;
   educationLevel: EducationLevel | null;
-  profile: ProfileType;
+  profile: UserRole;
 };

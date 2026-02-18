@@ -8,7 +8,7 @@ import type { FormControlLabelProps } from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup from '@mui/material/FormGroup';
 import Radio from '@mui/material/Radio';
-import { ProfileType } from '@repo/domain/user/profile-type';
+import { UserRole } from '@repo/domain/user/user-role';
 import { FormLabel } from '../form-label';
 import { RadioGroup } from './radio-group';
 import Typography from '@mui/material/Typography';
@@ -55,13 +55,9 @@ export default function ProfileRadioGroup({
   onChange
 }: ProfileRadioGroupProps) {
   const t = useTranslations('profileSelector');
-  const [value, setValue] = useState<string>(defaultValue ?? ProfileType.Member);
-  const optionKeyMap: Record<string, string> = {
-    eleve_lycee: 'eleveLycee'
-  };
-
+  const [value, setValue] = useState<string>(defaultValue ?? UserRole.Member);
   useEffect(() => {
-    setValue(defaultValue ?? ProfileType.Member);
+    setValue(defaultValue ?? UserRole.Member);
   }, [defaultValue]);
 
   return (
@@ -81,10 +77,9 @@ export default function ProfileRadioGroup({
           }}
           name="profile"
         >
-          {Object.values(ProfileType).map((key) => {
-            const optionKey = optionKeyMap[key] ?? key;
-            const label = t(`option.${optionKey}.label`);
-            const description = t(`option.${optionKey}.description`);
+          {Object.values(UserRole).map((key) => {
+            const label = t(`option.${key}.label`);
+            const description = t(`option.${key}.description`);
 
             return <ProfileRadio key={key} label={label} value={key} caption={description} />;
           })}

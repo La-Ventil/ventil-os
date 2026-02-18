@@ -1,5 +1,5 @@
 import type { Email } from './email';
-import type { ProfileType } from './profile-type';
+import type { UserRole } from './user-role';
 import type { UserStats } from './user-stats';
 
 export type UserAdmin = {
@@ -8,7 +8,7 @@ export type UserAdmin = {
   firstName: string;
   lastName?: string;
   username: string;
-  profile: ProfileType;
+  profile: UserRole;
   globalAdmin: boolean;
   pedagogicalAdmin: boolean;
   stats: UserStats;

@@ -8,8 +8,8 @@ import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
-import type { ProfileType } from '@repo/domain/user/profile-type';
-import { requiresEducationLevel } from '@repo/domain/user/profile-type';
+import type { UserRole } from '@repo/domain/user/user-role';
+import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
 export async function registerUser(
   previousState: FormState<SignupFormInput>,
@@ -31,7 +31,7 @@ export async function registerUser(
     }
 
     const signupFormData: SignupFormInput = data;
-    if (requiresEducationLevel(signupFormData.profile as ProfileType) && !signupFormData.educationLevel) {
+    if (requiresEducationLevel(signupFormData.profile as UserRole) && !signupFormData.educationLevel) {
       const fieldErrors = {
         educationLevel: [t('validation.signup.educationLevelRequired')]
       };

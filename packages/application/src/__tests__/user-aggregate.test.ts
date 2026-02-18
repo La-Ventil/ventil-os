@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { User } from '@repo/domain/user/user';
 import { Email } from '@repo/domain/user/email';
-import { ProfileType } from '@repo/domain/user/profile-type';
+import { UserRole } from '@repo/domain/user/user-role';
 
 const baseUser = () =>
   User.from({
     id: 'user-1',
-    profile: ProfileType.Member,
+    profile: UserRole.Member,
     email: Email.from('user@example.com'),
     pendingEmail: null,
     emailVerifiedAt: null,

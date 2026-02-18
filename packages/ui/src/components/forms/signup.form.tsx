@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
-import { ProfileType, requiresEducationLevel } from '@repo/domain/user/profile-type';
+import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
 import { useEffect, useState } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
@@ -31,7 +31,7 @@ export const signupFormInitialState = createFormState<SignupFormInput>({
   email: '',
   password: '',
   passwordConfirmation: '',
-  profile: ProfileType.Member,
+  profile: UserRole.Member,
   terms: '',
   educationLevel: ''
 });
@@ -41,9 +41,9 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const tCommon = useTranslations('common');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
   const fieldError = (field: keyof SignupFormInput) => firstFieldError(state, field);
-  const resolveProfileType = (value?: string): ProfileType =>
-    Object.values(ProfileType).includes(value as ProfileType) ? (value as ProfileType) : ProfileType.Member;
-  const [selectedProfile, setSelectedProfile] = useState<ProfileType>(() => resolveProfileType(state.values.profile));
+  const resolveProfileType = (value?: string): UserRole =>
+    Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
+  const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
 
   useEffect(() => {
     setSelectedProfile(resolveProfileType(state.values.profile));
