@@ -58,14 +58,22 @@
     },
     "signup": {
       "firstNameRequired": "Veuillez renseigner votre prénom.",
+      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
+      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
       "lastNameRequired": "Veuillez renseigner votre nom.",
+      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
+      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
       "profileRequired": "Veuillez sélectionner un profil.",
       "termsRequired": "Vous devez accepter la politique de confidentialité.",
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
     },
     "profile": {
       "firstNameRequired": "Veuillez renseigner votre prénom.",
+      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
+      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
       "lastNameRequired": "Veuillez renseigner votre nom.",
+      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
+      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
       "profileRequired": "Veuillez sélectionner un profil.",
       "termsRequired": "Vous devez accepter la politique de confidentialité.",
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."

@@ -1,14 +1,23 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
+import { nameSchema } from './name';
 import { passwordConfirmationSchema, passwordSchema } from './password';
 import type { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
 export const signupFormSchema = zfd
   .formData({
-    firstName: z.string().min(1, { message: 'validation.signup.firstNameRequired' }),
-    lastName: z.string().min(1, { message: 'validation.signup.lastNameRequired' }),
+    firstName: nameSchema({
+      requiredMessage: 'validation.signup.firstNameRequired',
+      maxLengthMessage: 'validation.signup.firstNameMaxLength',
+      noEmojiMessage: 'validation.signup.firstNameNoEmoji'
+    }),
+    lastName: nameSchema({
+      requiredMessage: 'validation.signup.lastNameRequired',
+      maxLengthMessage: 'validation.signup.lastNameMaxLength',
+      noEmojiMessage: 'validation.signup.lastNameNoEmoji'
+    }),
     email: emailSchema,
     password: passwordSchema,
     passwordConfirmation: passwordConfirmationSchema,
