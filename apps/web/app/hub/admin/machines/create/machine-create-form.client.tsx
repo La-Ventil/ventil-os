@@ -1,31 +1,26 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { MachineCreateFormInput } from '@repo/application/forms';
-import MachineCreateForm from '@repo/ui/forms/machine-create.form';
-import { FormState } from '@repo/form/form-state';
+import { machineCreateRequestSchema } from '@repo/application/forms';
+import MachineCreateForm, { machineCreateInitialState } from '@repo/ui/forms/machine-create.form';
+import { useFormActionState } from '@repo/form/use-form-action-state';
+import { useTranslations } from 'next-intl';
 import { createMachine } from '../../../../../lib/actions/create-machine';
 
 export default function MachineCreateFormClient() {
   const router = useRouter();
-  const actionState = useActionState<FormState<MachineCreateFormInput>, FormData>(createMachine, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
-      name: '',
-      description: '',
-      imageUrl: '',
-      badgeRequired: true,
-      badgeQuery: '',
-      activationEnabled: true
-    },
-    isValid: undefined
+  const tCommon = useTranslations('common');
+  const tRoot = useTranslations();
+  const formState = useFormActionState({
+    action: createMachine,
+    initialState: machineCreateInitialState,
+    schema: machineCreateRequestSchema,
+    translate: tCommon,
+    translateFieldError: tRoot
   });
 
-  const [state] = actionState;
+  const [state] = formState;
 
   useEffect(() => {
     if (state.success) {
@@ -33,5 +28,5 @@ export default function MachineCreateFormClient() {
     }
   }, [router, state.success]);
 
-  return <MachineCreateForm actionState={actionState} />;
+  return <MachineCreateForm formState={formState} />;
 }

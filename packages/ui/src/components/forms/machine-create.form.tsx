@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
 import { useTranslations } from 'next-intl';
 import { MachineCreateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
@@ -18,22 +17,35 @@ import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../inputs/image-upload-field';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
-import { FormActionStateTuple } from '@repo/form/form-action-state';
-import { FormState } from '@repo/form/form-state';
+import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { firstFieldError } from '@repo/form/form-errors';
+import { createFormState } from '@repo/form/form-state';
+import FormAlert from './form-alert';
+import Form from './form';
 import styles from './machine-create.form.module.css';
 
 export interface MachineCreateFormProps {
-  actionState: FormActionStateTuple<FormState<MachineCreateFormInput>>;
+  formState: FormActionStateTuple<MachineCreateFormInput>;
 }
 
-export default function MachineCreateForm({ actionState: [state, action, isPending] }: MachineCreateFormProps) {
+export const machineCreateInitialState = createFormState<MachineCreateFormInput>({
+  name: '',
+  description: '',
+  imageFile: undefined,
+  badgeRequired: true,
+  badgeQuery: '',
+  activationEnabled: true
+});
+
+export default function MachineCreateForm({
+  formState: [state, action, isPending, handleSubmit, handleRetry]
+}: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
 
   return (
-    <Stack component="form" action={action} spacing={2}>
-      {state.message && !isPending && <Alert severity={state.success ? 'success' : 'error'}>{state.message}</Alert>}
+    <Form action={action} onSubmit={handleSubmit}>
+      <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
         <TextField
           name="name"
@@ -56,7 +68,6 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
 
         <div className={styles.imageRow}>
           <ImageUploadField
-            defaultValue={state.values.imageUrl}
             label={t('fields.image')}
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
@@ -64,10 +75,10 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
             tooLargeLabel={t('image.tooLarge')}
             clearLabel={t('image.clear')}
             maxSizeMb={5}
-            resetKey={state.success ? 'reset' : state.values.imageUrl}
+            resetKey={state.success ? 'reset' : undefined}
             required
-            error={Boolean(fieldError('imageUrl'))}
-            helperText={fieldError('imageUrl')}
+            error={Boolean(fieldError('imageFile'))}
+            helperText={fieldError('imageFile')}
           />
         </div>
       </FormSection>
@@ -126,6 +137,6 @@ export default function MachineCreateForm({ actionState: [state, action, isPendi
           {t('actions.save')}
         </AdminButton>
       </FormActions>
-    </Stack>
+    </Form>
   );
 }
