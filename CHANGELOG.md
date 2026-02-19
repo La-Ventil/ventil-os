@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/La-Ventil/ventil-os/compare/v0.0.12...v0.0.13) (2026-02-19)
+
+
+### Features
+
+* **admin:** apply section theming in admin ([9226ca3](https://github.com/La-Ventil/ventil-os/commit/9226ca321ef7be5bab9ffd1d757b3bf033c15247))
+* **auth:** require email verification on signup ([314c885](https://github.com/La-Ventil/ventil-os/commit/314c8850955616726f3587285dd6721a77f2a639))
+* **domain:** expand domain boundaries ([7da0622](https://github.com/La-Ventil/ventil-os/commit/7da062207eb4382587c294549f2fb98c6b2da884))
+* **machine:** limit name and description length ([56df6c7](https://github.com/La-Ventil/ventil-os/commit/56df6c7875449103ceab5ad7cade22dcc8db3cd8))
+* **open-badge:** show level numbers in labels ([b31081d](https://github.com/La-Ventil/ventil-os/commit/b31081d494e3670f67a0ed19c9c02fb0d67c9b64))
+* **seed:** award minimal open badges to admins ([c0686e8](https://github.com/La-Ventil/ventil-os/commit/c0686e8f5c2c40877bd40bc44441a2ddd0c9b22f))
+* **signup:** show privacy policy in modal ([79131c1](https://github.com/La-Ventil/ventil-os/commit/79131c1267740398385ee7e1bdfa45e1649db32a))
+* **user:** add fullName helper and enforce lastName ([fc9d03a](https://github.com/La-Ventil/ventil-os/commit/fc9d03ad52162c004573ffd3f7f251a6399935f5))
+* **validation:** strengthen password rules ([a5bc2de](https://github.com/La-Ventil/ventil-os/commit/a5bc2de6a3ef9c7f8a73f787e400e00fbd43f29d))
+* **validation:** tighten name fields ([3a5f559](https://github.com/La-Ventil/ventil-os/commit/3a5f55922cef58c38b83f181e415cd3cc6e21b02))
+
+
+### Bug Fixes
+
+* **admin:** render modal slots in layouts ([af59294](https://github.com/La-Ventil/ventil-os/commit/af59294c9aa38e4725f4bf4571cfa0941c08d81d))
+* **auth:** wire forgot-password back button ([6a12209](https://github.com/La-Ventil/ventil-os/commit/6a1220908b891dcf8e13e4fc1a6a780d4559d6fa))
+* **docker:** correct postgres volume mount ([bd008e0](https://github.com/La-Ventil/ventil-os/commit/bd008e000d13ebd73ec1f49745ba6315acca2dd2))
+* **machine:** wire create form validation ([60611d1](https://github.com/La-Ventil/ventil-os/commit/60611d1a4c820b48f7a7b2c33929addd360e9395))
+* **open-badge:** delay modal close for feedback ([8775ee3](https://github.com/La-Ventil/ventil-os/commit/8775ee3799158daee1a2af3151be6e687df83cd7))
+* **open-badge:** filter assignable users ([cff3763](https://github.com/La-Ventil/ventil-os/commit/cff3763894e26a0fa3aeab7b06cc28391b95cc82))
+* **open-badge:** show active levels in all tab ([a9b2930](https://github.com/La-Ventil/ventil-os/commit/a9b2930e89624b9ffeb2e5b7b7601a08712d9b80))
+
+
+### Docs
+
+* **adr:** sync changelog config ([bfb856d](https://github.com/La-Ventil/ventil-os/commit/bfb856da6872b37697bf309840f5031a68302a09))
+
 ### 0.0.12 (2026-02-13)
 
 
