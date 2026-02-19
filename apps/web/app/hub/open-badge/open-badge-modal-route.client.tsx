@@ -8,6 +8,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import OpenBadgeModal from '@repo/ui/open-badge/open-badge-modal';
 import { assignOpenBadge } from '../../../lib/actions/assign-open-badge';
+import { useDelayedAction } from '../../../lib/hooks/use-delayed-action';
 import { fieldErrorsToSingleMessage } from '../../../lib/validation';
 
 type OpenBadgeModalRouteClientProps = {
@@ -29,10 +30,25 @@ export default function OpenBadgeModalRouteClient({
   const [isAssignOpen, setIsAssignOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
+  const { schedule, cancel } = useDelayedAction();
+
+  const handleAssignClose = () => {
+    cancel();
+    setIsAssignOpen(false);
+    setFeedback(null);
+    router.push(closeHref);
+  };
 
   useEffect(() => {
     setIsOpen(Boolean(openBadge));
   }, [openBadge]);
+
+  useEffect(() => {
+    if (isAssignOpen) {
+      cancel();
+      setFeedback(null);
+    }
+  }, [isAssignOpen, cancel]);
 
   if (!openBadge) {
     return null;
@@ -50,6 +66,8 @@ export default function OpenBadgeModalRouteClient({
             ? () => {
                 setIsAssignOpen(true);
                 setIsOpen(false);
+                setFeedback(null);
+                cancel();
               }
             : undefined
         }
@@ -61,11 +79,7 @@ export default function OpenBadgeModalRouteClient({
       {allowAssign ? (
         <AssignOpenBadgeModal
           open={isAssignOpen}
-          onClose={() => {
-            setIsAssignOpen(false);
-            setFeedback(null);
-            router.push(closeHref);
-          }}
+          onClose={handleAssignClose}
           user={null}
           users={users}
           openBadge={openBadge}
@@ -89,8 +103,7 @@ export default function OpenBadgeModalRouteClient({
               }
 
               setFeedback({ type: 'success', message: result.message ?? t('confirm') });
-              setIsAssignOpen(false);
-              router.push(closeHref);
+              schedule(handleAssignClose);
             });
           }}
         />

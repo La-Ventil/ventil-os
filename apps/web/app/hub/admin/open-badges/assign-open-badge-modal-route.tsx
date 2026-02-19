@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
+import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
 import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
 type AssignOpenBadgeModalRouteProps = {
@@ -27,10 +28,29 @@ export default function AssignOpenBadgeModalRoute({
   const [isOpen, setIsOpen] = useState(Boolean(openBadge));
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
+  const { schedule, cancel } = useDelayedAction();
+
+  const handleClose = () => {
+    cancel();
+    setFeedback(null);
+    setIsOpen(false);
+    router.push(closeHref);
+  };
 
   useEffect(() => {
     setIsOpen(Boolean(openBadge));
-  }, [openBadge]);
+    if (openBadge) {
+      cancel();
+      setFeedback(null);
+    }
+  }, [openBadge, cancel]);
+
+  useEffect(() => {
+    if (isOpen) {
+      cancel();
+      setFeedback(null);
+    }
+  }, [isOpen, cancel]);
 
   if (!openBadge) {
     return null;
@@ -39,10 +59,7 @@ export default function AssignOpenBadgeModalRoute({
   return (
     <AssignOpenBadgeModal
       open={isOpen}
-      onClose={() => {
-        setIsOpen(false);
-        router.push(closeHref);
-      }}
+      onClose={handleClose}
       onConfirm={(payload) => {
         startTransition(async () => {
           setFeedback(null);
@@ -60,8 +77,7 @@ export default function AssignOpenBadgeModalRoute({
           }
 
           setFeedback({ type: 'success', message: result.message ?? t('confirm') });
-          setIsOpen(false);
-          router.push(closeHref);
+          schedule(handleClose);
         });
       }}
       user={null}
