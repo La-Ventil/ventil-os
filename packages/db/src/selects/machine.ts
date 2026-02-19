@@ -1,5 +1,4 @@
 import type { Prisma } from '@prisma/client';
-import type { ActivityStatus } from '@repo/domain/activity-status';
 
 export const machineSummarySelect = {
   id: true,
@@ -10,13 +9,9 @@ export const machineSummarySelect = {
   status: true
 } as const;
 
-export type MachineSummaryRow = Prisma.MachineGetPayload<{
+export type MachineSummaryPayload = Prisma.MachineGetPayload<{
   select: typeof machineSummarySelect;
 }>;
-
-export type MachineSummaryReadModel = Omit<MachineSummaryRow, 'status'> & {
-  status: ActivityStatus;
-};
 
 export const machineAdminSelect = {
   id: true,
@@ -35,10 +30,6 @@ export const machineAdminSelect = {
   }
 } as const;
 
-export type MachineAdminRow = Prisma.MachineGetPayload<{
+export type MachineAdminPayload = Prisma.MachineGetPayload<{
   select: typeof machineAdminSelect;
 }>;
-
-export type MachineAdminReadModel = Omit<MachineAdminRow, 'status'> & {
-  status: ActivityStatus;
-};

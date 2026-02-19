@@ -1,31 +1,32 @@
 import type { PrismaClient } from '@prisma/client';
+import type {
+  MachineReservationAvailabilityReadModel,
+  MachineReservationParticipantReadModel,
+  MachineReservationReadModel
+} from '../read-models/machine-reservation';
 import {
-  type MachineReservationAvailabilityReadModel,
-  type MachineReservationAvailabilityRow,
-  type MachineReservationParticipantReadModel,
-  type MachineReservationReadModel,
-  type MachineReservationRow
-} from '../schemas/machine-reservation';
-import {
-  machineReservationInclude,
-  machineReservationAvailabilitySelect
-} from '../schemas/machine-reservation';
+  type MachineReservationAvailabilityPayload,
+  type MachineReservationPayload,
+  machineReservationAvailabilitySelect,
+  machineReservationInclude
+} from '../selects/machine-reservation';
 import { toMachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
-import type { UserSummaryReadModel } from '../schemas/user-summary';
+import type { UserSummaryReadModel } from '../read-models/user-summary';
 import { Email } from '@repo/domain/user/email';
 
 export class MachineReservationRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeUserSummary(user: MachineReservationRow['creator']): UserSummaryReadModel {
+  private normalizeUserSummary(user: MachineReservationPayload['creator']): UserSummaryReadModel {
     return {
       ...user,
-      email: Email.from(user.email)
+      email: Email.from(user.email),
+      lastName: user.lastName ?? ''
     };
   }
 
   private normalizeParticipant(
-    participant: MachineReservationRow['participants'][number]
+    participant: MachineReservationPayload['participants'][number]
   ): MachineReservationParticipantReadModel {
     return {
       id: participant.id,
@@ -33,7 +34,7 @@ export class MachineReservationRepository {
     };
   }
 
-  private normalizeReservation(reservation: MachineReservationRow): MachineReservationReadModel {
+  private normalizeReservation(reservation: MachineReservationPayload): MachineReservationReadModel {
     return {
       ...reservation,
       status: toMachineReservationStatus(reservation.status),
@@ -43,7 +44,7 @@ export class MachineReservationRepository {
   }
 
   private normalizeReservationAvailability(
-    reservation: MachineReservationAvailabilityRow
+    reservation: MachineReservationAvailabilityPayload
   ): MachineReservationAvailabilityReadModel {
     return {
       ...reservation,
@@ -72,7 +73,7 @@ export class MachineReservationRepository {
       }
     });
 
-    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationRow));
+    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationPayload));
   }
 
   async createMachineReservation(input: {
@@ -100,7 +101,7 @@ export class MachineReservationRepository {
       include: machineReservationInclude
     });
 
-    return this.normalizeReservation(reservation as MachineReservationRow);
+    return this.normalizeReservation(reservation as MachineReservationPayload);
   }
 
   async listForUser(userId: string): Promise<MachineReservationReadModel[]> {
@@ -123,7 +124,7 @@ export class MachineReservationRepository {
       }
     });
 
-    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationRow));
+    return reservations.map((reservation) => this.normalizeReservation(reservation as MachineReservationPayload));
   }
 
   async listForMachinesBetween(rangeStart: Date, rangeEnd: Date): Promise<MachineReservationAvailabilityReadModel[]> {
@@ -141,7 +142,7 @@ export class MachineReservationRepository {
     });
 
     return reservations.map((reservation) =>
-      this.normalizeReservationAvailability(reservation as MachineReservationAvailabilityRow)
+      this.normalizeReservationAvailability(reservation as MachineReservationAvailabilityPayload)
     );
   }
 
@@ -151,7 +152,7 @@ export class MachineReservationRepository {
       include: machineReservationInclude
     });
 
-    return reservation ? this.normalizeReservation(reservation as MachineReservationRow) : null;
+    return reservation ? this.normalizeReservation(reservation as MachineReservationPayload) : null;
   }
 
   async cancelReservation(reservationId: string): Promise<MachineReservationReadModel> {
@@ -163,7 +164,7 @@ export class MachineReservationRepository {
       include: machineReservationInclude
     });
 
-    return this.normalizeReservation(reservation as MachineReservationRow);
+    return this.normalizeReservation(reservation as MachineReservationPayload);
   }
 
   async hasOverlap(machineId: string, rangeStart: Date, rangeEnd: Date): Promise<boolean> {

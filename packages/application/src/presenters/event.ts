@@ -1,4 +1,4 @@
-import type { EventReadModel } from '@repo/db/schemas';
+import type { EventReadModel } from '@repo/db/read-models';
 import type { EventViewModel } from '@repo/view-models/event';
 
 export const mapEventToViewModel = (event: EventReadModel): EventViewModel => {

@@ -1,5 +1,5 @@
 import type { MachineViewModel } from '@repo/view-models/machine';
-import type { MachineReservationAvailabilityReadModel } from '@repo/db/schemas';
+import type { MachineReservationAvailabilityReadModel } from '@repo/db/read-models';
 import { resolveAvailabilityByMachineId } from '@repo/domain/machine/machine-availability-rules';
 
 export const resolveAvailabilityForMachines = (

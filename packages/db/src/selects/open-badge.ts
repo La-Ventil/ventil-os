@@ -1,6 +1,4 @@
 import type { Prisma } from '@prisma/client';
-import type { ActivityStatus } from '@repo/domain/activity-status';
-import type { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 
 export const openBadgeLevelSelect = {
   level: true,
@@ -15,15 +13,9 @@ export const openBadgeInclude = {
   }
 } as const;
 
-export type OpenBadgeRow = Prisma.OpenBadgeGetPayload<{
+export type OpenBadgePayload = Prisma.OpenBadgeGetPayload<{
   include: typeof openBadgeInclude;
 }>;
-
-export type OpenBadgeReadModel = Omit<OpenBadgeRow, 'levels'> & {
-  levels: OpenBadgeLevel[];
-};
-
-export type OpenBadgeLevelReadModel = OpenBadgeReadModel['levels'][number];
 
 export const openBadgeProgressInclude = {
   highestLevel: {
@@ -36,13 +28,9 @@ export const openBadgeProgressInclude = {
   }
 } as const;
 
-export type OpenBadgeProgressRow = Prisma.OpenBadgeProgressGetPayload<{
+export type OpenBadgeProgressPayload = Prisma.OpenBadgeProgressGetPayload<{
   include: typeof openBadgeProgressInclude;
 }>;
-
-export type OpenBadgeProgressReadModel = Omit<OpenBadgeProgressRow, 'openBadge'> & {
-  openBadge: OpenBadgeReadModel;
-};
 
 export const openBadgeAdminSelect = {
   id: true,
@@ -56,10 +44,6 @@ export const openBadgeAdminSelect = {
   }
 } as const;
 
-export type OpenBadgeAdminRow = Prisma.OpenBadgeGetPayload<{
+export type OpenBadgeAdminPayload = Prisma.OpenBadgeGetPayload<{
   select: typeof openBadgeAdminSelect;
 }>;
-
-export type OpenBadgeAdminReadModel = Omit<OpenBadgeAdminRow, 'status'> & {
-  status: ActivityStatus;
-};

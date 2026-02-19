@@ -2,34 +2,31 @@ import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@pris
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { Machine, MachineReservationSlot } from '@repo/domain/machine/machine';
 import { toOpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
-import type { MachineAdminReadModel, MachineDetailsReadModel, MachineSummaryReadModel } from '../schemas';
-import { machineAdminSelect, machineSummarySelect } from '../schemas/machine';
-import {
-  machineReservationSlotSelect,
-  type MachineReservationSlotRow
-} from '../schemas/machine-reservation';
-import { machineDetailsSelect } from '../schemas/machine-details';
-import type { MachineAdminRow, MachineSummaryRow } from '../schemas/machine';
-import type { MachineDetailsRow } from '../schemas/machine-details';
+import type { MachineAdminReadModel, MachineDetailsReadModel, MachineSummaryReadModel } from '../read-models';
+import { machineAdminSelect, machineSummarySelect } from '../selects/machine';
+import { machineReservationSlotSelect, type MachineReservationSlotPayload } from '../selects/machine-reservation';
+import { machineDetailsSelect } from '../selects/machine-details';
+import type { MachineAdminPayload, MachineSummaryPayload } from '../selects/machine';
+import type { MachineDetailsPayload } from '../selects/machine-details';
 
 export class MachineRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeMachineSummary(machine: MachineSummaryRow): MachineSummaryReadModel {
+  private normalizeMachineSummary(machine: MachineSummaryPayload): MachineSummaryReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status)
     };
   }
 
-  private normalizeMachineAdmin(machine: MachineAdminRow): MachineAdminReadModel {
+  private normalizeMachineAdmin(machine: MachineAdminPayload): MachineAdminReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status)
     };
   }
 
-  private normalizeMachineDetails(machine: MachineDetailsRow): MachineDetailsReadModel {
+  private normalizeMachineDetails(machine: MachineDetailsPayload): MachineDetailsReadModel {
     return {
       ...machine,
       status: toActivityStatus(machine.status),
@@ -59,7 +56,7 @@ export class MachineRepository {
       orderBy: { name: 'asc' }
     });
 
-    return machines.map((machine) => this.normalizeMachineSummary(machine as MachineSummaryRow));
+    return machines.map((machine) => this.normalizeMachineSummary(machine as MachineSummaryPayload));
   }
 
   async getMachineById(id: string): Promise<MachineSummaryReadModel | null> {
@@ -68,7 +65,7 @@ export class MachineRepository {
       select: machineSummarySelect
     });
 
-    return machine ? this.normalizeMachineSummary(machine as MachineSummaryRow) : null;
+    return machine ? this.normalizeMachineSummary(machine as MachineSummaryPayload) : null;
   }
 
   async getMachineDetailsById(id: string): Promise<MachineDetailsReadModel | null> {
@@ -77,7 +74,7 @@ export class MachineRepository {
       select: machineDetailsSelect
     });
 
-    return machine ? this.normalizeMachineDetails(machine as MachineDetailsRow) : null;
+    return machine ? this.normalizeMachineDetails(machine as MachineDetailsPayload) : null;
   }
 
   async listMachinesForAdmin(): Promise<MachineAdminReadModel[]> {
@@ -86,7 +83,7 @@ export class MachineRepository {
       orderBy: { name: 'asc' }
     });
 
-    return machines.map((machine) => this.normalizeMachineAdmin(machine as MachineAdminRow));
+    return machines.map((machine) => this.normalizeMachineAdmin(machine as MachineAdminPayload));
   }
 
   async createMachine(input: {
@@ -146,7 +143,7 @@ export class MachineRepository {
       return null;
     }
 
-    const reservations = (machine.reservations as MachineReservationSlotRow[]).map((reservation) =>
+    const reservations = (machine.reservations as MachineReservationSlotPayload[]).map((reservation) =>
       MachineReservationSlot.from(reservation)
     );
 

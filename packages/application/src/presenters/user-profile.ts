@@ -1,4 +1,4 @@
-import type { UserProfileReadModel } from '@repo/db/schemas';
+import type { UserProfileReadModel } from '@repo/db/read-models';
 import type { UserProfile } from '@repo/view-models/user-profile';
 
 export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfile => ({
@@ -11,6 +11,6 @@ export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfi
   educationLevel: user.educationLevel ?? null,
   globalAdmin: user.globalAdmin,
   pedagogicalAdmin: user.pedagogicalAdmin,
-  lastName: user.lastName ?? undefined,
+  lastName: user.lastName,
   firstName: user.firstName
 });

@@ -10,7 +10,7 @@ export type UserProfile = {
   image?: string | null;
   username: string;
   educationLevel?: EducationLevel | null;
-  lastName?: string;
+  lastName: string;
   firstName: string;
   globalAdmin: boolean;
   pedagogicalAdmin: boolean;

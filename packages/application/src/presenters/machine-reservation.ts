@@ -1,4 +1,4 @@
-import type { MachineReservationReadModel } from '@repo/db/schemas';
+import type { MachineReservationReadModel } from '@repo/db/read-models';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { assertReservationInterval } from '@repo/domain/machine/reservation-rules';
 import { mapUserSummaryToViewModel } from './user-summary';

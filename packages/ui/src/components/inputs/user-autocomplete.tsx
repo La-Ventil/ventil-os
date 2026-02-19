@@ -22,7 +22,7 @@ export type UserAutocompleteProps<Multiple extends boolean = true> = {
 };
 
 const getUserLabel = (user: UserSummaryViewModel) =>
-  `${user.firstName} ${user.lastName ?? ''}`.trim() || user.username;
+  `${user.firstName} ${user.lastName}`.trim() || user.username;
 
 export default function UserAutocomplete<Multiple extends boolean = true>({
   label,

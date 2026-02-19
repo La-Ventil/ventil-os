@@ -5,7 +5,7 @@ import { sendTransactionalEmail } from './mailer';
 type EmailVerificationInput = {
   email: string;
   firstName: string;
-  lastName?: string;
+  lastName: string;
   token: string;
   t: (key: string, values?: Record<string, string>) => string;
 };
@@ -41,12 +41,13 @@ export const sendPasswordResetEmail = async ({ email, firstName, lastName, token
   const resetUrl = new URL(`/update-password/${token}`, process.env.BASE_URL).toString();
   const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
   const body = t('resetPassword.emailText', { name: firstName, resetUrl });
+  const fullName = `${firstName} ${lastName}`;
 
   await sendTransactionalEmail({
     to: [
       {
         email,
-        name: `${firstName} ${lastName}`
+        name: fullName
       }
     ],
     subject: t('resetPassword.emailSubject', { appName: process.env.APP_NAME ?? 'VentilOS' }),

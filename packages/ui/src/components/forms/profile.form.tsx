@@ -32,7 +32,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
     fieldErrors: {},
     values: {
       firstName: profile.firstName ?? '',
-      lastName: profile.lastName ?? '',
+      lastName: profile.lastName,
       educationLevel: profile.educationLevel ?? ''
     }
   });

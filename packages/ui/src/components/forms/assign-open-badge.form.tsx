@@ -17,7 +17,7 @@ import SectionTitle from '../section-title';
 import styles from './assign-open-badge.form.module.css';
 
 type AssignOpenBadgeFormProps = {
-  user: { id: string; firstName: string; lastName?: string } | null;
+  user: { id: string; firstName: string; lastName: string } | null;
   users: Array<{ id: string; label: string }>;
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;
@@ -81,7 +81,7 @@ export default function AssignOpenBadgeForm({
           </Alert>
         ) : null}
         <Typography variant="body1">
-          {user ? `${user.firstName} ${user.lastName ?? ''}`.trim() : t('userLabel')}
+          {user ? `${user.firstName} ${user.lastName}`.trim() : t('userLabel')}
         </Typography>
       </Section>
 

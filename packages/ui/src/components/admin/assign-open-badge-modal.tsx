@@ -9,7 +9,7 @@ import { ThemeSection } from '../../theme';
 type AssignOpenBadgeModalProps = {
   open: boolean;
   onClose: () => void;
-  user: { id: string; firstName: string; lastName?: string } | null;
+  user: { id: string; firstName: string; lastName: string } | null;
   users: Array<{ id: string; label: string }>;
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;

@@ -13,7 +13,8 @@ export const prismaClient = globalForPrisma.prismaClient || new PrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prismaClient = prismaClient;
 
-export * from './schemas';
+export * from './read-models';
+export * from './selects';
 export * from './user-role-record';
 export * from './prisma-errors';
 

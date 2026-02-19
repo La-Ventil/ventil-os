@@ -1,4 +1,4 @@
-import type { MachineAdminReadModel } from '@repo/db/schemas';
+import type { MachineAdminReadModel } from '@repo/db/read-models';
 import type { MachineAdminViewModel } from '@repo/view-models/machine-admin';
 
 export const mapMachineAdminToViewModel = (machine: MachineAdminReadModel): MachineAdminViewModel => ({

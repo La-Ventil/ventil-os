@@ -1,4 +1,4 @@
-import type { MachineSummaryReadModel } from '@repo/db/schemas';
+import type { MachineSummaryReadModel } from '@repo/db/read-models';
 import { MachineAvailability, type MachineViewModel } from '@repo/view-models/machine';
 import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
 

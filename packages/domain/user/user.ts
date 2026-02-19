@@ -12,7 +12,7 @@ export type User = {
   image?: string | null;
   username: string;
   educationLevel?: EducationLevel | null;
-  lastName?: string | null;
+  lastName: string;
   firstName: string;
   globalAdmin: boolean;
   pedagogicalAdmin: boolean;

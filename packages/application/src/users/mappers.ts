@@ -1,4 +1,4 @@
-import type { UserProfileReadModel } from '@repo/db/schemas';
+import type { UserProfileReadModel } from '@repo/db/read-models';
 import { User } from '@repo/domain/user/user';
 
 export const toDomainUser = (user: UserProfileReadModel): User =>

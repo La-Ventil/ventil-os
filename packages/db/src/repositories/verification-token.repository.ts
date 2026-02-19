@@ -1,10 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
-
-export type VerificationTokenRecord = {
-  identifier: string;
-  token: string;
-  expires: Date;
-};
+import type { VerificationTokenReadModel } from '../read-models/verification-token';
+import { verificationTokenSelect } from '../selects/verification-token';
 
 export class VerificationTokenRepository {
   constructor(private prisma: PrismaClient) {}
@@ -23,14 +19,15 @@ export class VerificationTokenRepository {
     });
   }
 
-  async findByIdentifierAndToken(identifier: string, token: string): Promise<VerificationTokenRecord | null> {
+  async findByIdentifierAndToken(identifier: string, token: string): Promise<VerificationTokenReadModel | null> {
     return this.prisma.verificationToken.findUnique({
       where: {
         identifier_token: {
           identifier,
           token
         }
-      }
+      },
+      select: verificationTokenSelect
     });
   }
 

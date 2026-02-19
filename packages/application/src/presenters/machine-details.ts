@@ -1,4 +1,4 @@
-import type { MachineDetailsReadModel } from '@repo/db/schemas';
+import type { MachineDetailsReadModel } from '@repo/db/read-models';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineAvailability } from '@repo/view-models/machine';
 

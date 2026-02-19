@@ -41,7 +41,7 @@ export default function AdminUsersTable({ users, columns, adminLabelFor }: Admin
         {users.map((user) => (
           <TableRow key={user.id} hover>
             <TableCell>{user.firstName}</TableCell>
-            <TableCell>{user.lastName ?? '-'}</TableCell>
+            <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.profile}</TableCell>

@@ -18,6 +18,6 @@ export const eventInclude = {
   }
 } as const;
 
-export type EventReadModel = Prisma.EventGetPayload<{
+export type EventPayload = Prisma.EventGetPayload<{
   include: typeof eventInclude;
 }>;

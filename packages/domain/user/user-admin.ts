@@ -6,7 +6,7 @@ export type UserAdmin = {
   id: string;
   email: Email;
   firstName: string;
-  lastName?: string;
+  lastName: string;
   username: string;
   profile: UserRole;
   globalAdmin: boolean;

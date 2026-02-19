@@ -1,6 +1,4 @@
 import type { Prisma } from '@prisma/client';
-import type { ActivityStatus } from '@repo/domain/activity-status';
-import type { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
 
 export const machineDetailsSelect = {
   id: true,
@@ -37,11 +35,6 @@ export const machineDetailsSelect = {
   }
 } as const;
 
-export type MachineDetailsRow = Prisma.MachineGetPayload<{
+export type MachineDetailsPayload = Prisma.MachineGetPayload<{
   select: typeof machineDetailsSelect;
 }>;
-
-export type MachineDetailsReadModel = Omit<MachineDetailsRow, 'status' | 'badgeRequirements'> & {
-  status: ActivityStatus;
-  badgeRequirements: OpenBadgeRequirement[];
-};

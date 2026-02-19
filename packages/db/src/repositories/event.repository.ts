@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
-import { eventInclude, type EventReadModel } from '../schemas/event';
+import { eventInclude } from '../selects/event';
+import type { EventReadModel } from '../read-models/event';
 
 export class EventRepository {
   constructor(private prisma: PrismaClient) {}

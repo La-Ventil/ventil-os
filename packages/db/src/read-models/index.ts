@@ -5,15 +5,13 @@ export type { MachineReservationReadModel, MachineReservationAvailabilityReadMod
 export type { MessageReadModel } from './message';
 export type {
   OpenBadgeReadModel,
-  OpenBadgeRow,
   OpenBadgeLevelReadModel,
   OpenBadgeProgressReadModel,
-  OpenBadgeProgressRow,
-  OpenBadgeAdminReadModel,
-  OpenBadgeAdminRow
+  OpenBadgeAdminReadModel
 } from './open-badge';
 export type { UserCredentialsReadModel } from './user-credentials';
 export type { UserAdminReadModel } from './user-admin';
 export type { UserPasswordResetReadModel } from './user-password-reset';
-export type { UserProfileReadModel, UserProfileRow } from './user-profile';
+export type { UserProfileReadModel } from './user-profile';
 export type { UserSummaryReadModel } from './user-summary';
+export type { VerificationTokenReadModel } from './verification-token';

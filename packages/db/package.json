@@ -47,6 +47,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas/index.ts"
+    "./read-models": "./src/read-models/index.ts",
+    "./selects": "./src/selects/index.ts"
   }
 }

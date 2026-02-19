@@ -2,68 +2,87 @@ import { type Prisma, type PrismaClient } from '@prisma/client';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
 import { deriveUserRole } from '@repo/domain/user/user-role';
-import { userProfileSelect } from '../schemas/user-profile';
-import { userCredentialsSelect } from '../schemas/user-credentials';
-import { userAdminSelect } from '../schemas/user-admin';
-import { userPasswordResetSelect } from '../schemas/user-password-reset';
-import { userSummarySelect } from '../schemas/user-summary';
-import type { UserCredentialsReadModel, UserCredentialsRow } from '../schemas/user-credentials';
-import type { UserAdminReadModel, UserAdminRow } from '../schemas/user-admin';
-import type { UserPasswordResetReadModel, UserPasswordResetRow } from '../schemas/user-password-reset';
-import type { UserProfileReadModel, UserProfileRow } from '../schemas/user-profile';
-import type { UserSummaryReadModel, UserSummaryRow } from '../schemas/user-summary';
+import { userProfileSelect } from '../selects/user-profile';
+import { userCredentialsSelect } from '../selects/user-credentials';
+import { userAdminSelect } from '../selects/user-admin';
+import { userPasswordResetSelect } from '../selects/user-password-reset';
+import { userSummarySelect } from '../selects/user-summary';
+import type { UserCredentialsPayload } from '../selects/user-credentials';
+import type { UserAdminPayload } from '../selects/user-admin';
+import type { UserPasswordResetPayload } from '../selects/user-password-reset';
+import type { UserProfilePayload } from '../selects/user-profile';
+import type { UserSummaryPayload } from '../selects/user-summary';
+import type { UserCredentialsReadModel } from '../read-models/user-credentials';
+import type { UserAdminReadModel } from '../read-models/user-admin';
+import type { UserPasswordResetReadModel } from '../read-models/user-password-reset';
+import type { UserProfileReadModel } from '../read-models/user-profile';
+import type { UserSummaryReadModel } from '../read-models/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private normalizeUserProfile(user: UserProfileRow): UserProfileReadModel {
-    const { email, pendingEmail, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
+  private normalizeUserProfile(user: UserProfilePayload): UserProfileReadModel {
+    const {
+      email,
+      pendingEmail,
+      educationLevel,
+      profile,
+      studentProfile,
+      externalProfile,
+      lastName,
+      ...rest
+    } = user;
 
     return {
       ...rest,
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
       pendingEmail: pendingEmail ? Email.from(pendingEmail) : null,
-      educationLevel: parseEducationLevel(educationLevel)
+      educationLevel: parseEducationLevel(educationLevel),
+      lastName: lastName ?? ''
     };
   }
 
-  private normalizeUserCredentials(user: UserCredentialsRow): UserCredentialsReadModel {
-    const { email, educationLevel, profile, studentProfile, externalProfile, ...rest } = user;
+  private normalizeUserCredentials(user: UserCredentialsPayload): UserCredentialsReadModel {
+    const { email, educationLevel, profile, studentProfile, externalProfile, lastName, ...rest } = user;
 
     return {
       ...rest,
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
-      educationLevel: parseEducationLevel(educationLevel)
+      educationLevel: parseEducationLevel(educationLevel),
+      lastName: lastName ?? ''
     };
   }
 
-  private normalizeUserAdmin(user: UserAdminRow): UserAdminReadModel {
-    const { email, profile, studentProfile, externalProfile, ...rest } = user;
+  private normalizeUserAdmin(user: UserAdminPayload): UserAdminReadModel {
+    const { email, profile, studentProfile, externalProfile, lastName, ...rest } = user;
 
     return {
       ...rest,
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
-      email: Email.from(email)
+      email: Email.from(email),
+      lastName: lastName ?? ''
     };
   }
 
-  private normalizeUserSummary(user: UserSummaryRow): UserSummaryReadModel {
-    const { email, ...rest } = user;
+  private normalizeUserSummary(user: UserSummaryPayload): UserSummaryReadModel {
+    const { email, lastName, ...rest } = user;
 
     return {
       ...rest,
-      email: Email.from(email)
+      email: Email.from(email),
+      lastName: lastName ?? ''
     };
   }
 
-  private normalizeUserPasswordReset(user: UserPasswordResetRow): UserPasswordResetReadModel {
-    const { email, ...rest } = user;
+  private normalizeUserPasswordReset(user: UserPasswordResetPayload): UserPasswordResetReadModel {
+    const { email, lastName, ...rest } = user;
 
     return {
       ...rest,
-      email: Email.from(email)
+      email: Email.from(email),
+      lastName: lastName ?? ''
     };
   }
 
@@ -73,7 +92,7 @@ export class UserRepository {
       select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfilePayload) : null;
   }
 
   async getUserProfileById(userId: string): Promise<UserProfileReadModel | null> {
@@ -82,7 +101,7 @@ export class UserRepository {
       select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfilePayload) : null;
   }
 
   async getUserProfileByEmailOrPending(email: string): Promise<UserProfileReadModel | null> {
@@ -93,7 +112,7 @@ export class UserRepository {
       select: userProfileSelect
     });
 
-    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfileRow) : null;
+    return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfilePayload) : null;
   }
 
   async findUserCredentialsByEmail(email: string): Promise<UserCredentialsReadModel | null> {
@@ -102,7 +121,7 @@ export class UserRepository {
       select: userCredentialsSelect
     });
 
-    return user ? this.normalizeUserCredentials(user as UserCredentialsRow) : null;
+    return user ? this.normalizeUserCredentials(user as UserCredentialsPayload) : null;
   }
 
   async listUsersForManagement(): Promise<UserAdminReadModel[]> {
@@ -111,7 +130,7 @@ export class UserRepository {
       select: userAdminSelect
     });
 
-    return users.map((user) => this.normalizeUserAdmin(user as UserAdminRow));
+    return users.map((user) => this.normalizeUserAdmin(user as UserAdminPayload));
   }
 
   async listUserSummaries(): Promise<UserSummaryReadModel[]> {
@@ -120,7 +139,7 @@ export class UserRepository {
       select: userSummarySelect
     });
 
-    return users.map((user) => this.normalizeUserSummary(user as UserSummaryRow));
+    return users.map((user) => this.normalizeUserSummary(user as UserSummaryPayload));
   }
 
   async createUser(data: Prisma.UserCreateInput) {
@@ -194,7 +213,7 @@ export class UserRepository {
       select: userPasswordResetSelect
     });
 
-    return user ? this.normalizeUserPasswordReset(user as UserPasswordResetRow) : null;
+    return user ? this.normalizeUserPasswordReset(user as UserPasswordResetPayload) : null;
   }
 
   async getUserStats(
