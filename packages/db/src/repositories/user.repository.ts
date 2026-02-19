@@ -138,6 +138,22 @@ export class UserRepository {
     return users.map((user) => this.normalizeUserAdmin(user as UserAdminPayload));
   }
 
+  async listUsersEligibleForOpenBadgeAssignment(openBadgeId: string): Promise<UserAdminReadModel[]> {
+    const users = await this.prisma.user.findMany({
+      where: {
+        openBadgeProgresses: {
+          none: {
+            openBadgeId
+          }
+        }
+      },
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      select: userAdminSelect
+    });
+
+    return users.map((user) => this.normalizeUserAdmin(user as UserAdminPayload));
+  }
+
   async listUserSummaries(): Promise<UserSummaryReadModel[]> {
     const users = await this.prisma.user.findMany({
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
