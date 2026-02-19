@@ -11,7 +11,10 @@ const withLevelLabels = (badge: OpenBadgeDomain): OpenBadgeViewModel => ({
   }))
 });
 
-export const mapOpenBadgeToViewModel = (badge: OpenBadgeReadModel): OpenBadgeViewModel =>
+export const mapOpenBadgeToViewModelWithActiveLevel = (
+  badge: OpenBadgeReadModel,
+  activeLevel: number
+): OpenBadgeViewModel =>
   withLevelLabels(
     OpenBadge.from({
       id: badge.id,
@@ -20,14 +23,19 @@ export const mapOpenBadgeToViewModel = (badge: OpenBadgeReadModel): OpenBadgeVie
       coverImage: badge.coverImage ?? undefined,
       description: badge.description ?? '',
       levels: badge.levels,
-      activeLevel: 0
+      activeLevel
     })
   );
+
+export const mapOpenBadgeToViewModel = (badge: OpenBadgeReadModel): OpenBadgeViewModel =>
+  mapOpenBadgeToViewModelWithActiveLevel(badge, 0);
 
 export const mapOpenBadgeProgressToViewModel = (
   progress: OpenBadgeProgressReadModel
 ): OpenBadgeViewModel =>
   ({
-    ...mapOpenBadgeToViewModel(progress.openBadge),
-    activeLevel: progress.highestLevel ? progress.highestLevel.level : 0
+    ...mapOpenBadgeToViewModelWithActiveLevel(
+      progress.openBadge,
+      progress.highestLevel ? progress.highestLevel.level : 0
+    )
   });

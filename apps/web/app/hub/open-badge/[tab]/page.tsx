@@ -17,16 +17,19 @@ export default async function OpenBadgeTabPage({ params }: OpenBadgeTabPageProps
   }
 
   const tab: OpenBadgeTab = rawTab;
-  const badges = tab === 'mine' ? await listUserBadges() : await browseOpenBadges();
+  const session = await getServerSession();
+  const badges =
+    tab === 'mine'
+      ? await listUserBadges(session?.user?.id)
+      : await browseOpenBadges(session?.user?.id);
 
   return <OpenBadgeList badges={badges} getBadgeHref={(badgeId) => `/hub/open-badge/${tab}/${badgeId}`} />;
 }
 
-async function listUserBadges() {
-  const session = await getServerSession();
-  if (!session?.user?.id) {
+async function listUserBadges(userId?: string) {
+  if (!userId) {
     redirect('/login');
   }
 
-  return viewUserOpenBadges(session.user.id);
+  return viewUserOpenBadges(userId);
 }
