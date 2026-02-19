@@ -87,6 +87,13 @@
       "startsAtRequired": "Veuillez sélectionner un horaire de début.",
       "startsAtInvalid": "La date de début est invalide.",
       "durationRequired": "Veuillez sélectionner une durée."
+    },
+    "machine": {
+      "nameRequired": "Veuillez renseigner un nom de machine.",
+      "nameMaxLength": "Le nom de la machine ne doit pas dépasser 35 caractères.",
+      "descriptionRequired": "Veuillez renseigner une description.",
+      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
+      "imageRequired": "Veuillez ajouter une image."
     }
   },
   "openBadge": {

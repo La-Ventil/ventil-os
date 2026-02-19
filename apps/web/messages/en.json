@@ -86,6 +86,13 @@
       "startsAtRequired": "Please select a start time.",
       "startsAtInvalid": "Start time is invalid.",
       "durationRequired": "Please select a duration."
+    },
+    "machine": {
+      "nameRequired": "Please enter a machine name.",
+      "nameMaxLength": "Machine name must be at most 35 characters.",
+      "descriptionRequired": "Please enter a description.",
+      "descriptionMaxLength": "Description must be at most 100 characters.",
+      "imageRequired": "Please add an image."
     }
   },
   "resetPassword": {
