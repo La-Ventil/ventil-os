@@ -1,4 +1,5 @@
 import type { UserProfileReadModel } from '@repo/db/read-models';
+import { formatUserFullName } from '@repo/domain/user/user-name';
 import type { UserProfile } from '@repo/view-models/user-profile';
 
 export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfile => ({
@@ -12,5 +13,6 @@ export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfi
   globalAdmin: user.globalAdmin,
   pedagogicalAdmin: user.pedagogicalAdmin,
   lastName: user.lastName,
-  firstName: user.firstName
+  firstName: user.firstName,
+  fullName: formatUserFullName(user)
 });

@@ -14,7 +14,6 @@ export type ProfileCardProps = {
 };
 
 export default function ProfileCard({ profile }: ProfileCardProps) {
-  const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(' ');
   return (
     <Card className={styles.card}>
       <CardMedia className={styles.media} title={profile.email}>
@@ -25,7 +24,7 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
       <div className={styles.column}>
         <CardContent className={styles.content}>
           <Typography component="div" variant="h4">
-            {fullName}
+            {profile.fullName}
           </Typography>
           <Typography className={styles.secondaryText} variant="subtitle1" component="div">
             {profile.username}

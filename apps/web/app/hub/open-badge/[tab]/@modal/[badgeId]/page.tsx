@@ -26,7 +26,7 @@ export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageP
   const userOptions = canAssign
     ? users.map((entry) => ({
         id: entry.id,
-        label: `${entry.firstName} ${entry.lastName}`.trim()
+        label: entry.fullName
       }))
     : [];
 

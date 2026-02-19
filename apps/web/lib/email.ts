@@ -1,5 +1,6 @@
 'use server';
 
+import { formatUserFullName } from '@repo/domain/user/user-name';
 import { sendTransactionalEmail } from './mailer';
 
 type EmailVerificationInput = {
@@ -13,7 +14,7 @@ type EmailVerificationInput = {
 export const sendEmailVerification = async ({ email, firstName, lastName, token, t }: EmailVerificationInput) => {
   const verifyUrl = new URL(`/verify-email/${token}`, process.env.BASE_URL);
   verifyUrl.searchParams.set('email', email);
-  const fullName = [firstName, lastName].filter(Boolean).join(' ');
+  const fullName = formatUserFullName({ firstName, lastName });
   const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
   const body = t('verifyEmail.emailText', { name: fullName, verifyUrl: verifyUrl.toString() });
 
@@ -41,7 +42,7 @@ export const sendPasswordResetEmail = async ({ email, firstName, lastName, token
   const resetUrl = new URL(`/update-password/${token}`, process.env.BASE_URL).toString();
   const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
   const body = t('resetPassword.emailText', { name: firstName, resetUrl });
-  const fullName = `${firstName} ${lastName}`;
+  const fullName = formatUserFullName({ firstName, lastName });
 
   await sendTransactionalEmail({
     to: [

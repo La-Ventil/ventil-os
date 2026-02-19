@@ -18,7 +18,7 @@ export default async function AdminOpenBadgesModalPage({
   const users = await browseUsersAsAdmin();
   const userOptions = users.map((entry) => ({
     id: entry.id,
-    label: `${entry.firstName} ${entry.lastName}`.trim()
+    label: entry.fullName
   }));
 
   return <AssignOpenBadgeModalRoute openBadge={openBadge} users={userOptions} closeHref="/hub/admin/open-badges" />;

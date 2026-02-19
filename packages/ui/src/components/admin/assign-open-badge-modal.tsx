@@ -4,12 +4,13 @@ import AssignOpenBadgeForm from '../forms/assign-open-badge.form';
 import ModalLayout from '../modal-layout';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import { ThemeSection } from '../../theme';
 
 type AssignOpenBadgeModalProps = {
   open: boolean;
   onClose: () => void;
-  user: { id: string; firstName: string; lastName: string } | null;
+  user: UserAdminViewModel | null;
   users: Array<{ id: string; label: string }>;
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;

@@ -21,7 +21,7 @@ export class MachineReservationRepository {
     return {
       ...user,
       email: Email.from(user.email),
-      lastName: user.lastName ?? ''
+      lastName: user.lastName
     };
   }
 

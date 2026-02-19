@@ -1,3 +1,3 @@
 import type { UserSummary } from '@repo/domain/user/user-summary';
 
-export type UserSummaryViewModel = UserSummary;
+export type UserSummaryViewModel = UserSummary & { fullName: string };

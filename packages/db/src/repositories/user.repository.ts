@@ -39,7 +39,7 @@ export class UserRepository {
       email: Email.from(email),
       pendingEmail: pendingEmail ? Email.from(pendingEmail) : null,
       educationLevel: parseEducationLevel(educationLevel),
-      lastName: lastName ?? ''
+      lastName
     };
   }
 
@@ -51,7 +51,7 @@ export class UserRepository {
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
       educationLevel: parseEducationLevel(educationLevel),
-      lastName: lastName ?? ''
+      lastName
     };
   }
 
@@ -62,7 +62,7 @@ export class UserRepository {
       ...rest,
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
-      lastName: lastName ?? ''
+      lastName
     };
   }
 
@@ -72,7 +72,7 @@ export class UserRepository {
     return {
       ...rest,
       email: Email.from(email),
-      lastName: lastName ?? ''
+      lastName
     };
   }
 
@@ -82,7 +82,7 @@ export class UserRepository {
     return {
       ...rest,
       email: Email.from(email),
-      lastName: lastName ?? ''
+      lastName
     };
   }
 

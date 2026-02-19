@@ -11,13 +11,14 @@ import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
 import styles from './assign-open-badge.form.module.css';
 
 type AssignOpenBadgeFormProps = {
-  user: { id: string; firstName: string; lastName: string } | null;
+  user: UserAdminViewModel | null;
   users: Array<{ id: string; label: string }>;
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;
@@ -80,9 +81,7 @@ export default function AssignOpenBadgeForm({
             {feedback.message}
           </Alert>
         ) : null}
-        <Typography variant="body1">
-          {user ? `${user.firstName} ${user.lastName}`.trim() : t('userLabel')}
-        </Typography>
+        <Typography variant="body1">{user ? user.fullName : t('userLabel')}</Typography>
       </Section>
 
       <Section className={styles.formSection}>

@@ -1,3 +1,3 @@
 import type { UserAdmin } from '@repo/domain/user/user-admin';
 
-export type UserAdminViewModel = UserAdmin;
+export type UserAdminViewModel = UserAdmin & { fullName: string };
