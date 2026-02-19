@@ -49,7 +49,7 @@
       "confirmationMismatch": "Email addresses do not match."
     },
     "password": {
-      "minLength": "Your password must be at least 6 characters.",
+      "minLength": "Your password must be at least 7 characters.",
       "maxLength": "Your password must be at most 20 characters.",
       "uppercaseRequired": "Your password must include at least one uppercase letter.",
       "lowercaseRequired": "Your password must include at least one lowercase letter.",
@@ -140,7 +140,7 @@
       "currentPassword": "current password",
       "firstName": "my first name",
       "lastName": "my last name",
-      "password": "minimum 5 characters",
+      "password": "minimum 7 characters",
       "passwordConfirmation": "same password as the previous field",
       "newEmail": "new email address",
       "newEmailConfirmation": "confirm new email",
