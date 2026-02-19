@@ -4,6 +4,9 @@ export type OpenBadgeLevel = {
   description: string;
 };
 
+export const formatOpenBadgeLevelLabel = (level: OpenBadgeLevel): string =>
+  `${level.level} - ${level.title}`.trim();
+
 export const assertOpenBadgeLevel = (level: number): number => {
   if (!Number.isInteger(level) || level < 1) {
     throw new Error('Level must be a positive integer.');

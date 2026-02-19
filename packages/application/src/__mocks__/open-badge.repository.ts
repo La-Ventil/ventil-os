@@ -1,4 +1,4 @@
-import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
+import { OpenBadgeLevel, formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 
 const badgeLevels = [
@@ -17,7 +17,10 @@ const badgeLevels = [
     'Niveau avance',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   )
-];
+].map((level) => ({
+  ...level,
+  label: formatOpenBadgeLevelLabel(level)
+}));
 
 const badges: OpenBadgeViewModel[] = [
   {

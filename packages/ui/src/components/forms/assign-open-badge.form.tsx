@@ -110,7 +110,7 @@ export default function AssignOpenBadgeForm({
             >
               {levelOptions.map((level) => (
                 <MenuItem key={`${openBadge.id}-${level.level}`} value={String(level.level)}>
-                  {level.title}
+                  {level.label}
                 </MenuItem>
               ))}
             </Select>

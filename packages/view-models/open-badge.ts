@@ -1,4 +1,4 @@
 import type { OpenBadge, OpenBadgeLevel } from '@repo/domain/badge/open-badge';
 
-export type OpenBadgeLevelViewModel = OpenBadgeLevel;
-export type OpenBadgeViewModel = OpenBadge;
+export type OpenBadgeLevelViewModel = OpenBadgeLevel & { label: string };
+export type OpenBadgeViewModel = Omit<OpenBadge, 'levels'> & { levels: OpenBadgeLevelViewModel[] };
