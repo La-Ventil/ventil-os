@@ -49,6 +49,11 @@ type SeedOpenBadge = {
   trainerThresholdLevel?: number;
 };
 
+type SeedOpenBadgeAward = {
+  openBadgeName: string;
+  level: number;
+};
+
 const seedMachinesData: SeedMachine[] = [
   {
     category: 'Impression 3D',
@@ -468,6 +473,81 @@ async function seedOpenBadges(creatorId: string, openBadges: SeedOpenBadge[]) {
   }
 }
 
+async function seedOpenBadgeAwards(userId: string, awards: SeedOpenBadgeAward[]) {
+  for (const award of awards) {
+    const openBadge = await prisma.openBadge.findFirst({
+      where: { name: award.openBadgeName },
+      select: { id: true }
+    });
+
+    if (!openBadge) {
+      throw new Error(`Open badge not found: ${award.openBadgeName}`);
+    }
+
+    const openBadgeLevel = await prisma.openBadgeLevel.findUnique({
+      where: {
+        openBadgeId_level: {
+          openBadgeId: openBadge.id,
+          level: award.level
+        }
+      },
+      select: { id: true, level: true }
+    });
+
+    if (!openBadgeLevel) {
+      throw new Error(`Open badge level not found: ${award.openBadgeName} (${award.level})`);
+    }
+
+    await prisma.$transaction(async (tx) => {
+      const progress = await tx.openBadgeProgress.upsert({
+        where: {
+          userId_openBadgeId: {
+            userId,
+            openBadgeId: openBadge.id
+          }
+        },
+        create: {
+          userId,
+          openBadgeId: openBadge.id
+        },
+        update: {}
+      });
+
+      const existingLevel = await tx.openBadgeLevelProgress.findUnique({
+        where: {
+          progressId_openBadgeLevelId: {
+            progressId: progress.id,
+            openBadgeLevelId: openBadgeLevel.id
+          }
+        },
+        select: { id: true }
+      });
+
+      if (!existingLevel) {
+        await tx.openBadgeLevelProgress.create({
+          data: {
+            progressId: progress.id,
+            openBadgeLevelId: openBadgeLevel.id,
+            awardedById: userId
+          }
+        });
+      }
+
+      const currentHighest = await tx.openBadgeProgress.findUnique({
+        where: { id: progress.id },
+        select: { highestLevel: { select: { level: true } } }
+      });
+
+      if (!currentHighest?.highestLevel || openBadgeLevel.level >= currentHighest.highestLevel.level) {
+        await tx.openBadgeProgress.update({
+          where: { id: progress.id },
+          data: { highestLevelId: openBadgeLevel.id }
+        });
+      }
+    });
+  }
+}
+
 async function main() {
   const existingUsers = await prisma.user.count();
   if (existingUsers > 0) {
@@ -503,6 +583,23 @@ async function main() {
 
   await seedOpenBadges(admin.id, adminBadges);
   await seedOpenBadges(pedagogicalAdmin.id, pedagogicalBadges);
+
+  const requiredBadgeAwards = Array.from(
+    new Map(
+      seedMachinesData
+        .filter((machine) => Boolean(machine.requiredOpenBadgeName))
+        .map((machine) => [
+          `${machine.requiredOpenBadgeName}:${machine.requiredOpenBadgeLevel ?? 1}`,
+          {
+            openBadgeName: machine.requiredOpenBadgeName as string,
+            level: machine.requiredOpenBadgeLevel ?? 1
+          }
+        ])
+    ).values()
+  );
+
+  await seedOpenBadgeAwards(admin.id, requiredBadgeAwards);
+  await seedOpenBadgeAwards(pedagogicalAdmin.id, requiredBadgeAwards);
 
   await seedMachines(admin.id, adminMachines);
   await seedMachines(pedagogicalAdmin.id, pedagogicalMachines);
