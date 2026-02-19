@@ -1,5 +1,5 @@
 import type { MachineSummaryReadModel } from '@repo/db/read-models';
-import { MachineAvailability, type MachineViewModel } from '@repo/view-models/machine';
+import type { MachineViewModel } from '@repo/view-models/machine';
 import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
 
 export const mapMachineToViewModel = (machine: MachineSummaryReadModel): MachineViewModel => ({
@@ -7,10 +7,6 @@ export const mapMachineToViewModel = (machine: MachineSummaryReadModel): Machine
   category: machine.category,
   name: machine.name,
   description: machine.description ?? '',
-  availability: mapMachineStatus(machine.status),
+  availability: resolveMachineAvailabilityFromActivityStatus(machine.status),
   imageUrl: machine.imageUrl ?? undefined
 });
-
-export const mapMachineStatus = (status: MachineSummaryReadModel['status']): MachineAvailability => {
-  return resolveMachineAvailabilityFromActivityStatus(status);
-};
