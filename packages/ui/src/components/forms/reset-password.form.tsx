@@ -11,6 +11,7 @@ import { ResetPasswordFormInput } from '@repo/application/forms';
 import { FormActionState } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
 import { firstFieldError } from '@repo/form/form-errors';
+import Link from '../link';
 
 export interface ResetPasswordFormProps {
   handleSubmit: FormActionState<ResetPasswordFormInput>;
@@ -48,7 +49,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
       </Stack>
       <Grid container spacing={2}>
         <Grid>
-          <Button variant="outlined" color="secondary">
+          <Button variant="outlined" color="secondary" component={Link} href="/login">
             {tCommon('actions.back')}
           </Button>
         </Grid>
