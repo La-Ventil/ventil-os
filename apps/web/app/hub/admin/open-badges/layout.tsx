@@ -3,8 +3,14 @@ import { getThemeSectionClassName, ThemeSection } from '@repo/ui/theme';
 
 type AdminOpenBadgesLayoutProps = {
   children: ReactNode;
+  modal?: ReactNode;
 };
 
-export default function AdminOpenBadgesLayout({ children }: AdminOpenBadgesLayoutProps) {
-  return <div className={getThemeSectionClassName(ThemeSection.OpenBadge)}>{children}</div>;
+export default function AdminOpenBadgesLayout({ children, modal }: AdminOpenBadgesLayoutProps) {
+  return (
+    <div className={getThemeSectionClassName(ThemeSection.OpenBadge)}>
+      {children}
+      {modal}
+    </div>
+  );
 }
