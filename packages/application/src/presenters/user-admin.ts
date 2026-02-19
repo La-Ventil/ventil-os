@@ -12,9 +12,5 @@ export const mapUserAdminToViewModel = (user: UserAdminReadModel): UserAdminView
   profile: user.profile,
   globalAdmin: user.globalAdmin,
   pedagogicalAdmin: user.pedagogicalAdmin,
-  stats: {
-    eventsCount: user._count.eventRegistrations,
-    openBadgesCount: user._count.openBadgeProgresses,
-    machinesCount: 0
-  }
+  stats: user.stats
 });

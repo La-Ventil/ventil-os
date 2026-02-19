@@ -62,7 +62,12 @@ export class UserRepository {
       ...rest,
       profile: deriveUserRole({ profile, studentProfile, externalProfile }),
       email: Email.from(email),
-      lastName
+      lastName,
+      stats: {
+        eventsCount: user._count.eventRegistrations,
+        openBadgesCount: user._count.openBadgeProgresses,
+        machinesCount: 0
+      }
     };
   }
 
