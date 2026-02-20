@@ -6,12 +6,12 @@ import { canCancelReservation } from '@repo/domain/machine/machine-reservation-c
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
 import type { Command } from '../../usecase';
 
-type CancelReservationArgs = [
+type ReleaseReservationArgs = [
   reservationId: string,
   currentUser?: { id?: string; globalAdmin?: boolean; pedagogicalAdmin?: boolean } | null
 ];
 
-export const cancelReservation: Command<CancelReservationArgs, MachineReservationViewModel> = async (
+export const releaseReservation: Command<ReleaseReservationArgs, MachineReservationViewModel> = async (
   reservationId: string,
   currentUser?: { id?: string; globalAdmin?: boolean; pedagogicalAdmin?: boolean } | null
 ) => {
@@ -25,13 +25,18 @@ export const cancelReservation: Command<CancelReservationArgs, MachineReservatio
   }
 
   if (MachineReservation.isCancelled(reservation)) {
-    return mapMachineReservationToViewModel(reservation);
+    throw new MachineReservationError('machineReservation.cancelled');
   }
 
-  if (!MachineReservation.isUpcoming(reservation)) {
-    throw new MachineReservationError('machineReservation.alreadyStarted');
+  const now = new Date();
+  if (!MachineReservation.isActive(reservation, now)) {
+    if (!MachineReservation.hasStarted(reservation, now)) {
+      throw new MachineReservationError('machineReservation.notStarted');
+    }
+
+    throw new MachineReservationError('machineReservation.alreadyEnded');
   }
 
-  const updated = await machineReservationRepository.cancelReservation(reservationId);
+  const updated = await machineReservationRepository.releaseReservation(reservationId, now);
   return mapMachineReservationToViewModel(updated);
 };

@@ -107,7 +107,11 @@
     "inactive": "This machine is currently unavailable.",
     "machineRequired": "Selected machine was not found.",
     "notFound": "Reservation not found.",
-    "unauthorized": "You cannot cancel this reservation."
+    "unauthorized": "You cannot modify this reservation.",
+    "alreadyStarted": "The reservation has already started. You can no longer cancel it.",
+    "notStarted": "The reservation has not started yet.",
+    "alreadyEnded": "The reservation has already ended.",
+    "cancelled": "This reservation has already been cancelled."
   },
   "openBadge": {
     "assign": {
@@ -485,7 +489,19 @@
           "reservations": "My reservations"
         },
         "reservations": {
-          "empty": "No reservations yet."
+          "empty": "No reservations yet.",
+          "actions": {
+            "cancel": "Cancel",
+            "release": "Release machine"
+          },
+          "success": {
+            "cancel": "Reservation cancelled.",
+            "release": "Machine released early."
+          },
+          "error": {
+            "cancel": "Unable to cancel the reservation.",
+            "release": "Unable to release the machine."
+          }
         },
         "card": {
           "category": "Machine",

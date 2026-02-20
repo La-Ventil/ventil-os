@@ -167,6 +167,18 @@ export class MachineReservationRepository {
     return this.normalizeReservation(reservation as MachineReservationPayload);
   }
 
+  async releaseReservation(reservationId: string, endsAt: Date): Promise<MachineReservationReadModel> {
+    const reservation = await this.prisma.machineReservation.update({
+      where: { id: reservationId },
+      data: {
+        endsAt
+      },
+      include: machineReservationInclude
+    });
+
+    return this.normalizeReservation(reservation as MachineReservationPayload);
+  }
+
   async hasOverlap(machineId: string, rangeStart: Date, rangeEnd: Date): Promise<boolean> {
     const count = await this.prisma.machineReservation.count({
       where: {

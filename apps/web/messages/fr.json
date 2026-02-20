@@ -126,7 +126,11 @@
     "inactive": "Cette machine n'est pas disponible pour le moment.",
     "machineRequired": "La machine sélectionnée est introuvable.",
     "notFound": "Réservation introuvable.",
-    "unauthorized": "Vous ne pouvez pas annuler cette réservation."
+    "unauthorized": "Vous ne pouvez pas modifier cette réservation.",
+    "alreadyStarted": "La réservation a déjà commencé. Vous ne pouvez plus l'annuler.",
+    "notStarted": "La réservation n'a pas encore commencé.",
+    "alreadyEnded": "La réservation est déjà terminée.",
+    "cancelled": "Cette réservation a déjà été annulée."
   },
   "user": {
     "notFound": "Utilisateur introuvable."
@@ -502,7 +506,19 @@
           "reservations": "Mes réservations"
         },
         "reservations": {
-          "empty": "Aucune réservation pour le moment."
+          "empty": "Aucune réservation pour le moment.",
+          "actions": {
+            "cancel": "Annuler",
+            "release": "Libérer la machine"
+          },
+          "success": {
+            "cancel": "Réservation annulée.",
+            "release": "Machine libérée plus tôt."
+          },
+          "error": {
+            "cancel": "Impossible d'annuler la réservation.",
+            "release": "Impossible de libérer la machine."
+          }
         },
         "card": {
           "category": "Machine",

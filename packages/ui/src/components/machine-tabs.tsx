@@ -18,12 +18,20 @@ export type MachineTabsProps = {
   machines: MachineViewModel[];
   machineHrefBase?: string;
   reservations?: MachineReservationViewModel[];
+  currentUserId?: string;
+  canManageReservations?: boolean;
+  onCancelReservation?: (reservationId: string) => Promise<{ success: boolean; message: string }>;
+  onReleaseReservation?: (reservationId: string) => Promise<{ success: boolean; message: string }>;
 };
 
 export default function MachineTabs({
   machines,
   machineHrefBase,
-  reservations = []
+  reservations = [],
+  currentUserId,
+  canManageReservations,
+  onCancelReservation,
+  onReleaseReservation
 }: MachineTabsProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
   const router = useRouter();
@@ -74,6 +82,10 @@ export default function MachineTabs({
                   machine={machine}
                   fallbackTitle={t('card.title')}
                   fallbackCategory={t('card.category')}
+                  currentUserId={currentUserId}
+                  canManageReservations={canManageReservations}
+                  onCancel={onCancelReservation}
+                  onRelease={onReleaseReservation}
                 />
               );
             })

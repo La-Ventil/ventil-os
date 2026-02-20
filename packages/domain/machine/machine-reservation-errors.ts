@@ -4,6 +4,10 @@ export type MachineReservationErrorCode =
   | 'machineReservation.overlap'
   | 'machineReservation.notFound'
   | 'machineReservation.unauthorized'
+  | 'machineReservation.alreadyStarted'
+  | 'machineReservation.notStarted'
+  | 'machineReservation.alreadyEnded'
+  | 'machineReservation.cancelled'
   | 'machineReservation.badgeRequired'
   | 'machineReservation.machineRequired';
 

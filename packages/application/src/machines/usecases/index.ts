@@ -1,5 +1,6 @@
 export * from './reserve-machine.command';
 export * from './cancel-reservation.command';
+export * from './release-reservation.command';
 export * from './add-machine.command';
 export * from './remove-machine.command';
 export * from './check-reservation-eligibility.query';
