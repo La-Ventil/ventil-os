@@ -12,6 +12,7 @@ import type { MachineReservationViewModel } from '@repo/view-models/machine-rese
 import CardList from './card-list';
 import MachineCard from './machine-card';
 import MachineReservationListCard from './machine/machine-reservation-list-card';
+import ListEmptyState from './list-empty-state';
 
 export type MachineTabsProps = {
   machines: MachineViewModel[];
@@ -53,9 +54,13 @@ export default function MachineTabs({
 
       {tabValue === 0 ? (
         <CardList component="section">
-          {machines.map((machine) => (
-            <MachineCard key={machine.id} machine={machine} t={t} onClick={handleMachineClick(machine.id)} />
-          ))}
+          {machines.length ? (
+            machines.map((machine) => (
+              <MachineCard key={machine.id} machine={machine} t={t} onClick={handleMachineClick(machine.id)} />
+            ))
+          ) : (
+            <ListEmptyState title={t('machines.empty')} />
+          )}
         </CardList>
       ) : (
         <CardList component="section">
@@ -73,9 +78,7 @@ export default function MachineTabs({
               );
             })
           ) : (
-            <Typography variant="body2" color="text.secondary">
-              {t('reservations.empty')}
-            </Typography>
+            <ListEmptyState title={t('reservations.empty')} />
           )}
         </CardList>
       )}

@@ -493,6 +493,9 @@
         "title": "Fab lab",
         "subtitle": "Information",
         "intro": "Retrouvez toutes les machines disponibles à La-Ventil",
+        "machines": {
+          "empty": "Aucune machine disponible pour le moment."
+        },
         "tabs": {
           "ariaLabel": "Filtrer les machines",
           "available": "Machines disponibles",
@@ -556,6 +559,10 @@
         "title": "Open Badge",
         "subtitle": "Information",
         "intro": "Retrouvez les Open badges disponibles et obtenus ci-dessous.",
+        "empty": {
+          "all": "Aucun open badge disponible pour le moment.",
+          "mine": "Vous n'avez actuellement aucun open badge."
+        },
         "tabs": {
           "ariaLabel": "Filtrer les open badges",
           "all": "Tous les open badges",
