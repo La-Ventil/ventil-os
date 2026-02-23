@@ -6,14 +6,14 @@ import { useTranslations } from 'next-intl';
 import { openBadgeCreateRequestSchema } from '@repo/application/forms';
 import OpenBadgeCreateForm, { openBadgeCreateInitialState } from '@repo/ui/forms/open-badge-create.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
-import { createOpenBadge } from '../../../../../lib/actions/create-open-badge';
+import { createOpenBadgeAction } from '../../../../../lib/actions/create-open-badge';
 
 export default function OpenBadgeCreateFormClient() {
   const router = useRouter();
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
   const formState = useFormActionState({
-    action: createOpenBadge,
+    action: createOpenBadgeAction,
     initialState: openBadgeCreateInitialState,
     schema: openBadgeCreateRequestSchema,
     translate: tCommon,

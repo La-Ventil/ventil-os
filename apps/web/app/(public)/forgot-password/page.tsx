@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ResetPasswordForm from '@repo/ui/forms/reset-password.form';
-import { resetPassword } from '../../../lib/actions/reset-password';
+import { resetPasswordAction } from '../../../lib/actions/reset-password';
 
 export default function Page(): JSX.Element {
   const t = useTranslations('pages.public.forgotPassword');
@@ -17,7 +17,7 @@ export default function Page(): JSX.Element {
         <Typography variant="h2">{t('title')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
-      <ResetPasswordForm handleSubmit={resetPassword} />
+      <ResetPasswordForm handleSubmit={resetPasswordAction} />
     </Box>
   );
 }

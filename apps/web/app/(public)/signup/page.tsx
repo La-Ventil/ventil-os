@@ -10,7 +10,7 @@ import Link from '@repo/ui/link';
 import { signupFormSchema } from '@repo/application/forms';
 import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
-import { registerUser } from '../../../lib/actions/register-user';
+import { registerUserAction } from '../../../lib/actions/register-user';
 import styles from './page.module.css';
 
 export default function Page(): JSX.Element {
@@ -19,7 +19,7 @@ export default function Page(): JSX.Element {
   const tForms = useTranslations('forms');
   const tRoot = useTranslations();
   const formState = useFormActionState({
-    action: registerUser,
+    action: registerUserAction,
     initialState: signupFormInitialState,
     schema: signupFormSchema,
     translate: tCommon,

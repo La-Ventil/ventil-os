@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { revalidatePath } from 'next/cache';
-import { releaseReservation } from '@repo/application';
+import { releaseReservation } from '@repo/application/machines/usecases';
 import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 import { getServerSession } from '../auth';
 
@@ -11,7 +11,9 @@ export type ReservationActionResult = {
   message: string;
 };
 
-export async function releaseMachineReservation(reservationId: string): Promise<ReservationActionResult> {
+export async function releaseMachineReservationAction(
+  reservationId: string
+): Promise<ReservationActionResult> {
   const t = await getTranslations();
   const session = await getServerSession();
 

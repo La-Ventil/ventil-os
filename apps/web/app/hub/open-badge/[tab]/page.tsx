@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { browseOpenBadges, viewUserOpenBadges } from '@repo/application';
+import { browseOpenBadges, viewUserOpenBadges } from '@repo/application/open-badges/usecases';
 import OpenBadgeList from '@repo/ui/open-badge-list';
 import { getServerSession } from '../../../../lib/auth';
 import { isOpenBadgeTab, type OpenBadgeTab } from './layout';

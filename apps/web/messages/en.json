@@ -492,7 +492,7 @@
           "empty": "No reservations yet.",
           "actions": {
             "cancel": "Cancel",
-            "release": "Release machine"
+            "release": "Release before end of session"
           },
           "success": {
             "cancel": "Reservation cancelled.",
@@ -501,6 +501,9 @@
           "error": {
             "cancel": "Unable to cancel the reservation.",
             "release": "Unable to release the machine."
+          },
+          "status": {
+            "inProgress": "In progress!"
           }
         },
         "card": {
@@ -545,12 +548,18 @@
             "participantsPlaceholder": "Search a name or username",
             "back": "Back",
             "confirm": "Reserve",
+            "update": "Update",
             "success": "Reservation created.",
+            "updateSuccess": "Reservation updated.",
             "error": "Unable to create the reservation.",
+            "updateError": "Unable to update the reservation.",
             "unauthorized": "You must be signed in to reserve a machine.",
             "badgeRequired": "You need the required open badge to reserve this machine.",
             "startsAtInPast": "You cannot reserve a past time slot.",
-            "overlap": "This time slot is already reserved."
+            "overlap": "This time slot is already reserved.",
+            "cancelTitle": "Cancellation",
+            "cancelDescription": "Keeping the machine available is essential in the fab lab. If you won't use your reserved slot, please release it.",
+            "cancelAction": "Cancel my reservation"
           }
         }
       },

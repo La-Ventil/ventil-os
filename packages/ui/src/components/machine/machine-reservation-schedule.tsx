@@ -15,8 +15,13 @@ import {
   SCHEDULE_START_HOUR
 } from '@repo/domain/machine/reservation-schedule';
 import { isReservationSlotInPast } from '@repo/domain/machine/reservation-rules';
+import { MachineReservation } from '@repo/domain/machine/machine-reservation';
+import {
+  canCancelReservationNow,
+  type ReservationActor
+} from '@repo/domain/machine/machine-reservation-cancellation-policy';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
-import MachineReservationCard from './machine-reservation-card';
+import MachineReservationScheduleCard from './machine-reservation-schedule-card';
 import MachineScheduleNowIndicator from './machine-schedule-now-indicator';
 import MachineReservationTimeSlot from './machine-reservation-time-slot';
 import { toZonedDayjs } from '../../utils/dayjs';
@@ -25,13 +30,19 @@ import styles from './machine-reservation-schedule.module.css';
 export type MachineReservationScheduleProps = {
   dayKey: DayKey;
   reservations: MachineReservationViewModel[];
+  currentUserId?: string;
+  canManageReservations?: boolean;
   onSlotClick?: (slot: Date) => void;
+  onReservationClick?: (reservation: MachineReservationViewModel) => void;
 };
 
 export default function MachineReservationSchedule({
   dayKey,
   reservations,
-  onSlotClick
+  currentUserId,
+  canManageReservations,
+  onSlotClick,
+  onReservationClick
 }: MachineReservationScheduleProps) {
   const t = useTranslations('pages.hub.fabLab');
   const timeZone = useTimeZone();
@@ -86,13 +97,19 @@ export default function MachineReservationSchedule({
           if (!slotRange) return null;
           const rowStart = slotRange.start + 1;
           const rowEnd = slotRange.end + 1;
+          const actor: ReservationActor | null = currentUserId
+            ? { id: currentUserId, globalAdmin: Boolean(canManageReservations) }
+            : null;
+          const isEditable =
+            Boolean(onReservationClick) && canCancelReservationNow(reservation, actor, now);
 
           return (
-            <MachineReservationCard
+            <MachineReservationScheduleCard
               key={reservation.id}
               reservation={reservation}
               rowStart={rowStart}
               rowEnd={rowEnd}
+              onClick={isEditable ? () => onReservationClick?.(reservation) : undefined}
             />
           );
         })}

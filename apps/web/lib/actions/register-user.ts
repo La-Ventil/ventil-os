@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { signUp } from '@repo/application';
+import { signUp } from '@repo/application/users/usecases';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -9,7 +9,7 @@ import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function registerUser(
+export async function registerUserAction(
   previousState: FormState<SignupFormInput>,
   formData: FormData
 ): Promise<FormState<SignupFormInput>> {

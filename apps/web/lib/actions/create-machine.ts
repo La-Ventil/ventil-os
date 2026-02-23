@@ -6,14 +6,15 @@ import {
   type MachineCreateData,
   type MachineCreateRequest
 } from '@repo/application/forms';
-import { addMachine, canManageMachines } from '@repo/application';
+import { canManageMachines } from '@repo/application';
+import { addMachine } from '@repo/application/machines/usecases';
 import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function createMachine(
+export async function createMachineAction(
   previousState: FormState<MachineCreateRequest>,
   formData: FormData
 ): Promise<FormState<MachineCreateRequest>> {

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import SectionTitle from '@repo/ui/section-title';
-import { viewOpenBadgeEdit } from '@repo/application';
+import { viewOpenBadgeEdit } from '@repo/application/open-badges/usecases';
 import OpenBadgeEditFormClient from './open-badge-edit-form.client';
 
 type AdminOpenBadgeEditPageProps = {

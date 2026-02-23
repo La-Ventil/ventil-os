@@ -16,6 +16,12 @@
     "./mocks": "./src/__mocks__/index.ts",
     "./forms": "./src/forms/index.ts",
     "./forms/*": "./src/forms/*.ts",
+    "./machines/usecases": "./src/machines/usecases/index.ts",
+    "./machines/usecases/*": "./src/machines/usecases/*.ts",
+    "./open-badges/usecases": "./src/open-badges/usecases/index.ts",
+    "./open-badges/usecases/*": "./src/open-badges/usecases/*.ts",
+    "./users/usecases": "./src/users/usecases/index.ts",
+    "./users/usecases/*": "./src/users/usecases/*.ts",
     "./server/uploads": "./src/server/uploads.ts",
     "./time/*": "./src/time/*.ts",
     "./*": "./src/*.ts"

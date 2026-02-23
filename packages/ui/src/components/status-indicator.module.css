@@ -16,16 +16,24 @@
   color: inherit;
 }
 
-.available {
+.success {
   background: var(--mui-palette-success-main);
 }
 
-.reserved {
+.warning {
   background: var(--mui-palette-warning-main);
 }
 
-.occupied {
+.error {
   background: var(--mui-palette-error-main);
+}
+
+.info {
+  background: var(--mui-palette-info-main);
+}
+
+.neutral {
+  background: var(--mui-palette-grey-500);
 }
 
 .dot {

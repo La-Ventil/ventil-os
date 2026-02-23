@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
-import { assignOpenBadge } from '../../../../lib/actions/assign-open-badge';
+import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
 import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
 import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
@@ -66,7 +66,7 @@ export default function AssignOpenBadgeModalRoute({
       onConfirm={(payload) => {
         startTransition(async () => {
           setFeedback(null);
-          const result = await assignOpenBadge(payload);
+          const result = await assignOpenBadgeAction(payload);
 
           if (!result.success) {
             const firstFieldError = result.fieldErrors

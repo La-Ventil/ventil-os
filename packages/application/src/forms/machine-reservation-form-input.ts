@@ -14,6 +14,7 @@ const durationSchema = z.coerce
   .min(1, { message: 'validation.machineReservation.durationRequired' });
 
 export const machineReservationFormSchema = zfd.formData({
+  reservationId: zfd.text(z.string().min(1)).optional(),
   machineId: zfd.text(z.string().min(1, { message: 'validation.machineReservation.machineRequired' })),
   startsAt: zfd.text(startsAtSchema),
   durationMinutes: zfd.text(durationSchema),

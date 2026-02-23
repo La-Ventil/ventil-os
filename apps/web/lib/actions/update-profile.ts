@@ -1,14 +1,14 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { updateProfile as updateUserProfile } from '@repo/application';
+import { updateProfile } from '@repo/application/users/usecases';
 import { ProfileFormInput, parseProfileFormInput } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function updateProfile(
+export async function updateProfileAction(
   previousState: FormState<ProfileFormInput>,
   formData: FormData
 ): Promise<FormState<ProfileFormInput>> {
@@ -23,7 +23,7 @@ export async function updateProfile(
     }
 
     const profileFormData: ProfileFormInput = data;
-    await updateUserProfile(userProfile.id, {
+    await updateProfile(userProfile.id, {
       firstName: profileFormData.firstName,
       lastName: profileFormData.lastName,
       educationLevel: profileFormData.educationLevel

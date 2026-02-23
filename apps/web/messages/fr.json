@@ -509,7 +509,7 @@
           "empty": "Aucune réservation pour le moment.",
           "actions": {
             "cancel": "Annuler",
-            "release": "Libérer la machine"
+            "release": "Libérer avant la fin de session"
           },
           "success": {
             "cancel": "Réservation annulée.",
@@ -518,6 +518,9 @@
           "error": {
             "cancel": "Impossible d'annuler la réservation.",
             "release": "Impossible de libérer la machine."
+          },
+          "status": {
+            "inProgress": "En cours !"
           }
         },
         "card": {
@@ -562,12 +565,18 @@
             "participantsPlaceholder": "Rechercher un nom ou un pseudo",
             "back": "Retour",
             "confirm": "Réserver",
+            "update": "Mettre à jour",
             "success": "Réservation créée.",
+            "updateSuccess": "Réservation mise à jour.",
             "error": "Impossible de créer la réservation.",
+            "updateError": "Impossible de modifier la réservation.",
             "unauthorized": "Vous devez être connecté pour réserver une machine.",
             "badgeRequired": "Vous devez obtenir l'open badge requis pour réserver cette machine.",
             "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
-            "overlap": "Ce créneau est déjà réservé."
+            "overlap": "Ce créneau est déjà réservé.",
+            "cancelTitle": "Annulation",
+            "cancelDescription": "Rendre la machine disponible est primordial dans le fab lab. Si vous n'utilisez pas votre créneau réservé, merci de le libérer.",
+            "cancelAction": "Annuler ma réservation"
           }
         }
       },

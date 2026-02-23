@@ -1,7 +1,8 @@
 export type OpenBadgeErrorCode =
   | 'openBadge.assign.unauthorized'
   | 'openBadge.assign.awarderNotFound'
-  | 'openBadge.assign.targetNotFound';
+  | 'openBadge.assign.targetNotFound'
+  | 'openBadge.update.notFound';
 
 export class OpenBadgeError extends Error {
   readonly code: OpenBadgeErrorCode;

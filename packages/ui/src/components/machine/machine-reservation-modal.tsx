@@ -18,22 +18,28 @@ import styles from './machine-modal.module.css';
 
 export type MachineReservationModalProps = {
   machine: MachineDetailsViewModel;
+  reservationId?: string;
+  initialParticipants?: UserSummaryViewModel[];
   participantOptions?: UserSummaryViewModel[];
   startAt: Date;
   formState: FormActionStateTuple<MachineReservationFormInput>;
   currentUserId?: string;
   open: boolean;
   onClose: () => void;
+  onCancelReservation?: () => Promise<{ success: boolean; message: string }>;
 };
 
 export default function MachineReservationModal({
   machine,
+  reservationId,
+  initialParticipants,
   participantOptions,
   startAt,
   formState,
   currentUserId,
   open,
-  onClose
+  onClose,
+  onCancelReservation
 }: MachineReservationModalProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
 
@@ -59,9 +65,12 @@ export default function MachineReservationModal({
         <MachineReservationForm
           machineId={machine.id}
           startAt={startAt}
+          reservationId={reservationId}
+          initialParticipants={initialParticipants}
           participantOptions={participantOptions}
           currentUserId={currentUserId}
           onCancel={onClose}
+          onCancelReservation={onCancelReservation}
           formState={formState}
         />
       </Section>

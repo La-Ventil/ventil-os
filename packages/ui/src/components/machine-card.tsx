@@ -5,10 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { type MachineViewModel } from '@repo/view-models/machine';
+import { type MachineViewModel, type MachineAvailability } from '@repo/view-models/machine';
 import CardHeader from './card-header';
 import { MachineIcon } from './icons/machine-icon';
-import MachineAvailabilityStatus from './machine/machine-availability-status';
+import StatusIndicator, { type StatusTone } from './status-indicator';
 import styles from './machine-card.module.css';
 
 export type MachineCardData = MachineViewModel;
@@ -17,6 +17,12 @@ export type MachineCardProps = {
   machine: MachineCardData;
   onClick?: () => void;
   t: (key: string) => string;
+};
+
+const availabilityTone: Record<MachineAvailability, StatusTone> = {
+  available: 'success',
+  reserved: 'warning',
+  occupied: 'error'
 };
 
 export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
@@ -53,8 +59,8 @@ export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
           <Typography variant="body2" color="text.primary">
             {machine.description}
           </Typography>
-          <MachineAvailabilityStatus
-            availability={machine.availability}
+          <StatusIndicator
+            tone={availabilityTone[machine.availability]}
             label={t(`status.${machine.availability}`)}
           />
         </div>

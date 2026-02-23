@@ -1,13 +1,16 @@
 import type { JSX } from 'react';
 import {
-  checkReservationEligibility,
+  canManageReservations,
   formatDayKey,
   getDayIntervalForDayKey,
-  viewMachineDetails,
-  viewMachineReservationsForDayKey,
   resolveMachineAvailability,
   resolveDayKeyFromString
 } from '@repo/application';
+import {
+  checkReservationEligibility,
+  viewMachineDetails,
+  viewMachineReservationsForDayKey
+} from '@repo/application/machines/usecases';
 import { getTimeZone } from 'next-intl/server';
 import MachineModalRouteClient from '../../machine-modal-route.client';
 import { getServerSession } from '../../../../../lib/auth';
@@ -41,6 +44,8 @@ export default async function MachineModalPage({
   const machineWithAvailability = { ...machine, availability };
   const session = await getServerSession();
   const canReserve = await checkReservationEligibility(machineId, session?.user?.id);
+  const canManage = canManageReservations(session?.user);
+  const currentUserId = session?.user?.id;
 
   return (
     <MachineModalRouteClient
@@ -48,6 +53,8 @@ export default async function MachineModalPage({
       reservations={reservations}
       dayKey={selectedDateKey}
       canReserve={canReserve}
+      currentUserId={currentUserId}
+      canManageReservations={canManage}
       closeHref="/hub/fab-lab"
     />
   );

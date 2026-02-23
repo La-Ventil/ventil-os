@@ -6,14 +6,15 @@ import {
   type OpenBadgeCreateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import { canManageBadges, addOpenBadge as addOpenBadgeRecord } from '@repo/application';
+import { canManageBadges } from '@repo/application';
+import { addOpenBadge } from '@repo/application/open-badges/usecases';
 import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function createOpenBadge(
+export async function createOpenBadgeAction(
   previousState: FormState<OpenBadgeCreateRequest>,
   formData: FormData
 ): Promise<FormState<OpenBadgeCreateRequest>> {
@@ -55,7 +56,7 @@ export async function createOpenBadge(
   };
 
   try {
-    await addOpenBadgeRecord({
+    await addOpenBadge({
       ...values,
       creatorId: userId
     });

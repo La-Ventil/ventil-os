@@ -1,0 +1,18 @@
+.alert {
+  margin-top: 16px;
+  border-radius: 16px;
+  align-items: stretch;
+}
+
+.title {
+  color: var(--mui-palette-error-main);
+  letter-spacing: 0.08em;
+}
+
+.feedback {
+  color: var(--mui-palette-error-main);
+}
+
+.actionButton {
+  align-self: center;
+}

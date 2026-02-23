@@ -8,6 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import type { Dayjs } from 'dayjs';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
+import type { MachineAvailability } from '@repo/view-models/machine';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { MachineIcon } from '../icons/machine-icon';
 import ModalLayout from '../modal-layout';
@@ -22,7 +23,7 @@ import { toZonedDayjs } from '../../utils/dayjs';
 import useTimeZone from '../../hooks/use-time-zone';
 import MachineReservationSchedule from './machine-reservation-schedule';
 import LocalizedDatePicker from '../inputs/localized-date-picker';
-import MachineAvailabilityStatus from './machine-availability-status';
+import StatusIndicator, { type StatusTone } from '../status-indicator';
 import MachineBadgeRequirementCard from './machine-badge-requirement-card';
 import styles from './machine-modal.module.css';
 
@@ -32,12 +33,21 @@ export type MachineModalProps = {
   dayKey: DayKey;
   open: boolean;
   canReserve?: boolean;
+  currentUserId?: string;
+  canManageReservations?: boolean;
   onClose: () => void;
   onOpenReservation?: (slot: Date) => void;
+  onReservationClick?: (reservation: MachineReservationViewModel) => void;
   onDateChange?: (dayKey: DayKey) => void;
 };
 
 type MachineModalTab = 'info' | 'reservations';
+
+const availabilityTone: Record<MachineAvailability, StatusTone> = {
+  available: 'success',
+  reserved: 'warning',
+  occupied: 'error'
+};
 
 export default function MachineModal({
   machine,
@@ -45,8 +55,11 @@ export default function MachineModal({
   dayKey,
   open,
   canReserve = true,
+  currentUserId,
+  canManageReservations,
   onClose,
   onOpenReservation,
+  onReservationClick,
   onDateChange
 }: MachineModalProps): JSX.Element | null {
   const t = useTranslations('pages.hub.fabLab');
@@ -91,8 +104,8 @@ export default function MachineModal({
       {activeTab === 'info' ? (
         <Section p={2} className={styles.infoSection}>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.availabilityLabel')}</SectionSubtitle>
-          <MachineAvailabilityStatus
-            availability={machine.availability}
+          <StatusIndicator
+            tone={availabilityTone[machine.availability]}
             label={t(`status.${machine.availability}`)}
           />
 
@@ -149,7 +162,10 @@ export default function MachineModal({
           <MachineReservationSchedule
             dayKey={dayKey}
             reservations={reservations}
+            currentUserId={currentUserId}
+            canManageReservations={canManageReservations}
             onSlotClick={onOpenReservation}
+            onReservationClick={onReservationClick}
           />
         </Section>
       )}

@@ -1,6 +1,7 @@
 'use server';
 
-import { assignOpenBadge as assignOpenBadgeUseCase, assignOpenBadgeFormInputSchema } from '@repo/application';
+import { assignOpenBadge } from '@repo/application/open-badges/usecases';
+import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
 import { getTranslations } from 'next-intl/server';
 import type { FormState } from '@repo/form/form-state';
 import { getServerSession } from '../auth';
@@ -13,7 +14,9 @@ type AssignOpenBadgeInput = {
   level: number;
 };
 
-export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<FormState<AssignOpenBadgeInput>> {
+export async function assignOpenBadgeAction(
+  input: AssignOpenBadgeInput
+): Promise<FormState<AssignOpenBadgeInput>> {
   const t = await getTranslations();
   const session = await getServerSession();
 
@@ -33,7 +36,7 @@ export async function assignOpenBadge(input: AssignOpenBadgeInput): Promise<Form
   }
 
   try {
-    await assignOpenBadgeUseCase(parsed.data, {
+    await assignOpenBadge(parsed.data, {
       id: session.user.id,
       email: session.user.email ?? null,
       globalAdmin: session.user.globalAdmin,

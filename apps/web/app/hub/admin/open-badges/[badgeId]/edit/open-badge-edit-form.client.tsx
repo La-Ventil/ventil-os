@@ -8,7 +8,7 @@ import OpenBadgeCreateForm from '@repo/ui/forms/open-badge-create.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import type { OpenBadgeEditViewModel } from '@repo/view-models/open-badge-edit';
-import { updateOpenBadge } from '../../../../../../lib/actions/update-open-badge';
+import { updateOpenBadgeAction } from '../../../../../../lib/actions/update-open-badge';
 
 type OpenBadgeEditFormClientProps = {
   badge: OpenBadgeEditViewModel;
@@ -31,7 +31,7 @@ export default function OpenBadgeEditFormClient({ badge }: OpenBadgeEditFormClie
   });
 
   const formState = useFormActionState({
-    action: updateOpenBadge,
+    action: updateOpenBadgeAction,
     initialState,
     schema: openBadgeUpdateRequestSchema,
     translate: tCommon,

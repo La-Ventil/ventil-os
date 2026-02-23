@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
-import { viewUserProfile } from '@repo/application';
+import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
 
 type LoginPageProps = {

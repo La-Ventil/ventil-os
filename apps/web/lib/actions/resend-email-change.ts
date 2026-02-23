@@ -1,7 +1,7 @@
  'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { resendEmailChangeVerification } from '@repo/application';
+import { resendEmailChangeVerification } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
 import { sendEmailVerification } from '../email';
@@ -9,7 +9,7 @@ import { formError, formSuccess } from '@repo/form/form-state-builders';
 
 type EmptyForm = Record<string, never>;
 
-export async function resendEmailChange(
+export async function resendEmailChangeAction(
   previousState: FormState<EmptyForm>,
   formData: FormData
 ): Promise<FormState<EmptyForm>> {

@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { resetPassword } from '@repo/application';
+import { resetPassword } from '@repo/application/users/usecases';
 import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
@@ -15,7 +15,7 @@ export type UpdatePasswordActionState = FormState<UpdatePasswordActionValues> & 
   token: string;
 };
 
-export async function updatePassword(
+export async function updatePasswordAction(
   previousState: UpdatePasswordActionState,
   formData: FormData
 ): Promise<UpdatePasswordActionState> {

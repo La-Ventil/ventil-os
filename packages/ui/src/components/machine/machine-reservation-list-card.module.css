@@ -12,13 +12,18 @@
 
 .metaRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
 .timeRange {
   color: var(--mui-palette-text-secondary);
+}
+
+.participantsRow {
+  display: flex;
+  align-items: center;
 }
 
 .avatarStack {
@@ -33,7 +38,11 @@
 }
 
 .actionsRow {
-  justify-content: flex-end;
+  justify-content: center;
+}
+
+.actionButton {
+  min-width: 240px;
 }
 
 .feedback {

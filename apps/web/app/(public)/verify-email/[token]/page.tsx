@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Alert from '@mui/material/Alert';
-import { verifyEmail } from '@repo/application';
+import { verifyEmail } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../../lib/auth';
 import AutoRedirect from '@repo/ui/auto-redirect';
 

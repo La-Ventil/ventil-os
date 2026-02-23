@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { updatePassword, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
+import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
 export default function Page(): JSX.Element {
@@ -32,7 +32,7 @@ export default function Page(): JSX.Element {
     },
     isValid: undefined
   };
-  const [formState, formAction, pending] = useActionState(updatePassword, initialState);
+  const [formState, formAction, pending] = useActionState(updatePasswordAction, initialState);
   const router = useRouter();
 
   useEffect(() => {

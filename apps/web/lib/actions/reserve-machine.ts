@@ -1,7 +1,8 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { reserveMachine as reserveMachineUseCase, machineReservationFormSchema } from '@repo/application';
+import { machineReservationFormSchema } from '@repo/application';
+import { reserveMachine, updateReservation } from '@repo/application/machines/usecases';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
@@ -10,7 +11,7 @@ import { revalidatePath } from 'next/cache';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 
-export async function reserveMachine(
+export async function reserveMachineAction(
   previousState: FormState<MachineReservationFormInput>,
   formData: FormData
 ): Promise<FormState<MachineReservationFormInput>> {
@@ -34,22 +35,45 @@ export async function reserveMachine(
   const participantIds = data.participantIds ?? [];
 
   try {
-    await reserveMachineUseCase({
-      machineId: data.machineId,
-      creatorId: session.user.id,
-      startsAt,
-      durationMinutes: data.durationMinutes,
-      participantIds
-    });
+    if (data.reservationId) {
+      await updateReservation({
+        reservationId: data.reservationId,
+        startsAt,
+        durationMinutes: data.durationMinutes,
+        participantIds,
+        currentUser: session.user
+      });
+    } else {
+      await reserveMachine({
+        machineId: data.machineId,
+        creatorId: session.user.id,
+        startsAt,
+        durationMinutes: data.durationMinutes,
+        participantIds
+      });
+    }
     revalidatePath('/hub/fab-lab');
 
-    return formSuccess(data, t('pages.hub.fabLab.modal.reservationForm.success'));
+    return formSuccess(
+      data,
+      t(
+        data.reservationId
+          ? 'pages.hub.fabLab.modal.reservationForm.updateSuccess'
+          : 'pages.hub.fabLab.modal.reservationForm.success'
+      )
+    );
   } catch (err) {
     if (isMachineReservationError(err)) {
       return formError(data, { message: t(err.code) });
     }
 
     console.error(err);
-    return formError(data, { message: t('pages.hub.fabLab.modal.reservationForm.error') });
+    return formError(data, {
+      message: t(
+        data.reservationId
+          ? 'pages.hub.fabLab.modal.reservationForm.updateError'
+          : 'pages.hub.fabLab.modal.reservationForm.error'
+      )
+    });
   }
 }

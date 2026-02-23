@@ -10,7 +10,7 @@ import Section from '@repo/ui/section';
 import SectionTitle from '@repo/ui/section-title';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import StatsList, { StatsListEntry } from '@repo/ui/stats-list';
-import { viewUserStats } from '@repo/application';
+import { viewUserStats } from '@repo/application/users/usecases';
 import { getUserProfileFromSession } from '../../../lib/auth';
 
 export default async function Page(): Promise<JSX.Element> {

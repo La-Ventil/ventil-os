@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { browseUsersAsAdmin, browseOpenBadges } from '@repo/application';
+import { browseUsersAsAdmin } from '@repo/application/users/usecases';
+import { browseOpenBadges } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModalRoute from '../../assign-open-badge-modal-route';
 
 type AdminUsersModalPageProps = {

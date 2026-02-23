@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { browseAssignableUsersForOpenBadge, canAssignOpenBadge, viewOpenBadge } from '@repo/application';
+import { browseAssignableUsersForOpenBadge, canAssignOpenBadge, viewOpenBadge } from '@repo/application/open-badges/usecases';
 import OpenBadgeModalRouteClient from '../../../open-badge-modal-route.client';
 import { isOpenBadgeTab } from '../../layout';
 import { getServerSession } from '../../../../../../lib/auth';

@@ -16,29 +16,37 @@ export type MachineReservation = {
   status: MachineReservationStatus;
 };
 
+type ReservationStatusRef = Pick<MachineReservation, 'status'>;
+type ReservationTimeRef = Pick<MachineReservation, 'startsAt' | 'endsAt' | 'status'>;
+type ReservationStartRef = Pick<MachineReservation, 'startsAt'>;
+type ReservationEndRef = Pick<MachineReservation, 'endsAt'>;
+
 export const MachineReservation = {
-  isCancelled(reservation: MachineReservation): boolean {
+  isCancelled(reservation: ReservationStatusRef): boolean {
     return reservation.status === MachineReservationStatus.Cancelled;
   },
-  isConfirmed(reservation: MachineReservation): boolean {
+  isConfirmed(reservation: ReservationStatusRef): boolean {
     return isReservationConfirmed(reservation.status);
   },
-  hasStarted(reservation: MachineReservation, now: Date = new Date()): boolean {
+  hasStarted(reservation: ReservationStartRef, now: Date = new Date()): boolean {
     return now.getTime() >= reservation.startsAt.getTime();
   },
-  hasEnded(reservation: MachineReservation, now: Date = new Date()): boolean {
+  hasEnded(reservation: ReservationEndRef, now: Date = new Date()): boolean {
     return now.getTime() >= reservation.endsAt.getTime();
   },
-  isUpcoming(reservation: MachineReservation, now: Date = new Date()): boolean {
+  isUpcoming(reservation: ReservationTimeRef, now: Date = new Date()): boolean {
     return MachineReservation.isConfirmed(reservation) && now.getTime() < reservation.startsAt.getTime();
   },
-  isActive(reservation: MachineReservation, now: Date = new Date()): boolean {
+  isActive(reservation: ReservationTimeRef, now: Date = new Date()): boolean {
     if (!MachineReservation.isConfirmed(reservation)) {
       return false;
     }
 
     const nowMs = now.getTime();
     return nowMs >= reservation.startsAt.getTime() && nowMs < reservation.endsAt.getTime();
+  },
+  durationMinutes(reservation: Pick<MachineReservation, 'startsAt' | 'endsAt'>): number {
+    return Math.max(1, Math.round((reservation.endsAt.getTime() - reservation.startsAt.getTime()) / 60000));
   },
   cancel(reservation: MachineReservation): MachineReservation {
     if (MachineReservation.isCancelled(reservation)) {

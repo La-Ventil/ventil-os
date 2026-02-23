@@ -24,14 +24,18 @@ import FormActions from '../form-actions';
 import Form from '../forms/form';
 import { toZonedDayjs } from '../../utils/dayjs';
 import useTimeZone from '../../hooks/use-time-zone';
+import DangerZone from '../danger-zone';
 import styles from './machine-reservation-form.module.css';
 
 export type MachineReservationFormProps = {
   machineId: string;
   startAt: Date;
+  reservationId?: string;
+  initialParticipants?: UserSummaryViewModel[];
   participantOptions?: UserSummaryViewModel[];
   currentUserId?: string;
   onCancel: () => void;
+  onCancelReservation?: () => Promise<{ success: boolean; message: string }>;
   formState: FormActionStateTuple<MachineReservationFormInput>;
 };
 
@@ -41,28 +45,34 @@ const DEFAULT_RESERVATION_DURATION_MINUTES = RESERVATION_DURATION_OPTIONS[0] ?? 
 export const createMachineReservationInitialState = (
   machineId: string,
   startAt: Date,
-  durationMinutes: number = DEFAULT_RESERVATION_DURATION_MINUTES
+  durationMinutes: number = DEFAULT_RESERVATION_DURATION_MINUTES,
+  participantIds: string[] = [],
+  reservationId?: string
 ) =>
   createFormState<MachineReservationFormInput>({
+    reservationId,
     machineId,
     startsAt: startAt.toISOString(),
     durationMinutes,
-    participantIds: []
+    participantIds
   });
 
 export default function MachineReservationForm({
   machineId,
   startAt,
+  reservationId,
+  initialParticipants,
   participantOptions,
   currentUserId,
   onCancel,
+  onCancelReservation,
   formState: [state, action, isPending, handleSubmit, handleRetry]
 }: MachineReservationFormProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
   const format = useFormatter();
   const timeZone = useTimeZone();
   const fieldError = (field: keyof MachineReservationFormInput) => firstFieldError(state, field);
-  const [participants, setParticipants] = useState<UserSummaryViewModel[]>([]);
+  const [participants, setParticipants] = useState<UserSummaryViewModel[]>(() => initialParticipants ?? []);
   const [startDate, setStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const filteredParticipants = useMemo(
     () => excludeBy(participants, (user) => user.id, currentUserId),
@@ -79,10 +89,17 @@ export default function MachineReservationForm({
     if (parsed) setStartDate(toZonedDayjs(parsed, timeZone));
   }, [state.values.startsAt, timeZone]);
 
+  useEffect(() => {
+    setParticipants(initialParticipants ?? []);
+  }, [initialParticipants]);
+
   const formattedStart = useMemo(
     () => format.dateTime(startDate.toDate(), { dateStyle: 'short', timeStyle: 'short', timeZone }),
     [format, startDate, timeZone]
   );
+  const confirmLabel = reservationId
+    ? t('modal.reservationForm.update')
+    : t('modal.reservationForm.confirm');
 
   const handleParticipantsChange = (nextParticipants: UserSummaryViewModel[]) => {
     setParticipants(excludeBy(nextParticipants, (user) => user.id, currentUserId));
@@ -90,6 +107,7 @@ export default function MachineReservationForm({
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
+      {reservationId ? <input type="hidden" name="reservationId" value={reservationId} /> : null}
       <input type="hidden" name="machineId" value={machineId} />
       <input type="hidden" name="startsAt" value={startDate.toDate().toISOString()} />
       {filteredParticipants.map((participant) => (
@@ -153,9 +171,20 @@ export default function MachineReservationForm({
           {t('modal.reservationForm.back')}
         </Button>
         <Button variant="contained" type="submit" disabled={isPending}>
-          {t('modal.reservationForm.confirm')}
+          {confirmLabel}
         </Button>
       </FormActions>
+
+      {reservationId && onCancelReservation ? (
+        <DangerZone
+          title={t('modal.reservationForm.cancelTitle')}
+          description={t('modal.reservationForm.cancelDescription')}
+          actionLabel={t('modal.reservationForm.cancelAction')}
+          disabled={isPending}
+          onAction={onCancelReservation}
+          onSuccess={onCancel}
+        />
+      ) : null}
     </Form>
   );
 }

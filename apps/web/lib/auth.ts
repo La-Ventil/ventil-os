@@ -6,7 +6,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from 'next-auth/react';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { redirect } from 'next/navigation';
-import { signIn as signInUser, viewUserProfile } from '@repo/application';
+import { signIn as signInUser, viewUserProfile } from '@repo/application/users/usecases';
 import { prismaClient } from '@repo/db';
 import type { UserProfile } from '@repo/view-models/user-profile';
 

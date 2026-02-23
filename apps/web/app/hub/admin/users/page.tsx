@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { browseUsersAsAdmin } from '@repo/application';
+import { browseUsersAsAdmin } from '@repo/application/users/usecases';
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';

@@ -6,14 +6,16 @@ import {
   type OpenBadgeUpdateRequest,
   type OpenBadgeCreateData
 } from '@repo/application/forms';
-import { canManageBadges, updateOpenBadge as updateOpenBadgeRecord, viewOpenBadge } from '@repo/application';
+import { canManageBadges } from '@repo/application';
+import { updateOpenBadge } from '@repo/application/open-badges/usecases';
 import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 
-export async function updateOpenBadge(
+export async function updateOpenBadgeAction(
   previousState: FormState<OpenBadgeUpdateRequest>,
   formData: FormData
 ): Promise<FormState<OpenBadgeUpdateRequest>> {
@@ -34,13 +36,7 @@ export async function updateOpenBadge(
   const request = parseResult.data as OpenBadgeUpdateRequest;
   const responseValues: OpenBadgeUpdateRequest = { ...request, imageFile: undefined };
 
-  const current = await viewOpenBadge(request.id);
-  if (!current) {
-    const msg = t('openBadge.update.notFound');
-    return formError(responseValues, { message: msg });
-  }
-
-  let imageUrl = current.coverImage ?? null;
+  let imageUrl: string | null | undefined = undefined;
   if (request.imageFile) {
     const imageResult = await validateAndStoreImage(request.imageFile ?? null, { maxMb: MAX_IMAGE_MB });
     if ('error' in imageResult) {
@@ -62,17 +58,20 @@ export async function updateOpenBadge(
   };
 
   try {
-    await updateOpenBadgeRecord({
+    await updateOpenBadge({
       id: request.id,
       name: values.name,
       description: values.description,
-      imageUrl: imageUrl ?? undefined,
+      imageUrl,
       levels: values.levels,
       activationEnabled: values.activationEnabled
     });
 
     return formSuccess(responseValues, t('openBadge.update.success'));
   } catch (err) {
+    if (isOpenBadgeError(err)) {
+      return formError(responseValues, { message: t(err.code) });
+    }
     console.error(err);
     return formError(responseValues, { message: t('openBadge.update.error') });
   }

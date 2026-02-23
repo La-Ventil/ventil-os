@@ -2,7 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { changeEmailFormSchema, type ChangeEmailFormInput } from '@repo/application/forms';
-import { requestEmailChange } from '@repo/application';
+import { requestEmailChange } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getUserProfileFromSession } from '../auth';
@@ -10,7 +10,7 @@ import { sendEmailVerification } from '../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isUserError } from '@repo/domain/user/user-errors';
 
-export async function updateEmail(
+export async function updateEmailAction(
   previousState: FormState<ChangeEmailFormInput>,
   formData: FormData
 ): Promise<FormState<ChangeEmailFormInput>> {

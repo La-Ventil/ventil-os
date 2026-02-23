@@ -1,7 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import { browseMachinesAsAdmin, canManageBadges } from '@repo/application';
+import { canManageBadges } from '@repo/application';
+import { browseMachinesAsAdmin } from '@repo/application/machines/usecases';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import Section from '@repo/ui/section';

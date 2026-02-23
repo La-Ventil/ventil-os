@@ -13,6 +13,8 @@ type MachineModalRouteClientProps = {
   dayKey: DayKey;
   closeHref: string;
   canReserve?: boolean;
+  currentUserId?: string;
+  canManageReservations?: boolean;
 };
 
 export default function MachineModalRouteClient({
@@ -20,7 +22,9 @@ export default function MachineModalRouteClient({
   reservations,
   dayKey,
   closeHref,
-  canReserve = true
+  canReserve = true,
+  currentUserId,
+  canManageReservations
 }: MachineModalRouteClientProps): JSX.Element | null {
   const router = useRouter();
   const pathname = usePathname();
@@ -37,6 +41,8 @@ export default function MachineModalRouteClient({
       reservations={reservations}
       dayKey={dayKey}
       canReserve={canReserve}
+      currentUserId={currentUserId}
+      canManageReservations={canManageReservations}
       open={isOpen}
       onClose={() => {
         router.push(closeHref);
@@ -48,6 +54,9 @@ export default function MachineModalRouteClient({
             }
           : undefined
       }
+      onReservationClick={(reservation) => {
+        router.push(`/hub/fab-lab/${machine.id}/reservation?reservationId=${reservation.id}`);
+      }}
       onDateChange={(dayKey) => {
         router.push(`/hub/fab-lab/${machine.id}?day=${dayKey}`);
       }}

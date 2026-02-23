@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { browseAssignableUsersForOpenBadge, viewOpenBadge } from '@repo/application';
+import { browseAssignableUsersForOpenBadge, viewOpenBadge } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModalRoute from '../../assign-open-badge-modal-route';
 
 type AdminOpenBadgesModalPageProps = {

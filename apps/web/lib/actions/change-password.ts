@@ -2,13 +2,13 @@
 
 import { getTranslations } from 'next-intl/server';
 import { changePasswordFormSchema, type ChangePasswordFormInput } from '@repo/application/forms';
-import { changePassword as changeUserPassword } from '@repo/application';
+import { changePassword } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getUserProfileFromSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function changePassword(
+export async function changePasswordAction(
   previousState: FormState<ChangePasswordFormInput>,
   formData: FormData
 ): Promise<FormState<ChangePasswordFormInput>> {
@@ -22,7 +22,7 @@ export async function changePassword(
   }
 
   const userProfile = await getUserProfileFromSession();
-  const result = await changeUserPassword(userProfile.email, {
+  const result = await changePassword(userProfile.email, {
     currentPassword: data.currentPassword,
     newPassword: data.password
   });

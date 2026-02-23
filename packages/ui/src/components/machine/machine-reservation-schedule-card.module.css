@@ -11,6 +11,20 @@
   box-shadow: var(--mui-shadows-1);
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  border-color: var(--mui-palette-primary-light);
+  box-shadow: var(--mui-shadows-2);
+}
+
+.clickable:focus-visible {
+  outline: 2px solid var(--mui-palette-primary-main);
+  outline-offset: 2px;
+}
+
 .reservationHeader {
   display: flex;
   align-items: center;
