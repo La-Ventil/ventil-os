@@ -66,7 +66,7 @@ export class UserRepository {
       stats: {
         eventsCount: user._count.eventRegistrations,
         openBadgesCount: user._count.openBadgeProgresses,
-        openBadgesAssignedCount: 0,
+        openBadgesAssignedCount: user._count.openBadgeLevelAwards,
         machinesCount: 0
       }
     };

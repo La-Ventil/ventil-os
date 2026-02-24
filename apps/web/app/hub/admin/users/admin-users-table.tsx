@@ -21,7 +21,8 @@ type AdminUsersTableProps = {
     status: string;
     machines: string;
     events: string;
-    openBadges: string;
+    openBadgesEarned: string;
+    openBadgesAssigned: string;
   };
   adminLabelFor: (user: UserAdminViewModel) => string;
   statusLabelFor: (user: UserAdminViewModel) => string;
@@ -55,7 +56,8 @@ export default function AdminUsersTable({
           <TableCell>{columns.status}</TableCell>
           <TableCell>{columns.machines}</TableCell>
           <TableCell>{columns.events}</TableCell>
-          <TableCell>{columns.openBadges}</TableCell>
+          <TableCell>{columns.openBadgesEarned}</TableCell>
+          <TableCell>{columns.openBadgesAssigned}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -79,6 +81,7 @@ export default function AdminUsersTable({
             <TableCell>{user.stats.machinesCount}</TableCell>
             <TableCell>{user.stats.eventsCount}</TableCell>
             <TableCell>{user.stats.openBadgesCount}</TableCell>
+            <TableCell>{user.stats.openBadgesAssignedCount}</TableCell>
           </TableRow>
         ))}
       </TableBody>

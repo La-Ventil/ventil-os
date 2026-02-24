@@ -482,7 +482,8 @@
             "status": "status",
             "machines": "machines used",
             "events": "events",
-            "openBadges": "open badges assigned",
+            "openBadgesEarned": "open badges earned",
+            "openBadgesAssigned": "open badges assigned",
             "assign": "assign"
           },
           "actions": {

@@ -16,7 +16,8 @@ export const userAdminSelect = {
   _count: {
     select: {
       eventRegistrations: true,
-      openBadgeProgresses: true
+      openBadgeProgresses: true,
+      openBadgeLevelAwards: true
     }
   }
 } as const;

@@ -25,7 +25,8 @@ export default async function AdminUsersPage() {
       status: t('columns.status'),
       machines: t('columns.machines'),
       events: t('columns.events'),
-      openBadges: t('columns.openBadges')
+      openBadgesEarned: t('columns.openBadgesEarned'),
+      openBadgesAssigned: t('columns.openBadgesAssigned')
     },
     actions: {
       manage: t('actions.manage'),

@@ -499,7 +499,8 @@
             "status": "statut",
             "machines": "machines utilisées",
             "events": "évènements",
-            "openBadges": "open badges attribués",
+            "openBadgesEarned": "open badges obtenus",
+            "openBadgesAssigned": "open badges attribués",
             "assign": "attribuer"
           },
           "actions": {
