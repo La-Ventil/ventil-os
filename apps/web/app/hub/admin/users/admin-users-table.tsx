@@ -65,7 +65,9 @@ export default function AdminUsersTable({
             </TableCell>
             <TableCell>{user.firstName}</TableCell>
             <TableCell>{user.lastName}</TableCell>
-            <TableCell>{user.username}</TableCell>
+            <TableCell title={user.username}>
+              {user.username.includes('#') ? user.username.split('#')[0] : user.username}
+            </TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.profile}</TableCell>
             <TableCell>{adminLabelFor(user)}</TableCell>
