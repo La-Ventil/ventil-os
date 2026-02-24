@@ -35,6 +35,7 @@ export type OpenBadgeProgressPayload = Prisma.OpenBadgeProgressGetPayload<{
 export const openBadgeAdminSelect = {
   id: true,
   name: true,
+  coverImage: true,
   status: true,
   _count: {
     select: {

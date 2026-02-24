@@ -353,6 +353,7 @@
           },
           "columns": {
             "actions": "actions",
+            "image": "image",
             "name": "nom",
             "category": "type",
             "room": "salle",
@@ -383,6 +384,7 @@
             "delete": "Supprimer"
           },
           "columns": {
+            "image": "image",
             "name": "nom",
             "levels": "nombre de niveau",
             "assigned": "nb de fois attribué",

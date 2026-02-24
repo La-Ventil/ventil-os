@@ -6,6 +6,7 @@ export const mapMachineAdminToViewModel = (machine: MachineAdminReadModel): Mach
   name: machine.name,
   category: machine.category,
   room: machine.room?.name ?? '-',
+  imageUrl: machine.imageUrl ?? null,
   badgeRequirementsCount: machine._count.badgeRequirements,
   status: machine.status
 });

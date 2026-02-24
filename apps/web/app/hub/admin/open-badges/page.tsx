@@ -37,6 +37,7 @@ export default async function AdminOpenBadgesPage() {
       remove: t('actions.delete')
     },
     columns: {
+      image: t('columns.image'),
       name: t('columns.name'),
       levels: t('columns.levels'),
       assigned: t('columns.assigned'),

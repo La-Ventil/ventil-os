@@ -336,6 +336,7 @@
           },
           "columns": {
             "actions": "actions",
+            "image": "image",
             "name": "name",
             "category": "type",
             "room": "room",
@@ -366,6 +367,7 @@
             "delete": "Delete"
           },
           "columns": {
+            "image": "image",
             "name": "name",
             "levels": "level count",
             "assigned": "times assigned",

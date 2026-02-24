@@ -10,6 +10,7 @@ type AdminMachinesTableProps = {
   machines: MachineAdminViewModel[];
   columns: {
     actions: string;
+    image: string;
     name: string;
     category: string;
     room: string;
@@ -36,6 +37,7 @@ export default function AdminMachinesTable({
       <TableHead>
         <TableRow>
           <TableCell>{columns.actions}</TableCell>
+          <TableCell>{columns.image}</TableCell>
           <TableCell>{columns.name}</TableCell>
           <TableCell>{columns.category}</TableCell>
           <TableCell>{columns.room}</TableCell>
@@ -48,6 +50,19 @@ export default function AdminMachinesTable({
           <TableRow key={machine.id} hover>
             <TableCell>
               <MachineQuickActions machine={machine} labels={actionLabels} />
+            </TableCell>
+            <TableCell>
+              {machine.imageUrl ? (
+                <img
+                  src={machine.imageUrl}
+                  alt={machine.name}
+                  width={40}
+                  height={40}
+                  style={{ objectFit: 'contain', display: 'block' }}
+                />
+              ) : (
+                '—'
+              )}
             </TableCell>
             <TableCell>{machine.name}</TableCell>
             <TableCell>{machine.category}</TableCell>

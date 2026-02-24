@@ -6,6 +6,7 @@ export type MachineAdminViewModel = {
   name: string;
   category: string;
   room: string;
+  imageUrl?: string | null;
   badgeRequirementsCount: number;
   status: ActivityStatus;
 };

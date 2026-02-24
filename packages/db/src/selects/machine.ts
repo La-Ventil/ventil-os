@@ -17,6 +17,7 @@ export const machineAdminSelect = {
   id: true,
   name: true,
   category: true,
+  imageUrl: true,
   status: true,
   room: {
     select: {

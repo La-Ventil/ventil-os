@@ -37,6 +37,7 @@ export default async function AdminMachinesPage() {
     },
     columns: {
       actions: t('columns.actions'),
+      image: t('columns.image'),
       name: t('columns.name'),
       category: t('columns.category'),
       room: t('columns.room'),

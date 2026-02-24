@@ -11,6 +11,7 @@ import OpenBadgeQuickActions from './open-badge-quick-actions';
 type AdminOpenBadgesTableProps = {
   badges: OpenBadgeAdminViewModel[];
   columns: {
+    image: string;
     name: string;
     levels: string;
     assigned: string;
@@ -39,6 +40,7 @@ export default function AdminOpenBadgesTable({
       <TableHead>
         <TableRow>
           <TableCell>{columns.actions}</TableCell>
+          <TableCell>{columns.image}</TableCell>
           <TableCell>{columns.name}</TableCell>
           <TableCell>{columns.levels}</TableCell>
           <TableCell>{columns.assigned}</TableCell>
@@ -51,6 +53,19 @@ export default function AdminOpenBadgesTable({
           <TableRow key={badge.id} hover>
             <TableCell>
               <OpenBadgeQuickActions badge={badge} labels={actionLabels} />
+            </TableCell>
+            <TableCell>
+              {badge.coverImage ? (
+                <img
+                  src={badge.coverImage}
+                  alt={badge.name}
+                  width={40}
+                  height={40}
+                  style={{ objectFit: 'contain', display: 'block' }}
+                />
+              ) : (
+                '—'
+              )}
             </TableCell>
             <TableCell>{badge.name}</TableCell>
             <TableCell>{badge.levelsCount}</TableCell>
