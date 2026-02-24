@@ -43,7 +43,7 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
       onChange={(_, nextValue) => onChange(nextValue)}
       getOptionLabel={getUserLabel}
       isOptionEqualToValue={(option, selected) => option.id === selected.id}
-      filterSelectedOptions
+      filterSelectedOptions={isMultiple}
       disabled={disabled}
       renderInput={(params) => (
         <TextField {...params} label={label} placeholder={placeholder} helperText={helperText} />

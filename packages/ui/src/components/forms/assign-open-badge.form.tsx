@@ -3,26 +3,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Alert from '@mui/material/Alert';
-import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserAdminViewModel } from '@repo/view-models/user-admin';
+import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
+import UserAutocomplete from '../inputs/user-autocomplete';
 import styles from './assign-open-badge.form.module.css';
 
 type AssignOpenBadgeFormProps = {
-  user: UserAdminViewModel | null;
-  users: Array<{ id: string; label: string }>;
+  user: UserSummaryViewModel | null;
+  users: UserSummaryViewModel[];
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;
   isSubmitting?: boolean;
@@ -123,21 +122,14 @@ export default function AssignOpenBadgeForm({
             </Select>
           </FormControl>
 
-          <Autocomplete
+          <UserAutocomplete<false>
+            label={t('userLabel')}
+            placeholder={t('userSearchPlaceholder')}
             options={userOptions}
-            value={selectedUser ?? undefined}
-            onChange={(_, nextValue) => setSelectedUserId(nextValue?.id ?? '')}
-            getOptionLabel={(option) => option.label}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
+            value={selectedUser}
+            onChange={(nextValue) => setSelectedUserId(nextValue?.id ?? '')}
+            multiple={false}
             disabled={isUserSelectionDisabled}
-            disableClearable
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t('userLabel')}
-                placeholder={t('userSearchPlaceholder')}
-              />
-            )}
           />
         </div>
       </Section>
