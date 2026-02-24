@@ -30,6 +30,8 @@ export default async function AdminOpenBadgesPage() {
     intro: t('intro'),
     actions: {
       create: t('actions.create'),
+      manage: t('actions.manage'),
+      edit: t('actions.edit'),
       activate: t('actions.activate'),
       deactivate: t('actions.deactivate'),
       remove: t('actions.delete')

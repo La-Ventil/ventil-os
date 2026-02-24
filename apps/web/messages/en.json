@@ -329,6 +329,8 @@
           "intro": "Manage open badges and their levels.",
           "actions": {
             "create": "+ Create a new open badge",
+            "manage": "Administration",
+            "edit": "Edit",
             "activate": "Activate",
             "deactivate": "Deactivate",
             "delete": "Delete"
