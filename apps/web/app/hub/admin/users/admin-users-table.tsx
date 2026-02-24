@@ -5,10 +5,12 @@ import TableRow from '@mui/material/TableRow';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
 import UserAvatar from '@repo/ui/user-avatar';
+import UserQuickActions from './user-quick-actions';
 
 type AdminUsersTableProps = {
   users: UserAdminViewModel[];
   columns: {
+    actions: string;
     avatar: string;
     firstName: string;
     lastName: string;
@@ -21,13 +23,25 @@ type AdminUsersTableProps = {
     openBadges: string;
   };
   adminLabelFor: (user: UserAdminViewModel) => string;
+  actionLabels: {
+    manage: string;
+    edit: string;
+    block: string;
+    unblock: string;
+  };
 };
 
-export default function AdminUsersTable({ users, columns, adminLabelFor }: AdminUsersTableProps) {
+export default function AdminUsersTable({
+  users,
+  columns,
+  adminLabelFor,
+  actionLabels
+}: AdminUsersTableProps) {
   return (
     <AdminTable>
       <TableHead>
         <TableRow>
+          <TableCell>{columns.actions}</TableCell>
           <TableCell>{columns.avatar}</TableCell>
           <TableCell>{columns.firstName}</TableCell>
           <TableCell>{columns.lastName}</TableCell>
@@ -43,6 +57,9 @@ export default function AdminUsersTable({ users, columns, adminLabelFor }: Admin
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id} hover>
+            <TableCell>
+              <UserQuickActions user={user} labels={actionLabels} />
+            </TableCell>
             <TableCell>
               <UserAvatar user={{ image: user.image, email: user.email }} size={32} />
             </TableCell>

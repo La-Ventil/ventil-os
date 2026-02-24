@@ -11,6 +11,10 @@ export const signIn: Query<[string, string], UserProfile | null> = async (email:
     return null;
   }
 
+  if (credentials.blocked) {
+    return null;
+  }
+
   if (!credentials.emailVerified) {
     return null;
   }

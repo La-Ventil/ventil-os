@@ -19,9 +19,11 @@ import { requiresEducationLevel } from '@repo/domain/user/user-role';
 export interface ProfileFormProps {
   profilePromise: Promise<UserProfile>;
   handleSubmit: FormAction<ProfileFormInput>;
+  userId?: string;
+  backHref?: string;
 }
 
-export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFormProps) {
+export default function ProfileForm({ profilePromise, handleSubmit, userId, backHref = '/' }: ProfileFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const profile = use(profilePromise);
@@ -41,6 +43,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
 
   return (
     <form action={formAction}>
+      {userId ? <input type="hidden" name="userId" value={userId} /> : null}
       <Stack spacing={2}>
         {formState?.message && !pending && (
           <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
@@ -73,7 +76,7 @@ export default function ProfileForm({ profilePromise, handleSubmit }: ProfileFor
       </Stack>
       <Grid container spacing={2}>
         <Grid>
-          <Button variant="outlined" color="secondary" component={Link} href="/">
+          <Button variant="outlined" color="secondary" component={Link} href={backHref}>
             {tCommon('actions.back')}
           </Button>
         </Grid>

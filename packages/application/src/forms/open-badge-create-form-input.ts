@@ -10,7 +10,12 @@ const levelSchema = z.object({
 const openBadgeFormSchema = z.object({
   name: zfd.text(z.string().min(1, { message: 'validation.openBadge.nameRequired' })),
   description: zfd.text(z.string().min(1, { message: 'validation.openBadge.descriptionRequired' })),
-  imageFile: zfd.file(imageFileSchema).optional(),
+  imageFile: z.preprocess((value) => {
+    if (value instanceof File) {
+      return value.size === 0 ? undefined : value;
+    }
+    return value === '' || value == null ? undefined : value;
+  }, imageFileSchema.optional()),
   levels: zfd.repeatable(z.array(levelSchema).min(1, { message: 'validation.openBadge.levelAtLeastOne' })),
   deliveryEnabled: zfd.checkbox(),
   deliveryLevel: zfd.text(z.string().optional()),

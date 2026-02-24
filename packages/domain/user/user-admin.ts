@@ -12,5 +12,6 @@ export type UserAdmin = {
   profile: UserRole;
   globalAdmin: boolean;
   pedagogicalAdmin: boolean;
+  blocked: boolean;
   stats: UserStats;
 };

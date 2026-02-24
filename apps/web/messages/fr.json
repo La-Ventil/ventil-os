@@ -146,7 +146,13 @@
     }
   },
   "user": {
-    "notFound": "Utilisateur introuvable."
+    "notFound": "Utilisateur introuvable.",
+    "update": {
+      "success": "Utilisateur mis à jour.",
+      "error": "Impossible de mettre à jour l’utilisateur.",
+      "unauthorized": "Vous n’êtes pas autorisé à modifier cet utilisateur.",
+      "notFound": "Utilisateur introuvable."
+    }
   },
   "emailSignature": "— L’équipe {appName}",
   "verifyEmail": {
@@ -480,6 +486,7 @@
           "intro": "Gérez les comptes et les accès des utilisateurs.",
           "assignSuccess": "Open badge attribué.",
           "columns": {
+            "actions": "actions",
             "avatar": "avatar",
             "firstName": "prénom",
             "lastName": "nom",
@@ -491,6 +498,12 @@
             "events": "évènements",
             "openBadges": "open badges attribués",
             "assign": "attribuer"
+          },
+          "actions": {
+            "manage": "Gérer",
+            "edit": "Modifier",
+            "block": "Bloquer",
+            "unblock": "Débloquer"
           },
           "adminStatus": {
             "none": "non",
@@ -509,6 +522,11 @@
             "illustrationPlaceholder": "Illustration en cours",
             "error": "Impossible d’attribuer l’open badge."
           }
+        },
+        "usersEdit": {
+          "title": "Modifier un utilisateur",
+          "subtitle": "Information",
+          "intro": "Mettez à jour les informations du compte."
         }
       },
       "profile": {

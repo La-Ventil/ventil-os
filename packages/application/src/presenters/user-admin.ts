@@ -13,5 +13,6 @@ export const mapUserAdminToViewModel = (user: UserAdminReadModel): UserAdminView
   profile: user.profile,
   globalAdmin: user.globalAdmin,
   pedagogicalAdmin: user.pedagogicalAdmin,
+  blocked: user.blocked,
   stats: user.stats
 });

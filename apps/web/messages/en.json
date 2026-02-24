@@ -134,7 +134,13 @@
     }
   },
   "user": {
-    "notFound": "User not found."
+    "notFound": "User not found.",
+    "update": {
+      "success": "User updated.",
+      "error": "Unable to update the user.",
+      "unauthorized": "You are not allowed to update this user.",
+      "notFound": "User not found."
+    }
   },
   "emailSignature": "— The {appName} team",
   "verifyEmail": {
@@ -463,6 +469,7 @@
           "intro": "Manage user accounts and access.",
           "assignSuccess": "Open badge assigned.",
           "columns": {
+            "actions": "actions",
             "avatar": "avatar",
             "firstName": "first name",
             "lastName": "last name",
@@ -474,6 +481,12 @@
             "events": "events",
             "openBadges": "open badges assigned",
             "assign": "assign"
+          },
+          "actions": {
+            "manage": "Manage",
+            "edit": "Edit",
+            "block": "Block",
+            "unblock": "Unblock"
           },
           "adminStatus": {
             "none": "no",
@@ -492,6 +505,11 @@
             "illustrationPlaceholder": "Illustration in progress",
             "error": "Unable to assign the open badge."
           }
+        },
+        "usersEdit": {
+          "title": "Edit user",
+          "subtitle": "Information",
+          "intro": "Update the account information."
         }
       },
       "profile": {

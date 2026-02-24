@@ -182,6 +182,14 @@ export class UserRepository {
     });
   }
 
+  async setUserBlocked(userId: string, blocked: boolean): Promise<{ id: string; blocked: boolean }> {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { blocked },
+      select: { id: true, blocked: true }
+    });
+  }
+
   async updateUserEmail(userId: string, email: string) {
     return this.prisma.user.update({
       where: { id: userId },

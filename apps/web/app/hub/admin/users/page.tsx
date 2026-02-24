@@ -14,6 +14,7 @@ export default async function AdminUsersPage() {
     subtitle: t('subtitle'),
     intro: t('intro'),
     columns: {
+      actions: t('columns.actions'),
       avatar: t('columns.avatar'),
       firstName: t('columns.firstName'),
       lastName: t('columns.lastName'),
@@ -24,6 +25,12 @@ export default async function AdminUsersPage() {
       machines: t('columns.machines'),
       events: t('columns.events'),
       openBadges: t('columns.openBadges')
+    },
+    actions: {
+      manage: t('actions.manage'),
+      edit: t('actions.edit'),
+      block: t('actions.block'),
+      unblock: t('actions.unblock')
     },
     adminStatus: {
       none: t('adminStatus.none'),
@@ -51,7 +58,12 @@ export default async function AdminUsersPage() {
       </Section>
 
       <Section>
-        <AdminUsersTable users={users} columns={labels.columns} adminLabelFor={adminLabelFor} />
+        <AdminUsersTable
+          users={users}
+          columns={labels.columns}
+          adminLabelFor={adminLabelFor}
+          actionLabels={labels.actions}
+        />
       </Section>
     </>
   );

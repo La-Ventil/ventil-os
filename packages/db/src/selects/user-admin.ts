@@ -12,6 +12,7 @@ export const userAdminSelect = {
   externalProfile: true,
   pedagogicalAdmin: true,
   globalAdmin: true,
+  blocked: true,
   _count: {
     select: {
       eventRegistrations: true,
