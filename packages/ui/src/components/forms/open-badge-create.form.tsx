@@ -11,8 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { OpenBadgeCreateRequest } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
@@ -60,6 +59,20 @@ export default function OpenBadgeCreateForm({
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
     [state.values.levels]
+  );
+  const [levelsCount, setLevelsCount] = useState(initialLevels.length);
+
+  useEffect(() => {
+    setLevelsCount(initialLevels.length);
+  }, [initialLevels]);
+
+  const deliveryOptions = useMemo(
+    () =>
+      Array.from({ length: Math.max(1, levelsCount) }, (_, index) => ({
+        value: `level-${index + 1}`,
+        label: t('delivery.levelOption', { level: String(index + 1) })
+      })),
+    [levelsCount, t]
   );
 
   return (
@@ -112,6 +125,7 @@ export default function OpenBadgeCreateForm({
 
       <OpenBadgeLevelsEditor
         initialLevels={initialLevels}
+        onLevelsChange={(levels) => setLevelsCount(levels.length)}
         maxLevels={5}
         error={fieldError('levels' as keyof OpenBadgeCreateRequest)}
         labels={{
@@ -146,7 +160,11 @@ export default function OpenBadgeCreateForm({
               defaultValue={state.values.deliveryLevel || 'level-1'}
               disabled={!deliveryEnabled || isPending}
             >
-              <MenuItem value="level-1">{t('delivery.levelOption')}</MenuItem>
+              {deliveryOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Stack>

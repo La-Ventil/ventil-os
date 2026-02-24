@@ -427,7 +427,7 @@
             "title": "Délivrance",
             "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
             "levelLabel": "Niveau",
-            "levelOption": "Au niveau 1"
+            "levelOption": "Au niveau {level}"
           },
           "activation": {
             "title": "Activation",
@@ -438,6 +438,9 @@
             "back": "Retour",
             "save": "Enregistrer"
           }
+        },
+        "openBadgesEdit": {
+          "title": "Modification d’un open badge"
         },
         "machinesCreate": {
           "title": "Création d’une machine",

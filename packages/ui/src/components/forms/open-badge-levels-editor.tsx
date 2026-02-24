@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -21,6 +21,7 @@ export type OpenBadgeLevelsEditorProps = {
   maxLevels?: number;
   minLevels?: number;
   error?: string | undefined;
+  onLevelsChange?: (levels: OpenBadgeLevelDraft[]) => void;
   labels: {
     add: string;
     title: string;
@@ -36,12 +37,17 @@ export default function OpenBadgeLevelsEditor({
   maxLevels = 5,
   minLevels = 1,
   error,
+  onLevelsChange,
   labels
 }: OpenBadgeLevelsEditorProps) {
   const fieldPrefix = useId();
   const [levels, setLevels] = useState<OpenBadgeLevelDraft[]>(
     initialLevels.length ? initialLevels : [{ title: '', description: '' }]
   );
+
+  useEffect(() => {
+    onLevelsChange?.(levels);
+  }, [levels, onLevelsChange]);
 
   const addLevel = () => {
     if (levels.length >= maxLevels) return;

@@ -5,12 +5,16 @@ import { viewOpenBadgeEdit } from '@repo/application/open-badges/usecases';
 import OpenBadgeEditFormClient from './open-badge-edit-form.client';
 
 type AdminOpenBadgeEditPageProps = {
-  params: { badgeId: string };
+  params: Promise<{ badgeId: string }>;
 };
 
 export default async function AdminOpenBadgeEditPage({ params }: AdminOpenBadgeEditPageProps) {
-  const t = await getTranslations('pages.hub.admin.openBadgesCreate');
-  const badge = await viewOpenBadgeEdit(params.badgeId);
+  const t = await getTranslations('pages.hub.admin.openBadgesEdit');
+  const { badgeId } = await params;
+  if (!badgeId) {
+    notFound();
+  }
+  const badge = await viewOpenBadgeEdit(badgeId);
 
   if (!badge) {
     notFound();

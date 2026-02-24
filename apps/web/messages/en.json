@@ -410,7 +410,7 @@
             "title": "Issuance",
             "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",
             "levelLabel": "Level",
-            "levelOption": "At level 1"
+            "levelOption": "At level {level}"
           },
           "activation": {
             "title": "Activation",
@@ -421,6 +421,9 @@
             "back": "Back",
             "save": "Save"
           }
+        },
+        "openBadgesEdit": {
+          "title": "Edit an open badge"
         },
         "machinesCreate": {
           "title": "Create a machine",

@@ -53,6 +53,7 @@ export default function MachineCreateForm({
   const t = useTranslations('pages.hub.admin.machinesCreate');
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
   const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
+  const maxImageMb = 5;
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
@@ -84,9 +85,9 @@ export default function MachineCreateForm({
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
             maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge')}
+            tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
             clearLabel={t('image.clear')}
-            maxSizeMb={5}
+            maxSizeMb={maxImageMb}
             resetKey={state.success ? 'reset' : undefined}
             required={imageRequired}
             previewUrl={imagePreviewUrl}

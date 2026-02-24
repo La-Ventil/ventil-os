@@ -54,6 +54,7 @@ export default function ImageUploadField({
   const [localError, setLocalError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewRef = useRef<string | null>(preview);
+  const lastResetKeyRef = useRef(resetKey);
 
   const notifyChange = useCallback(
     (file: File | null, newPreview: string | null) => {
@@ -79,8 +80,15 @@ export default function ImageUploadField({
     [preview]
   );
 
-  // Reset when parent indicates success/refresh via resetKey
+  // Reset only when parent explicitly changes resetKey.
   useEffect(() => {
+    if (resetKey == null) {
+      lastResetKeyRef.current = resetKey;
+      return;
+    }
+    if (lastResetKeyRef.current === resetKey) return;
+
+    lastResetKeyRef.current = resetKey;
     const currentPreview = previewRef.current;
     if (currentPreview && currentPreview.startsWith('blob:')) {
       URL.revokeObjectURL(currentPreview);

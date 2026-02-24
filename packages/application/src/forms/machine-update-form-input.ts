@@ -16,7 +16,12 @@ const machineUpdateFormSchema = z.object({
       .min(1, { message: 'validation.machine.descriptionRequired' })
       .max(100, { message: 'validation.machine.descriptionMaxLength' })
   ),
-  imageFile: zfd.file(imageFileSchema).optional(),
+  imageFile: z.preprocess((value) => {
+    if (value instanceof File) {
+      return value.size === 0 ? undefined : value;
+    }
+    return value === '' || value == null ? undefined : value;
+  }, imageFileSchema.optional()),
   badgeRequired: zfd.checkbox(),
   badgeQuery: zfd.text(z.string().optional()),
   activationEnabled: zfd.checkbox()
