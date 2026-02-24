@@ -446,6 +446,7 @@
           "intro": "Gérez les comptes et les accès des utilisateurs.",
           "assignSuccess": "Open badge attribué.",
           "columns": {
+            "avatar": "avatar",
             "firstName": "prénom",
             "lastName": "nom",
             "username": "pseudo",
@@ -454,7 +455,7 @@
             "admin": "administrateur",
             "machines": "machines utilisées",
             "events": "évènements",
-            "openBadges": "open badges",
+            "openBadges": "open badges attribués",
             "assign": "attribuer"
           },
           "adminStatus": {

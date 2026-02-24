@@ -5,6 +5,7 @@ import type { UserStats } from './user-stats';
 export type UserAdmin = {
   id: string;
   email: Email;
+  image: string | null;
   firstName: string;
   lastName: string;
   username: string;

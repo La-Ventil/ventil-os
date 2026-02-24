@@ -14,6 +14,7 @@ export default async function AdminUsersPage() {
     subtitle: t('subtitle'),
     intro: t('intro'),
     columns: {
+      avatar: t('columns.avatar'),
       firstName: t('columns.firstName'),
       lastName: t('columns.lastName'),
       username: t('columns.username'),

@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 export const userAdminSelect = {
   id: true,
   email: true,
+  image: true,
   firstName: true,
   lastName: true,
   username: true,

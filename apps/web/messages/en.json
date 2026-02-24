@@ -429,6 +429,7 @@
           "intro": "Manage user accounts and access.",
           "assignSuccess": "Open badge assigned.",
           "columns": {
+            "avatar": "avatar",
             "firstName": "first name",
             "lastName": "last name",
             "username": "username",
@@ -437,7 +438,7 @@
             "admin": "administrator",
             "machines": "machines used",
             "events": "events",
-            "openBadges": "open badges",
+            "openBadges": "open badges assigned",
             "assign": "assign"
           },
           "adminStatus": {

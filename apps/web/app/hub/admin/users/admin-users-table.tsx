@@ -4,10 +4,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
+import UserAvatar from '@repo/ui/user-avatar';
 
 type AdminUsersTableProps = {
   users: UserAdminViewModel[];
   columns: {
+    avatar: string;
     firstName: string;
     lastName: string;
     username: string;
@@ -26,6 +28,7 @@ export default function AdminUsersTable({ users, columns, adminLabelFor }: Admin
     <AdminTable>
       <TableHead>
         <TableRow>
+          <TableCell>{columns.avatar}</TableCell>
           <TableCell>{columns.firstName}</TableCell>
           <TableCell>{columns.lastName}</TableCell>
           <TableCell>{columns.username}</TableCell>
@@ -40,6 +43,9 @@ export default function AdminUsersTable({ users, columns, adminLabelFor }: Admin
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id} hover>
+            <TableCell>
+              <UserAvatar user={{ image: user.image, email: user.email }} size={32} />
+            </TableCell>
             <TableCell>{user.firstName}</TableCell>
             <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.username}</TableCell>

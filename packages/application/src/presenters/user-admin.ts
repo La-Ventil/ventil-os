@@ -5,6 +5,7 @@ import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 export const mapUserAdminToViewModel = (user: UserAdminReadModel): UserAdminViewModel => ({
   id: user.id,
   email: user.email,
+  image: user.image,
   firstName: user.firstName,
   lastName: user.lastName,
   fullName: formatUserFullName(user),
