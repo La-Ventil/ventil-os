@@ -20,6 +20,12 @@ export default async function Page(): Promise<JSX.Element> {
   const stats: StatsListEntry[] = [
     { id: 'events', icon: <EventIcon />, label: t('stats.events'), count: statsCounts.eventsCount },
     { id: 'open-badge', icon: <OpenBadgeIcon />, label: t('stats.openBadge'), count: statsCounts.openBadgesCount },
+    {
+      id: 'open-badge-assigned',
+      icon: <OpenBadgeIcon />,
+      label: t('stats.openBadgeAssigned'),
+      count: statsCounts.openBadgesAssignedCount
+    },
     { id: 'machine', icon: <MachineIcon />, label: t('stats.machine'), count: statsCounts.machinesCount }
   ];
 

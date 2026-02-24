@@ -66,6 +66,7 @@ export class UserRepository {
       stats: {
         eventsCount: user._count.eventRegistrations,
         openBadgesCount: user._count.openBadgeProgresses,
+        openBadgesAssignedCount: 0,
         machinesCount: 0
       }
     };
@@ -240,13 +241,21 @@ export class UserRepository {
   async getUserStats(
     userId: string,
     now: Date
-  ): Promise<{ eventsCount: number; openBadgesCount: number; machinesCount: number }> {
-    const [eventsCount, openBadgesCount, machinesCount] = await Promise.all([
+  ): Promise<{
+    eventsCount: number;
+    openBadgesCount: number;
+    openBadgesAssignedCount: number;
+    machinesCount: number;
+  }> {
+    const [eventsCount, openBadgesCount, openBadgesAssignedCount, machinesCount] = await Promise.all([
       this.prisma.eventRegistration.count({
         where: { userId }
       }),
       this.prisma.openBadgeProgress.count({
         where: { userId }
+      }),
+      this.prisma.openBadgeLevelProgress.count({
+        where: { awardedById: userId }
       }),
       this.prisma.machineReservation.count({
         where: {
@@ -268,7 +277,7 @@ export class UserRepository {
       })
     ]);
 
-    return { eventsCount, openBadgesCount, machinesCount };
+    return { eventsCount, openBadgesCount, openBadgesAssignedCount, machinesCount };
   }
 
   async setResetToken(userId: string, resetToken: string, resetTokenExpiry: Date) {

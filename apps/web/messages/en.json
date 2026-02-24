@@ -328,13 +328,17 @@
           "subtitle": "Information",
           "intro": "Manage open badges and their levels.",
           "actions": {
-            "create": "+ Create a new open badge"
+            "create": "+ Create a new open badge",
+            "activate": "Activate",
+            "deactivate": "Deactivate",
+            "delete": "Delete"
           },
           "columns": {
             "name": "name",
             "levels": "level count",
             "assigned": "times assigned",
             "status": "active",
+            "actions": "actions",
             "assign": "assign"
           },
           "assignModal": {
@@ -466,7 +470,8 @@
         "intro": "Find all the information related to your account below",
         "stats": {
           "events": "Events attended",
-          "openBadge": "Open badge",
+          "openBadge": "Open badges earned",
+          "openBadgeAssigned": "Open badges assigned",
           "machine": "Machines used"
         }
       },

@@ -29,13 +29,17 @@ export default async function AdminOpenBadgesPage() {
     subtitle: t('subtitle'),
     intro: t('intro'),
     actions: {
-      create: t('actions.create')
+      create: t('actions.create'),
+      activate: t('actions.activate'),
+      deactivate: t('actions.deactivate'),
+      remove: t('actions.delete')
     },
     columns: {
       name: t('columns.name'),
       levels: t('columns.levels'),
       assigned: t('columns.assigned'),
       status: t('columns.status'),
+      actions: t('columns.actions'),
       assign: t('columns.assign')
     },
     status: {
@@ -64,7 +68,12 @@ export default async function AdminOpenBadgesPage() {
       </AdminActionsSection>
 
       <Section pt={0}>
-        <AdminOpenBadgesTable badges={badges} columns={labels.columns} statusLabelFor={statusLabelFor} />
+        <AdminOpenBadgesTable
+          badges={badges}
+          columns={labels.columns}
+          statusLabelFor={statusLabelFor}
+          actionLabels={labels.actions}
+        />
       </Section>
     </>
   );

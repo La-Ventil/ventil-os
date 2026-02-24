@@ -127,6 +127,15 @@ export class OpenBadgeRepository {
     return (badges as OpenBadgeAdminPayload[]).map((badge) => this.normalizeOpenBadgeAdmin(badge));
   }
 
+  async getOpenBadgeAdminById(id: string): Promise<OpenBadgeAdminReadModel | null> {
+    const badge = await this.prisma.openBadge.findUnique({
+      where: { id },
+      select: openBadgeAdminSelect
+    });
+
+    return badge ? this.normalizeOpenBadgeAdmin(badge as OpenBadgeAdminPayload) : null;
+  }
+
   async listOpenBadgesForUser(userId: string): Promise<OpenBadgeProgressReadModel[]> {
     const progresses = await this.prisma.openBadgeProgress.findMany({
       where: { userId },
@@ -297,6 +306,16 @@ export class OpenBadgeRepository {
     }
 
     return this.normalizeOpenBadge(full as OpenBadgePayload);
+  }
+
+  async setOpenBadgeStatus(id: string, status: ActivityStatus): Promise<{ id: string; status: ActivityStatus }> {
+    const updated = await this.prisma.openBadge.update({
+      where: { id },
+      data: { status: status as PrismaActivityStatus },
+      select: { id: true, status: true }
+    });
+
+    return { id: updated.id, status: toActivityStatus(updated.status) };
   }
 
   async deleteOpenBadge(id: string): Promise<{ id: string }> {

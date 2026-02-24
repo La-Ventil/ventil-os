@@ -4,6 +4,8 @@ export * from './browse-assignable-users-for-open-badge.query';
 export * from './browse-open-badges.query';
 export * from './browse-open-badges-as-admin.query';
 export * from './can-assign-open-badge.query';
+export * from './remove-open-badge.command';
+export * from './set-open-badge-status.command';
 export * from './update-open-badge.command';
 export * from './view-open-badge.query';
 export * from './view-open-badge-edit.query';

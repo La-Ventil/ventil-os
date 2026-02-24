@@ -345,13 +345,17 @@
           "subtitle": "Information",
           "intro": "Gérez les open badges et leurs niveaux.",
           "actions": {
-            "create": "+ Créer un nouvel open badge"
+            "create": "+ Créer un nouvel open badge",
+            "activate": "Activer",
+            "deactivate": "Désactiver",
+            "delete": "Supprimer"
           },
           "columns": {
             "name": "nom",
             "levels": "nombre de niveau",
             "assigned": "nb de fois attribué",
             "status": "actif",
+            "actions": "actions",
             "assign": "attribuer"
           },
           "assignModal": {
@@ -483,7 +487,8 @@
         "intro": "Retrouvez toutes informations liées à votre compte ci-dessous",
         "stats": {
           "events": "Évènement participé",
-          "openBadge": "Open badge",
+          "openBadge": "Open badges obtenus",
+          "openBadgeAssigned": "Open badges attribués",
           "machine": "Machine utilisée"
         }
       },
