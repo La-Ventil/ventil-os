@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/La-Ventil/ventil-os/compare/v0.0.13...v0.0.14) (2026-02-24)
+
+
+### Features
+
+* add admin user quick actions ([34a24c0](https://github.com/La-Ventil/ventil-os/commit/34a24c0fd67f0b52281f250a81e422ac0e798702))
+* **admin:** show user avatar and open badge count ([5b0b510](https://github.com/La-Ventil/ventil-os/commit/5b0b510c77cd27cd60a1315d012c482a2560c9f6))
+* **machines:** add row quick actions and edit ([2bebc5e](https://github.com/La-Ventil/ventil-os/commit/2bebc5efb7f2af926e536882a89341ef73f86e57))
+* **open-badges:** add admin actions and issuer stats ([5c129de](https://github.com/La-Ventil/ventil-os/commit/5c129de5b3b2e50f9ef6d9ccfbee89ad43d43607))
+* **open-badges:** add row quick actions ([4837c1d](https://github.com/La-Ventil/ventil-os/commit/4837c1d0d27687c378747e1a40998abb12053d47))
+* **open-badges:** enhance level labels and user search ([0f3b11a](https://github.com/La-Ventil/ventil-os/commit/0f3b11ac97149ef1a7bc2c0442ef09604c2fc387))
+* **reservations:** add edit flow and UI actions ([d4e02ab](https://github.com/La-Ventil/ventil-os/commit/d4e02abc8972cd6fcd9befb9dd75eee3317ae446))
+* **reservations:** allow cancel and early release ([3a8d8e9](https://github.com/La-Ventil/ventil-os/commit/3a8d8e9fdb5ebc19eb46b43fb13c88af7864fada))
+* show admin list images ([28c3bf2](https://github.com/La-Ventil/ventil-os/commit/28c3bf211c905c6c8ecdadb964e49688130f452d))
+* show avatars in open badge assignment ([1def42f](https://github.com/La-Ventil/ventil-os/commit/1def42f35e37859a0cee1fdcc118d08c5ef322d6))
+* show user blocked status ([592d627](https://github.com/La-Ventil/ventil-os/commit/592d62734af14c3c7d3853f8ab07d513dc2f3874))
+* show user open badge counts ([b40ee3b](https://github.com/La-Ventil/ventil-os/commit/b40ee3bf741253b208d36c7bf22f89dce7b6ac84))
+* **ui:** add shared empty list placeholder ([a844513](https://github.com/La-Ventil/ventil-os/commit/a844513a23da2486b4ac7dfa7f784425b3b7794e))
+
+
+### Bug Fixes
+
+* admin forms and image previews ([11423c4](https://github.com/La-Ventil/ventil-os/commit/11423c472698d1930c9394eb7b9037b91f4612b8))
+* control open badge delivery fields ([f11d489](https://github.com/La-Ventil/ventil-os/commit/f11d489050a5ad027e45ace430660f6fa84d7068))
+* trim admin username display ([1910066](https://github.com/La-Ventil/ventil-os/commit/19100669af2e2a0b6796e6f9fc3c94d4d9584564))
+
 ### [0.0.13](https://github.com/La-Ventil/ventil-os/compare/v0.0.12...v0.0.13) (2026-02-19)
 
 
