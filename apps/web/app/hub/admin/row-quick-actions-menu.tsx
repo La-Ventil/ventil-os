@@ -23,6 +23,8 @@ type RowQuickActionsMenuProps = {
 export default function RowQuickActionsMenu({ label, items, disabled = false }: RowQuickActionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
+  const menuId = 'row-quick-actions-menu';
+  const buttonId = 'row-quick-actions-button';
 
   const handleClose = () => setAnchorEl(null);
 
@@ -34,10 +36,24 @@ export default function RowQuickActionsMenu({ label, items, disabled = false }: 
         endIcon={<ExpandMoreIcon />}
         onClick={(event) => setAnchorEl(event.currentTarget)}
         disabled={disabled}
+        id={buttonId}
+        aria-controls={isOpen ? menuId : undefined}
+        aria-haspopup="true"
+        aria-expanded={isOpen ? 'true' : undefined}
       >
         {label}
       </Button>
-      <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
+      <Menu
+        id={menuId}
+        anchorEl={anchorEl}
+        open={isOpen}
+        onClose={handleClose}
+        slotProps={{
+          list: {
+            'aria-labelledby': buttonId
+          }
+        }}
+      >
         {items.map((item) =>
           item.href ? (
             <MenuItem
