@@ -496,6 +496,7 @@
             "email": "email",
             "profile": "profil",
             "admin": "administrateur",
+            "status": "statut",
             "machines": "machines utilisées",
             "events": "évènements",
             "openBadges": "open badges attribués",
@@ -511,6 +512,10 @@
             "none": "non",
             "global": "global",
             "pedagogical": "pédagogique"
+          },
+          "status": {
+            "active": "actif",
+            "blocked": "bloqué"
           },
           "assignModal": {
             "title": "Attribution d’un open badge",

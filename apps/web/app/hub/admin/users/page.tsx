@@ -22,6 +22,7 @@ export default async function AdminUsersPage() {
       email: t('columns.email'),
       profile: t('columns.profile'),
       admin: t('columns.admin'),
+      status: t('columns.status'),
       machines: t('columns.machines'),
       events: t('columns.events'),
       openBadges: t('columns.openBadges')
@@ -36,6 +37,10 @@ export default async function AdminUsersPage() {
       none: t('adminStatus.none'),
       global: t('adminStatus.global'),
       pedagogical: t('adminStatus.pedagogical')
+    },
+    status: {
+      active: t('status.active'),
+      blocked: t('status.blocked')
     }
   };
 
@@ -48,6 +53,8 @@ export default async function AdminUsersPage() {
     }
     return labels.adminStatus.none;
   };
+  const statusLabelFor = (user: (typeof users)[number]) =>
+    user.blocked ? labels.status.blocked : labels.status.active;
 
   return (
     <>
@@ -62,6 +69,7 @@ export default async function AdminUsersPage() {
           users={users}
           columns={labels.columns}
           adminLabelFor={adminLabelFor}
+          statusLabelFor={statusLabelFor}
           actionLabels={labels.actions}
         />
       </Section>

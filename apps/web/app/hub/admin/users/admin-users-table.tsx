@@ -18,11 +18,13 @@ type AdminUsersTableProps = {
     email: string;
     profile: string;
     admin: string;
+    status: string;
     machines: string;
     events: string;
     openBadges: string;
   };
   adminLabelFor: (user: UserAdminViewModel) => string;
+  statusLabelFor: (user: UserAdminViewModel) => string;
   actionLabels: {
     manage: string;
     edit: string;
@@ -35,6 +37,7 @@ export default function AdminUsersTable({
   users,
   columns,
   adminLabelFor,
+  statusLabelFor,
   actionLabels
 }: AdminUsersTableProps) {
   return (
@@ -49,6 +52,7 @@ export default function AdminUsersTable({
           <TableCell>{columns.email}</TableCell>
           <TableCell>{columns.profile}</TableCell>
           <TableCell>{columns.admin}</TableCell>
+          <TableCell>{columns.status}</TableCell>
           <TableCell>{columns.machines}</TableCell>
           <TableCell>{columns.events}</TableCell>
           <TableCell>{columns.openBadges}</TableCell>
@@ -71,6 +75,7 @@ export default function AdminUsersTable({
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.profile}</TableCell>
             <TableCell>{adminLabelFor(user)}</TableCell>
+            <TableCell>{statusLabelFor(user)}</TableCell>
             <TableCell>{user.stats.machinesCount}</TableCell>
             <TableCell>{user.stats.eventsCount}</TableCell>
             <TableCell>{user.stats.openBadgesCount}</TableCell>
