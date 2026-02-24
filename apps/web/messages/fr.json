@@ -132,6 +132,19 @@
     "alreadyEnded": "La réservation est déjà terminée.",
     "cancelled": "Cette réservation a déjà été annulée."
   },
+  "machine": {
+    "create": {
+      "success": "Machine créée.",
+      "error": "Impossible de créer la machine.",
+      "unauthorized": "Vous n'avez pas les droits pour créer une machine."
+    },
+    "update": {
+      "success": "Machine mise à jour.",
+      "error": "Impossible de mettre à jour la machine.",
+      "unauthorized": "Vous n'avez pas les droits pour modifier cette machine.",
+      "notFound": "Machine introuvable."
+    }
+  },
   "user": {
     "notFound": "Utilisateur introuvable."
   },
@@ -326,9 +339,14 @@
           "subtitle": "Information",
           "intro": "Gérez les machines du fab lab.",
           "actions": {
-            "create": "+ Créer une nouvelle machine"
+            "create": "+ Créer une nouvelle machine",
+            "manage": "Administration",
+            "edit": "Modifier",
+            "activate": "Activer",
+            "deactivate": "Désactiver"
           },
           "columns": {
+            "actions": "actions",
             "name": "nom",
             "category": "type",
             "room": "salle",
@@ -338,6 +356,12 @@
           "status": {
             "active": "oui",
             "inactive": "non"
+          }
+        },
+        "machinesEdit": {
+          "title": "Modification d'une machine",
+          "actions": {
+            "save": "Enregistrer"
           }
         },
         "openBadges": {

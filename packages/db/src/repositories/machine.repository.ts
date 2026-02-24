@@ -109,6 +109,40 @@ export class MachineRepository {
     return { id: machine.id };
   }
 
+  async updateMachine(input: {
+    id: string;
+    name: string;
+    description?: string | null;
+    imageUrl?: string | null;
+    status: ActivityStatus;
+  }): Promise<{ id: string }> {
+    const machine = await this.prisma.machine.update({
+      where: { id: input.id },
+      data: {
+        name: input.name,
+        description: input.description ?? null,
+        imageUrl: input.imageUrl ?? null,
+        status: input.status as PrismaActivityStatus
+      },
+      select: { id: true }
+    });
+
+    return { id: machine.id };
+  }
+
+  async setMachineStatus(
+    id: string,
+    status: ActivityStatus
+  ): Promise<{ id: string; status: ActivityStatus }> {
+    const machine = await this.prisma.machine.update({
+      where: { id },
+      data: { status: status as PrismaActivityStatus },
+      select: { id: true, status: true }
+    });
+
+    return { id: machine.id, status: toActivityStatus(machine.status) };
+  }
+
   async deleteMachine(id: string): Promise<{ id: string }> {
     return this.prisma.machine.delete({
       where: { id },

@@ -113,6 +113,19 @@
     "alreadyEnded": "The reservation has already ended.",
     "cancelled": "This reservation has already been cancelled."
   },
+  "machine": {
+    "create": {
+      "success": "Machine created.",
+      "error": "Unable to create the machine.",
+      "unauthorized": "You are not allowed to create a machine."
+    },
+    "update": {
+      "success": "Machine updated.",
+      "error": "Unable to update the machine.",
+      "unauthorized": "You are not allowed to update this machine.",
+      "notFound": "Machine not found."
+    }
+  },
   "openBadge": {
     "assign": {
       "unauthorized": "You are not allowed to assign this open badge.",
@@ -309,9 +322,14 @@
           "subtitle": "Information",
           "intro": "Manage fab lab machines.",
           "actions": {
-            "create": "+ Create a new machine"
+            "create": "+ Create a new machine",
+            "manage": "Administration",
+            "edit": "Edit",
+            "activate": "Activate",
+            "deactivate": "Deactivate"
           },
           "columns": {
+            "actions": "actions",
             "name": "name",
             "category": "type",
             "room": "room",
@@ -321,6 +339,12 @@
           "status": {
             "active": "yes",
             "inactive": "no"
+          }
+        },
+        "machinesEdit": {
+          "title": "Edit machine",
+          "actions": {
+            "save": "Save"
           }
         },
         "openBadges": {

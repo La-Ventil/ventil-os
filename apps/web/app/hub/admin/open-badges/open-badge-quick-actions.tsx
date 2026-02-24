@@ -1,14 +1,10 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Link from 'next/link';
+import { useTransition } from 'react';
 import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import { setOpenBadgeStatusAction } from '../../../../lib/actions/set-open-badge-status';
 import { removeOpenBadgeAction } from '../../../../lib/actions/remove-open-badge';
+import RowQuickActionsMenu from '../row-quick-actions-menu';
 
 type OpenBadgeQuickActionsProps = {
   badge: OpenBadgeAdminViewModel;
@@ -22,12 +18,8 @@ type OpenBadgeQuickActionsProps = {
 };
 
 export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickActionsProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isPending, startTransition] = useTransition();
-  const isOpen = Boolean(anchorEl);
   const canRemove = badge.assignedCount === 0;
-
-  const handleClose = () => setAnchorEl(null);
 
   const handleToggleStatus = () => {
     const nextStatus =
@@ -56,38 +48,17 @@ export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickA
   };
 
   return (
-    <>
-      <Button
-        variant="outlined"
-        size="small"
-        endIcon={<ExpandMoreIcon />}
-        onClick={(event) => setAnchorEl(event.currentTarget)}
-        disabled={isPending}
-      >
-        {labels.manage}
-      </Button>
-      <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
-        <MenuItem component={Link} href={`/hub/admin/open-badges/${badge.id}/edit`} onClick={handleClose}>
-          {labels.edit}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            handleToggleStatus();
-          }}
-        >
-          {badge.status === OpenBadgeAdminStatus.Active ? labels.deactivate : labels.activate}
-        </MenuItem>
-        <MenuItem
-          disabled={!canRemove}
-          onClick={() => {
-            handleClose();
-            handleRemove();
-          }}
-        >
-          {labels.remove}
-        </MenuItem>
-      </Menu>
-    </>
+    <RowQuickActionsMenu
+      label={labels.manage}
+      disabled={isPending}
+      items={[
+        { label: labels.edit, href: `/hub/admin/open-badges/${badge.id}/edit` },
+        {
+          label: badge.status === OpenBadgeAdminStatus.Active ? labels.deactivate : labels.activate,
+          onClick: handleToggleStatus
+        },
+        { label: labels.remove, onClick: handleRemove, disabled: !canRemove }
+      ]}
+    />
   );
 }

@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
-import { MachineCreateFormInput } from '@repo/application/forms';
+import { MachineCreateFormInput, MachineUpdateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../inputs/image-upload-field';
@@ -24,8 +24,14 @@ import FormAlert from './form-alert';
 import Form from './form';
 import styles from './machine-create.form.module.css';
 
+type MachineFormValues = MachineCreateFormInput | MachineUpdateFormInput;
+
 export interface MachineCreateFormProps {
-  formState: FormActionStateTuple<MachineCreateFormInput>;
+  formState: FormActionStateTuple<MachineFormValues>;
+  imagePreviewUrl?: string;
+  imageRequired?: boolean;
+  backHref?: string;
+  submitLabel?: string;
 }
 
 export const machineCreateInitialState = createFormState<MachineCreateFormInput>({
@@ -38,13 +44,19 @@ export const machineCreateInitialState = createFormState<MachineCreateFormInput>
 });
 
 export default function MachineCreateForm({
-  formState: [state, action, isPending, handleSubmit, handleRetry]
+  formState: [state, action, isPending, handleSubmit, handleRetry],
+  imagePreviewUrl,
+  imageRequired = true,
+  backHref = '/hub/admin/machines',
+  submitLabel
 }: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
+  const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
+      {machineId ? <input type="hidden" name="id" defaultValue={machineId} /> : null}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
         <TextField
@@ -76,7 +88,8 @@ export default function MachineCreateForm({
             clearLabel={t('image.clear')}
             maxSizeMb={5}
             resetKey={state.success ? 'reset' : undefined}
-            required
+            required={imageRequired}
+            previewUrl={imagePreviewUrl}
             error={Boolean(fieldError('imageFile'))}
             helperText={fieldError('imageFile')}
           />
@@ -130,11 +143,11 @@ export default function MachineCreateForm({
       </FormSection>
 
       <FormActions>
-        <AdminButton variant="outlined" component={Link} href="/hub/admin/machines">
+        <AdminButton variant="outlined" component={Link} href={backHref}>
           {t('actions.back')}
         </AdminButton>
         <AdminButton variant="contained" type="submit" disabled={isPending}>
-          {t('actions.save')}
+          {submitLabel ?? t('actions.save')}
         </AdminButton>
       </FormActions>
     </Form>

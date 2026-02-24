@@ -29,9 +29,14 @@ export default async function AdminMachinesPage() {
     subtitle: t('subtitle'),
     intro: t('intro'),
     actions: {
-      create: t('actions.create')
+      create: t('actions.create'),
+      manage: t('actions.manage'),
+      edit: t('actions.edit'),
+      activate: t('actions.activate'),
+      deactivate: t('actions.deactivate')
     },
     columns: {
+      actions: t('columns.actions'),
       name: t('columns.name'),
       category: t('columns.category'),
       room: t('columns.room'),
@@ -64,7 +69,12 @@ export default async function AdminMachinesPage() {
       </AdminActionsSection>
 
       <Section pt={0}>
-        <AdminMachinesTable machines={machines} columns={labels.columns} statusLabelFor={statusLabelFor} />
+        <AdminMachinesTable
+          machines={machines}
+          columns={labels.columns}
+          statusLabelFor={statusLabelFor}
+          actionLabels={labels.actions}
+        />
       </Section>
     </>
   );

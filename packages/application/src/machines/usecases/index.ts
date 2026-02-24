@@ -4,6 +4,8 @@ export * from './release-reservation.command';
 export * from './update-reservation.command';
 export * from './add-machine.command';
 export * from './remove-machine.command';
+export * from './set-machine-status.command';
+export * from './update-machine.command';
 export * from './check-reservation-eligibility.query';
 export * from './view-machine-reservations.query';
 export * from './view-machine-reservation.query';
