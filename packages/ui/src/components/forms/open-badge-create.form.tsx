@@ -56,6 +56,7 @@ export default function OpenBadgeCreateForm({
   const fieldError = (field: keyof OpenBadgeCreateRequest) => firstFieldError(state, field);
   const isEdit = Boolean(badgeId);
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
+  const [deliveryLevel, setDeliveryLevel] = useState(state.values.deliveryLevel || 'level-1');
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
     [state.values.levels]
@@ -66,6 +67,14 @@ export default function OpenBadgeCreateForm({
     setLevelsCount(initialLevels.length);
   }, [initialLevels]);
 
+  useEffect(() => {
+    setDeliveryEnabled(state.values.deliveryEnabled);
+  }, [state.values.deliveryEnabled]);
+
+  useEffect(() => {
+    setDeliveryLevel(state.values.deliveryLevel || 'level-1');
+  }, [state.values.deliveryLevel]);
+
   const deliveryOptions = useMemo(
     () =>
       Array.from({ length: Math.max(1, levelsCount) }, (_, index) => ({
@@ -74,6 +83,12 @@ export default function OpenBadgeCreateForm({
       })),
     [levelsCount, t]
   );
+
+  useEffect(() => {
+    if (!deliveryOptions.find((option) => option.value === deliveryLevel)) {
+      setDeliveryLevel(deliveryOptions[0]?.value ?? 'level-1');
+    }
+  }, [deliveryLevel, deliveryOptions]);
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
@@ -148,7 +163,7 @@ export default function OpenBadgeCreateForm({
         <Stack direction="row" spacing={2} alignItems="center">
           <Switch
             name="deliveryEnabled"
-            defaultChecked={state.values.deliveryEnabled}
+            checked={deliveryEnabled}
             onChange={(event) => setDeliveryEnabled(event.target.checked)}
           />
           <FormControl size="small">
@@ -157,7 +172,8 @@ export default function OpenBadgeCreateForm({
               labelId="open-badge-delivery-level-label"
               name="deliveryLevel"
               label={t('delivery.levelLabel')}
-              defaultValue={state.values.deliveryLevel || 'level-1'}
+              value={deliveryLevel}
+              onChange={(event) => setDeliveryLevel(event.target.value as string)}
               disabled={!deliveryEnabled || isPending}
             >
               {deliveryOptions.map((option) => (
