@@ -60,7 +60,7 @@ export default async function RootLayout({
   const timeZone = await getTimeZone();
 
   return (
-    <html className={`${nunito.variable} ${vg5000.variable}`}>
+    <html lang={locale} className={`${nunito.variable} ${vg5000.variable}`}>
       <body>
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           {children}

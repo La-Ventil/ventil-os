@@ -22,8 +22,8 @@
     "@mui/x-date-pickers": "^8.27.0",
     "@prisma/client": "^5.22.0",
     "@repo/application": "workspace:*",
-    "@repo/db": "workspace:*",
     "@repo/crypto": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/form": "workspace:*",
     "@repo/ui": "workspace:*",
@@ -37,6 +37,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@playwright/test": "^1.45.1",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
