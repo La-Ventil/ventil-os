@@ -21,7 +21,12 @@
     "EMAIL_FROM",
     "HOST",
     "CI",
-    "PORT"
+    "PORT",
+    "NEXT_DIST_DIR",
+    "PLAYWRIGHT_DB_SLOT",
+    "PLAYWRIGHT_WORKER_PARALLEL",
+    "PLAYWRIGHT_WORKERS",
+    "PLAYWRIGHT_WORKER_BASE_PORT"
   ],
   "tasks": {
     "build": {
