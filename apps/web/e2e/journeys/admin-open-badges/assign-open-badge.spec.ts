@@ -1,0 +1,22 @@
+import { test, expect } from '../../fixtures/test';
+import { openAdminOpenBadgeAssignModal } from '../../helpers/open-badges';
+
+test.describe('Admin open badges journeys', () => {
+  test('admin can assign an open badge from the assign modal', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+    await openAdminOpenBadgeAssignModal(page);
+
+    const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
+    await expect(dialog).toBeVisible();
+
+    await expect(dialog.getByRole('combobox', { name: /niveau|level/i })).toBeVisible();
+    await expect(dialog.getByRole('combobox', { name: /utilisateur|user/i })).toBeVisible();
+
+    await dialog.getByRole('button', { name: /attribuer|assign/i }).click();
+
+    await expect(dialog.getByRole('alert')).toHaveText(/open badge attribué|open badge assigned/i, {
+      timeout: 10_000
+    });
+    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 10_000 });
+  });
+});
