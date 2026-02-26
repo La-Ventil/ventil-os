@@ -4,6 +4,7 @@ import { expect, type Page } from '@playwright/test';
 type A11yScanOptions = {
   include?: string[];
   exclude?: string[];
+  ignoreViolationIds?: string[];
 };
 
 type A11yViolation = {
@@ -36,7 +37,11 @@ export async function scanA11y(page: Page, options: A11yScanOptions = {}): Promi
 
 export async function expectNoSeriousA11yViolations(page: Page, options: A11yScanOptions = {}): Promise<void> {
   const violations = await scanA11y(page, options);
-  const blocking = violations.filter((violation) => violation.impact === 'critical' || violation.impact === 'serious');
+  const ignoredIds = new Set(options.ignoreViolationIds ?? []);
+  const blocking = violations.filter(
+    (violation) =>
+      (violation.impact === 'critical' || violation.impact === 'serious') && !ignoredIds.has(violation.id)
+  );
 
   expect(
     blocking,
