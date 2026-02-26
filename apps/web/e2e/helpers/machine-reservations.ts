@@ -23,28 +23,17 @@ export async function openMyReservationsTab(page: Page): Promise<void> {
 export const getReservationCard = (page: Page, machineName: RegExp = /Bambu Lab X1C/i): Locator =>
   page.locator('.MuiCard-root[class*="machine-reservation-list-card"]').filter({ hasText: machineName }).first();
 
-type ReservationTimingPreset = 'upcoming' | 'active';
-
-async function setLatestReservationTiming(
-  args: {
-    creatorEmail?: string;
-    dbSlot?: string;
-  },
-  preset: ReservationTimingPreset
-): Promise<void> {
-  await getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationTiming(
-    { creatorEmail: args.creatorEmail },
-    preset
-  );
-}
-
 export function setLatestReservationActive(args: {
   creatorEmail?: string;
   dbSlot?: string;
 }): Promise<void> {
-  return setLatestReservationTiming(args, 'active');
+  return getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationActiveNow({
+    creatorEmail: args.creatorEmail
+  });
 }
 
 export function setLatestReservationUpcoming(args: { creatorEmail?: string; dbSlot?: string }): Promise<void> {
-  return setLatestReservationTiming(args, 'upcoming');
+  return getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationUpcomingSoon({
+    creatorEmail: args.creatorEmail
+  });
 }

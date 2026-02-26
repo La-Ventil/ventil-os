@@ -1,25 +1,26 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
+import type { DateInterval } from '@repo/domain/date-interval';
+import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
 import { getE2EPrismaClient } from './e2e-prisma';
-
-type ReservationTimingPreset = 'upcoming' | 'active';
 
 type SetLatestConfirmedReservationTimingInput = {
   creatorEmail?: string;
 };
 
-const toReservationWindow = (preset: ReservationTimingPreset, now: Date): { startsAt: Date; endsAt: Date } => {
-  if (preset === 'active') {
-    return {
-      startsAt: new Date(now.getTime() - 5 * 60_000),
-      endsAt: new Date(now.getTime() + 10 * 60_000)
-    };
-  }
+const MINUTE_MS = 60_000;
 
-  return {
-    startsAt: new Date(now.getTime() + 30 * 60_000),
-    endsAt: new Date(now.getTime() + 45 * 60_000)
-  };
+const reservationFixtureWindowFromOffset = (
+  startsAtOffsetMinutes: number,
+  durationMinutes: number,
+  now: Date = new Date()
+): DateInterval => {
+  const startsAt = new Date(now.getTime() + startsAtOffsetMinutes * MINUTE_MS);
+  return reservationWindowFor(startsAt, durationMinutes);
 };
+
+const activeReservationFixtureWindow = (now: Date): DateInterval => reservationFixtureWindowFromOffset(-5, 15, now);
+
+const upcomingReservationFixtureWindow = (now: Date): DateInterval => reservationFixtureWindowFromOffset(30, 15, now);
 
 export class MachineReservationTestRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -54,22 +55,35 @@ export class MachineReservationTestRepository {
     return latestReservation.id;
   }
 
-  async setLatestConfirmedReservationTiming(
+  async setLatestConfirmedReservationWindow(
     input: SetLatestConfirmedReservationTimingInput,
-    preset: ReservationTimingPreset
+    window: DateInterval
   ): Promise<void> {
     const reservationId = await this.findLatestConfirmedReservationId(input);
-    const { startsAt, endsAt } = toReservationWindow(preset, new Date());
 
     await this.prisma.machineReservation.update({
       where: {
         id: reservationId
       },
       data: {
-        startsAt,
-        endsAt
+        startsAt: window.start,
+        endsAt: window.end
       }
     });
+  }
+
+  async setLatestConfirmedReservationActiveNow(
+    input: SetLatestConfirmedReservationTimingInput,
+    now: Date = new Date()
+  ): Promise<void> {
+    return this.setLatestConfirmedReservationWindow(input, activeReservationFixtureWindow(now));
+  }
+
+  async setLatestConfirmedReservationUpcomingSoon(
+    input: SetLatestConfirmedReservationTimingInput,
+    now: Date = new Date()
+  ): Promise<void> {
+    return this.setLatestConfirmedReservationWindow(input, upcomingReservationFixtureWindow(now));
   }
 }
 
@@ -87,4 +101,3 @@ export const getMachineReservationTestRepository = (dbSlot?: string): MachineRes
   machineReservationTestRepositoriesBySlot.set(key, repository);
   return repository;
 };
-
