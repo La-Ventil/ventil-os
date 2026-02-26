@@ -1,5 +1,6 @@
-import { expect, test as base } from '@playwright/test';
+import { expect, test as base, type BrowserContext } from '@playwright/test';
 import { loginWithCredentials, type LoginCredentials } from '../helpers/auth';
+import { createWorkerWebRuntime, type WorkerWebRuntime } from '../helpers/worker-web-runtime';
 
 export type SeedUserRole = 'globalAdmin' | 'pedagogicalAdmin' | 'student' | 'studentVisitor' | 'external';
 
@@ -20,7 +21,42 @@ type E2EFixtures = {
   loginAs: (role: SeedUserRole) => Promise<void>;
 };
 
-export const test = base.extend<E2EFixtures>({
+type E2EWorkerFixtures = {
+  workerWebRuntime: WorkerWebRuntime | null;
+};
+
+export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
+  workerWebRuntime: [
+    async ({}, use, workerInfo) => {
+      const runtime = await createWorkerWebRuntime(workerInfo);
+      try {
+        await use(runtime);
+      } finally {
+        await runtime?.stop();
+      }
+    },
+    { scope: 'worker', auto: true }
+  ],
+  context: async ({ browser, contextOptions, baseURL, workerWebRuntime }, use) => {
+    const context = await browser.newContext({
+      ...(contextOptions ?? {}),
+      baseURL: workerWebRuntime?.baseURL ?? baseURL
+    });
+
+    try {
+      await use(context as BrowserContext);
+    } finally {
+      await context.close();
+    }
+  },
+  page: async ({ context }, use) => {
+    const page = await context.newPage();
+    try {
+      await use(page);
+    } finally {
+      await page.close();
+    }
+  },
   seedUsers: async ({}, use) => {
     await use(seedUsers);
   },

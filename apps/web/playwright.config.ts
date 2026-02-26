@@ -11,9 +11,46 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 // Use process.env.PORT by default and fallback to port 3001
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '127.0.0.1';
+const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
+const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 const baseURL = `http://${HOST}:${PORT}`;
+
+const sharedProjects = [
+  {
+    name: 'journeys-chromium',
+    use: { ...devices['Desktop Chrome'] },
+    testIgnore: [/\/a11y\//]
+  },
+  {
+    name: 'a11y-chromium',
+    use: { ...devices['Desktop Chrome'] },
+    testMatch: /a11y\/.*\.spec\.ts/
+  }
+];
+
+const projects = workerParallelMode
+  ? sharedProjects
+  : [
+      {
+        name: 'setup db',
+        testMatch: /global\.setup\.ts/,
+        teardown: 'cleanup db'
+      },
+      {
+        name: 'cleanup db',
+        testMatch: /global\.teardown\.ts/
+      },
+      {
+        ...sharedProjects[0],
+        dependencies: ['setup db']
+      },
+      {
+        ...sharedProjects[1],
+        dependencies: ['setup db']
+      }
+    ];
 
 // Reference: https://playwright.dev/docs/test-configuration
 export default defineConfig({
@@ -25,24 +62,26 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   // Artifacts folder where screenshots, videos, and traces are stored.
   outputDir: 'test-results/',
-  /* Keep mutation-heavy E2E stable on a shared test DB. */
-  fullyParallel: false,
+  /* Shared DB mode stays serial. Worker-isolated mode can use parallel workers. */
+  fullyParallel: workerParallelMode,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  /* Shared DB setup is currently reset/seeded for the full suite. Keep workers serial by default. */
-  workers: 1,
+  /* Keep shared-DB mode serial; worker-isolated mode is opt-in via env. */
+  workers: workerParallelMode ? configuredWorkers : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
-  webServer: {
-    command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
-    url: baseURL,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI
-  },
+  webServer: workerParallelMode
+    ? undefined
+    : {
+        command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
+        url: baseURL,
+        timeout: 120 * 1000,
+        reuseExistingServer: !process.env.CI
+      },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -55,27 +94,7 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'setup db',
-      testMatch: /global\.setup\.ts/,
-      teardown: 'cleanup db'
-    },
-    {
-      name: 'cleanup db',
-      testMatch: /global\.teardown\.ts/
-    },
-    {
-      name: 'journeys-chromium',
-      use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup db'],
-      testIgnore: [/\/a11y\//]
-    },
-    {
-      name: 'a11y-chromium',
-      use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup db'],
-      testMatch: /a11y\/.*\.spec\.ts/
-    }
+    ...projects,
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
