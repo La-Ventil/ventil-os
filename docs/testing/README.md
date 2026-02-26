@@ -13,6 +13,43 @@ The suite is not fully unified by runner, and this is currently intentional.
 The goal is to unify **testing levels and conventions** first, then migrate runners only when it has
 clear ROI.
 
+## Vocabulary (user journey vs usecase)
+
+### Usecase (business / application)
+
+A `usecase` is an application-level business action or query (often a command/query in `@repo/application`).
+
+Examples:
+- `reserveMachine`
+- `setOpenBadgeStatus`
+- `viewUserProfile`
+
+Characteristics:
+- can be executed without the UI
+- orchestrates domain rules, repositories, and policies
+- should be tested primarily with unit/integration tests (`Vitest` / `Jest`)
+
+### User journey (end-to-end)
+
+A `user journey` is a user-visible flow across screens, forms, dialogs, and actions.
+It usually triggers one or more usecases.
+
+Examples:
+- sign in and reach `/hub/profile`
+- open admin list, use quick actions, and toggle an open badge status
+- open machine modal, fill reservation form, and confirm reservation
+
+Characteristics:
+- includes UI, routing, client/server actions, application layer, and persistence
+- validated with `Playwright` end-to-end tests
+
+### Practical rule
+
+- Test the **usecase logic** in `Vitest` / `Jest`.
+- Test the **user journey** in `Playwright`.
+- When we say "test the usecase in full", we mean validating the user journey that exercises that usecase
+  end-to-end (`UI + app + DB`).
+
 ## Test levels (what goes where)
 
 ### Domain / application rules (`Vitest` / `Jest`)
