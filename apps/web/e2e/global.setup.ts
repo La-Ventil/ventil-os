@@ -1,7 +1,7 @@
 import { test as setup } from '@playwright/test';
 import { execSync } from 'child_process';
 
-setup('create new database', async () => {
-  console.log('creating new database...');
-  execSync('npm run db:migrate -w @repo/db', { stdio: 'inherit' });
+setup('reset and seed database', async () => {
+  console.log('resetting and seeding test database...');
+  execSync('pnpm db:reset', { stdio: 'inherit' });
 });

@@ -25,8 +25,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   // Artifacts folder where screenshots, videos, and traces are stored.
   outputDir: 'test-results/',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Keep mutation-heavy E2E stable on a shared test DB. */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -65,9 +65,16 @@ export default defineConfig({
       testMatch: /global\.teardown\.ts/
     },
     {
-      name: 'chromium',
+      name: 'journeys-chromium',
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup db']
+      dependencies: ['setup db'],
+      testIgnore: [/\/a11y\//]
+    },
+    {
+      name: 'a11y-chromium',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup db'],
+      testMatch: /a11y\/.*\.spec\.ts/
     }
     // {
     //   name: 'firefox',
