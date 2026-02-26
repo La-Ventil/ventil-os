@@ -22,6 +22,9 @@
     "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
     "db:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db db:generate && pnpm --filter @repo/db exec prisma db seed",
     "test": "turbo run test",
+    "test:e2e": "pnpm --filter web test:e2e",
+    "test:e2e:journeys": "pnpm --filter web test:e2e:journeys",
+    "test:e2e:a11y": "pnpm --filter web test:e2e:a11y",
     "prettier": "pnpm format"
   },
   "devDependencies": {

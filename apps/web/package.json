@@ -10,6 +10,10 @@
     "lint": "eslint . --max-warnings 0",
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
+    "test:e2e": "playwright test --project journeys-chromium",
+    "test:e2e:journeys": "playwright test --project journeys-chromium",
+    "test:e2e:a11y": "playwright test --project a11y-chromium",
+    "test:e2e:smoke": "playwright test --project journeys-chromium -- e2e/smoke",
     "test": "node -e \"if(!process.env.RUN_E2E){console.log('skip test (web)');process.exit(0)}else{process.exit(1)}\" || playwright test",
     "prettier": "prettier . --write",
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
