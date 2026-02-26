@@ -34,6 +34,28 @@ const execWithEnv = (command: string, env: NodeJS.ProcessEnv): void => {
   execSync(command, { cwd: webAppDir, stdio: 'inherit', env });
 };
 
+const execSqlWithEnv = (sql: string, env: NodeJS.ProcessEnv): void => {
+  execSync('pnpm --filter @repo/db exec prisma db execute --stdin', {
+    cwd: webAppDir,
+    env,
+    input: sql,
+    stdio: ['pipe', 'inherit', 'inherit']
+  });
+};
+
+const resetWorkerSchema = (env: NodeJS.ProcessEnv): void => {
+  // Avoid repeated Prisma client generation in worker mode; generate once outside tests.
+  execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force --skip-generate --skip-seed', env);
+};
+
+const seedWorkerSchema = (env: NodeJS.ProcessEnv): void => {
+  execWithEnv('pnpm --filter @repo/db exec prisma db seed', env);
+};
+
+const dropWorkerSchema = (env: NodeJS.ProcessEnv, schema: string): void => {
+  execSqlWithEnv(`DROP SCHEMA IF EXISTS "${schema}" CASCADE;`, env);
+};
+
 const waitForHttp = async (url: string, timeoutMs = 120_000): Promise<void> => {
   const deadline = Date.now() + timeoutMs;
   let lastError: unknown = null;
@@ -108,8 +130,6 @@ export const createWorkerWebRuntime = async (workerInfo: WorkerInfo): Promise<Wo
       `schema=${dbTarget.schema} port=${port}`
   );
 
-  execWithEnv('pnpm -w db:reset', env);
-
   const child = spawn('pnpm', ['exec', 'next', 'dev', '--turbopack', '--port', String(port), '--hostname', HOST], {
     cwd: webAppDir,
     env,
@@ -126,6 +146,21 @@ export const createWorkerWebRuntime = async (workerInfo: WorkerInfo): Promise<Wo
     stdoutBuffer += chunk.toString();
     stdoutBuffer = stdoutBuffer.slice(-8_000);
   });
+
+  try {
+    // Start Next dev and DB reset/seed in overlap to reduce worker startup time.
+    resetWorkerSchema(env);
+    seedWorkerSchema(env);
+  } catch (error) {
+    await stopChild(child, `next dev on ${baseURL}`);
+    throw new Error(
+      `[e2e worker] failed to reset/seed DB for ${workerInfo.project.name} ` +
+        `(worker=${workerInfo.parallelIndex}, schema=${dbTarget.schema}, port=${port}).\n` +
+        `stdout tail:\n${stdoutBuffer || '<empty>'}\n` +
+        `stderr tail:\n${stderrBuffer || '<empty>'}\n` +
+        `cause: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
 
   try {
     await waitForHttp(`${baseURL}/login`);
@@ -149,10 +184,10 @@ export const createWorkerWebRuntime = async (workerInfo: WorkerInfo): Promise<Wo
     await stopChild(child, `next dev on ${baseURL}`);
 
     try {
-      execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force --skip-seed', env);
+      dropWorkerSchema(env, dbTarget.schema);
     } catch (error) {
       console.warn(
-        `[e2e worker] cleanup reset failed for schema=${dbTarget.schema}: ${error instanceof Error ? error.message : String(error)}`
+        `[e2e worker] cleanup drop schema failed for schema=${dbTarget.schema}: ${error instanceof Error ? error.message : String(error)}`
       );
     }
   };
