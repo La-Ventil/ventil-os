@@ -1,4 +1,5 @@
 'use client';
+import { useId } from 'react';
 import type { JSX } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -38,6 +39,8 @@ export default function OpenBadgeModal({
     return null;
   }
   const { levels } = openBadge;
+  const titleId = useId();
+  const descriptionId = useId();
 
   return (
     <ModalLayout
@@ -46,8 +49,12 @@ export default function OpenBadgeModal({
       closeLabel={t('detailsModal.closeLabel')}
       maxWidth="sm"
       themeSection={ThemeSection.OpenBadge}
+      ariaLabelledBy={titleId}
+      ariaDescribedBy={descriptionId}
     >
-      <SectionTitle icon={<OpenBadgeIcon color="secondary" />}>{openBadge.name}</SectionTitle>
+      <SectionTitle id={titleId} icon={<OpenBadgeIcon color="secondary" />}>
+        {openBadge.name}
+      </SectionTitle>
       <ModalIllustration
         src={openBadge.coverImage}
         alt={openBadge.name}
@@ -55,7 +62,9 @@ export default function OpenBadgeModal({
         className={styles.modalIllustration}
       />
       <Section p={2}>
-        <SectionSubtitle className={styles.sectionSubtitle}>{t('detailsModal.sectionSubtitle')}</SectionSubtitle>
+        <SectionSubtitle id={descriptionId} className={styles.sectionSubtitle}>
+          {t('detailsModal.sectionSubtitle')}
+        </SectionSubtitle>
         <Typography variant="body1">{openBadge.description}</Typography>
       </Section>
 

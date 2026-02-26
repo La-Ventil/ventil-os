@@ -26,6 +26,8 @@ type AssignOpenBadgeFormProps = {
   translationNamespace?: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
+  titleId?: string;
+  descriptionId?: string;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
   onCancel: () => void;
   feedback?: { type: 'error' | 'success'; message: string } | null;
@@ -38,6 +40,8 @@ export default function AssignOpenBadgeForm({
   translationNamespace = 'pages.hub.admin.users.assignModal',
   isSubmitting = false,
   userSelectionDisabled,
+  titleId,
+  descriptionId,
   onConfirm,
   onCancel,
   feedback = null
@@ -79,9 +83,9 @@ export default function AssignOpenBadgeForm({
 
   return (
     <>
-      <SectionTitle>{t('title')}</SectionTitle>
+      <SectionTitle id={titleId}>{t('title')}</SectionTitle>
       <Section>
-        <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
+        <SectionSubtitle id={descriptionId}>{t('subtitle')}</SectionSubtitle>
         {feedback ? (
           <Alert severity={feedback.type} className={styles.feedback}>
             {feedback.message}

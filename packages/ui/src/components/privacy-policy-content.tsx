@@ -4,14 +4,20 @@ import Typography from '@mui/material/Typography';
 
 type PrivacyPolicyContentProps = {
   t: (key: string) => string;
+  titleId?: string;
+  introId?: string;
 };
 
-export default function PrivacyPolicyContent({ t }: PrivacyPolicyContentProps) {
+export default function PrivacyPolicyContent({ t, titleId, introId }: PrivacyPolicyContentProps) {
   return (
     <Box>
       <Stack spacing={2}>
-        <Typography variant="h2">{t('title')}</Typography>
-        <Typography variant="body1">{t('intro')}</Typography>
+        <Typography variant="h2" id={titleId}>
+          {t('title')}
+        </Typography>
+        <Typography variant="body1" id={introId}>
+          {t('intro')}
+        </Typography>
       </Stack>
 
       <Stack spacing={1.5} mt={3}>

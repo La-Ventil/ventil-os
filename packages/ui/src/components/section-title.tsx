@@ -7,13 +7,16 @@ import styles from './section-title.module.css';
 export type SectionTitleProps = {
   icon?: React.ReactNode;
   children: React.ReactNode;
+  id?: string;
 };
 
-export default function SectionTitle({ icon, children }: SectionTitleProps) {
+export default function SectionTitle({ icon, children, id }: SectionTitleProps) {
   return (
     <Box className={styles.root}>
       {icon}
-      <Typography variant="h1">{children}</Typography>
+      <Typography variant="h1" id={id}>
+        {children}
+      </Typography>
     </Box>
   );
 }

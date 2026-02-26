@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -66,6 +66,7 @@ export default function MachineModal({
   const [activeTab, setActiveTab] = useState<MachineModalTab>('reservations');
   const timeZone = useTimeZone();
   const modalDate = useMemo(() => toZonedDayjs(`${dayKey}T00:00:00`, timeZone), [dayKey, timeZone]);
+  const titleId = useId();
 
   if (!machine) {
     return null;
@@ -82,8 +83,11 @@ export default function MachineModal({
       maxWidth="sm"
       fullWidth
       themeSection={ThemeSection.FabLab}
+      ariaLabelledBy={titleId}
     >
-      <SectionTitle icon={<MachineIcon color="secondary" />}>{machine.name}</SectionTitle>
+      <SectionTitle id={titleId} icon={<MachineIcon color="secondary" />}>
+        {machine.name}
+      </SectionTitle>
       <ModalIllustration
         src={machine.imageUrl}
         alt={machine.name}

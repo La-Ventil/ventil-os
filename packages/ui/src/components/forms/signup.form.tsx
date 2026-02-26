@@ -9,7 +9,7 @@ import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
 import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import Link from '../link';
@@ -49,6 +49,8 @@ export default function SignupForm({ formState }: SignupFormProps) {
     Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
   const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const privacyTitleId = useId();
+  const privacyIntroId = useId();
 
   useEffect(() => {
     setSelectedProfile(resolveProfileType(state.values.profile));
@@ -174,8 +176,10 @@ export default function SignupForm({ formState }: SignupFormProps) {
         closeLabel={tCommon('actions.back')}
         maxWidth="md"
         fullWidth
+        ariaLabelledBy={privacyTitleId}
+        ariaDescribedBy={privacyIntroId}
       >
-        <PrivacyPolicyContent t={tPolicy} />
+        <PrivacyPolicyContent t={tPolicy} titleId={privacyTitleId} introId={privacyIntroId} />
       </ModalLayout>
     </>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import type { JSX } from 'react';
 import { useTranslations } from 'next-intl';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
@@ -42,6 +43,8 @@ export default function MachineReservationModal({
   onCancelReservation
 }: MachineReservationModalProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
+  const titleId = useId();
+  const descriptionId = useId();
 
   return (
     <ModalLayout
@@ -51,8 +54,12 @@ export default function MachineReservationModal({
       maxWidth="sm"
       fullWidth
       themeSection={ThemeSection.FabLab}
+      ariaLabelledBy={titleId}
+      ariaDescribedBy={descriptionId}
     >
-      <SectionTitle icon={<MachineIcon color="secondary" />}>{machine.name}</SectionTitle>
+      <SectionTitle id={titleId} icon={<MachineIcon color="secondary" />}>
+        {machine.name}
+      </SectionTitle>
       <ModalIllustration
         src={machine.imageUrl}
         alt={machine.name}
@@ -61,7 +68,9 @@ export default function MachineReservationModal({
       />
 
       <Section p={2} className={styles.reservationSection}>
-        <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
+        <SectionSubtitle id={descriptionId} className={styles.sectionSubtitle}>
+          {t('modal.reservationTitle')}
+        </SectionSubtitle>
         <MachineReservationForm
           machineId={machine.id}
           startAt={startAt}

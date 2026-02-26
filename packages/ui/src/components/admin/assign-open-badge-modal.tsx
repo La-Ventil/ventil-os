@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import AssignOpenBadgeForm from '../forms/assign-open-badge.form';
 import ModalLayout from '../modal-layout';
 import { useTranslations } from 'next-intl';
@@ -33,6 +34,8 @@ export default function AssignOpenBadgeModal({
   feedback = null
 }: AssignOpenBadgeModalProps) {
   const t = useTranslations(translationNamespace);
+  const titleId = useId();
+  const descriptionId = useId();
 
   return (
     <ModalLayout
@@ -42,8 +45,12 @@ export default function AssignOpenBadgeModal({
       fullWidth
       maxWidth="sm"
       themeSection={ThemeSection.OpenBadge}
+      ariaLabelledBy={titleId}
+      ariaDescribedBy={descriptionId}
     >
       <AssignOpenBadgeForm
+        titleId={titleId}
+        descriptionId={descriptionId}
         user={user}
         users={users}
         openBadge={openBadge}

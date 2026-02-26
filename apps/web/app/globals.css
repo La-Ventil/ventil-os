@@ -75,3 +75,8 @@ a {
 .MuiRadio-root {
   width: 50px;
 }
+
+:focus-visible {
+  outline: 3px solid var(--mui-palette-primary-main);
+  outline-offset: 2px;
+}

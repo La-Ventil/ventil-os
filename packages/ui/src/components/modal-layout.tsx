@@ -14,6 +14,8 @@ type ModalLayoutProps = {
   onClose: () => void;
   closeLabel: string;
   children: ReactNode;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
   fullWidth?: boolean;
   themeSection?: ThemeSection;
@@ -27,6 +29,8 @@ export default function ModalLayout({
   onClose,
   closeLabel,
   children,
+  ariaLabelledBy,
+  ariaDescribedBy,
   maxWidth = 'sm',
   fullWidth = false,
   themeSection,
@@ -45,6 +49,8 @@ export default function ModalLayout({
       onClose={onClose}
       maxWidth={maxWidth}
       fullWidth={fullWidth}
+      aria-labelledby={ariaLabelledBy}
+      aria-describedby={ariaDescribedBy}
       slotProps={{
         paper: {
           className: paperClasses
