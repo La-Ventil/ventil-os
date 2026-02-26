@@ -25,6 +25,7 @@
     "test:e2e": "pnpm --filter web test:e2e",
     "test:e2e:journeys": "pnpm --filter web test:e2e:journeys",
     "test:e2e:a11y": "pnpm --filter web test:e2e:a11y",
+    "test:e2e:parallel": "pnpm --filter web test:e2e:parallel",
     "prettier": "pnpm format"
   },
   "devDependencies": {

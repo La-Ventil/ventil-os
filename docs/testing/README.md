@@ -103,18 +103,35 @@ From repo root:
 - `pnpm test:e2e`
 - `pnpm test:e2e:journeys`
 - `pnpm test:e2e:a11y`
+- `pnpm test:e2e:parallel` (runs `journeys` and `a11y` in parallel, isolated DB schemas)
 
 From `apps/web`:
 - `pnpm test:e2e`
 - `pnpm test:e2e:journeys`
 - `pnpm test:e2e:a11y`
+- `pnpm test:e2e:journeys:isolated` (`PLAYWRIGHT_DB_SLOT=journeys`, `PORT=3001`)
+- `pnpm test:e2e:a11y:isolated` (`PLAYWRIGHT_DB_SLOT=a11y`, `PORT=3002`)
+- `pnpm test:e2e:parallel` (process-level parallelism with isolated schemas)
 - `pnpm test:e2e:smoke`
 
 ## Current constraints
 
 - Playwright runs with `workers: 1` by default because the suite currently uses a shared reset/seeded DB.
 - This favors stability for mutation-heavy admin flows.
-- If we later isolate data per worker, parallelization can be reintroduced safely.
+- We now support **process-level parallelism** (`journeys` + `a11y`) by running separate Playwright
+  processes with different `PLAYWRIGHT_DB_SLOT` values (separate Postgres schemas) and different ports.
+- Worker-level parallelism inside a single Playwright process is still **not enabled**.
+- If we later isolate data per worker, `workers > 1` can be reintroduced safely inside one run.
+
+## E2E DB isolation (Playwright processes)
+
+- `PLAYWRIGHT_DB_SLOT` selects a dedicated Prisma/Postgres schema for Playwright setup/teardown
+  (schema name pattern: `e2e_<slot>`).
+- The app server process inherits the same `DATABASE_URL` override, so UI actions and setup use the same schema.
+- `NEXT_DIST_DIR` should also be unique per parallel process to avoid Next.js dev lock collisions.
+- Example:
+  - `PLAYWRIGHT_DB_SLOT=journeys PORT=3001 NEXT_DIST_DIR=.next-e2e-journeys pnpm --filter web test:e2e:journeys`
+  - `PLAYWRIGHT_DB_SLOT=a11y PORT=3002 NEXT_DIST_DIR=.next-e2e-a11y pnpm --filter web test:e2e:a11y`
 
 ## Related ADRs
 
