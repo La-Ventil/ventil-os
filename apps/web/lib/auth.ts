@@ -72,7 +72,21 @@ function authorize() {
 export async function getServerSession(
   ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
 ) {
-  return getNextAuthServerSession(...args, authOptions);
+  const session = await getNextAuthServerSession(...args, authOptions);
+  if (!session?.user?.id) {
+    return session;
+  }
+
+  const status = await prismaClient.user.findUnique({
+    where: { id: session.user.id },
+    select: { blocked: true }
+  });
+
+  if (status?.blocked) {
+    return null;
+  }
+
+  return session;
 }
 
 export async function getUserProfileFromSession() {
