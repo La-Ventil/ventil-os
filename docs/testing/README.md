@@ -104,6 +104,7 @@ From repo root:
 - `pnpm test:e2e:journeys`
 - `pnpm test:e2e:a11y`
 - `pnpm test:e2e:parallel` (runs `journeys` and `a11y` in parallel, isolated DB schemas)
+- `pnpm test:e2e:workers` (worker-level parallelism, isolated schema + Next server per worker)
 
 From `apps/web`:
 - `pnpm test:e2e`
@@ -112,6 +113,9 @@ From `apps/web`:
 - `pnpm test:e2e:journeys:isolated` (`PLAYWRIGHT_DB_SLOT=journeys`, `PORT=3001`)
 - `pnpm test:e2e:a11y:isolated` (`PLAYWRIGHT_DB_SLOT=a11y`, `PORT=3002`)
 - `pnpm test:e2e:parallel` (process-level parallelism with isolated schemas)
+- `pnpm test:e2e:workers` (all projects, worker-level parallelism)
+- `pnpm test:e2e:journeys:workers` (journeys only, worker-level parallelism)
+- `pnpm test:e2e:a11y:workers` (a11y only, worker-level parallelism)
 - `pnpm test:e2e:smoke`
 
 ## Current constraints
@@ -120,8 +124,9 @@ From `apps/web`:
 - This favors stability for mutation-heavy admin flows.
 - We now support **process-level parallelism** (`journeys` + `a11y`) by running separate Playwright
   processes with different `PLAYWRIGHT_DB_SLOT` values (separate Postgres schemas) and different ports.
-- Worker-level parallelism inside a single Playwright process is still **not enabled**.
-- If we later isolate data per worker, `workers > 1` can be reintroduced safely inside one run.
+- We now also support an **opt-in worker-level parallel mode** (`PLAYWRIGHT_WORKER_PARALLEL=1`).
+- In this mode, each worker starts its own Next dev server and uses its own DB schema.
+- This is heavier (multiple resets/seeds + multiple dev servers), but allows true worker concurrency.
 
 ## E2E DB isolation (Playwright processes)
 
@@ -132,6 +137,19 @@ From `apps/web`:
 - Example:
   - `PLAYWRIGHT_DB_SLOT=journeys PORT=3001 NEXT_DIST_DIR=.next-e2e-journeys pnpm --filter web test:e2e:journeys`
   - `PLAYWRIGHT_DB_SLOT=a11y PORT=3002 NEXT_DIST_DIR=.next-e2e-a11y pnpm --filter web test:e2e:a11y`
+
+## E2E worker isolation (Playwright workers)
+
+- Enable with `PLAYWRIGHT_WORKER_PARALLEL=1`.
+- `webServer` and shared setup/teardown are disabled in this mode.
+- A worker-scoped fixture performs:
+  - DB reset/seed on a worker-specific schema
+  - Next dev server boot on a worker-specific port and `NEXT_DIST_DIR`
+  - worker cleanup on teardown
+- Worker schema pattern:
+  - `e2e_<PLAYWRIGHT_DB_SLOT>-<project>-w<parallelIndex>`
+- Example:
+  - `PLAYWRIGHT_WORKER_PARALLEL=1 PLAYWRIGHT_WORKERS=2 PLAYWRIGHT_DB_SLOT=workers pnpm --filter web test:e2e:journeys:workers`
 
 ## Related ADRs
 
