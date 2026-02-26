@@ -13,6 +13,18 @@ const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '127.0.0.1';
 const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
 const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
+const sharedDbSlot = process.env.PLAYWRIGHT_DB_SLOT?.trim() || 'default';
+const sharedDbSchema = `e2e_${sharedDbSlot.replace(/[^a-zA-Z0-9_]/g, '_')}`;
+const webServerDatabaseUrl = (() => {
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    return undefined;
+  }
+
+  const url = new URL(databaseUrl);
+  url.searchParams.set('schema', sharedDbSchema);
+  return url.toString();
+})();
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 const baseURL = `http://${HOST}:${PORT}`;
@@ -74,13 +86,18 @@ export default defineConfig({
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
-  webServer: workerParallelMode
+      webServer: workerParallelMode
     ? undefined
     : {
         command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
         url: baseURL,
         timeout: 120 * 1000,
-        reuseExistingServer: !process.env.CI
+        reuseExistingServer: !process.env.CI,
+        env: {
+          ...process.env,
+          ...(webServerDatabaseUrl ? { DATABASE_URL: webServerDatabaseUrl } : {}),
+          PLAYWRIGHT_DB_SLOT: sharedDbSlot
+        }
       },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
