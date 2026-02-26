@@ -26,7 +26,10 @@ test.describe('Admin open badges accessibility', () => {
     await expect(controlledElement).toBeVisible();
 
     await expect(menu.getByRole('menuitem').first()).toBeVisible();
-    await expectNoSeriousA11yViolations(page, { include: ['[role="menu"]'] });
+    await expectNoSeriousA11yViolations(page, {
+      include: ['[role="menu"]'],
+      contextLabel: 'Admin open badges row quick actions menu'
+    });
 
     await pressEscape(page);
     await expect(menu).not.toBeVisible();

@@ -11,7 +11,7 @@ test.describe('Auth accessibility', () => {
     await expect(page.getByLabel(/mot de passe|password/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /se connecter|sign in/i })).toBeVisible();
 
-    await expectNoSeriousA11yViolations(page);
+    await expectNoSeriousA11yViolations(page, { contextLabel: 'Login page' });
   });
 
   test('signup privacy policy dialog is keyboard-dismissible and labelled', async ({ page }) => {
@@ -23,7 +23,10 @@ test.describe('Auth accessibility', () => {
     await expect(dialog).toHaveAttribute('aria-labelledby', /.+/);
     await expect(dialog).toHaveAttribute('aria-describedby', /.+/);
 
-    await expectNoSeriousA11yViolations(page, { include: ['[role="dialog"]'] });
+    await expectNoSeriousA11yViolations(page, {
+      include: ['[role="dialog"]'],
+      contextLabel: 'Signup privacy policy dialog'
+    });
     await closeDialogWithEscape(page, /politique de confidentialité|privacy policy/i);
   });
 });

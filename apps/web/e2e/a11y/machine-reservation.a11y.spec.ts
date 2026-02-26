@@ -22,6 +22,7 @@ test.describe('Machine reservation accessibility', () => {
 
     await expectNoSeriousA11yViolations(page, {
       include: ['[role="dialog"]'],
+      contextLabel: 'Machine reservation modal',
       ignoreViolationIds: ['color-contrast']
     });
     await closeDialogWithEscape(page, /Bambu Lab X1C/i);
