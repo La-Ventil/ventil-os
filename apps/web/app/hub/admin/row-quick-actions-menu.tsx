@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -23,8 +23,9 @@ type RowQuickActionsMenuProps = {
 export default function RowQuickActionsMenu({ label, items, disabled = false }: RowQuickActionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
-  const menuId = 'row-quick-actions-menu';
-  const buttonId = 'row-quick-actions-button';
+  const baseId = useId();
+  const menuId = `${baseId}-menu`;
+  const buttonId = `${baseId}-button`;
 
   const handleClose = () => setAnchorEl(null);
 
