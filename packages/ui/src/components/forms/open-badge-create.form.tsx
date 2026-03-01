@@ -165,6 +165,11 @@ export default function OpenBadgeCreateForm({
             name="deliveryEnabled"
             checked={deliveryEnabled}
             onChange={(event) => setDeliveryEnabled(event.target.checked)}
+            slotProps={{
+              input: {
+                'aria-label': t('delivery.title')
+              }
+            }}
           />
           <FormControl size="small">
             <InputLabel id="open-badge-delivery-level-label">{t('delivery.levelLabel')}</InputLabel>
@@ -194,7 +199,15 @@ export default function OpenBadgeCreateForm({
           {t('activation.description')}
         </Typography>
         <FormControl>
-          <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
+          <Switch
+            name="activationEnabled"
+            defaultChecked={state.values.activationEnabled}
+            slotProps={{
+              input: {
+                'aria-label': t('activation.title')
+              }
+            }}
+          />
           <Typography variant="caption" className={styles.sectionNote}>
             {t('activation.note')}
           </Typography>
