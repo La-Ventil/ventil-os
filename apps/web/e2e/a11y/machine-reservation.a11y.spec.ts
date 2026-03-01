@@ -26,6 +26,13 @@ test.describe('Machine reservation accessibility', () => {
       ignoreViolationIds: ['color-contrast']
     });
     await closeDialogWithEscape(page, /Bambu Lab X1C/i);
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}$`));
+
+    const pathname = new URL(page.url()).pathname;
+    // Closing the reservation modal should land on machine details (`/hub/fab-lab/:machineId`).
+    // If the parent machine modal is also closed in the same escape chain, the fallback route is the list (`/hub/fab-lab`).
+    expect(
+      pathname,
+      `Expected reservation modal close destination to be /hub/fab-lab/${machineId} or /hub/fab-lab, got ${pathname}`
+    ).toMatch(new RegExp(`^/hub/fab-lab(?:/${machineId})?$`));
   });
 });

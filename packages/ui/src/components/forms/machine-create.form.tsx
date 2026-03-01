@@ -104,7 +104,15 @@ export default function MachineCreateForm({
         <Typography variant="body1" className={styles.sectionDescription}>
           {t('badgeRequirement.description')}
         </Typography>
-        <Switch name="badgeRequired" defaultChecked={state.values.badgeRequired} />
+        <Switch
+          name="badgeRequired"
+          defaultChecked={state.values.badgeRequired}
+          slotProps={{
+            input: {
+              'aria-label': t('badgeRequirement.title')
+            }
+          }}
+        />
         <Stack spacing={2}>
           <TextField
             name="badgeQuery"
@@ -140,7 +148,15 @@ export default function MachineCreateForm({
         <Typography variant="body1" className={styles.sectionDescription}>
           {t('activation.description')}
         </Typography>
-        <Switch name="activationEnabled" defaultChecked={state.values.activationEnabled} />
+        <Switch
+          name="activationEnabled"
+          defaultChecked={state.values.activationEnabled}
+          slotProps={{
+            input: {
+              'aria-label': t('activation.title')
+            }
+          }}
+        />
       </FormSection>
 
       <FormActions>

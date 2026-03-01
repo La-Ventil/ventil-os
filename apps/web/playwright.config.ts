@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '127.0.0.1';
 const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
 const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
+const headedMode = process.env.PLAYWRIGHT_HEADED === '1';
 const sharedDbSlot = process.env.PLAYWRIGHT_DB_SLOT?.trim() || 'default';
 const sharedDbSchema = `e2e_${sharedDbSlot.replace(/[^a-zA-Z0-9_]/g, '_')}`;
 const webServerDatabaseUrl = (() => {
@@ -82,7 +83,7 @@ export default defineConfig({
   /* Keep shared-DB mode serial; worker-isolated mode is opt-in via env. */
   workers: workerParallelMode ? configuredWorkers : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['html', { open: 'never' }]],
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
@@ -104,6 +105,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
+    headless: !headedMode,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry'

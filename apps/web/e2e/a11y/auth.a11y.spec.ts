@@ -14,6 +14,17 @@ test.describe('Auth accessibility', () => {
     await expectNoSeriousA11yViolations(page, { contextLabel: 'Login page' });
   });
 
+  test('forgot password page exposes labeled controls and no serious axe violations', async ({ page }) => {
+    await page.goto('/forgot-password');
+
+    await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /email/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /envoyer|reset/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /retour|back/i })).toBeVisible();
+
+    await expectNoSeriousA11yViolations(page, { contextLabel: 'Forgot password page' });
+  });
+
   test('signup privacy policy dialog is keyboard-dismissible and labelled', async ({ page }) => {
     await page.goto('/signup');
 

@@ -4,9 +4,7 @@ export const userPasswordResetSelect = {
   id: true,
   email: true,
   firstName: true,
-  lastName: true,
-  token: true,
-  expiresAt: true
+  lastName: true
 } as const;
 
 export type UserPasswordResetPayload = Prisma.UserGetPayload<{
