@@ -12,7 +12,7 @@ export type DangerZoneProps = {
   description: string;
   actionLabel: string;
   disabled?: boolean;
-  onAction: () => Promise<{ success: boolean; message: string }>;
+  onAction: () => Promise<{ success: boolean; message?: string }>;
   onSuccess: () => void;
 };
 
@@ -40,7 +40,7 @@ export default function DangerZone({
           setFeedback(null);
           const result = await onAction();
           if (!result.success) {
-            setFeedback(result.message);
+            setFeedback(result.message ?? null);
             return;
           }
           onSuccess();

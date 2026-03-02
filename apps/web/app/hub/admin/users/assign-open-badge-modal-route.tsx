@@ -8,6 +8,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
+import { removeUserOpenBadgeAction } from '../../../../lib/actions/remove-user-open-badge';
 import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
 import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
@@ -89,6 +90,13 @@ export default function AssignOpenBadgeModalRoute({
       translationNamespace={translationNamespace}
       isSubmitting={isPending}
       feedback={feedback}
+      onRemove={
+        user
+          ? (payload) => {
+              return removeUserOpenBadgeAction(payload);
+            }
+          : undefined
+      }
     />
   );
 }

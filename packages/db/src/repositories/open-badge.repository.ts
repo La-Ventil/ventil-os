@@ -218,6 +218,15 @@ export class OpenBadgeRepository {
     });
   }
 
+  async removeUserOpenBadgeProgress(userId: string, openBadgeId: string): Promise<void> {
+    await this.prisma.openBadgeProgress.deleteMany({
+      where: {
+        userId,
+        openBadgeId
+      }
+    });
+  }
+
   async createOpenBadge(input: {
     name: string;
     type: string;
