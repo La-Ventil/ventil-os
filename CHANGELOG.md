@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.15](https://github.com/La-Ventil/ventil-os/compare/v0.0.14...v0.0.15) (2026-03-02)
+
+
+### Features
+
+* **a11y:** improve dialog labelling and focus visibility ([d00392f](https://github.com/La-Ventil/ventil-os/commit/d00392f1619e0358ba06e674dd32ddec07b7c877))
+* **docs:** add docs portal and static export support ([3c55346](https://github.com/La-Ventil/ventil-os/commit/3c553466350d3f43b5bf945c172ccbae809723ce))
+
+
+### Bug Fixes
+
+* **auth:** block access for blocked users ([2c59d6d](https://github.com/La-Ventil/ventil-os/commit/2c59d6d3d9d9c32b73bca33cbc81dda679db8565))
+* **ui:** make quick actions ids unique ([ddb365f](https://github.com/La-Ventil/ventil-os/commit/ddb365f717428766e0f2eac01bf8fd00b555c021))
+
+
+### Docs
+
+* **a11y:** define RGAA-inspired target and audit workflow ([7a776c6](https://github.com/La-Ventil/ventil-os/commit/7a776c6548800f1806868ea102ed78c907ecfb08))
+* reorganize ADR and docs entrypoints ([4fe22ff](https://github.com/La-Ventil/ventil-os/commit/4fe22ff2a29550f8274937c8efe43c77c52798a6))
+* **test:** add worker-parallel playwright commands ([56270c9](https://github.com/La-Ventil/ventil-os/commit/56270c9841db40b58ae5f4965b8e5a691188661d))
+* **testing:** define user journeys and usecases ([a05e74b](https://github.com/La-Ventil/ventil-os/commit/a05e74b001650f8e4dd199261f43b0c97f395084))
+
 ### [0.0.14](https://github.com/La-Ventil/ventil-os/compare/v0.0.13...v0.0.14) (2026-02-24)
 
 
