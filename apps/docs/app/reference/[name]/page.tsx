@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 import styles from '../../docs.module.css';
+import MarkdownRenderer from '../../../components/markdown-renderer';
 import { getRootReferenceStaticParams, readRootReferenceDocument, rootReferences, sectionLabels } from '../../../lib/content';
 
 export const dynamicParams = false;
@@ -9,11 +10,6 @@ export function generateStaticParams(): Array<{ name: string }> {
   return getRootReferenceStaticParams();
 }
 
-const renderLines = (content: string): JSX.Element[] =>
-  content
-    .split(/\r?\n/u)
-    .map((line, index) => <p key={`${line}-${index}`}>{line === '' ? '\u00A0' : line}</p>);
-
 type PageProps = {
   params: Promise<{ name: string }>;
 };
@@ -21,6 +17,7 @@ type PageProps = {
 export default async function ReferencePage({ params }: PageProps): Promise<JSX.Element> {
   const { name } = await params;
   const document = await readRootReferenceDocument(name);
+  const currentHref = `/reference/${name}`;
 
   return (
     <main className={styles.page}>
@@ -33,7 +30,12 @@ export default async function ReferencePage({ params }: PageProps): Promise<JSX.
           <p className={styles.sidebarText}>Root-level repository documents that remain useful inside the docs app.</p>
           <nav className={styles.nav} aria-label="Repository references">
             {rootReferences.map((reference) => (
-              <Link key={reference.key} href={`/reference/${reference.key}`} className={styles.navLink}>
+              <Link
+                key={reference.key}
+                href={`/reference/${reference.key}`}
+                className={`${styles.navLink}${currentHref === `/reference/${reference.key}` ? ` ${styles.activeLink}` : ''}`}
+                aria-current={currentHref === `/reference/${reference.key}` ? 'page' : undefined}
+              >
                 <span className={styles.navLabel}>{reference.label}</span>
                 <span className={styles.navMeta}>{reference.description}</span>
               </Link>
@@ -64,7 +66,9 @@ export default async function ReferencePage({ params }: PageProps): Promise<JSX.
                 </Link>
               </div>
             ) : null}
-            <div className={styles.document}>{renderLines(document.content)}</div>
+            <div className={styles.document}>
+              <MarkdownRenderer content={document.content} origin={document.origin} />
+            </div>
           </article>
         </section>
       </div>

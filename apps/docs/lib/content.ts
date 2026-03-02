@@ -112,12 +112,21 @@ export type DirectoryEntry = {
   kind: 'directory' | 'markdown' | 'asset';
 };
 
+export type DocumentOrigin = {
+  repoPath: string[];
+};
+
 const toTitle = (name: string): string => name.replace(/\.md$/u, '').replace(/[-_]/gu, ' ');
+const toRouteSegment = (name: string): string => name.replace(/\.md$/u, '');
+const toRouteSlug = (slug: string[]): string[] =>
+  slug.length === 0 ? slug : [...slug.slice(0, -1), toRouteSegment(slug[slug.length - 1] ?? '')];
 
 const lastSegmentTitle = (slug: string[], fallback: string): string => {
   const lastSegment = slug.at(-1);
   return lastSegment ? toTitle(lastSegment) : fallback;
 };
+
+export const formatDocLabel = (value: string): string => toTitle(value);
 
 const collectDirectory = async (
   rootPath: string,
@@ -175,7 +184,7 @@ export const getSectionStaticParams = async (): Promise<Array<{ section: Section
     const collected = await collectDirectory(sectionRoot);
 
     params.push(...collected.directories.map((slug) => ({ section, slug })));
-    params.push(...collected.markdownFiles.map((slug) => ({ section, slug })));
+    params.push(...collected.markdownFiles.map((slug) => ({ section, slug: toRouteSlug(slug) })));
   }
 
   return params;
@@ -216,22 +225,23 @@ export const listSectionEntries = async (section: SectionKey, slug: string[] = [
     .filter((entry) => entry.name !== 'README.md')
     .map((entry) => {
       const nextSlug = [...slug, entry.name];
-      const href = `/${section}/${nextSlug.join('/')}`;
+      const routeHref = `/${section}/${nextSlug.join('/')}`;
 
       if (entry.isDirectory()) {
         return {
           name: entry.name,
           title: toTitle(entry.name),
-          href,
+          href: routeHref,
           kind: 'directory' as const
         };
       }
 
       if (entry.name.endsWith('.md')) {
+        const routeSlug = toRouteSlug(nextSlug);
         return {
           name: entry.name,
           title: toTitle(entry.name),
-          href,
+          href: `/${section}/${routeSlug.join('/')}`,
           kind: 'markdown' as const
         };
       }
@@ -251,47 +261,82 @@ export type DocumentData = {
   sourceHref: string | null;
   content: string;
   entries: DirectoryEntry[];
+  origin: DocumentOrigin | null;
 };
 
 const buildMarkdownDocument = async (
   targetPath: string,
   sourceHref: string,
+  origin: DocumentOrigin,
   titleFallback: string,
   entries: DirectoryEntry[]
 ): Promise<DocumentData> => ({
   title: titleFallback,
   sourceHref,
   content: await fs.readFile(targetPath, 'utf8'),
-  entries
+  entries,
+  origin
 });
 
-export const readSectionDocument = async (section: SectionKey, slug: string[] = []): Promise<DocumentData> => {
-  const sectionRoot = await resolveSectionRoot(section);
-  const targetPath = path.join(sectionRoot, ...slug);
-  ensureInsideRoot(sectionRoot, targetPath);
+const resolveSectionTarget = async (
+  sectionRoot: string,
+  routeSlug: string[]
+): Promise<{ targetPath: string; targetStat: Awaited<ReturnType<typeof fs.stat>> } | null> => {
+  const directPath = path.join(sectionRoot, ...routeSlug);
+  ensureInsideRoot(sectionRoot, directPath);
 
-  const targetStat = await statSafe(targetPath);
-  if (!targetStat) {
+  const directStat = await statSafe(directPath);
+  if (directStat) {
+    return { targetPath: directPath, targetStat: directStat };
+  }
+
+  if (routeSlug.length === 0) {
+    return null;
+  }
+
+  const markdownPath = path.join(
+    sectionRoot,
+    ...routeSlug.slice(0, -1),
+    `${routeSlug[routeSlug.length - 1]}.md`
+  );
+  ensureInsideRoot(sectionRoot, markdownPath);
+
+  const markdownStat = await statSafe(markdownPath);
+  if (!markdownStat) {
+    return null;
+  }
+
+  return { targetPath: markdownPath, targetStat: markdownStat };
+};
+
+export const readSectionDocument = async (section: SectionKey, routeSlug: string[] = []): Promise<DocumentData> => {
+  const sectionRoot = await resolveSectionRoot(section);
+  const resolvedTarget = await resolveSectionTarget(sectionRoot, routeSlug);
+  if (!resolvedTarget) {
     notFound();
   }
 
+  const { targetPath, targetStat } = resolvedTarget;
+
   if (targetStat.isDirectory()) {
     const readmePath = path.join(targetPath, 'README.md');
-    const entries = await listSectionEntries(section, slug);
+    const entries = await listSectionEntries(section, routeSlug);
 
     if (!(await fileExists(readmePath))) {
       return {
-        title: lastSegmentTitle(slug, sectionLabels[section]),
+        title: lastSegmentTitle(routeSlug, sectionLabels[section]),
         sourceHref: null,
         content: '',
-        entries
+        entries,
+        origin: null
       };
     }
 
     return buildMarkdownDocument(
       readmePath,
-      `/source/docs/${section}/${[...slug, 'README.md'].join('/')}`,
-      lastSegmentTitle(slug, sectionLabels[section]),
+      `/source/docs/${section}/${[...routeSlug, 'README.md'].join('/')}`,
+      { repoPath: ['docs', section, ...routeSlug, 'README.md'] },
+      lastSegmentTitle(routeSlug, sectionLabels[section]),
       entries
     );
   }
@@ -302,8 +347,9 @@ export const readSectionDocument = async (section: SectionKey, slug: string[] = 
 
   return buildMarkdownDocument(
     targetPath,
-    `/source/docs/${section}/${slug.join('/')}`,
-    toTitle(slug[slug.length - 1] ?? section),
+    `/source/docs/${section}/${[...routeSlug.slice(0, -1), `${routeSlug[routeSlug.length - 1]}.md`].join('/')}`,
+    { repoPath: ['docs', section, ...routeSlug.slice(0, -1), `${routeSlug[routeSlug.length - 1]}.md`] },
+    toTitle(routeSlug[routeSlug.length - 1] ?? section),
     []
   );
 };
@@ -321,8 +367,91 @@ export const readRootReferenceDocument = async (name: string): Promise<DocumentD
     title: reference.label,
     sourceHref: `/source/root/${reference.key}`,
     content: await fs.readFile(targetPath, 'utf8'),
-    entries: []
+    entries: [],
+    origin: { repoPath: [reference.fileName] }
   };
+};
+
+const splitHref = (href: string): { pathPart: string; suffix: string } => {
+  const hashIndex = href.indexOf('#');
+  const queryIndex = href.indexOf('?');
+  const indexes = [hashIndex, queryIndex].filter((index) => index >= 0);
+
+  if (indexes.length === 0) {
+    return { pathPart: href, suffix: '' };
+  }
+
+  const splitIndex = Math.min(...indexes);
+  return {
+    pathPart: href.slice(0, splitIndex),
+    suffix: href.slice(splitIndex)
+  };
+};
+
+const repoPathToDocsHref = (repoPath: string[]): string | null => {
+  if (repoPath.length === 1) {
+    switch (repoPath[0]) {
+      case 'README.md':
+        return '/reference/project';
+      case 'CHANGELOG.md':
+        return '/reference/changelog';
+      case 'CONTRIBUTING.md':
+        return '/reference/contributing';
+      default:
+        return null;
+    }
+  }
+
+  if (repoPath[0] !== 'docs' || repoPath.length < 3) {
+    return null;
+  }
+
+  const sectionCandidate = repoPath[1];
+  const rest = repoPath.slice(2);
+
+  if (!sectionCandidate || !isSectionKey(sectionCandidate)) {
+    return null;
+  }
+
+  const lastSegment = rest.at(-1);
+  if (!lastSegment) {
+    return `/${sectionCandidate}`;
+  }
+
+  if (lastSegment === 'README.md') {
+    const routeSegments = rest.slice(0, -1);
+    return routeSegments.length === 0 ? `/${sectionCandidate}` : `/${sectionCandidate}/${routeSegments.join('/')}`;
+  }
+
+  if (lastSegment.endsWith('.md')) {
+    const routeSegments = [...rest.slice(0, -1), toRouteSegment(lastSegment)];
+    return `/${sectionCandidate}/${routeSegments.join('/')}`;
+  }
+
+  return `/source/docs/${[sectionCandidate, ...rest].join('/')}`;
+};
+
+const isExternalHref = (href: string): boolean => /^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(href);
+
+export const resolveDocumentHref = (origin: DocumentOrigin | null, href: string): string => {
+  if (!origin || href === '' || href.startsWith('#') || href.startsWith('/')) {
+    return href;
+  }
+
+  if (isExternalHref(href)) {
+    return href;
+  }
+
+  const { pathPart, suffix } = splitHref(href);
+  const baseDir = path.posix.dirname(origin.repoPath.join('/'));
+  const targetPath = path.posix.normalize(path.posix.join(baseDir, pathPart));
+
+  if (targetPath === '.' || targetPath.startsWith('../')) {
+    return href;
+  }
+
+  const resolvedPath = repoPathToDocsHref(targetPath.split('/').filter(Boolean));
+  return resolvedPath ? `${resolvedPath}${suffix}` : href;
 };
 
 export const readDocsSourceFile = async (slug: string[]): Promise<{ buffer: Buffer; fileName: string }> => {

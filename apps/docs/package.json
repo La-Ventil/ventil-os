@@ -17,7 +17,9 @@
     "@repo/ui": "workspace:*",
     "next": "^16.1.6",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

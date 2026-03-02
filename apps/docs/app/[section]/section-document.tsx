@@ -1,116 +1,54 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 import styles from '../docs.module.css';
-import { readSectionDocument, rootReferences, sectionLabels, type SectionKey } from '../../lib/content';
+import MarkdownRenderer from '../../components/markdown-renderer';
+import {
+  formatDocLabel,
+  readSectionDocument,
+  rootReferences,
+  sectionLabels,
+  type SectionKey
+} from '../../lib/content';
 
-const renderMarkdown = (content: string): JSX.Element[] => {
-  const lines = content.split(/\r?\n/u);
-  const nodes: JSX.Element[] = [];
-  let paragraph: string[] = [];
-  let listItems: string[] = [];
-  let codeLines: string[] = [];
-  let inCodeBlock = false;
+const isActiveLink = (currentHref: string, href: string): boolean => currentHref === href;
+const linkClassName = (isActive: boolean): string => `${styles.navLink}${isActive ? ` ${styles.activeLink}` : ''}`;
 
-  const flushParagraph = () => {
-    if (paragraph.length === 0) {
-      return;
-    }
-
-    nodes.push(<p key={`p-${nodes.length}`}>{paragraph.join(' ')}</p>);
-    paragraph = [];
-  };
-
-  const flushList = () => {
-    if (listItems.length === 0) {
-      return;
-    }
-
-    nodes.push(
-      <ul key={`ul-${nodes.length}`}>
-        {listItems.map((item, index) => (
-          <li key={`${item}-${index}`}>{item}</li>
-        ))}
-      </ul>
-    );
-    listItems = [];
-  };
-
-  const flushCode = () => {
-    if (codeLines.length === 0) {
-      return;
-    }
-
-    nodes.push(
-      <pre key={`pre-${nodes.length}`}>
-        <code>{codeLines.join('\n')}</code>
-      </pre>
-    );
-    codeLines = [];
-  };
-
-  for (const rawLine of lines) {
-    const line = rawLine.trimEnd();
-    const trimmed = line.trim();
-
-    if (trimmed.startsWith('```')) {
-      flushParagraph();
-      flushList();
-      if (inCodeBlock) {
-        flushCode();
-      }
-      inCodeBlock = !inCodeBlock;
-      continue;
-    }
-
-    if (inCodeBlock) {
-      codeLines.push(line);
-      continue;
-    }
-
-    if (trimmed === '') {
-      flushParagraph();
-      flushList();
-      continue;
-    }
-
-    if (trimmed.startsWith('- ')) {
-      flushParagraph();
-      listItems.push(trimmed.slice(2));
-      continue;
-    }
-
-    flushList();
-
-    if (trimmed.startsWith('# ')) {
-      flushParagraph();
-      nodes.push(<h1 key={`h1-${nodes.length}`}>{trimmed.slice(2)}</h1>);
-      continue;
-    }
-
-    if (trimmed.startsWith('## ')) {
-      flushParagraph();
-      nodes.push(<h2 key={`h2-${nodes.length}`}>{trimmed.slice(3)}</h2>);
-      continue;
-    }
-
-    if (trimmed.startsWith('### ')) {
-      flushParagraph();
-      nodes.push(<h3 key={`h3-${nodes.length}`}>{trimmed.slice(4)}</h3>);
-      continue;
-    }
-
-    paragraph.push(trimmed);
-  }
-
-  flushParagraph();
-  flushList();
-  flushCode();
-
-  return nodes;
+type BreadcrumbItem = {
+  label: string;
+  href: string | null;
 };
 
-export const renderSectionDocument = async (section: SectionKey, slug: string[] = []): Promise<JSX.Element> => {
-  const document = await readSectionDocument(section, slug);
+const buildBreadcrumb = (section: SectionKey, slug: string[]): BreadcrumbItem[] => {
+  const items: BreadcrumbItem[] = [
+    { label: 'Docs', href: '/' },
+    { label: sectionLabels[section], href: `/${section}` }
+  ];
+
+  const route: string[] = [];
+  for (const segment of slug) {
+    route.push(segment);
+    items.push({
+      label: formatDocLabel(segment),
+      href: `/${section}/${route.join('/')}`
+    });
+  }
+
+  const lastIndex = items.length - 1;
+  if (lastIndex >= 0) {
+    const currentItem = items[lastIndex]!;
+    items[lastIndex] = {
+      ...currentItem,
+      href: null
+    };
+  }
+
+  return items;
+};
+
+export const renderSectionDocument = async (section: SectionKey, routeSlug: string[] = []): Promise<JSX.Element> => {
+  const document = await readSectionDocument(section, routeSlug);
+  const currentHref = routeSlug.length === 0 ? `/${section}` : `/${section}/${routeSlug.join('/')}`;
+  const breadcrumb = buildBreadcrumb(section, routeSlug);
 
   return (
     <main className={styles.page}>
@@ -122,12 +60,21 @@ export const renderSectionDocument = async (section: SectionKey, slug: string[] 
           <h1 className={styles.sidebarTitle}>{sectionLabels[section]}</h1>
           <p className={styles.sidebarText}>Read the section overview, then drill down into files and nested directories.</p>
           <nav className={styles.nav} aria-label={`${sectionLabels[section]} navigation`}>
-            <Link href={`/${section}`} className={styles.navLink}>
+            <Link
+              href={`/${section}`}
+              className={linkClassName(isActiveLink(currentHref, `/${section}`))}
+              aria-current={isActiveLink(currentHref, `/${section}`) ? 'page' : undefined}
+            >
               <span className={styles.navLabel}>Section home</span>
               <span className={styles.navMeta}>{sectionLabels[section]}</span>
             </Link>
             {document.entries.map((entry) => (
-              <Link key={entry.href} href={entry.href} className={styles.navLink}>
+              <Link
+                key={entry.href}
+                href={entry.href}
+                className={linkClassName(isActiveLink(currentHref, entry.href))}
+                aria-current={isActiveLink(currentHref, entry.href) ? 'page' : undefined}
+              >
                 <span className={styles.navLabel}>{entry.title}</span>
                 <span className={styles.navMeta}>{entry.kind}</span>
               </Link>
@@ -146,6 +93,21 @@ export const renderSectionDocument = async (section: SectionKey, slug: string[] 
 
         <section className={styles.content}>
           <header className={styles.header}>
+            <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+              {breadcrumb.map((item, index) =>
+                item.href ? (
+                  <span key={`${item.label}-${index}`} className={styles.breadcrumbItem}>
+                    <Link href={item.href} className={styles.breadcrumbLink}>
+                      {item.label}
+                    </Link>
+                  </span>
+                ) : (
+                  <span key={`${item.label}-${index}`} className={styles.breadcrumbCurrent} aria-current="page">
+                    {item.label}
+                  </span>
+                )
+              )}
+            </nav>
             <span className={styles.eyebrow}>{section}</span>
             <h2 className={styles.title}>{document.title}</h2>
             <p className={styles.description}>
@@ -161,7 +123,9 @@ export const renderSectionDocument = async (section: SectionKey, slug: string[] 
                 </Link>
               </div>
             ) : null}
-            <div className={styles.document}>{renderMarkdown(document.content)}</div>
+            <div className={styles.document}>
+              <MarkdownRenderer content={document.content} origin={document.origin} />
+            </div>
 
             {document.entries.length > 0 ? (
               <div className={styles.entryList}>
