@@ -25,7 +25,7 @@ const upcomingReservationFixtureWindow = (now: Date): DateInterval => reservatio
 export class MachineReservationTestRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  private async findLatestConfirmedReservationId(input: SetLatestConfirmedReservationTimingInput): Promise<string> {
+  async getLatestConfirmedReservationId(input: SetLatestConfirmedReservationTimingInput): Promise<string> {
     const where: Prisma.MachineReservationWhereInput = {
       status: 'confirmed',
       ...(input.creatorEmail
@@ -55,11 +55,30 @@ export class MachineReservationTestRepository {
     return latestReservation.id;
   }
 
+  async getReservationWindow(reservationId: string): Promise<DateInterval> {
+    const reservation = await this.prisma.machineReservation.findUnique({
+      where: { id: reservationId },
+      select: {
+        startsAt: true,
+        endsAt: true
+      }
+    });
+
+    if (!reservation) {
+      throw new Error(`No reservation found for id ${reservationId}`);
+    }
+
+    return {
+      start: reservation.startsAt,
+      end: reservation.endsAt
+    };
+  }
+
   async setLatestConfirmedReservationWindow(
     input: SetLatestConfirmedReservationTimingInput,
     window: DateInterval
   ): Promise<void> {
-    const reservationId = await this.findLatestConfirmedReservationId(input);
+    const reservationId = await this.getLatestConfirmedReservationId(input);
 
     await this.prisma.machineReservation.update({
       where: {
