@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
+import { OpenBadge } from '@repo/domain/badge/open-badge';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
@@ -22,7 +23,7 @@ import styles from './assign-open-badge.form.module.css';
 type AssignOpenBadgeFormProps = {
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
-  openBadge: OpenBadgeViewModel;
+  openBadges: OpenBadgeViewModel[];
   translationNamespace?: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
@@ -36,7 +37,7 @@ type AssignOpenBadgeFormProps = {
 export default function AssignOpenBadgeForm({
   user,
   users,
-  openBadge,
+  openBadges,
   translationNamespace = 'pages.hub.admin.users.assignModal',
   isSubmitting = false,
   userSelectionDisabled,
@@ -47,23 +48,61 @@ export default function AssignOpenBadgeForm({
   feedback = null
 }: AssignOpenBadgeFormProps) {
   const t = useTranslations(translationNamespace);
-  const levelOptions = openBadge.levels ?? [];
-  const [selectedLevel, setSelectedLevel] = useState(levelOptions[0] ? String(levelOptions[0].level) : '');
+  const isUserSelectionDisabled = userSelectionDisabled ?? Boolean(user);
+  const [selectedOpenBadgeId, setSelectedOpenBadgeId] = useState(openBadges[0]?.id ?? '');
+  const selectedOpenBadge = useMemo(
+    () => openBadges.find((badge) => badge.id === selectedOpenBadgeId) ?? openBadges[0] ?? null,
+    [openBadges, selectedOpenBadgeId]
+  );
+  const levelOptions = selectedOpenBadge?.levels ?? [];
+  const assignableLevelOptions = useMemo(() => {
+    if (!selectedOpenBadge) {
+      return [];
+    }
+
+    if (!isUserSelectionDisabled) {
+      return levelOptions;
+    }
+
+    return levelOptions.filter((level) => level.level > selectedOpenBadge.activeLevel);
+  }, [isUserSelectionDisabled, levelOptions, selectedOpenBadge]);
+  const [selectedLevel, setSelectedLevel] = useState(
+    assignableLevelOptions[0] ? String(assignableLevelOptions[0].level) : ''
+  );
   const selectedLevelNumber = Number.parseInt(selectedLevel, 10);
   const userOptions = useMemo(() => {
-    if (Number.isNaN(selectedLevelNumber)) {
+    if (isUserSelectionDisabled || Number.isNaN(selectedLevelNumber)) {
       return users;
     }
 
     return users.filter((option) => (option.currentOpenBadgeLevel ?? 0) < selectedLevelNumber);
-  }, [selectedLevelNumber, users]);
+  }, [isUserSelectionDisabled, selectedLevelNumber, users]);
   const [selectedUserId, setSelectedUserId] = useState(user?.id ?? '');
-  const isUserSelectionDisabled = userSelectionDisabled ?? Boolean(user);
-  const canSubmit = Boolean(selectedLevel && selectedUserId);
+  const canSubmit = Boolean(selectedOpenBadge && selectedLevel && selectedUserId);
   const selectedUser = useMemo(
     () => userOptions.find((option) => option.id === selectedUserId) ?? null,
     [selectedUserId, userOptions]
   );
+
+  useEffect(() => {
+    if (!selectedOpenBadge) {
+      setSelectedOpenBadgeId('');
+      setSelectedLevel('');
+      return;
+    }
+
+    if (selectedOpenBadge.id !== selectedOpenBadgeId) {
+      setSelectedOpenBadgeId(selectedOpenBadge.id);
+    }
+  }, [selectedOpenBadge, selectedOpenBadgeId]);
+
+  useEffect(() => {
+    if (assignableLevelOptions.some((level) => String(level.level) === selectedLevel)) {
+      return;
+    }
+
+    setSelectedLevel(assignableLevelOptions[0] ? String(assignableLevelOptions[0].level) : '');
+  }, [assignableLevelOptions, selectedLevel]);
 
   useEffect(() => {
     setSelectedUserId(user?.id ?? '');
@@ -84,16 +123,24 @@ export default function AssignOpenBadgeForm({
       return;
     }
 
+    if (!selectedOpenBadge) {
+      return;
+    }
+
     if (Number.isNaN(selectedLevelNumber)) {
       return;
     }
 
     onConfirm({
       userId: selectedUserId,
-      openBadgeId: openBadge.id,
+      openBadgeId: selectedOpenBadge.id,
       level: selectedLevelNumber
     });
   };
+
+  if (!selectedOpenBadge) {
+    return null;
+  }
 
   return (
     <>
@@ -110,10 +157,10 @@ export default function AssignOpenBadgeForm({
 
       <Section className={styles.formSection}>
         <div className={styles.illustration}>
-          {openBadge.coverImage ? (
+          {selectedOpenBadge.coverImage ? (
             <Image
-              src={openBadge.coverImage}
-              alt={openBadge.name}
+              src={selectedOpenBadge.coverImage}
+              alt={selectedOpenBadge.name}
               fill
               sizes="120px"
               className={styles.illustrationImage}
@@ -123,6 +170,25 @@ export default function AssignOpenBadgeForm({
           )}
         </div>
         <div className={styles.fields}>
+          {openBadges.length > 1 ? (
+            <FormControl fullWidth>
+              <InputLabel id="assign-open-badge-badge-label">{t('badgeLabel')}</InputLabel>
+              <Select
+                labelId="assign-open-badge-badge-label"
+                label={t('badgeLabel')}
+                value={selectedOpenBadge.id}
+                disabled={isSubmitting}
+                onChange={(event) => setSelectedOpenBadgeId(event.target.value)}
+              >
+                {openBadges.map((badge) => (
+                  <MenuItem key={badge.id} value={badge.id}>
+                    {formatAssignableOpenBadgeLabel(badge)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : null}
+
           <FormControl fullWidth>
             <InputLabel id="assign-open-badge-level-label">{t('levelLabel')}</InputLabel>
             <Select
@@ -132,8 +198,8 @@ export default function AssignOpenBadgeForm({
               disabled={isSubmitting}
               onChange={(event) => setSelectedLevel(event.target.value)}
             >
-              {levelOptions.map((level) => (
-                <MenuItem key={`${openBadge.id}-${level.level}`} value={String(level.level)}>
+              {assignableLevelOptions.map((level) => (
+                <MenuItem key={`${selectedOpenBadge.id}-${level.level}`} value={String(level.level)}>
                   {formatOpenBadgeLevelLabel(level)}
                 </MenuItem>
               ))}
@@ -163,3 +229,13 @@ export default function AssignOpenBadgeForm({
     </>
   );
 }
+
+const formatAssignableOpenBadgeLabel = (badge: OpenBadgeViewModel): string => {
+  const activeLevel = OpenBadge.getActiveLevel(badge);
+
+  if (!activeLevel) {
+    return badge.name;
+  }
+
+  return `${badge.name} (${formatOpenBadgeLevelLabel(activeLevel)})`;
+};

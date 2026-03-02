@@ -85,7 +85,7 @@ export default function AssignOpenBadgeModalRoute({
       }}
       user={user}
       users={users}
-      openBadge={openBadges[0]}
+      openBadges={openBadges}
       translationNamespace={translationNamespace}
       isSubmitting={isPending}
       feedback={feedback}

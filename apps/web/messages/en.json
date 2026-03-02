@@ -515,11 +515,12 @@
             "openBadgesAssigned": "open badges assigned",
             "assign": "assign"
           },
-          "actions": {
-            "manage": "Manage",
-            "edit": "Edit",
-            "block": "Block",
-            "unblock": "Unblock"
+    "actions": {
+      "manage": "Manage",
+      "openBadges": "Open badges",
+      "edit": "Edit",
+      "block": "Block",
+      "unblock": "Unblock"
           },
           "adminStatus": {
             "none": "no",

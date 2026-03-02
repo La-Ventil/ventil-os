@@ -13,7 +13,7 @@ type AssignOpenBadgeModalProps = {
   onClose: () => void;
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
-  openBadge: OpenBadgeViewModel;
+  openBadges: OpenBadgeViewModel[];
   translationNamespace?: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
@@ -26,7 +26,7 @@ export default function AssignOpenBadgeModal({
   onClose,
   user,
   users,
-  openBadge,
+  openBadges,
   translationNamespace = 'pages.hub.admin.users.assignModal',
   isSubmitting = false,
   userSelectionDisabled,
@@ -53,7 +53,7 @@ export default function AssignOpenBadgeModal({
         descriptionId={descriptionId}
         user={user}
         users={users}
-        openBadge={openBadge}
+        openBadges={openBadges}
         translationNamespace={translationNamespace}
         isSubmitting={isSubmitting}
         userSelectionDisabled={userSelectionDisabled}

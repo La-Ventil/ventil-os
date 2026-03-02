@@ -517,11 +517,12 @@
             "openBadgesAssigned": "open badges attribués",
             "assign": "attribuer"
           },
-          "actions": {
-            "manage": "Gérer",
-            "edit": "Modifier",
-            "block": "Bloquer",
-            "unblock": "Débloquer"
+    "actions": {
+      "manage": "Gérer",
+      "openBadges": "Open badges",
+      "edit": "Modifier",
+      "block": "Bloquer",
+      "unblock": "Débloquer"
           },
           "adminStatus": {
             "none": "non",

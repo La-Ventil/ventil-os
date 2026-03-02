@@ -83,7 +83,7 @@ export default function OpenBadgeModalRouteClient({
           onClose={handleAssignClose}
           user={null}
           users={users}
-          openBadge={openBadge}
+          openBadges={[openBadge]}
           translationNamespace="pages.hub.openBadges.assignModal"
           isSubmitting={isPending}
           feedback={feedback}

@@ -28,6 +28,7 @@ type AdminUsersTableProps = {
   statusLabelFor: (user: UserAdminViewModel) => string;
   actionLabels: {
     manage: string;
+    openBadges: string;
     edit: string;
     block: string;
     unblock: string;

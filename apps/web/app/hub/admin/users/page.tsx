@@ -30,6 +30,7 @@ export default async function AdminUsersPage() {
     },
     actions: {
       manage: t('actions.manage'),
+      openBadges: t('actions.openBadges'),
       edit: t('actions.edit'),
       block: t('actions.block'),
       unblock: t('actions.unblock')
