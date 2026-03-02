@@ -26,8 +26,8 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/react": "19.2.5",
     "@turbo/gen": "^2.7.6",
+    "@types/react": "19.2.5",
     "eslint": "^9.34.0",
     "typescript": "5.9.3"
   },
@@ -45,6 +45,8 @@
     "next-auth": "^4.24.13",
     "next-intl": "^4.8.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   }
 }

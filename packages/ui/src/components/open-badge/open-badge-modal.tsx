@@ -18,6 +18,7 @@ import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
 import ModalLayout from '../modal-layout';
 import ModalIllustration from '../modal-illustration';
+import MarkdownContent from '../markdown-content';
 import { ThemeSection } from '../../theme';
 import styles from './open-badge-modal.module.css';
 
@@ -65,7 +66,7 @@ export default function OpenBadgeModal({
         <SectionSubtitle id={descriptionId} className={styles.sectionSubtitle}>
           {t('detailsModal.sectionSubtitle')}
         </SectionSubtitle>
-        <Typography variant="body1">{openBadge.description}</Typography>
+        <MarkdownContent content={openBadge.description} className={styles.description} />
       </Section>
 
       <Section className={styles.modalActions} p={2}>
@@ -101,9 +102,7 @@ export default function OpenBadgeModal({
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body1" color="text.primary">
-                {level.description}
-              </Typography>
+              <MarkdownContent content={level.description} className={styles.levelDescription} />
             </AccordionDetails>
           </Accordion>
         ))}

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import CardHeader from '../card-header';
 import { OpenBadgeIcon } from '../icons/open-badge-icon';
 import LevelChip from '../level-chip';
+import MarkdownContent from '../markdown-content';
 import styles from './open-badge-card.module.css';
 
 export type OpenBadgeLevel = DomainOpenBadgeLevel;
@@ -44,9 +45,7 @@ export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
                 />
               ))}
             </div>
-            <Typography variant="body2" color="primary">
-              {badge.description}
-            </Typography>
+            <MarkdownContent content={badge.description} className={styles.description} />
           </Stack>
         </Box>
       </CardContent>

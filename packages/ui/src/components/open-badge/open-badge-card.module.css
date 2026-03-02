@@ -84,3 +84,9 @@
     padding-bottom: 5px;
   }
 }
+
+.description {
+  color: var(--mui-palette-primary-main);
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}

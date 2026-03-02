@@ -1,0 +1,40 @@
+.root {
+  color: inherit;
+}
+
+.root > *:first-child {
+  margin-top: 0;
+}
+
+.root > *:last-child {
+  margin-bottom: 0;
+}
+
+.root p,
+.root ul,
+.root ol,
+.root pre,
+.root blockquote {
+  margin: 0 0 0.6em;
+}
+
+.root ul,
+.root ol {
+  padding-left: 1.4em;
+}
+
+.root li + li {
+  margin-top: 0.3em;
+}
+
+.root a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.root code {
+  font-family: var(--font-nunito), Arial, sans-serif;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 0.08em 0.3em;
+  border-radius: 4px;
+}

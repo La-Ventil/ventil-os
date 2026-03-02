@@ -22,6 +22,13 @@
   gap: 10px;
 }
 
+.description,
+.levelDescription {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  color: var(--mui-palette-text-primary);
+}
+
 .levelList :global(.MuiAccordion-root) {
   border-top: 1px solid var(--mui-palette-divider);
   border-radius: 0;
