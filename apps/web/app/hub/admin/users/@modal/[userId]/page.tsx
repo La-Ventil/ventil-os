@@ -12,8 +12,7 @@ export default async function AdminUsersModalPage({
   params
 }: AdminUsersModalPageProps): Promise<JSX.Element | null> {
   const { userId } = await params;
-  const users = await browseUsersAsAdmin();
-  const openBadges = await browseOpenBadges(userId);
+  const [users, openBadges] = await Promise.all([browseUsersAsAdmin(), browseOpenBadges(userId)]);
   const user = users.find((entry) => entry.id === userId) ?? null;
 
   if (!user) {

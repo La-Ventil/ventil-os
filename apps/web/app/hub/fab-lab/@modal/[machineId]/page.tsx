@@ -24,28 +24,37 @@ export default async function MachineModalPage({
   params,
   searchParams
 }: MachineModalPageProps): Promise<JSX.Element | null> {
-  const { machineId } = await params;
-  const { day } = searchParams ? await searchParams : {};
-  const machine = await viewMachineDetails(machineId);
+  const [{ machineId }, resolvedSearchParams, timeZone, session] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve<{ day?: string }>({}),
+    getTimeZone(),
+    getServerSession()
+  ]);
+  const { day } = resolvedSearchParams;
+  const now = new Date();
+  const currentUserId = session?.user?.id;
+  const machinePromise = viewMachineDetails(machineId);
+  const canReservePromise = checkReservationEligibility(machineId, currentUserId);
+  const todayKey = formatDayKey(now, timeZone);
+  const selectedDateKey = resolveDayKeyFromString(day) ?? todayKey;
+  const reservationsPromise = viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
+  const reservationsTodayPromise =
+    selectedDateKey === todayKey ? reservationsPromise : viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
+  const [machine, reservations, reservationsToday, canReserve] = await Promise.all([
+    machinePromise,
+    reservationsPromise,
+    reservationsTodayPromise,
+    canReservePromise
+  ]);
+
   if (!machine) {
     return null;
   }
 
-  const timeZone = await getTimeZone();
-  const todayKey = formatDayKey(new Date(), timeZone);
-  const selectedDateKey = resolveDayKeyFromString(day) ?? todayKey;
-  const reservations = await viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
-  const reservationsToday =
-    selectedDateKey === todayKey
-      ? reservations
-      : await viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
   const { end } = getDayIntervalForDayKey(todayKey, timeZone);
-  const availability = resolveMachineAvailability(machine.availability, reservationsToday, new Date(), end);
+  const availability = resolveMachineAvailability(machine.availability, reservationsToday, now, end);
   const machineWithAvailability = { ...machine, availability };
-  const session = await getServerSession();
-  const canReserve = await checkReservationEligibility(machineId, session?.user?.id);
   const canManage = canManageReservations(session?.user);
-  const currentUserId = session?.user?.id;
 
   return (
     <MachineModalRouteClient

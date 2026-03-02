@@ -16,21 +16,28 @@ export default async function MachineReservationModalPage({
   params,
   searchParams
 }: MachineReservationModalPageProps): Promise<JSX.Element | null> {
-  const { machineId } = await params;
-  const { start, reservationId } = searchParams ? await searchParams : {};
-  const machine = await viewMachineDetails(machineId);
+  const [{ machineId }, resolvedSearchParams, session] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve<{ start?: string; reservationId?: string }>({}),
+    getServerSession()
+  ]);
+  const { start, reservationId } = resolvedSearchParams;
+  const [machine, reservation, participantOptions] = await Promise.all([
+    viewMachineDetails(machineId),
+    reservationId ? viewMachineReservation(reservationId) : Promise.resolve(null),
+    browseUsersForReservation()
+  ]);
+
   if (!machine) {
     return null;
   }
-  const session = await getServerSession();
-  const reservation = reservationId ? await viewMachineReservation(reservationId) : null;
+
   if (reservation && reservation.machineId !== machineId) {
     return null;
   }
   if (reservation && !canViewReservation(reservation, session?.user)) {
     return null;
   }
-  const participantOptions = await browseUsersForReservation();
   const startAt = reservation?.startsAt ?? resolveIsoDateFromQuery(start) ?? new Date();
 
   return (

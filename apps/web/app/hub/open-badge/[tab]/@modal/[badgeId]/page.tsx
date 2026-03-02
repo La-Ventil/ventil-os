@@ -9,19 +9,17 @@ type OpenBadgeModalPageProps = {
 };
 
 export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageProps): Promise<JSX.Element | null> {
-  const { tab, badgeId } = await params;
+  const [{ tab, badgeId }, session] = await Promise.all([params, getServerSession()]);
 
   if (!isOpenBadgeTab(tab)) {
     return null;
   }
 
-  const session = await getServerSession();
-  const openBadge = await viewOpenBadge(badgeId);
+  const [openBadge, canAssign] = await Promise.all([viewOpenBadge(badgeId), canAssignOpenBadge(badgeId, session?.user)]);
   if (!openBadge) {
     return null;
   }
 
-  const canAssign = await canAssignOpenBadge(badgeId, session?.user);
   const users = canAssign ? await browseAssignableUsersForOpenBadge(badgeId) : [];
 
   return (
