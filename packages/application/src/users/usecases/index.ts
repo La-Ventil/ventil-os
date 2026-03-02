@@ -3,6 +3,7 @@ export * from './view-user-profile-by-id.query';
 export * from './browse-users-as-admin.query';
 export * from './browse-users-for-reservation.query';
 export * from './view-user-stats.query';
+export * from './validate-sign-in.query';
 export * from './sign-in.query';
 export * from './sign-up.command';
 export * from './update-profile.command';

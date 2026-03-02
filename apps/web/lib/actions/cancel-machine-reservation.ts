@@ -23,7 +23,7 @@ export async function cancelMachineReservationAction(
 
   try {
     await cancelReservation(reservationId, session.user);
-    revalidatePath('/hub/fab-lab');
+    revalidatePath('/hub/fab-lab', 'layout');
     return { success: true, message: t('pages.hub.fabLab.reservations.success.cancel') };
   } catch (error) {
     if (isMachineReservationError(error)) {

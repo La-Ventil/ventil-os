@@ -12,7 +12,7 @@ type EmailVerificationInput = {
 };
 
 export const sendEmailVerification = async ({ email, firstName, lastName, token, t }: EmailVerificationInput) => {
-  const verifyUrl = new URL(`/verify-email/${token}`, process.env.BASE_URL);
+  const verifyUrl = new URL(`/verify-email/${token}`, resolveAppBaseUrl());
   verifyUrl.searchParams.set('email', email);
   const fullName = formatUserFullName({ firstName, lastName });
   const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
@@ -39,7 +39,7 @@ type PasswordResetEmailInput = {
 };
 
 export const sendPasswordResetEmail = async ({ email, firstName, lastName, token, t }: PasswordResetEmailInput) => {
-  const resetUrl = new URL(`/update-password/${token}`, process.env.BASE_URL).toString();
+  const resetUrl = new URL(`/update-password/${token}`, resolveAppBaseUrl()).toString();
   const signature = t('emailSignature', { appName: process.env.APP_NAME ?? 'VentilOS' });
   const body = t('resetPassword.emailText', { name: firstName, resetUrl });
   const fullName = formatUserFullName({ firstName, lastName });
@@ -54,4 +54,14 @@ export const sendPasswordResetEmail = async ({ email, firstName, lastName, token
     subject: t('resetPassword.emailSubject', { appName: process.env.APP_NAME ?? 'VentilOS' }),
     text: `${body.trimEnd()}\n\n${signature}`
   });
+};
+
+const resolveAppBaseUrl = () => {
+  const candidate = process.env.BASE_URL ?? process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+
+  try {
+    return new URL(candidate);
+  } catch {
+    return new URL('http://localhost:3000');
+  }
 };

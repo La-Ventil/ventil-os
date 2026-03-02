@@ -83,6 +83,8 @@ export default function MachineReservationForm({
     () => excludeBy(participantOptions, (user) => user.id, currentUserId),
     [participantOptions, currentUserId]
   );
+  const isStartDateValid = startDate.isValid();
+  const serializedStartAt = isStartDateValid ? startDate.toDate().toISOString() : '';
 
   useEffect(() => {
     const parsed = parseIsoDate(state.values.startsAt);
@@ -94,8 +96,9 @@ export default function MachineReservationForm({
   }, [initialParticipants]);
 
   const formattedStart = useMemo(
-    () => format.dateTime(startDate.toDate(), { dateStyle: 'short', timeStyle: 'short', timeZone }),
-    [format, startDate, timeZone]
+    () =>
+      isStartDateValid ? format.dateTime(startDate.toDate(), { dateStyle: 'short', timeStyle: 'short', timeZone }) : '',
+    [format, isStartDateValid, startDate, timeZone]
   );
   const confirmLabel = reservationId
     ? t('modal.reservationForm.update')
@@ -109,7 +112,7 @@ export default function MachineReservationForm({
     <Form action={action} onSubmit={handleSubmit}>
       {reservationId ? <input type="hidden" name="reservationId" value={reservationId} /> : null}
       <input type="hidden" name="machineId" value={machineId} />
-      <input type="hidden" name="startsAt" value={startDate.toDate().toISOString()} />
+      <input type="hidden" name="startsAt" value={serializedStartAt} />
       {filteredParticipants.map((participant) => (
         <input key={participant.id} type="hidden" name="participantIds" value={participant.id} />
       ))}
@@ -132,7 +135,7 @@ export default function MachineReservationForm({
           textField: {
             fullWidth: true,
             helperText: fieldError('startsAt') ?? formattedStart,
-            error: Boolean(fieldError('startsAt'))
+            error: Boolean(fieldError('startsAt') || !isStartDateValid)
           }
         }}
       />

@@ -7,6 +7,7 @@ import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
+import { resolveSignInFailureMessageAction } from '../../../lib/actions/resolve-sign-in-failure-message';
 
 type LoginPageProps = {
   searchParams:
@@ -41,7 +42,11 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         <Typography variant="h3">{t('subtitle')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
-      <LoginForm initialEmail={email ?? ''} noticeMessage={noticeMessage} />
+      <LoginForm
+        initialEmail={email ?? ''}
+        noticeMessage={noticeMessage}
+        resolveFailureMessage={resolveSignInFailureMessageAction}
+      />
       <Stack spacing={2}>
         <Link href="/forgot-password">{t('forgotPassword')}</Link>
       </Stack>

@@ -23,7 +23,7 @@ export async function releaseMachineReservationAction(
 
   try {
     await releaseReservation(reservationId, session.user);
-    revalidatePath('/hub/fab-lab');
+    revalidatePath('/hub/fab-lab', 'layout');
     return { success: true, message: t('pages.hub.fabLab.reservations.success.release') };
   } catch (error) {
     if (isMachineReservationError(error)) {

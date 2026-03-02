@@ -52,7 +52,7 @@ export async function reserveMachineAction(
         participantIds
       });
     }
-    revalidatePath('/hub/fab-lab');
+    revalidatePath('/hub/fab-lab', 'layout');
 
     return formSuccess(
       data,

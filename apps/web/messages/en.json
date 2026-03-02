@@ -191,6 +191,8 @@
     "messages": {
       "signInSuccess": "Signed in successfully.",
       "signInFailed": "Sign-in failed.",
+      "signInBlocked": "Your account has been blocked. You cannot access Ventil O.S.",
+      "signInUnverified": "Please verify your email address before signing in.",
       "profileUpdated": "Your profile has been updated.",
       "emailVerificationSent": "A verification email has been sent.",
       "emailChangePending": "An email change is pending for {email}.",

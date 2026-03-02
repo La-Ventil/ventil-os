@@ -14,9 +14,10 @@ import Link from '../link';
 export type LoginFormProps = {
   initialEmail?: string;
   noticeMessage?: string;
+  resolveFailureMessage?: (email: string, password: string) => Promise<string | null>;
 };
 
-export default function LoginForm({ initialEmail = '', noticeMessage }: LoginFormProps) {
+export default function LoginForm({ initialEmail = '', noticeMessage, resolveFailureMessage }: LoginFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [email, setEmail] = useState(initialEmail);
@@ -41,8 +42,18 @@ export default function LoginForm({ initialEmail = '', noticeMessage }: LoginFor
       });
       router.push('/hub/profile');
     } else {
+      let message = t('messages.signInFailed');
+
+      if (resolveFailureMessage) {
+        try {
+          message = (await resolveFailureMessage(email, password)) ?? message;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       setFormState({
-        message: t('messages.signInFailed'),
+        message,
         success: false
       });
     }

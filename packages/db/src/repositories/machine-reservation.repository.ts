@@ -60,6 +60,7 @@ export class MachineReservationRepository {
     const reservations = await this.prisma.machineReservation.findMany({
       where: {
         machineId,
+        status: 'confirmed',
         startsAt: {
           lt: rangeEnd
         },
@@ -105,8 +106,13 @@ export class MachineReservationRepository {
   }
 
   async listForUser(userId: string): Promise<MachineReservationReadModel[]> {
+    const now = new Date();
     const reservations = await this.prisma.machineReservation.findMany({
       where: {
+        status: 'confirmed',
+        endsAt: {
+          gt: now
+        },
         OR: [
           { creatorId: userId },
           {

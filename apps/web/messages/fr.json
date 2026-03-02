@@ -207,6 +207,8 @@
     "messages": {
       "signInSuccess": "Connexion réussie.",
       "signInFailed": "Identifiants invalides.",
+      "signInBlocked": "Votre compte a été bloqué. Vous ne pouvez pas accéder à Ventil O.S.",
+      "signInUnverified": "Veuillez vérifier votre adresse email avant de vous connecter.",
       "profileUpdated": "Votre profil a été mis à jour.",
       "emailVerificationSent": "Un email de vérification a été envoyé.",
       "emailChangePending": "Un changement d’email est en attente pour {email}.",

@@ -30,8 +30,7 @@ test.describe('Machine reservation management journeys', () => {
 
     await cancelButton.click();
 
-    await expect(reservationCard.getByRole('button', { name: /annuler|cancel/i })).toHaveCount(0);
-    await expect(reservationCard).toContainText(/Bambu Lab X1C/i);
+    await expect(reservationCard).toHaveCount(0);
   });
 
   test('admin can release an active reservation from the reservations list card', async ({
@@ -56,7 +55,6 @@ test.describe('Machine reservation management journeys', () => {
     await expect(releaseButton).toBeVisible();
     await releaseButton.click();
 
-    await expect(reservationCard).not.toContainText(/en cours|in progress/i);
-    await expect(reservationCard.getByRole('button', { name: /libérer|release/i })).toHaveCount(0);
+    await expect(reservationCard).toHaveCount(0);
   });
 });
