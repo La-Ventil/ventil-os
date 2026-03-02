@@ -40,7 +40,8 @@ export const openBadgeAdminSelect = {
   _count: {
     select: {
       levels: true,
-      openBadgeProgresses: true
+      openBadgeProgresses: true,
+      machines: true
     }
   }
 } as const;

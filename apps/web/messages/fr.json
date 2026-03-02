@@ -79,7 +79,16 @@
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
     },
     "openBadge": {
+      "nameRequired": "Veuillez renseigner un nom d’open badge.",
+      "nameMaxLength": "Le nom de l’open badge ne doit pas dépasser 35 caractères.",
+      "descriptionRequired": "Veuillez renseigner une description.",
+      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
       "imageRequired": "Veuillez ajouter une image.",
+      "levelTitleRequired": "Veuillez renseigner le titre du niveau.",
+      "levelTitleMaxLength": "Le titre du niveau ne doit pas dépasser 35 caractères.",
+      "levelDescriptionRequired": "Veuillez renseigner la description du niveau.",
+      "levelDescriptionMaxLength": "La description du niveau ne doit pas dépasser 100 caractères.",
+      "levelAtLeastOne": "Au moins un niveau est requis.",
       "idRequired": "Badge introuvable."
     },
     "machineReservation": {
@@ -107,6 +116,9 @@
       "error": "Impossible de mettre à jour l'open badge.",
       "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
       "notFound": "Open badge introuvable."
+    },
+    "status": {
+      "attachedToMachines": "Retirez cet open badge des machines liées avant de le désactiver."
     },
     "assign": {
       "unauthorized": "Vous n'avez pas les droits pour attribuer cet open badge.",
@@ -442,7 +454,7 @@
           "activation": {
             "title": "Activation",
             "description": "Si le badge est actif, il pourra être attribué aux utilisateurs.",
-            "note": "Si le badge est lié à une machine, cette machine deviendra elle aussi inactive."
+            "note": "Un open badge lié à une ou plusieurs machines ne peut pas être désactivé tant qu’il reste attaché."
           },
           "actions": {
             "back": "Retour",

@@ -6,7 +6,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { MachineCreateFormInput, MachineUpdateFormInput } from '@repo/application/forms';
+import {
+  MachineCreateFormInput,
+  MachineUpdateFormInput,
+  MACHINE_DESCRIPTION_MAX_LENGTH,
+  MACHINE_NAME_MAX_LENGTH
+} from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
 import ImageUploadField from '../inputs/image-upload-field';
@@ -145,9 +150,6 @@ export default function MachineCreateForm({
     </Form>
   );
 }
-
-const MACHINE_NAME_MAX_LENGTH = 35;
-const MACHINE_DESCRIPTION_MAX_LENGTH = 100;
 
 const validateMachineNameErrors = (
   value: string,

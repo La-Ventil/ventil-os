@@ -21,6 +21,7 @@ export type OpenBadgeLevelsEditorProps = {
   maxLevels?: number;
   minLevels?: number;
   error?: string | undefined;
+  fieldErrorFor?: (fieldPath: string) => string | undefined;
   onLevelsChange?: (levels: OpenBadgeLevelDraft[]) => void;
   labels: {
     add: string;
@@ -37,6 +38,7 @@ export default function OpenBadgeLevelsEditor({
   maxLevels = 5,
   minLevels = 1,
   error,
+  fieldErrorFor,
   onLevelsChange,
   labels
 }: OpenBadgeLevelsEditorProps) {
@@ -63,6 +65,10 @@ export default function OpenBadgeLevelsEditor({
     <Stack spacing={2}>
       {levels.map((level, index) => {
         const levelNumber = index + 1;
+        const titleField = `levels.${index}.title`;
+        const descriptionField = `levels.${index}.description`;
+        const titleError = fieldErrorFor?.(titleField);
+        const descriptionError = fieldErrorFor?.(descriptionField);
         return (
           <Stack key={`${fieldPrefix}-${index}`} spacing={1} className={styles.levelBlock}>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -80,6 +86,8 @@ export default function OpenBadgeLevelsEditor({
                 required
                 fullWidth
                 defaultValue={level.title}
+                error={Boolean(titleError)}
+                helperText={titleError}
               />
               <TextField
                 name={`levels[${index}].description`}
@@ -89,6 +97,8 @@ export default function OpenBadgeLevelsEditor({
                 multiline
                 minRows={3}
                 defaultValue={level.description}
+                error={Boolean(descriptionError)}
+                helperText={descriptionError}
               />
             </Stack>
             {index < levels.length - 1 && <Divider />}

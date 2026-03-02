@@ -4,9 +4,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Link from 'next/link';
-import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
 import OpenBadgeQuickActions from './open-badge-quick-actions';
+import styles from './admin-open-badges-table.module.css';
 
 type AdminOpenBadgesTableProps = {
   badges: OpenBadgeAdminViewModel[];
@@ -50,7 +51,11 @@ export default function AdminOpenBadgesTable({
       </TableHead>
       <TableBody>
         {badges.map((badge) => (
-          <TableRow key={badge.id} hover>
+          <TableRow
+            key={badge.id}
+            hover
+            className={badge.status === OpenBadgeAdminStatus.Inactive ? styles.inactiveRow : undefined}
+          >
             <TableCell>
               <OpenBadgeQuickActions badge={badge} labels={actionLabels} />
             </TableCell>

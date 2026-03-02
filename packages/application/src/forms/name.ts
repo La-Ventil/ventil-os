@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-const emojiPattern = /\p{Extended_Pictographic}/u;
+export const DEFAULT_NAME_MAX_LENGTH = 40;
+export const emojiPattern = /\p{Extended_Pictographic}/u;
+
+export const containsEmoji = (value: string): boolean => emojiPattern.test(value);
 
 export const nameSchema = (options: {
   requiredMessage: string;
@@ -8,11 +11,11 @@ export const nameSchema = (options: {
   noEmojiMessage: string;
   maxLength?: number;
 }) => {
-  const maxLength = options.maxLength ?? 40;
+  const maxLength = options.maxLength ?? DEFAULT_NAME_MAX_LENGTH;
 
   return z
     .string()
     .min(1, { message: options.requiredMessage })
     .max(maxLength, { message: options.maxLengthMessage })
-    .refine((value) => !emojiPattern.test(value), { message: options.noEmojiMessage });
+    .refine((value) => !containsEmoji(value), { message: options.noEmojiMessage });
 };

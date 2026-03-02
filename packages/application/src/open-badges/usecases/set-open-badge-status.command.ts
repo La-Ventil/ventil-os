@@ -13,9 +13,13 @@ export type SetOpenBadgeStatusResult = Awaited<ReturnType<typeof openBadgeReposi
 export const setOpenBadgeStatus: Command<[SetOpenBadgeStatusInput], SetOpenBadgeStatusResult> = async (
   input: SetOpenBadgeStatusInput
 ) => {
-  const badge = await openBadgeRepository.getOpenBadgeById(input.id);
+  const badge = await openBadgeRepository.getOpenBadgeAdminById(input.id);
   if (!badge) {
     throw new OpenBadgeError('openBadge.status.notFound');
+  }
+
+  if (input.status === 'inactive' && badge._count.machines > 0) {
+    throw new OpenBadgeError('openBadge.status.attachedToMachines');
   }
 
   return openBadgeRepository.setOpenBadgeStatus(input.id, input.status);

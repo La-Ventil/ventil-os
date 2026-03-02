@@ -7,7 +7,15 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import { SignupFormInput } from '@repo/application/forms';
+import {
+  SignupFormInput,
+  DEFAULT_NAME_MAX_LENGTH,
+  containsEmoji,
+  PASSWORD_MIN_LENGTH,
+  passwordHasLowercase,
+  passwordHasNumber,
+  passwordHasUppercase
+} from '@repo/application/forms';
 import { EducationLevel } from '@repo/domain/user/education-level';
 import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
 import { useEffect, useId, useState } from 'react';
@@ -251,9 +259,6 @@ export default function SignupForm({ formState }: SignupFormProps) {
   );
 }
 
-const emojiPattern = /\p{Extended_Pictographic}/u;
-const SIGNUP_NAME_MAX_LENGTH = 40;
-
 const validateSignupNameErrors = (
   value: string,
   touched: boolean,
@@ -265,11 +270,11 @@ const validateSignupNameErrors = (
     errors.push(messages.required);
   }
 
-  if (value.length > SIGNUP_NAME_MAX_LENGTH) {
+  if (value.length > DEFAULT_NAME_MAX_LENGTH) {
     errors.push(messages.maxLength);
   }
 
-  if (emojiPattern.test(value)) {
+  if (containsEmoji(value)) {
     errors.push(messages.noEmoji);
   }
 
@@ -297,19 +302,19 @@ const validatePasswordErrors = (
     return errors;
   }
 
-  if (value.length < 7) {
+  if (value.length < PASSWORD_MIN_LENGTH) {
     errors.push(messages.minLength);
   }
 
-  if (!/[A-Z]/.test(value)) {
+  if (!passwordHasUppercase(value)) {
     errors.push(messages.uppercaseRequired);
   }
 
-  if (!/[a-z]/.test(value)) {
+  if (!passwordHasLowercase(value)) {
     errors.push(messages.lowercaseRequired);
   }
 
-  if (!/[0-9]/.test(value)) {
+  if (!passwordHasNumber(value)) {
     errors.push(messages.numberRequired);
   }
 

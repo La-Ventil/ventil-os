@@ -2,18 +2,21 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { imageFileSchema } from './image-upload';
 
+export const MACHINE_NAME_MAX_LENGTH = 35;
+export const MACHINE_DESCRIPTION_MAX_LENGTH = 100;
+
 const machineCreateFormSchema = z.object({
   name: zfd.text(
     z
       .string()
       .min(1, { message: 'validation.machine.nameRequired' })
-      .max(35, { message: 'validation.machine.nameMaxLength' })
+      .max(MACHINE_NAME_MAX_LENGTH, { message: 'validation.machine.nameMaxLength' })
   ),
   description: zfd.text(
     z
       .string()
       .min(1, { message: 'validation.machine.descriptionRequired' })
-      .max(100, { message: 'validation.machine.descriptionMaxLength' })
+      .max(MACHINE_DESCRIPTION_MAX_LENGTH, { message: 'validation.machine.descriptionMaxLength' })
   ),
   imageFile: zfd.file(imageFileSchema).optional(),
   badgeRequired: zfd.checkbox(),

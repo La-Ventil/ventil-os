@@ -1,15 +1,20 @@
 import { z } from 'zod';
 
+export const PASSWORD_MIN_LENGTH = 7;
+export const passwordHasUppercase = (value: string): boolean => /[A-Z]/.test(value);
+export const passwordHasLowercase = (value: string): boolean => /[a-z]/.test(value);
+export const passwordHasNumber = (value: string): boolean => /[0-9]/.test(value);
+
 export const passwordSchema = z
   .string()
-  .min(7, { message: 'validation.password.minLength' })
-  .refine((password) => /[A-Z]/.test(password), {
+  .min(PASSWORD_MIN_LENGTH, { message: 'validation.password.minLength' })
+  .refine((password) => passwordHasUppercase(password), {
     message: 'validation.password.uppercaseRequired'
   })
-  .refine((password) => /[a-z]/.test(password), {
+  .refine((password) => passwordHasLowercase(password), {
     message: 'validation.password.lowercaseRequired'
   })
-  .refine((password) => /[0-9]/.test(password), {
+  .refine((password) => passwordHasNumber(password), {
     message: 'validation.password.numberRequired'
   });
 

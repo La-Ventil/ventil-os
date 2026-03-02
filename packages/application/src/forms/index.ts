@@ -2,6 +2,7 @@ export * from './email';
 export * from './login-form-input';
 export * from './machine-create-form-input';
 export * from './machine-update-form-input';
+export * from './name';
 export * from './open-badge-create-form-input';
 export * from './password';
 export * from './profile-form-input';

@@ -93,6 +93,19 @@
       "descriptionRequired": "Please enter a description.",
       "descriptionMaxLength": "Description must be at most 100 characters.",
       "imageRequired": "Please add an image."
+    },
+    "openBadge": {
+      "nameRequired": "Please enter an open badge name.",
+      "nameMaxLength": "Open badge name must be at most 35 characters.",
+      "descriptionRequired": "Please enter a description.",
+      "descriptionMaxLength": "Description must be at most 100 characters.",
+      "imageRequired": "Please add an image.",
+      "levelTitleRequired": "Please enter a level title.",
+      "levelTitleMaxLength": "Level title must be at most 35 characters.",
+      "levelDescriptionRequired": "Please enter a level description.",
+      "levelDescriptionMaxLength": "Level description must be at most 100 characters.",
+      "levelAtLeastOne": "At least one level is required.",
+      "idRequired": "Open badge not found."
     }
   },
   "resetPassword": {
@@ -127,6 +140,20 @@
     }
   },
   "openBadge": {
+    "create": {
+      "success": "Open badge created.",
+      "error": "Unable to create the open badge.",
+      "unauthorized": "You are not allowed to create an open badge."
+    },
+    "update": {
+      "success": "Open badge updated.",
+      "error": "Unable to update the open badge.",
+      "unauthorized": "You are not allowed to update this open badge.",
+      "notFound": "Open badge not found."
+    },
+    "status": {
+      "attachedToMachines": "Detach this open badge from machines before disabling it."
+    },
     "assign": {
       "unauthorized": "You are not allowed to assign this open badge.",
       "awarderNotFound": "Assigning user was not found.",
@@ -425,7 +452,7 @@
           "activation": {
             "title": "Activation",
             "description": "If the badge is active, it can be assigned to users.",
-            "note": "If linked to a machine, that machine will also become inactive."
+            "note": "A badge linked to one or more machines cannot be disabled until it is detached."
           },
           "actions": {
             "back": "Back",

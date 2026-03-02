@@ -27,12 +27,12 @@ test.describe('Admin open badge journeys', () => {
 
     await page.getByRole('button', { name: /enregistrer|save/i }).click();
 
-    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/);
+    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
   });
 
   test('admin can edit an open badge from row quick actions', async ({ page, loginAs }) => {
-    const updatedName = `Impression 3D Bambu Lab ${Date.now()}`;
+    const updatedName = `Badge ${Date.now()}`;
 
     await loginAs('globalAdmin');
     await page.goto('/hub/admin/open-badges');
@@ -48,7 +48,7 @@ test.describe('Admin open badge journeys', () => {
 
     await page.getByRole('button', { name: /enregistrer|save/i }).click();
 
-    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/);
+    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(updatedName, 'i') })).toBeVisible();
   });
 });

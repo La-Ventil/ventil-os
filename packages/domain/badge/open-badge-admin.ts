@@ -6,5 +6,6 @@ export type OpenBadgeAdmin = {
   coverImage?: string | null;
   levelsCount: number;
   assignedCount: number;
+  machineLinksCount: number;
   status: ActivityStatus;
 };

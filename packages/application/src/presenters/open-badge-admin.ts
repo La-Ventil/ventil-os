@@ -7,5 +7,6 @@ export const mapOpenBadgeAdminToViewModel = (badge: OpenBadgeAdminReadModel): Op
   coverImage: badge.coverImage ?? null,
   levelsCount: badge._count.levels,
   assignedCount: badge._count.openBadgeProgresses,
+  machineLinksCount: badge._count.machines,
   status: badge.status
 });

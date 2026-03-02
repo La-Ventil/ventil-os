@@ -9,7 +9,7 @@ test.describe('Admin open badges journeys', () => {
     const table = page.getByRole('table');
     await expect(table).toBeVisible();
 
-    const row = table.getByRole('row').filter({ hasText: 'Impression 3D Bambu Lab' }).first();
+    const row = table.getByRole('row').filter({ hasText: 'organisation du Repair Café' }).first();
     const statusCell = row.getByRole('cell').nth(5);
     await expect(row).toBeVisible();
     await expect(statusCell).toHaveText(/oui|yes/i);

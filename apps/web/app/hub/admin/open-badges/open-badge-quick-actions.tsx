@@ -20,8 +20,14 @@ type OpenBadgeQuickActionsProps = {
 export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickActionsProps) {
   const [isPending, startTransition] = useTransition();
   const canRemove = badge.assignedCount === 0;
+  const canToggleStatus =
+    badge.status !== OpenBadgeAdminStatus.Active || badge.machineLinksCount === 0;
 
   const handleToggleStatus = () => {
+    if (!canToggleStatus) {
+      return;
+    }
+
     const nextStatus =
       badge.status === OpenBadgeAdminStatus.Active
         ? OpenBadgeAdminStatus.Inactive
@@ -55,7 +61,8 @@ export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickA
         { label: labels.edit, href: `/hub/admin/open-badges/${badge.id}/edit` },
         {
           label: badge.status === OpenBadgeAdminStatus.Active ? labels.deactivate : labels.activate,
-          onClick: handleToggleStatus
+          onClick: handleToggleStatus,
+          disabled: !canToggleStatus
         },
         { label: labels.remove, onClick: handleRemove, disabled: !canRemove }
       ]}

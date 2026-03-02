@@ -17,9 +17,17 @@ type UpdateOpenBadgeResult = Awaited<ReturnType<typeof openBadgeRepository.updat
 export const updateOpenBadge: Command<[UpdateOpenBadgeInput], UpdateOpenBadgeResult> = async (
   input: UpdateOpenBadgeInput
 ) => {
-  const current = await openBadgeRepository.getOpenBadgeById(input.id);
-  if (!current) {
+  const [current, admin] = await Promise.all([
+    openBadgeRepository.getOpenBadgeById(input.id),
+    openBadgeRepository.getOpenBadgeAdminById(input.id)
+  ]);
+
+  if (!current || !admin) {
     throw new OpenBadgeError('openBadge.update.notFound');
+  }
+
+  if (!input.activationEnabled && admin._count.machines > 0) {
+    throw new OpenBadgeError('openBadge.status.attachedToMachines');
   }
 
   const coverImage = input.imageUrl !== undefined ? input.imageUrl : current.coverImage ?? null;

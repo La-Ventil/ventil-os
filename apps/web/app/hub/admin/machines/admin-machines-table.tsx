@@ -2,9 +2,10 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import type { MachineAdminViewModel } from '@repo/view-models/machine-admin';
+import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/view-models/machine-admin';
 import AdminTable from '@repo/ui/admin/admin-table';
 import MachineQuickActions from './machine-quick-actions';
+import styles from './admin-machines-table.module.css';
 
 type AdminMachinesTableProps = {
   machines: MachineAdminViewModel[];
@@ -47,7 +48,11 @@ export default function AdminMachinesTable({
       </TableHead>
       <TableBody>
         {machines.map((machine) => (
-          <TableRow key={machine.id} hover>
+          <TableRow
+            key={machine.id}
+            hover
+            className={machine.status === MachineAdminStatus.Inactive ? styles.inactiveRow : undefined}
+          >
             <TableCell>
               <MachineQuickActions machine={machine} labels={actionLabels} />
             </TableCell>

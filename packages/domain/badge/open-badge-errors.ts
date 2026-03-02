@@ -2,6 +2,7 @@ export type OpenBadgeErrorCode =
   | 'openBadge.assign.unauthorized'
   | 'openBadge.assign.awarderNotFound'
   | 'openBadge.assign.targetNotFound'
+  | 'openBadge.status.attachedToMachines'
   | 'openBadge.update.notFound'
   | 'openBadge.status.notFound'
   | 'openBadge.delete.notFound'
