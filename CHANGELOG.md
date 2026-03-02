@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.17](https://github.com/La-Ventil/ventil-os/compare/v0.0.16...v0.0.17) (2026-03-02)
+
+
+### Features
+
+* **web:** edit admin users in a modal ([e8344a7](https://github.com/La-Ventil/ventil-os/commit/e8344a75b8f9a325992f5c6603c98a25e0477594))
+* **web:** expand user badge management ([8e1a5a3](https://github.com/La-Ventil/ventil-os/commit/8e1a5a338625dcbbe7ea7ecd603f3c9021a781c6))
+* **web:** let admins remove user open badges ([3c54a8f](https://github.com/La-Ventil/ventil-os/commit/3c54a8fe5d56f69cbb7819c1e06f87241f1cbb0a))
+* **web:** support markdown in open badge descriptions ([74ad320](https://github.com/La-Ventil/ventil-os/commit/74ad3200988430d664cd75aeda826e537824525c))
+
+
+### Bug Fixes
+
+* **web:** handle auth and reservation edge cases ([9885fef](https://github.com/La-Ventil/ventil-os/commit/9885fef1719f4feaaeb5c18910c6b8540d31d6e1))
+* **web:** improve signup and machine creation forms ([c72edb8](https://github.com/La-Ventil/ventil-os/commit/c72edb8094788da01c6d26c12183a65b02916b96))
+* **web:** smooth reservations and events placeholders ([52e86bf](https://github.com/La-Ventil/ventil-os/commit/52e86bf818ba2ede3380a82e04649b8d90b7d1f4))
+* **web:** tighten assignable user filtering ([dc28e51](https://github.com/La-Ventil/ventil-os/commit/dc28e51df56de63f70dc4f5f3c426e1ec8aee7b6))
+* **web:** tighten form validation and badge admin guards ([047c73e](https://github.com/La-Ventil/ventil-os/commit/047c73e72b449d728e350f4daba37a98793f6781))
+
+
+### Performance
+
+* **web:** speed up modal route loading ([2cf74ea](https://github.com/La-Ventil/ventil-os/commit/2cf74ead02f20e14348a558bd410782bf9189164))
+
 ### [0.0.16](https://github.com/La-Ventil/ventil-os/compare/v0.0.15...v0.0.16) (2026-03-02)
 
 
