@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.16](https://github.com/La-Ventil/ventil-os/compare/v0.0.15...v0.0.16) (2026-03-02)
+
+
+### Features
+
+* **docs:** render markdown and improve docs navigation ([43bceec](https://github.com/La-Ventil/ventil-os/commit/43bceec6e46463390932cdf1d7bb44ef331b3da7))
+
 ### [0.0.15](https://github.com/La-Ventil/ventil-os/compare/v0.0.14...v0.0.15) (2026-03-02)
 
 
