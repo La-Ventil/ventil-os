@@ -66,6 +66,7 @@
       "lastNameRequired": "Please enter your last name.",
       "lastNameMaxLength": "Last name must be at most 40 characters.",
       "lastNameNoEmoji": "Last name cannot include emojis.",
+      "roleRequired": "Please select a profile.",
       "profileRequired": "Please select a profile.",
       "termsRequired": "You must accept the privacy policy.",
       "educationLevelRequired": "Please select a school level."

@@ -6,6 +6,8 @@ import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminUsersTable from './admin-users-table';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminUsersPage() {
   const t = await getTranslations('pages.hub.admin.users');
   const users = await browseUsersAsAdmin();

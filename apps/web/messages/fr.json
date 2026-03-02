@@ -63,6 +63,7 @@
       "lastNameRequired": "Veuillez renseigner votre nom.",
       "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
       "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
+      "roleRequired": "Veuillez sélectionner un profil.",
       "profileRequired": "Veuillez sélectionner un profil.",
       "termsRequired": "Vous devez accepter la politique de confidentialité.",
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
