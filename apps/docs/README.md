@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Docs App
 
-## Getting Started
+`apps/docs` is the presentation layer for repository documentation.
 
-First, run the development server:
+The canonical content lives in:
+
+- `docs/user/`
+- `docs/admin/`
+- `docs/contributor/`
+
+This app reads those files directly and renders them for browsing.
+
+## Local Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm --filter docs dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Type Checking
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm --filter docs check-types
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+## GitHub Pages Build
 
-## Learn More
+Use the static export build when targeting GitHub Pages:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm --filter docs build:gh-pages
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This enables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `output: 'export'`
+- `trailingSlash: true`
+- static generation for dynamic docs routes
 
-## Deploy on Vercel
+## Base Path
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+GitHub Pages usually serves the site from a repository subpath.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The docs app supports:
+
+- `DOCS_BASE_PATH`
+
+Example:
+
+```bash
+DOCS_BASE_PATH=/ventil-os pnpm --filter docs build:gh-pages
+```
+
+When running in GitHub Actions, the app can also infer the base path from `GITHUB_REPOSITORY`.
+
+## Output
+
+The static export is written to:
+
+- `apps/docs/out/`
+
+## Current Scope
+
+The app currently exposes:
+
+- audience sections (`user`, `admin`, `contributor`)
+- root repository references (`README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`)
+- source file views for canonical markdown and product assets

@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3001",
     "build": "next build",
+    "build:gh-pages": "DOCS_EXPORT=1 next build",
     "start": "next start",
     "lint": "echo \"skip lint (docs)\"",
     "lint:dev": "echo \"skip lint:dev (docs)\"",
-    "check-types": "echo \"skip check-types (docs)\"",
+    "check-types": "rm -rf .next/types && tsc --noEmit",
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "dependencies": {

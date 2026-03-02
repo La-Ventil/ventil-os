@@ -1,78 +1,85 @@
-import Image, { type ImageProps } from 'next/image';
-import QuickActionsMenu from '@repo/ui/quick-actions-menu';
-import styles from './page.module.css';
+import type { JSX } from 'react';
+import Link from 'next/link';
+import styles from './docs.module.css';
+import { rootReferences, sectionLabels } from '../lib/content';
 
-type Props = Omit<ImageProps, 'src'> & {
-  srcLight: string;
-  srcDark: string;
+const sectionDescriptions: Record<keyof typeof sectionLabels, string> = {
+  user: 'Help content for people using Ventil O.S. day to day.',
+  admin: 'Operational guides for people managing the back office.',
+  contributor: 'Engineering, architecture, testing, accessibility, and product references.'
 };
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
+export default function HomePage(): JSX.Element {
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+    <main className={styles.page}>
+      <div className={styles.shell}>
+        <aside className={styles.sidebar}>
+          <span className={styles.brand}>Ventil O.S.</span>
+          <h1 className={styles.sidebarTitle}>Documentation</h1>
+          <p className={styles.sidebarText}>
+            `docs/` remains the source of truth. This app is the reading layer for user, admin, and contributor
+            documentation.
+          </p>
+          <nav className={styles.nav} aria-label="Main documentation sections">
+            {Object.entries(sectionLabels).map(([key, label]) => (
+              <Link key={key} href={`/${key}`} className={styles.navLink}>
+                <span className={styles.navLabel}>{label}</span>
+                <span className={styles.navMeta}>{sectionDescriptions[key as keyof typeof sectionLabels]}</span>
+              </Link>
+            ))}
+          </nav>
+          <span className={styles.sectionLabel}>Repository references</span>
+          <nav className={styles.secondaryNav} aria-label="Repository references">
+            {rootReferences.map((reference) => (
+              <Link key={reference.key} href={`/reference/${reference.key}`} className={styles.secondaryLink}>
+                <span className={styles.secondaryLabel}>{reference.label}</span>
+                <span className={styles.secondaryMeta}>{reference.description}</span>
+              </Link>
+            ))}
+          </nav>
+        </aside>
+        <section className={styles.content}>
+          <header className={styles.header}>
+            <span className={styles.eyebrow}>Portal</span>
+            <h2 className={styles.title}>Audience-first documentation</h2>
+            <p className={styles.description}>
+              The docs are split by audience so end users, admins, and contributors do not have to navigate the
+              same level of detail.
+            </p>
+          </header>
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/docs/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+          <div className={styles.grid}>
+            {Object.entries(sectionLabels).map(([key, label]) => (
+              <article key={key} className={styles.card}>
+                <Link href={`/${key}`} className={styles.homeLink}>
+                  <span className={styles.entryTitle}>{label}</span>
+                  <span className={styles.entryMeta}>{sectionDescriptions[key as keyof typeof sectionLabels]}</span>
+                </Link>
+              </article>
+            ))}
+          </div>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image className={styles.logo} src="/vercel.svg" alt="Vercel logomark" width={20} height={20} />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.com/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-        <QuickActionsMenu />
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/window.svg" alt="Window icon" width={16} height={16} />
-          Examples
-        </a>
-        <a href="https://turborepo.com?utm_source=create-turbo" target="_blank" rel="noopener noreferrer">
-          <Image aria-hidden src="/globe.svg" alt="Globe icon" width={16} height={16} />
-          Go to turborepo.com →
-        </a>
-      </footer>
-    </div>
+          <header className={styles.header}>
+            <span className={styles.eyebrow}>Repository</span>
+            <h2 className={styles.title}>Useful project documents</h2>
+            <p className={styles.description}>
+              Root-level repository files remain visible from the docs app, while their long-lived content can move
+              into `docs/` over time.
+            </p>
+          </header>
+
+          <div className={styles.grid}>
+            {rootReferences.map((reference) => (
+              <article key={reference.key} className={styles.referenceCard}>
+                <Link href={`/reference/${reference.key}`} className={styles.referenceLink}>
+                  <span className={styles.referenceTitle}>{reference.label}</span>
+                  <span className={styles.referenceMeta}>{reference.description}</span>
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }

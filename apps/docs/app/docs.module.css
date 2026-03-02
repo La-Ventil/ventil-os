@@ -1,0 +1,260 @@
+.page {
+  min-height: 100svh;
+  background:
+    radial-gradient(circle at top right, rgba(237, 247, 244, 0.9), transparent 30%),
+    linear-gradient(180deg, #f8faf9 0%, #eef3f1 100%);
+  color: #102118;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 100svh;
+}
+
+.sidebar {
+  border-right: 1px solid #d6e4dc;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  padding: 28px 22px;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow-y: auto;
+}
+
+.brand {
+  display: block;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3c6754;
+  margin-bottom: 12px;
+}
+
+.sidebarTitle {
+  font-size: 1.55rem;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.sidebarText {
+  color: #49685a;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.nav,
+.secondaryNav {
+  display: grid;
+  gap: 8px;
+}
+
+.nav {
+  margin-bottom: 22px;
+}
+
+.navLink,
+.secondaryLink,
+.entryLink,
+.referenceLink,
+.sourceLink,
+.homeLink {
+  display: block;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.navLink:hover,
+.secondaryLink:hover,
+.entryLink:hover,
+.referenceLink:hover,
+.sourceLink:hover,
+.homeLink:hover {
+  background: rgba(31, 88, 62, 0.08);
+  border-color: rgba(31, 88, 62, 0.12);
+}
+
+.navLabel,
+.secondaryLabel,
+.entryTitle,
+.referenceTitle {
+  display: block;
+  font-weight: 600;
+}
+
+.navMeta,
+.secondaryMeta,
+.entryMeta,
+.referenceMeta {
+  display: block;
+  color: #5f7f71;
+  font-size: 0.92rem;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #587767;
+  margin: 12px 0 10px;
+}
+
+.content {
+  padding: 40px 48px 64px;
+}
+
+.header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #587767;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.description {
+  color: #49685a;
+  max-width: 70ch;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card,
+.referenceCard,
+.mainCard {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #d6e4dc;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 18px 40px rgba(40, 88, 66, 0.08);
+}
+
+.mainCard {
+  border-radius: 26px;
+  padding: 26px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.sourceLink {
+  width: fit-content;
+  color: #1f583e;
+  font-weight: 600;
+  border-color: rgba(31, 88, 62, 0.12);
+}
+
+.document {
+  line-height: 1.7;
+}
+
+.document h1,
+.document h2,
+.document h3,
+.document h4 {
+  line-height: 1.2;
+  margin-top: 1.6em;
+  margin-bottom: 0.55em;
+}
+
+.document h1 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.document h2 {
+  font-size: 1.45rem;
+}
+
+.document h3 {
+  font-size: 1.15rem;
+}
+
+.document p,
+.document ul,
+.document ol,
+.document pre {
+  margin-bottom: 1rem;
+}
+
+.document ul,
+.document ol {
+  padding-left: 1.3rem;
+}
+
+.document li + li {
+  margin-top: 0.35rem;
+}
+
+.document code {
+  font-family: var(--font-geist-mono), monospace;
+  background: #eef5f1;
+  border-radius: 6px;
+  padding: 0.1rem 0.3rem;
+}
+
+.document pre {
+  overflow-x: auto;
+  padding: 14px;
+  border-radius: 16px;
+  background: #12241b;
+  color: #eaf5ef;
+}
+
+.document pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.entryList {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.emptyState {
+  margin-top: 12px;
+  color: #5f7f71;
+}
+
+@media (max-width: 960px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #d6e4dc;
+  }
+
+  .content {
+    padding: 28px 20px 48px;
+  }
+}
