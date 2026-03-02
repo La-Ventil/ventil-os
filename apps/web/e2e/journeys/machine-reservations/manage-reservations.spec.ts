@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/test';
 import {
-  createReservationFromSchedule,
   getReservationCard,
   openMyReservationsTab,
+  submitReservationFromModalRoute,
   setLatestReservationActive,
   setLatestReservationUpcoming
 } from '../../helpers/machine-reservations';
@@ -14,7 +14,7 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await createReservationFromSchedule(page);
+    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
 
     await openMyReservationsTab(page);
     await expect(getReservationCard(page)).toBeVisible();
@@ -40,7 +40,7 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await createReservationFromSchedule(page);
+    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
 
     await openMyReservationsTab(page);
     await expect(getReservationCard(page)).toBeVisible();

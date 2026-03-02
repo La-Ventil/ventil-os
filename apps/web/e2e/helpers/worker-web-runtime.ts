@@ -121,6 +121,7 @@ export const createWorkerWebRuntime = async (workerInfo: WorkerInfo): Promise<Wo
     HOST,
     PORT: String(port),
     NEXT_DIST_DIR: nextDistDir,
+    NEXTAUTH_URL: baseURL,
     PLAYWRIGHT_DB_SLOT: slot,
     DATABASE_URL: dbTarget.url
   };

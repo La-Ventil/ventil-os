@@ -8,14 +8,15 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-// Use process.env.PORT by default and fallback to port 3001
-const PORT = process.env.PORT || 3001;
+/* Keep E2E on a dedicated port so it does not collide with a local dev server on :3000. */
+const PORT = process.env.PLAYWRIGHT_PORT || 3001;
 const HOST = process.env.HOST || '127.0.0.1';
 const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
 const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
 const headedMode = process.env.PLAYWRIGHT_HEADED === '1';
 const sharedDbSlot = process.env.PLAYWRIGHT_DB_SLOT?.trim() || 'default';
 const sharedDbSchema = `e2e_${sharedDbSlot.replace(/[^a-zA-Z0-9_]/g, '_')}`;
+const sharedDistDir = process.env.NEXT_DIST_DIR || `.next-e2e-${sharedDbSlot}`;
 const webServerDatabaseUrl = (() => {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) {
@@ -93,10 +94,13 @@ export default defineConfig({
         command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
         url: baseURL,
         timeout: 120 * 1000,
-        reuseExistingServer: !process.env.CI,
+        /* E2E relies on schema-scoped DATABASE_URL, so reusing an arbitrary local dev server is unsafe. */
+        reuseExistingServer: false,
         env: {
           ...process.env,
           ...(webServerDatabaseUrl ? { DATABASE_URL: webServerDatabaseUrl } : {}),
+          NEXT_DIST_DIR: sharedDistDir,
+          NEXTAUTH_URL: baseURL,
           PLAYWRIGHT_DB_SLOT: sharedDbSlot
         }
       },

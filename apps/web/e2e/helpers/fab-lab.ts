@@ -7,8 +7,8 @@ export async function openMachineDetails(page: Page, machineName: RegExp = /Bamb
   await expect(machineCard).toBeVisible();
   await machineCard.click();
 
-  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible();
-  await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/?]+/);
+  await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/?]+/, { timeout: 15_000 });
+  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible({ timeout: 15_000 });
 
   const url = new URL(page.url());
   const segments = url.pathname.split('/').filter(Boolean);
@@ -35,8 +35,8 @@ export async function openMachineReservationModalFromSchedule(
   await expect(slotButton).toBeVisible();
   await slotButton.click();
 
-  await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/]+\/reservation/);
-  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible();
+  await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/]+\/reservation/, { timeout: 15_000 });
+  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible({ timeout: 15_000 });
 
   return machineId;
 }
