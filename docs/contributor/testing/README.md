@@ -153,5 +153,5 @@ From `apps/web`:
 
 ## Related ADRs
 
-- `docs/adr/ADR-011-lint-typecheck-test-policy.md`
-- `docs/adr/ADR-014-accessibility-target-and-audit-approach.md`
+- `docs/contributor/adr/ADR-011-lint-typecheck-test-policy.md`
+- `docs/contributor/adr/ADR-014-accessibility-target-and-audit-approach.md`

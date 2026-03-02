@@ -77,9 +77,10 @@ pnpm --filter=web dev
 ## 📁 Structure du monorepo
 
 ```
+docs/       → source de vérité de la documentation (`user`, `admin`, `contributor`)
 apps/
   web/        → application principale Next.js (App Router)
-  docs/       → documentation interne (Next.js)
+  docs/       → site de documentation / couche de présentation de `docs/`
   sms/        → service Node.js (hors périmètre front)
   storybook/  → catalogage UI (Storybook)
 
@@ -98,6 +99,12 @@ packages/
 
 💡 Pour l’intégration front :  
 se concentrer sur `apps/web` (pages, layouts) et `packages/ui` (thème + composants).
+
+💡 Pour la documentation :
+- écrire le contenu dans `docs/`
+- éviter de dupliquer du contenu canonique dans `apps/docs`
+- séparer la documentation par audience dans `docs/user/`, `docs/admin/` et `docs/contributor/`
+- regrouper les documents produit dans `docs/contributor/product/` en conservant les noms de fichiers fournis par le designer
 
 ---
 
@@ -300,20 +307,12 @@ Rapport HTML : `apps/web/playwright-report/index.html`
 
 ## 🤝 Contribution
 
-- Les PR sont bienvenues (front, accessibilité, i18n, UI).  
-- Le code suit les standards **TypeScript + MUI + Next.js**.  
-- Merci de respecter la structure des fichiers de traduction (`fr.json` / `en.json`).  
+Voir `CONTRIBUTING.md` pour le guide de contribution.
 
-Avant toute contribution :
-```bash
-pnpm lint
-pnpm --filter web check-types
-```
+La version canonique détaillée se trouve dans :
 
-Astuce (timeout) :
-```bash
-timeout 5m pnpm lint:dev
-```
+- `docs/contributor/contributing.md`
+- `docs/contributor/README.md`
 
 ---
 

@@ -54,7 +54,7 @@ Manual checks:
 - Zoom and reflow checks at `200%` to `400%`
 
 Targeted audit process:
-- Use the RGAA-inspired audit checklist in `docs/accessibility/`
+- Use the RGAA-inspired audit checklist in `docs/contributor/accessibility/`
 - Produce a report (`OK` / `KO` / `NA`)
 - Maintain a prioritized backlog (`P0` / `P1` / `P2`)
 
@@ -66,11 +66,11 @@ Notes:
 
 ## Audit Documentation
 
-- `docs/accessibility/README.md`
-- `docs/accessibility/rgaa-4.1.2-audit-checklist.md`
-- `docs/accessibility/rgaa-4.1.2-report-template.md`
-- `docs/accessibility/rgaa-4.1.2-backlog-template.md`
-- `docs/accessibility/accessibility-declaration-template.md`
+- `docs/contributor/accessibility/README.md`
+- `docs/contributor/accessibility/rgaa-4.1.2-audit-checklist.md`
+- `docs/contributor/accessibility/rgaa-4.1.2-report-template.md`
+- `docs/contributor/accessibility/rgaa-4.1.2-backlog-template.md`
+- `docs/contributor/accessibility/accessibility-declaration-template.md`
 
 ---
 
@@ -80,5 +80,5 @@ Notes:
 - The project has a documented accessibility testing method without adopting heavy administrative process.
 
 ## Related ADRs
-- ADR-000-adr-policy.md
+- docs/contributor/adr/README.md
 - ADR-011-lint-typecheck-test-policy.md
