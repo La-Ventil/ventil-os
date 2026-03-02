@@ -8,8 +8,8 @@ import {
 } from '@repo/application/forms';
 import { canManageBadges } from '@repo/application';
 import { updateOpenBadge } from '@repo/application/open-badges/usecases';
-import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
+import { resolveImageUpload } from '../image-upload';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
@@ -35,22 +35,18 @@ export async function updateOpenBadgeAction(
 
   const request = parseResult.data as OpenBadgeUpdateRequest;
   const responseValues: OpenBadgeUpdateRequest = { ...request, imageFile: undefined };
-
-  let imageUrl: string | null | undefined = undefined;
-  if (request.imageFile) {
-    const imageResult = await validateAndStoreImage(request.imageFile ?? null, { maxMb: MAX_IMAGE_MB });
-    if ('error' in imageResult) {
-      const fieldKey = imageResult.field ?? 'imageUrl';
-      const msg = t(`validation.${imageResult.error}`, imageResult.params);
-      return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
-    }
-    imageUrl = imageResult.url;
+  const imageUpload = await resolveImageUpload(request.imageFile, t, {
+    field: 'imageFile',
+    emptyValue: undefined
+  });
+  if (!imageUpload.ok) {
+    return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);
   }
 
   const values: OpenBadgeCreateData = {
     name: request.name,
     description: request.description,
-    imageUrl: imageUrl ?? '',
+    imageUrl: imageUpload.imageUrl ?? '',
     levels: (request.levels ?? []).filter((level) => level.title || level.description),
     deliveryEnabled: request.deliveryEnabled ?? false,
     deliveryLevel: request.deliveryLevel ?? '',
@@ -62,7 +58,7 @@ export async function updateOpenBadgeAction(
       id: request.id,
       name: values.name,
       description: values.description,
-      imageUrl,
+      imageUrl: imageUpload.imageUrl,
       levels: values.levels,
       activationEnabled: values.activationEnabled
     });

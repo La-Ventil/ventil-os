@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  IMAGE_UPLOAD_MAX_MB,
   OpenBadgeCreateRequest,
   OPEN_BADGE_DESCRIPTION_MAX_LENGTH,
   OPEN_BADGE_NAME_MAX_LENGTH
@@ -107,6 +108,8 @@ export default function OpenBadgeCreateForm({
     setActivationEnabled(state.values.activationEnabled);
   }, [state.values.activationEnabled]);
 
+  const maxImageMb = IMAGE_UPLOAD_MAX_MB;
+
   const deliveryOptions = useMemo(
     () =>
       Array.from({ length: Math.max(1, levelsCount) }, (_, index) => ({
@@ -161,9 +164,9 @@ export default function OpenBadgeCreateForm({
             placeholder={t('image.placeholder')}
             uploadLabel={t('image.upload')}
             maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge', { max: '5MB' })}
+            tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
             clearLabel={t('image.clear')}
-            maxSizeMb={5}
+            maxSizeMb={maxImageMb}
             resetKey={state.success ? 'reset' : undefined}
             required={!isEdit}
             error={Boolean(fieldError('imageFile'))}

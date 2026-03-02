@@ -4,6 +4,8 @@ import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from '../server/uploads-constants';
 const allowedMimeTypes = new Set(Object.keys(ALLOWED_IMAGE_MIMES));
 const maxBytes = MAX_IMAGE_MB * 1024 * 1024;
 
+export const IMAGE_UPLOAD_MAX_MB = MAX_IMAGE_MB;
+
 /**
  * Lightweight, pure validation schema for an uploaded image File.
  * - MIME must be in ALLOWED_IMAGE_MIMES
@@ -26,5 +28,15 @@ export const imageFileSchema = z.instanceof(File).superRefine((file, ctx) => {
     });
   }
 });
+
+export const normalizeOptionalImageFile = (value: unknown): unknown => {
+  if (value instanceof File) {
+    return value.size === 0 ? undefined : value;
+  }
+
+  return value === '' || value == null ? undefined : value;
+};
+
+export const optionalImageFileSchema = z.preprocess(normalizeOptionalImageFile, imageFileSchema.optional());
 
 export type ImageFileInput = z.infer<typeof imageFileSchema>;

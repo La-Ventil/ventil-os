@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { imageFileSchema } from './image-upload';
+import { optionalImageFileSchema } from './image-upload';
 
 export const MACHINE_NAME_MAX_LENGTH = 35;
 export const MACHINE_DESCRIPTION_MAX_LENGTH = 100;
@@ -18,7 +18,7 @@ const machineCreateFormSchema = z.object({
       .min(1, { message: 'validation.machine.descriptionRequired' })
       .max(MACHINE_DESCRIPTION_MAX_LENGTH, { message: 'validation.machine.descriptionMaxLength' })
   ),
-  imageFile: zfd.file(imageFileSchema).optional(),
+  imageFile: optionalImageFileSchema,
   badgeRequired: zfd.checkbox(),
   badgeQuery: zfd.text(z.string().optional()),
   activationEnabled: zfd.checkbox()

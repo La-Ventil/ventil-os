@@ -8,8 +8,8 @@ import {
 } from '@repo/application/forms';
 import { canManageMachines } from '@repo/application';
 import { addMachine } from '@repo/application/machines/usecases';
-import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
 import type { FormState } from '@repo/form/form-state';
+import { resolveImageUpload } from '../image-upload';
 import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
@@ -33,26 +33,18 @@ export async function createMachineAction(
 
   const request = parseResult.data as MachineCreateRequest;
   const responseValues: MachineCreateRequest = { ...request, imageFile: undefined };
-  let imageUrl: string | null = null;
-
-  if (request.imageFile) {
-    const imageResult = await validateAndStoreImage(request.imageFile, {
-      maxMb: MAX_IMAGE_MB,
-      field: 'imageFile'
-    });
-    if ('error' in imageResult) {
-      const fieldKey = imageResult.field ?? 'imageFile';
-      const msg = t(`validation.${imageResult.error}`, imageResult.params);
-      return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
-    }
-
-    imageUrl = imageResult.url;
+  const imageUpload = await resolveImageUpload(request.imageFile, t, {
+    field: 'imageFile',
+    emptyValue: null
+  });
+  if (!imageUpload.ok) {
+    return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);
   }
 
   const values: MachineCreateData = {
     name: request.name ?? previousState.values.name,
     description: request.description ?? previousState.values.description,
-    imageUrl,
+    imageUrl: imageUpload.imageUrl ?? null,
     badgeRequired: request.badgeRequired ?? false,
     badgeQuery: request.badgeQuery ?? '',
     activationEnabled: request.activationEnabled ?? false

@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
+  IMAGE_UPLOAD_MAX_MB,
   MachineCreateFormInput,
   MachineUpdateFormInput,
   MACHINE_DESCRIPTION_MAX_LENGTH,
@@ -55,7 +56,7 @@ export default function MachineCreateForm({
   const tRoot = useTranslations();
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
   const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
-  const maxImageMb = 5;
+  const maxImageMb = IMAGE_UPLOAD_MAX_MB;
   const [name, setName] = useState(state.values.name);
   const [description, setDescription] = useState(state.values.description);
   const [nameTouched, setNameTouched] = useState(false);

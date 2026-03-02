@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { imageFileSchema } from './image-upload';
+import { optionalImageFileSchema } from './image-upload';
 
 export const OPEN_BADGE_NAME_MAX_LENGTH = 35;
 export const OPEN_BADGE_DESCRIPTION_MAX_LENGTH = 100;
@@ -35,12 +35,7 @@ const openBadgeFormSchema = z.object({
       .min(1, { message: 'validation.openBadge.descriptionRequired' })
       .max(OPEN_BADGE_DESCRIPTION_MAX_LENGTH, { message: 'validation.openBadge.descriptionMaxLength' })
   ),
-  imageFile: z.preprocess((value) => {
-    if (value instanceof File) {
-      return value.size === 0 ? undefined : value;
-    }
-    return value === '' || value == null ? undefined : value;
-  }, imageFileSchema.optional()),
+  imageFile: optionalImageFileSchema,
   levels: zfd.repeatable(z.array(levelSchema).min(1, { message: 'validation.openBadge.levelAtLeastOne' })),
   deliveryEnabled: zfd.checkbox(),
   deliveryLevel: zfd.text(z.string().optional()),
