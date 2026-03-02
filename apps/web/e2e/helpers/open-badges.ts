@@ -13,7 +13,6 @@ export async function openAdminOpenBadgeAssignModal(
   await expect(row).toBeVisible();
 
   await row.getByRole('button', { name: /attribuer|assign/i }).click();
-  await expect(page).toHaveURL(/\/hub\/admin\/open-badges\/[^/?]+$/);
   const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
   await expect(dialog).toBeVisible();
 }

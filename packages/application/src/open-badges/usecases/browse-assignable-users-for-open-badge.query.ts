@@ -1,11 +1,14 @@
 import { userRepository } from '@repo/db';
-import type { UserAdminViewModel } from '@repo/view-models/user-admin';
-import { mapUserAdminToViewModel } from '../../presenters/user-admin';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import { mapUserSummaryToViewModel } from '../../presenters/user-summary';
 import type { Query } from '../../usecase';
 
-export const browseAssignableUsersForOpenBadge: Query<[string], UserAdminViewModel[]> = async (
+export const browseAssignableUsersForOpenBadge: Query<[string], UserSummaryWithOpenBadgeLevelViewModel[]> = async (
   openBadgeId: string
 ) => {
   const users = await userRepository.listUsersEligibleForOpenBadgeAssignment(openBadgeId);
-  return users.map(mapUserAdminToViewModel);
+  return users.map((user) => ({
+    ...mapUserSummaryToViewModel(user),
+    currentOpenBadgeLevel: user.currentOpenBadgeLevel
+  }));
 };

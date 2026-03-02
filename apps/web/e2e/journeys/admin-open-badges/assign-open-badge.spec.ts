@@ -11,6 +11,13 @@ test.describe('Admin open badges journeys', () => {
 
     await expect(dialog.getByRole('combobox', { name: /niveau|level/i })).toBeVisible();
     await expect(dialog.getByRole('combobox', { name: /utilisateur|user/i })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /attribuer|assign/i })).toBeDisabled();
+
+    const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
+    await userField.click();
+    const listbox = page.getByRole('listbox');
+    await expect(listbox).toBeVisible();
+    await listbox.getByRole('option').first().click();
 
     await dialog.getByRole('button', { name: /attribuer|assign/i }).click();
 

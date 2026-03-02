@@ -3,6 +3,7 @@
 import type { JSX, Key } from 'react';
 import type { HTMLAttributes } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
@@ -22,6 +23,12 @@ export type UserAutocompleteProps<Multiple extends boolean = true> = {
 };
 
 const getUserLabel = (user: UserSummaryViewModel) => user.fullName || user.username;
+const filterOptions = createFilterOptions<UserSummaryViewModel>({
+  ignoreAccents: true,
+  ignoreCase: true,
+  trim: true,
+  stringify: (user) => [user.fullName, user.username, user.email].filter(Boolean).join(' ')
+});
 
 export default function UserAutocomplete<Multiple extends boolean = true>({
   label,
@@ -43,6 +50,7 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
       onChange={(_, nextValue) => onChange(nextValue)}
       getOptionLabel={getUserLabel}
       isOptionEqualToValue={(option, selected) => option.id === selected.id}
+      filterOptions={filterOptions}
       filterSelectedOptions={isMultiple}
       disabled={disabled}
       renderInput={(params) => (

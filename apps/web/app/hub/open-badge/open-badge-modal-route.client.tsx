@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import OpenBadgeModal from '@repo/ui/open-badge/open-badge-modal';
 import { assignOpenBadgeAction } from '../../../lib/actions/assign-open-badge';
@@ -16,7 +16,7 @@ type OpenBadgeModalRouteClientProps = {
   openBadge: OpenBadgeViewModel | null;
   closeHref: string;
   canAssign: boolean;
-  users: UserSummaryViewModel[];
+  users: UserSummaryWithOpenBadgeLevelViewModel[];
 };
 
 export default function OpenBadgeModalRouteClient({

@@ -16,7 +16,10 @@ import type { UserCredentialsReadModel } from '../read-models/user-credentials';
 import type { UserAdminReadModel } from '../read-models/user-admin';
 import type { UserPasswordResetReadModel } from '../read-models/user-password-reset';
 import type { UserProfileReadModel } from '../read-models/user-profile';
-import type { UserSummaryReadModel } from '../read-models/user-summary';
+import type {
+  UserSummaryReadModel,
+  UserSummaryWithOpenBadgeLevelReadModel
+} from '../read-models/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -139,24 +142,42 @@ export class UserRepository {
     return users.map((user) => this.normalizeUserAdmin(user as UserAdminPayload));
   }
 
-  async listUsersEligibleForOpenBadgeAssignment(openBadgeId: string): Promise<UserAdminReadModel[]> {
+  async listUsersEligibleForOpenBadgeAssignment(
+    openBadgeId: string
+  ): Promise<UserSummaryWithOpenBadgeLevelReadModel[]> {
     const users = await this.prisma.user.findMany({
       where: {
-        openBadgeProgresses: {
-          none: {
-            openBadgeId
-          }
-        }
+        blocked: false
       },
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      select: userAdminSelect
+      select: {
+        ...userSummarySelect,
+        openBadgeProgresses: {
+          where: { openBadgeId },
+          take: 1,
+          select: {
+            highestLevel: {
+              select: { level: true }
+            }
+          }
+        }
+      }
     });
 
-    return users.map((user) => this.normalizeUserAdmin(user as UserAdminPayload));
+    return users.map((user) => {
+      const { openBadgeProgresses, ...summary } = user;
+      return {
+        ...this.normalizeUserSummary(summary as UserSummaryPayload),
+        currentOpenBadgeLevel: openBadgeProgresses[0]?.highestLevel?.level ?? null
+      };
+    });
   }
 
   async listUserSummaries(): Promise<UserSummaryReadModel[]> {
     const users = await this.prisma.user.findMany({
+      where: {
+        blocked: false
+      },
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
       select: userSummarySelect
     });

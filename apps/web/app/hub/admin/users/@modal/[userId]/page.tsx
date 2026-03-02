@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { browseUsersAsAdmin } from '@repo/application/users/usecases';
 import { browseOpenBadges } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModalRoute from '../../assign-open-badge-modal-route';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 
 type AdminUsersModalPageProps = {
   params: Promise<{ userId: string }>;
@@ -20,14 +20,15 @@ export default async function AdminUsersModalPage({
     return null;
   }
 
-  const toUserSummary = (entry: (typeof users)[number]): UserSummaryViewModel => ({
+  const toUserSummary = (entry: (typeof users)[number]): UserSummaryWithOpenBadgeLevelViewModel => ({
     id: entry.id,
     firstName: entry.firstName,
     lastName: entry.lastName,
     username: entry.username,
     image: entry.image,
     email: entry.email,
-    fullName: entry.fullName
+    fullName: entry.fullName,
+    currentOpenBadgeLevel: null
   });
 
   const userOptions = users.map(toUserSummary);

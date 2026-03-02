@@ -11,7 +11,7 @@ import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
@@ -20,8 +20,8 @@ import UserAutocomplete from '../inputs/user-autocomplete';
 import styles from './assign-open-badge.form.module.css';
 
 type AssignOpenBadgeFormProps = {
-  user: UserSummaryViewModel | null;
-  users: UserSummaryViewModel[];
+  user: UserSummaryWithOpenBadgeLevelViewModel | null;
+  users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;
   isSubmitting?: boolean;
@@ -49,9 +49,15 @@ export default function AssignOpenBadgeForm({
   const t = useTranslations(translationNamespace);
   const levelOptions = openBadge.levels ?? [];
   const [selectedLevel, setSelectedLevel] = useState(levelOptions[0] ? String(levelOptions[0].level) : '');
+  const selectedLevelNumber = Number.parseInt(selectedLevel, 10);
+  const userOptions = useMemo(() => {
+    if (Number.isNaN(selectedLevelNumber)) {
+      return users;
+    }
 
-  const userOptions = useMemo(() => users, [users]);
-  const [selectedUserId, setSelectedUserId] = useState(user?.id ?? users[0]?.id ?? '');
+    return users.filter((option) => (option.currentOpenBadgeLevel ?? 0) < selectedLevelNumber);
+  }, [selectedLevelNumber, users]);
+  const [selectedUserId, setSelectedUserId] = useState(user?.id ?? '');
   const isUserSelectionDisabled = userSelectionDisabled ?? Boolean(user);
   const canSubmit = Boolean(selectedLevel && selectedUserId);
   const selectedUser = useMemo(
@@ -60,24 +66,32 @@ export default function AssignOpenBadgeForm({
   );
 
   useEffect(() => {
-    setSelectedUserId(user?.id ?? users[0]?.id ?? '');
+    setSelectedUserId(user?.id ?? '');
   }, [user, users]);
+
+  useEffect(() => {
+    if (isUserSelectionDisabled || !selectedUserId) {
+      return;
+    }
+
+    if (!userOptions.some((option) => option.id === selectedUserId)) {
+      setSelectedUserId('');
+    }
+  }, [isUserSelectionDisabled, selectedUserId, userOptions]);
 
   const handleAssign = () => {
     if (!canSubmit) {
       return;
     }
 
-    const level = Number.parseInt(selectedLevel, 10);
-
-    if (Number.isNaN(level)) {
+    if (Number.isNaN(selectedLevelNumber)) {
       return;
     }
 
     onConfirm({
       userId: selectedUserId,
       openBadgeId: openBadge.id,
-      level
+      level: selectedLevelNumber
     });
   };
 

@@ -5,3 +5,7 @@ export type UserSummaryReadModel = Omit<UserSummaryPayload, 'email' | 'lastName'
   email: Email;
   lastName: string;
 };
+
+export type UserSummaryWithOpenBadgeLevelReadModel = UserSummaryReadModel & {
+  currentOpenBadgeLevel: number | null;
+};

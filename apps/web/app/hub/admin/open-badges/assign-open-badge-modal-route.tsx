@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
 import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
@@ -13,7 +13,7 @@ import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
 type AssignOpenBadgeModalRouteProps = {
   openBadge: OpenBadgeViewModel | null;
-  users: UserSummaryViewModel[];
+  users: UserSummaryWithOpenBadgeLevelViewModel[];
   translationNamespace?: string;
   closeHref: string;
 };

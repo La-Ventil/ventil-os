@@ -5,14 +5,14 @@ import AssignOpenBadgeForm from '../forms/assign-open-badge.form';
 import ModalLayout from '../modal-layout';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { ThemeSection } from '../../theme';
 
 type AssignOpenBadgeModalProps = {
   open: boolean;
   onClose: () => void;
-  user: UserSummaryViewModel | null;
-  users: UserSummaryViewModel[];
+  user: UserSummaryWithOpenBadgeLevelViewModel | null;
+  users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadge: OpenBadgeViewModel;
   translationNamespace?: string;
   isSubmitting?: boolean;

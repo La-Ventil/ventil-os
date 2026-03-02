@@ -5,15 +5,15 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
 import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
 import { fieldErrorsToSingleMessage } from '../../../../lib/validation';
 
 type AssignOpenBadgeModalRouteProps = {
-  user: UserSummaryViewModel | null;
-  users: UserSummaryViewModel[];
+  user: UserSummaryWithOpenBadgeLevelViewModel | null;
+  users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadges: OpenBadgeViewModel[];
   translationNamespace?: string;
   closeHref: string;
