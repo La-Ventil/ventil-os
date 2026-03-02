@@ -708,6 +708,10 @@
             "audience": "Profil",
             "registration": "Inscription"
           }
+        },
+        "placeholder": {
+          "title": "Cette section arrive bientôt.",
+          "description": "La consultation des évènements sera disponible dans une prochaine mise à jour."
         }
       },
       "home": {

@@ -70,7 +70,8 @@ export default function MachineReservationSchedule({
       <div className={styles.slotList}>
         {slots.map((slot) => {
           const label = format.dateTime(slot, { timeStyle: 'short', timeZone });
-          const isPast = isReservationSlotInPast(slot, now);
+          const slotEnd = new Date(slot.getTime() + SCHEDULE_SLOT_MINUTES * 60_000);
+          const isPast = isReservationSlotInPast(slotEnd, now);
           const isBooked = isSlotWithinIntervals(slot, reservationIntervals);
           const canSelect = Boolean(onSlotClick) && !isPast && !isBooked;
           return (
@@ -81,7 +82,7 @@ export default function MachineReservationSchedule({
               isPast={isPast}
               isBooked={isBooked}
               isLocked={isLocked}
-              onSelect={canSelect ? () => onSlotClick?.(slot) : undefined}
+              onSelect={canSelect ? () => onSlotClick?.(selectReservationStartFromSlot(slot, now)) : undefined}
             />
           );
         })}
@@ -124,3 +125,18 @@ export default function MachineReservationSchedule({
     </div>
   );
 }
+
+const selectReservationStartFromSlot = (slot: Date, now: Date): Date => {
+  if (slot.getTime() >= now.getTime()) {
+    return slot;
+  }
+
+  const roundedNow = new Date(now);
+  roundedNow.setSeconds(0, 0);
+
+  if (roundedNow.getTime() <= now.getTime()) {
+    roundedNow.setMinutes(roundedNow.getMinutes() + 1);
+  }
+
+  return roundedNow.getTime() > slot.getTime() ? roundedNow : slot;
+};

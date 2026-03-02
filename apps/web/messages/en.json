@@ -706,6 +706,10 @@
             "audience": "Profile",
             "registration": "Registration"
           }
+        },
+        "placeholder": {
+          "title": "This section is coming soon.",
+          "description": "Event browsing will be available in a future update."
         }
       },
       "home": {
