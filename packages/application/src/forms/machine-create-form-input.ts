@@ -21,21 +21,11 @@ const machineCreateFormSchema = z.object({
   activationEnabled: zfd.checkbox()
 });
 
-const machineCreateFormDataSchema = zfd.formData(machineCreateFormSchema);
-
-export const machineCreateRequestSchema = machineCreateFormDataSchema.superRefine((data, ctx) => {
-  if (!data.imageFile) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ['imageFile'],
-      message: 'validation.machine.imageRequired'
-    });
-  }
-});
+export const machineCreateRequestSchema = zfd.formData(machineCreateFormSchema);
 
 export type MachineCreateRequest = z.infer<typeof machineCreateRequestSchema>;
 export type MachineCreateData = Omit<MachineCreateRequest, 'imageFile'> & {
-  imageUrl: string;
+  imageUrl: string | null;
 };
 
 export type MachineCreateFormInput = MachineCreateRequest;

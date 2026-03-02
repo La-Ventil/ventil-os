@@ -406,7 +406,7 @@
           "image": {
             "placeholder": "Illustration in progress",
             "upload": "Upload",
-            "maxSizeHint": "Max 5MB",
+            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
             "tooLarge": "File too large (max {max}).",
             "clear": "Clear"
           },
@@ -440,12 +440,12 @@
           "fields": {
             "name": "Machine name *",
             "description": "Short description *",
-            "image": "Image *"
+            "image": "Image"
           },
           "image": {
             "placeholder": "Illustration in progress",
             "upload": "Upload",
-            "maxSizeHint": "Max 5MB",
+            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
             "tooLarge": "File too large (max {max}).",
             "clear": "Clear"
           },

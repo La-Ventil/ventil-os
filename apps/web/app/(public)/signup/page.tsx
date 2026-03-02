@@ -1,11 +1,13 @@
 'use client';
 import type { JSX } from 'react';
+import { useEffect } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/navigation';
 import Link from '@repo/ui/link';
 import { signupFormSchema } from '@repo/application/forms';
 import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
@@ -14,6 +16,7 @@ import { registerUserAction } from '../../../lib/actions/register-user';
 import styles from './page.module.css';
 
 export default function Page(): JSX.Element {
+  const router = useRouter();
   const t = useTranslations('pages.public.signup');
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -27,6 +30,12 @@ export default function Page(): JSX.Element {
   });
   const [currentState] = formState;
   const isSuccess = Boolean(currentState?.success);
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.replace('/?notice=signup-success');
+    }
+  }, [isSuccess, router]);
 
   return (
     <Box p={2}>

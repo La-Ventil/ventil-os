@@ -10,10 +10,6 @@ test.describe('Admin machines accessibility', () => {
 
     await expect(page.getByRole('textbox', { name: /nom|name/i })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /description/i })).toBeVisible();
-    await expect(page.locator('input[name="badgeRequired"]')).toHaveAttribute(
-      'aria-label',
-      /open badge pour utiliser la machine|open badge/i
-    );
     await expect(page.locator('input[name="activationEnabled"]')).toHaveAttribute('aria-label', /activation/i);
     await expect(page.getByRole('button', { name: /télécharger|upload/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /retour|back/i })).toBeVisible();
@@ -37,10 +33,6 @@ test.describe('Admin machines accessibility', () => {
     await expect(page).toHaveURL(/\/hub\/admin\/machines\/[^/]+\/edit$/);
     await expect(page.getByRole('textbox', { name: /nom|name/i })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /description/i })).toBeVisible();
-    await expect(page.locator('input[name="badgeRequired"]')).toHaveAttribute(
-      'aria-label',
-      /open badge pour utiliser la machine|open badge/i
-    );
     await expect(page.locator('input[name="activationEnabled"]')).toHaveAttribute('aria-label', /activation/i);
     await expect(page.getByRole('link', { name: /retour|back/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /enregistrer|save/i })).toBeVisible();

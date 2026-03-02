@@ -423,7 +423,7 @@
           "image": {
             "placeholder": "Illustration en cours",
             "upload": "Télécharger",
-            "maxSizeHint": "Max 5 Mo",
+            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
             "tooLarge": "Fichier trop lourd (max {max}).",
             "clear": "Effacer"
           },
@@ -457,12 +457,12 @@
           "fields": {
             "name": "Nom de la machine *",
             "description": "Description courte *",
-            "image": "Image *"
+            "image": "Image"
           },
           "image": {
             "placeholder": "Illustration en cours",
             "upload": "Télécharger",
-            "maxSizeHint": "Max 5 Mo",
+            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
             "tooLarge": "Fichier trop lourd (max {max}).",
             "clear": "Effacer"
           },

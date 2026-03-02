@@ -4,12 +4,7 @@ import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
-import Stack from '@mui/material/Stack';
 import { useTranslations } from 'next-intl';
 import { MachineCreateFormInput, MachineUpdateFormInput } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
@@ -22,6 +17,7 @@ import { firstFieldError } from '@repo/form/form-errors';
 import { createFormState } from '@repo/form/form-state';
 import FormAlert from './form-alert';
 import Form from './form';
+import { useEffect, useState } from 'react';
 import styles from './machine-create.form.module.css';
 
 type MachineFormValues = MachineCreateFormInput | MachineUpdateFormInput;
@@ -46,14 +42,35 @@ export const machineCreateInitialState = createFormState<MachineCreateFormInput>
 export default function MachineCreateForm({
   formState: [state, action, isPending, handleSubmit, handleRetry],
   imagePreviewUrl,
-  imageRequired = true,
+  imageRequired = false,
   backHref = '/hub/admin/machines',
   submitLabel
 }: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
+  const tRoot = useTranslations();
   const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
   const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
   const maxImageMb = 5;
+  const [name, setName] = useState(state.values.name);
+  const [description, setDescription] = useState(state.values.description);
+  const [nameTouched, setNameTouched] = useState(false);
+  const [descriptionTouched, setDescriptionTouched] = useState(false);
+  const nameErrors = validateMachineNameErrors(name, nameTouched, {
+    required: tRoot('validation.machine.nameRequired'),
+    maxLength: tRoot('validation.machine.nameMaxLength')
+  });
+  const descriptionErrors = validateMachineDescriptionErrors(description, descriptionTouched, {
+    required: tRoot('validation.machine.descriptionRequired'),
+    maxLength: tRoot('validation.machine.descriptionMaxLength')
+  });
+
+  useEffect(() => {
+    setName(state.values.name);
+  }, [state.values.name]);
+
+  useEffect(() => {
+    setDescription(state.values.description);
+  }, [state.values.description]);
 
   return (
     <Form action={action} onSubmit={handleSubmit}>
@@ -62,21 +79,25 @@ export default function MachineCreateForm({
       <FormSection>
         <TextField
           name="name"
-          defaultValue={state.values.name}
+          value={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+          onBlur={() => setNameTouched(true)}
           label={t('fields.name')}
           required
           fullWidth
-          error={Boolean(fieldError('name'))}
-          helperText={fieldError('name')}
+          error={Boolean(nameErrors.length || fieldError('name'))}
+          helperText={nameErrors.length ? nameErrors.join(' ') : fieldError('name')}
         />
         <TextField
           name="description"
-          defaultValue={state.values.description}
+          value={description}
+          onChange={(event) => setDescription(event.currentTarget.value)}
+          onBlur={() => setDescriptionTouched(true)}
           label={t('fields.description')}
           required
           fullWidth
-          error={Boolean(fieldError('description'))}
-          helperText={fieldError('description')}
+          error={Boolean(descriptionErrors.length || fieldError('description'))}
+          helperText={descriptionErrors.length ? descriptionErrors.join(' ') : fieldError('description')}
         />
 
         <div className={styles.imageRow}>
@@ -96,52 +117,6 @@ export default function MachineCreateForm({
           />
         </div>
       </FormSection>
-
-      <Divider />
-
-      <FormSection>
-        <SectionSubtitle>{t('badgeRequirement.title')}</SectionSubtitle>
-        <Typography variant="body1" className={styles.sectionDescription}>
-          {t('badgeRequirement.description')}
-        </Typography>
-        <Switch
-          name="badgeRequired"
-          defaultChecked={state.values.badgeRequired}
-          slotProps={{
-            input: {
-              'aria-label': t('badgeRequirement.title')
-            }
-          }}
-        />
-        <Stack spacing={2}>
-          <TextField
-            name="badgeQuery"
-            defaultValue={state.values.badgeQuery}
-            label={t('badgeRequirement.searchLabel')}
-            placeholder={t('badgeRequirement.searchPlaceholder')}
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              )
-            }}
-          />
-          <div className={styles.badgeCard}>
-            <div className={styles.badgeIllustration}>{t('image.placeholder')}</div>
-            <Stack spacing={0.5}>
-              <Typography className={styles.badgeType}>{t('badgeRequirement.badgeType')}</Typography>
-              <Typography className={styles.badgeName}>{t('badgeRequirement.badgeName')}</Typography>
-            </Stack>
-            <IconButton aria-label={t('badgeRequirement.removeLabel')}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </Stack>
-      </FormSection>
-
-      <Divider />
 
       <FormSection>
         <SectionSubtitle>{t('activation.title')}</SectionSubtitle>
@@ -170,3 +145,42 @@ export default function MachineCreateForm({
     </Form>
   );
 }
+
+const MACHINE_NAME_MAX_LENGTH = 35;
+const MACHINE_DESCRIPTION_MAX_LENGTH = 100;
+
+const validateMachineNameErrors = (
+  value: string,
+  touched: boolean,
+  messages: { required: string; maxLength: string }
+): string[] => {
+  const errors: string[] = [];
+
+  if (touched && value.length === 0) {
+    errors.push(messages.required);
+  }
+
+  if (value.length > MACHINE_NAME_MAX_LENGTH) {
+    errors.push(messages.maxLength);
+  }
+
+  return errors;
+};
+
+const validateMachineDescriptionErrors = (
+  value: string,
+  touched: boolean,
+  messages: { required: string; maxLength: string }
+): string[] => {
+  const errors: string[] = [];
+
+  if (touched && value.length === 0) {
+    errors.push(messages.required);
+  }
+
+  if (value.length > MACHINE_DESCRIPTION_MAX_LENGTH) {
+    errors.push(messages.maxLength);
+  }
+
+  return errors;
+};

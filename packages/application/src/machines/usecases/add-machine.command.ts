@@ -7,7 +7,7 @@ const DEFAULT_MACHINE_CATEGORY = 'Machine';
 export type AddMachineInput = {
   name: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string | null;
   activationEnabled: boolean;
   creatorId: string;
 };

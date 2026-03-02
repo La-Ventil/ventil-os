@@ -33,21 +33,26 @@ export async function createMachineAction(
 
   const request = parseResult.data as MachineCreateRequest;
   const responseValues: MachineCreateRequest = { ...request, imageFile: undefined };
+  let imageUrl: string | null = null;
 
-  const imageResult = await validateAndStoreImage(request.imageFile ?? null, {
-    maxMb: MAX_IMAGE_MB,
-    field: 'imageFile'
-  });
-  if ('error' in imageResult) {
-    const fieldKey = imageResult.field ?? 'imageFile';
-    const msg = t(`validation.${imageResult.error}`, imageResult.params);
-    return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
+  if (request.imageFile) {
+    const imageResult = await validateAndStoreImage(request.imageFile, {
+      maxMb: MAX_IMAGE_MB,
+      field: 'imageFile'
+    });
+    if ('error' in imageResult) {
+      const fieldKey = imageResult.field ?? 'imageFile';
+      const msg = t(`validation.${imageResult.error}`, imageResult.params);
+      return formValidationError(responseValues, { [fieldKey]: [msg] }, msg);
+    }
+
+    imageUrl = imageResult.url;
   }
 
   const values: MachineCreateData = {
     name: request.name ?? previousState.values.name,
     description: request.description ?? previousState.values.description,
-    imageUrl: imageResult.url,
+    imageUrl,
     badgeRequired: request.badgeRequired ?? false,
     badgeQuery: request.badgeQuery ?? '',
     activationEnabled: request.activationEnabled ?? false

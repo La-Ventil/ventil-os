@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput } from '@repo/application/forms';
+import { EducationLevel } from '@repo/domain/user/education-level';
 import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
 import { useEffect, useId, useState } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
@@ -41,6 +42,7 @@ export const signupFormInitialState = createFormState<SignupFormInput>({
 
 export default function SignupForm({ formState }: SignupFormProps) {
   const t = useTranslations('forms');
+  const tRoot = useTranslations();
   const tCommon = useTranslations('common');
   const tPolicy = useTranslations('pages.public.privacyPolicy');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
@@ -48,6 +50,14 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const resolveProfileType = (value?: string): UserRole =>
     Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
   const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
+  const [firstName, setFirstName] = useState(state.values.firstName);
+  const [lastName, setLastName] = useState(state.values.lastName);
+  const [password, setPassword] = useState(state.values.password);
+  const [passwordConfirmation, setPasswordConfirmation] = useState(state.values.passwordConfirmation);
+  const [firstNameTouched, setFirstNameTouched] = useState(false);
+  const [lastNameTouched, setLastNameTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [passwordConfirmationTouched, setPasswordConfirmationTouched] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const privacyTitleId = useId();
   const privacyIntroId = useId();
@@ -56,6 +66,50 @@ export default function SignupForm({ formState }: SignupFormProps) {
     setSelectedProfile(resolveProfileType(state.values.profile));
   }, [state.values.profile]);
 
+  useEffect(() => {
+    setFirstName(state.values.firstName);
+  }, [state.values.firstName]);
+
+  useEffect(() => {
+    setLastName(state.values.lastName);
+  }, [state.values.lastName]);
+
+  useEffect(() => {
+    setPassword(state.values.password);
+  }, [state.values.password]);
+
+  useEffect(() => {
+    setPasswordConfirmation(state.values.passwordConfirmation);
+  }, [state.values.passwordConfirmation]);
+
+  const firstNameErrors = validateSignupNameErrors(firstName, firstNameTouched, {
+    required: tRoot('validation.signup.firstNameRequired'),
+    maxLength: tRoot('validation.signup.firstNameMaxLength'),
+    noEmoji: tRoot('validation.signup.firstNameNoEmoji')
+  });
+  const lastNameErrors = validateSignupNameErrors(lastName, lastNameTouched, {
+    required: tRoot('validation.signup.lastNameRequired'),
+    maxLength: tRoot('validation.signup.lastNameMaxLength'),
+    noEmoji: tRoot('validation.signup.lastNameNoEmoji')
+  });
+  const passwordErrors = validatePasswordErrors(password, passwordTouched, {
+    minLength: tRoot('validation.password.minLength'),
+    uppercaseRequired: tRoot('validation.password.uppercaseRequired'),
+    lowercaseRequired: tRoot('validation.password.lowercaseRequired'),
+    numberRequired: tRoot('validation.password.numberRequired')
+  });
+  const passwordConfirmationErrors = validatePasswordConfirmationErrors(
+    password,
+    passwordConfirmation,
+    passwordConfirmationTouched,
+    {
+      required: tRoot('validation.password.confirmationRequired'),
+      mismatch: tRoot('validation.password.confirmationMismatch')
+    }
+  );
+  const defaultEducationLevel =
+    state.values.educationLevel || (requiresEducationLevel(selectedProfile) ? EducationLevel.Premiere : '');
+
   return (
     <>
       <Form action={action} onSubmit={handleSubmit}>
@@ -63,21 +117,25 @@ export default function SignupForm({ formState }: SignupFormProps) {
           <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
           <TextField
             name="firstName"
-            defaultValue={state.values.firstName}
+            value={firstName}
+            onChange={(event) => setFirstName(event.currentTarget.value)}
+            onBlur={() => setFirstNameTouched(true)}
             label={t('fields.firstName')}
             placeholder={t('placeholders.firstName')}
             required
-            error={Boolean(fieldError('firstName'))}
-            helperText={fieldError('firstName')}
+            error={Boolean(firstNameErrors.length || fieldError('firstName'))}
+            helperText={firstNameErrors.length ? firstNameErrors.join(' ') : fieldError('firstName')}
           />
           <TextField
             name="lastName"
-            defaultValue={state.values.lastName}
+            value={lastName}
+            onChange={(event) => setLastName(event.currentTarget.value)}
+            onBlur={() => setLastNameTouched(true)}
             label={t('fields.lastName')}
             placeholder={t('placeholders.lastName')}
             required
-            error={Boolean(fieldError('lastName'))}
-            helperText={fieldError('lastName')}
+            error={Boolean(lastNameErrors.length || fieldError('lastName'))}
+            helperText={lastNameErrors.length ? lastNameErrors.join(' ') : fieldError('lastName')}
           />
           <TextField
             name={'email'}
@@ -92,22 +150,30 @@ export default function SignupForm({ formState }: SignupFormProps) {
           <TextField
             name="password"
             type="password"
-            defaultValue={state.values.password}
+            value={password}
+            onChange={(event) => setPassword(event.currentTarget.value)}
+            onBlur={() => setPasswordTouched(true)}
             label={t('fields.password')}
             placeholder={t('placeholders.password')}
             required
-            error={Boolean(fieldError('password'))}
-            helperText={fieldError('password')}
+            error={Boolean(passwordErrors.length || fieldError('password'))}
+            helperText={passwordErrors.length ? passwordErrors.join(' ') : fieldError('password')}
           />
           <TextField
             name="passwordConfirmation"
             type="password"
-            defaultValue={state.values.passwordConfirmation}
+            value={passwordConfirmation}
+            onChange={(event) => setPasswordConfirmation(event.currentTarget.value)}
+            onBlur={() => setPasswordConfirmationTouched(true)}
             label={t('fields.passwordConfirmation')}
             placeholder={t('placeholders.passwordConfirmation')}
             required
-            error={Boolean(fieldError('passwordConfirmation'))}
-            helperText={fieldError('passwordConfirmation')}
+            error={Boolean(passwordConfirmationErrors.length || fieldError('passwordConfirmation'))}
+            helperText={
+              passwordConfirmationErrors.length
+                ? passwordConfirmationErrors.join(' ')
+                : fieldError('passwordConfirmation')
+            }
           />
 
           <ProfileRadioGroup
@@ -118,7 +184,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
           />
           {requiresEducationLevel(selectedProfile) ? (
             <EducationLevelSelect
-              defaultValue={state.values.educationLevel}
+              defaultValue={defaultEducationLevel}
               error={Boolean(fieldError('educationLevel'))}
               helperText={fieldError('educationLevel')}
             />
@@ -184,3 +250,92 @@ export default function SignupForm({ formState }: SignupFormProps) {
     </>
   );
 }
+
+const emojiPattern = /\p{Extended_Pictographic}/u;
+const SIGNUP_NAME_MAX_LENGTH = 40;
+
+const validateSignupNameErrors = (
+  value: string,
+  touched: boolean,
+  messages: { required: string; maxLength: string; noEmoji: string }
+): string[] => {
+  const errors: string[] = [];
+
+  if (touched && value.length === 0) {
+    errors.push(messages.required);
+  }
+
+  if (value.length > SIGNUP_NAME_MAX_LENGTH) {
+    errors.push(messages.maxLength);
+  }
+
+  if (emojiPattern.test(value)) {
+    errors.push(messages.noEmoji);
+  }
+
+  return errors;
+};
+
+const validatePasswordErrors = (
+  value: string,
+  touched: boolean,
+  messages: {
+    minLength: string;
+    uppercaseRequired: string;
+    lowercaseRequired: string;
+    numberRequired: string;
+  }
+): string[] => {
+  const errors: string[] = [];
+
+  if (touched && value.length === 0) {
+    errors.push(messages.minLength);
+    return errors;
+  }
+
+  if (value.length === 0) {
+    return errors;
+  }
+
+  if (value.length < 7) {
+    errors.push(messages.minLength);
+  }
+
+  if (!/[A-Z]/.test(value)) {
+    errors.push(messages.uppercaseRequired);
+  }
+
+  if (!/[a-z]/.test(value)) {
+    errors.push(messages.lowercaseRequired);
+  }
+
+  if (!/[0-9]/.test(value)) {
+    errors.push(messages.numberRequired);
+  }
+
+  return errors;
+};
+
+const validatePasswordConfirmationErrors = (
+  password: string,
+  confirmation: string,
+  touched: boolean,
+  messages: { required: string; mismatch: string }
+): string[] => {
+  const errors: string[] = [];
+
+  if (touched && confirmation.length === 0) {
+    errors.push(messages.required);
+    return errors;
+  }
+
+  if (confirmation.length === 0) {
+    return errors;
+  }
+
+  if (password !== confirmation) {
+    errors.push(messages.mismatch);
+  }
+
+  return errors;
+};
