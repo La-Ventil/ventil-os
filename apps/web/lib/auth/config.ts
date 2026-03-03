@@ -1,0 +1,63 @@
+import type { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { signIn as signInUser } from '@repo/application/users/usecases';
+import { prismaClient } from '@repo/db';
+import type { UserProfile } from '@repo/view-models/user-profile';
+
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: 'jwt'
+  },
+  adapter: PrismaAdapter(prismaClient),
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'email@email.com' },
+        password: { label: 'Mot de passe', type: 'password' }
+      },
+      authorize: authorize()
+    })
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user?.id) {
+        token.id = user.id;
+        token.globalAdmin = (user as UserProfile).globalAdmin;
+        token.pedagogicalAdmin = (user as UserProfile).pedagogicalAdmin;
+        token.image = (user as UserProfile).image ?? null;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id as string;
+        session.user.globalAdmin = token.globalAdmin;
+        session.user.pedagogicalAdmin = token.pedagogicalAdmin;
+        session.user.image = (token.image as string | null | undefined) ?? session.user.image ?? null;
+      }
+      return session;
+    }
+  },
+  secret: process.env.NEXTAUTH_SECRET
+};
+
+function authorize() {
+  return async (
+    credentials: Partial<Record<'email' | 'password', unknown>> | undefined
+  ): Promise<UserProfile | null> => {
+    if (!credentials) {
+      throw new Error('Missing credentials');
+    }
+
+    if (typeof credentials.email !== 'string') {
+      throw new Error('"email" is required in credentials');
+    }
+
+    if (typeof credentials.password !== 'string') {
+      throw new Error('"password" is required in credentials');
+    }
+
+    return signInUser(credentials.email, credentials.password);
+  };
+}
