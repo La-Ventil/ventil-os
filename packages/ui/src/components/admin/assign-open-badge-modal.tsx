@@ -18,7 +18,6 @@ type AssignOpenBadgeModalProps = {
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
-  onRemove?: (payload: { userId: string; openBadgeId: string }) => Promise<{ success: boolean; message?: string }>;
   feedback?: { type: 'error' | 'success'; message: string } | null;
 };
 
@@ -32,7 +31,6 @@ export default function AssignOpenBadgeModal({
   isSubmitting = false,
   userSelectionDisabled,
   onConfirm,
-  onRemove,
   feedback = null
 }: AssignOpenBadgeModalProps) {
   const t = useTranslations(translationNamespace);
@@ -60,7 +58,6 @@ export default function AssignOpenBadgeModal({
         isSubmitting={isSubmitting}
         userSelectionDisabled={userSelectionDisabled}
         onConfirm={onConfirm}
-        onRemove={onRemove}
         onCancel={onClose}
         feedback={feedback}
       />

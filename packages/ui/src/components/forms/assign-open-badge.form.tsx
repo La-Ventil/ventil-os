@@ -14,7 +14,6 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import { OpenBadge } from '@repo/domain/badge/open-badge';
-import DangerZone from '../danger-zone';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
@@ -31,7 +30,6 @@ type AssignOpenBadgeFormProps = {
   titleId?: string;
   descriptionId?: string;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
-  onRemove?: (payload: { userId: string; openBadgeId: string }) => Promise<{ success: boolean; message?: string }>;
   onCancel: () => void;
   feedback?: { type: 'error' | 'success'; message: string } | null;
 };
@@ -46,7 +44,6 @@ export default function AssignOpenBadgeForm({
   titleId,
   descriptionId,
   onConfirm,
-  onRemove,
   onCancel,
   feedback = null
 }: AssignOpenBadgeFormProps) {
@@ -229,23 +226,6 @@ export default function AssignOpenBadgeForm({
           {t('confirm')}
         </Button>
       </Section>
-      {isUserSelectionDisabled && user && selectedOpenBadge.activeLevel > 0 && onRemove ? (
-        <Section className={styles.actions}>
-          <DangerZone
-            title={t('remove.title')}
-            description={t('remove.description')}
-            actionLabel={t('remove.action')}
-            disabled={isSubmitting}
-            onAction={() =>
-              onRemove({
-                userId: user.id,
-                openBadgeId: selectedOpenBadge.id
-              })
-            }
-            onSuccess={onCancel}
-          />
-        </Section>
-      ) : null}
     </>
   );
 }
