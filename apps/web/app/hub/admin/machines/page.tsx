@@ -5,11 +5,12 @@ import { canManageBadges } from '@repo/application';
 import { browseMachinesAsAdmin } from '@repo/application/machines/usecases';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
+import AdminMachinesTable from '@repo/ui/admin/admin-machines-table';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import { MachineAdminStatus } from '@repo/view-models/machine-admin';
-import AdminMachinesTable from './admin-machines-table';
+import MachineQuickActions from './machine-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -74,7 +75,7 @@ export default async function AdminMachinesPage() {
           machines={machines}
           columns={labels.columns}
           statusLabelFor={statusLabelFor}
-          actionLabels={labels.actions}
+          renderActions={(machine) => <MachineQuickActions machine={machine} labels={labels.actions} />}
         />
       </Section>
     </>

@@ -2,7 +2,7 @@
 
 import { useTransition } from 'react';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
-import RowQuickActionsMenu from '../row-quick-actions-menu';
+import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
 import { setUserBlockedAction } from '../../../../lib/actions/set-user-blocked';
 
 type UserQuickActionsProps = {

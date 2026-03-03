@@ -1,12 +1,12 @@
+import type { ReactNode } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import Link from 'next/link';
 import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
-import AdminTable from '@repo/ui/admin/admin-table';
-import OpenBadgeQuickActions from './open-badge-quick-actions';
+import Link from '../link';
+import AdminTable from './admin-table';
 import styles from './admin-open-badges-table.module.css';
 
 type AdminOpenBadgesTableProps = {
@@ -21,20 +21,14 @@ type AdminOpenBadgesTableProps = {
     assign: string;
   };
   statusLabelFor: (badge: OpenBadgeAdminViewModel) => string;
-  actionLabels: {
-    manage: string;
-    edit: string;
-    activate: string;
-    deactivate: string;
-    remove: string;
-  };
+  renderActions: (badge: OpenBadgeAdminViewModel) => ReactNode;
 };
 
 export default function AdminOpenBadgesTable({
   badges,
   columns,
   statusLabelFor,
-  actionLabels
+  renderActions
 }: AdminOpenBadgesTableProps) {
   return (
     <AdminTable>
@@ -56,9 +50,7 @@ export default function AdminOpenBadgesTable({
             hover
             className={badge.status === OpenBadgeAdminStatus.Inactive ? styles.inactiveRow : undefined}
           >
-            <TableCell>
-              <OpenBadgeQuickActions badge={badge} labels={actionLabels} />
-            </TableCell>
+            <TableCell>{renderActions(badge)}</TableCell>
             <TableCell>
               {badge.coverImage ? (
                 <img

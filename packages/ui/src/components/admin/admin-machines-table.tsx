@@ -1,10 +1,10 @@
+import type { ReactNode } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/view-models/machine-admin';
-import AdminTable from '@repo/ui/admin/admin-table';
-import MachineQuickActions from './machine-quick-actions';
+import AdminTable from './admin-table';
 import styles from './admin-machines-table.module.css';
 
 type AdminMachinesTableProps = {
@@ -19,19 +19,14 @@ type AdminMachinesTableProps = {
     status: string;
   };
   statusLabelFor: (machine: MachineAdminViewModel) => string;
-  actionLabels: {
-    manage: string;
-    edit: string;
-    activate: string;
-    deactivate: string;
-  };
+  renderActions: (machine: MachineAdminViewModel) => ReactNode;
 };
 
 export default function AdminMachinesTable({
   machines,
   columns,
   statusLabelFor,
-  actionLabels
+  renderActions
 }: AdminMachinesTableProps) {
   return (
     <AdminTable>
@@ -53,9 +48,7 @@ export default function AdminMachinesTable({
             hover
             className={machine.status === MachineAdminStatus.Inactive ? styles.inactiveRow : undefined}
           >
-            <TableCell>
-              <MachineQuickActions machine={machine} labels={actionLabels} />
-            </TableCell>
+            <TableCell>{renderActions(machine)}</TableCell>
             <TableCell>
               {machine.imageUrl ? (
                 <img

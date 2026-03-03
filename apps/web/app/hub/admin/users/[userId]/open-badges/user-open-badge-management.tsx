@@ -1,29 +1,20 @@
 'use client';
 
 import { useMemo, useState, useTransition } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Alert from '@mui/material/Alert';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminButton from '@repo/ui/admin/admin-button';
-import AdminTable from '@repo/ui/admin/admin-table';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
-import ListEmptyState from '@repo/ui/list-empty-state';
+import UserOpenBadgesTable from '@repo/ui/admin/user-open-badges-table';
 import Section from '@repo/ui/section';
-import RowQuickActionsMenu from '../../../row-quick-actions-menu';
 import { assignOpenBadgeAction } from '../../../../../../lib/actions/assign-open-badge';
 import { removeUserOpenBadgeAction } from '../../../../../../lib/actions/remove-user-open-badge';
 import { setUserOpenBadgeLevelAction } from '../../../../../../lib/actions/set-user-open-badge-level';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
-import { OpenBadge } from '@repo/domain/badge/open-badge';
-import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import styles from './user-open-badge-management.module.css';
 
 type UserOpenBadgeManagementProps = {
@@ -173,68 +164,14 @@ export default function UserOpenBadgeManagement({
       ) : null}
 
       <Section pt={0}>
-        {badges.length ? (
-          <AdminTable>
-            <TableHead>
-              <TableRow>
-                <TableCell>{labels.columns.actions}</TableCell>
-                <TableCell>{labels.columns.image}</TableCell>
-                <TableCell>{labels.columns.badge}</TableCell>
-                <TableCell>{labels.columns.level}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {badges.map((badge) => {
-                const nextLevel = badge.levels.find((level) => level.level === badge.activeLevel + 1);
-                const previousLevel = badge.levels.find((level) => level.level === badge.activeLevel - 1);
-                const activeLevel = OpenBadge.getActiveLevel(badge);
-
-                return (
-                  <TableRow key={badge.id} hover>
-                    <TableCell>
-                      <RowQuickActionsMenu
-                        label={labels.actions.manage}
-                        disabled={isPending}
-                        items={[
-                          {
-                            label: labels.actions.upgrade,
-                            disabled: !nextLevel,
-                            onClick: nextLevel ? () => handleUpgrade(badge, nextLevel.level) : undefined
-                          },
-                          {
-                            label: labels.actions.downgrade,
-                            disabled: !previousLevel,
-                            onClick: previousLevel
-                              ? () => handleDowngrade(badge, previousLevel.level)
-                              : undefined
-                          },
-                          { label: labels.actions.remove, onClick: () => handleRemove(badge) }
-                        ]}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {badge.coverImage ? (
-                        <Image
-                          src={badge.coverImage}
-                          alt={badge.name}
-                          width={48}
-                          height={48}
-                          className={styles.coverImage}
-                        />
-                      ) : (
-                        <span className={styles.coverPlaceholder}>OB</span>
-                      )}
-                    </TableCell>
-                    <TableCell>{badge.name}</TableCell>
-                    <TableCell>{activeLevel ? formatOpenBadgeLevelLabel(activeLevel) : '—'}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </AdminTable>
-        ) : (
-          <ListEmptyState title={labels.empty.title} description={labels.empty.description} />
-        )}
+        <UserOpenBadgesTable
+          badges={badges}
+          isPending={isPending}
+          labels={labels}
+          onUpgrade={handleUpgrade}
+          onDowngrade={handleDowngrade}
+          onRemove={handleRemove}
+        />
       </Section>
 
       <AssignOpenBadgeModal

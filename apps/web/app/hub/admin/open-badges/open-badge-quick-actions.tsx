@@ -2,9 +2,9 @@
 
 import { useTransition } from 'react';
 import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
 import { setOpenBadgeStatusAction } from '../../../../lib/actions/set-open-badge-status';
 import { removeOpenBadgeAction } from '../../../../lib/actions/remove-open-badge';
-import RowQuickActionsMenu from '../row-quick-actions-menu';
 
 type OpenBadgeQuickActionsProps = {
   badge: OpenBadgeAdminViewModel;

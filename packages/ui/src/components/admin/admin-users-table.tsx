@@ -1,11 +1,11 @@
+import type { ReactNode } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
-import AdminTable from '@repo/ui/admin/admin-table';
-import UserAvatar from '@repo/ui/user-avatar';
-import UserQuickActions from './user-quick-actions';
+import UserAvatar from '../user-avatar';
+import AdminTable from './admin-table';
 
 type AdminUsersTableProps = {
   users: UserAdminViewModel[];
@@ -26,13 +26,7 @@ type AdminUsersTableProps = {
   };
   adminLabelFor: (user: UserAdminViewModel) => string;
   statusLabelFor: (user: UserAdminViewModel) => string;
-  actionLabels: {
-    manage: string;
-    openBadges: string;
-    edit: string;
-    block: string;
-    unblock: string;
-  };
+  renderActions: (user: UserAdminViewModel) => ReactNode;
 };
 
 export default function AdminUsersTable({
@@ -40,7 +34,7 @@ export default function AdminUsersTable({
   columns,
   adminLabelFor,
   statusLabelFor,
-  actionLabels
+  renderActions
 }: AdminUsersTableProps) {
   return (
     <AdminTable>
@@ -64,9 +58,7 @@ export default function AdminUsersTable({
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id} hover>
-            <TableCell>
-              <UserQuickActions user={user} labels={actionLabels} />
-            </TableCell>
+            <TableCell>{renderActions(user)}</TableCell>
             <TableCell>
               <UserAvatar user={{ image: user.image, email: user.email }} size={32} />
             </TableCell>
