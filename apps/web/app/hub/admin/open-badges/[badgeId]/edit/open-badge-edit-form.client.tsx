@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { openBadgeUpdateRequestSchema, type OpenBadgeUpdateRequest } from '@repo/application/forms';
-import OpenBadgeCreateForm from '@repo/ui/forms/open-badge-create.form';
+import OpenBadgeForm from '@repo/ui/forms/open-badge.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import type { OpenBadgeEditViewModel } from '@repo/view-models/open-badge-edit';
@@ -47,6 +47,6 @@ export default function OpenBadgeEditFormClient({ badge }: OpenBadgeEditFormClie
   }, [router, state.success]);
 
   return (
-    <OpenBadgeCreateForm formState={formState} badgeId={badge.id} imagePreviewUrl={badge.coverImage ?? undefined} />
+    <OpenBadgeForm formState={formState} badgeId={badge.id} imagePreviewUrl={badge.coverImage ?? undefined} />
   );
 }

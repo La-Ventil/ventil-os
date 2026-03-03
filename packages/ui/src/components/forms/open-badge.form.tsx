@@ -25,38 +25,25 @@ import OpenBadgeLevelsEditor from './open-badge-levels-editor';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
-import { createFormState } from '@repo/form/form-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';
 import FormAlert from './form-alert';
 import Form from './form';
-import styles from './open-badge-create.form.module.css';
+import styles from './open-badge.form.module.css';
+import type { OpenBadgeUpdateRequest } from '@repo/application/forms';
 
-export interface OpenBadgeCreateFormProps {
-  formState: FormActionStateTuple<OpenBadgeCreateRequest>;
+type OpenBadgeFormValues = OpenBadgeCreateRequest | OpenBadgeUpdateRequest;
+
+export interface OpenBadgeFormProps {
+  formState: FormActionStateTuple<OpenBadgeFormValues>;
   badgeId?: string;
   imagePreviewUrl?: string | null;
 }
 
-export const openBadgeCreateInitialState = createFormState<OpenBadgeCreateRequest>({
-  name: '',
-  description: '',
-  imageFile: undefined,
-  levels: [
-    {
-      title: '',
-      description: ''
-    }
-  ],
-  deliveryEnabled: true,
-  deliveryLevel: 'level-1',
-  activationEnabled: true
-});
-
-export default function OpenBadgeCreateForm({
+export default function OpenBadgeForm({
   formState: [state, action, isPending, handleSubmit, handleRetry],
   badgeId,
   imagePreviewUrl
-}: OpenBadgeCreateFormProps) {
+}: OpenBadgeFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const tRoot = useTranslations();
   const fieldError = (field: keyof OpenBadgeCreateRequest) => fieldErrorMessage(state, field);
