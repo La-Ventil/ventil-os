@@ -96,22 +96,20 @@ export default function MachineForm({
           helperText={descriptionErrors.length ? descriptionErrors.join(' ') : fieldError('description')}
         />
 
-        <div className={styles.imageRow}>
-          <ImageUploadField
-            label={t('fields.image')}
-            placeholder={t('image.placeholder')}
-            uploadLabel={t('image.upload')}
-            maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
-            clearLabel={t('image.clear')}
-            maxSizeMb={maxImageMb}
-            resetKey={state.success ? 'reset' : undefined}
-            required={imageRequired}
-            previewUrl={imagePreviewUrl}
-            error={Boolean(fieldError('imageFile'))}
-            helperText={fieldError('imageFile')}
-          />
-        </div>
+        <ImageUploadField
+          label={t('fields.image')}
+          placeholder={t('image.placeholder')}
+          uploadLabel={t('image.upload')}
+          maxSizeHint={t('image.maxSizeHint')}
+          tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
+          clearLabel={t('image.clear')}
+          maxSizeMb={maxImageMb}
+          resetKey={state.success ? 'reset' : undefined}
+          required={imageRequired}
+          previewUrl={imagePreviewUrl}
+          error={Boolean(fieldError('imageFile'))}
+          helperText={fieldError('imageFile')}
+        />
       </FormSection>
 
       <FormSection>

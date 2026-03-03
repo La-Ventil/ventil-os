@@ -144,22 +144,20 @@ export default function OpenBadgeForm({
       <Divider />
 
       <FormSection>
-        <div className={styles.imageRow}>
-          <ImageUploadField
-            previewUrl={imagePreviewUrl ?? undefined}
-            label={t('fields.image')}
-            placeholder={t('image.placeholder')}
-            uploadLabel={t('image.upload')}
-            maxSizeHint={t('image.maxSizeHint')}
-            tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
-            clearLabel={t('image.clear')}
-            maxSizeMb={maxImageMb}
-            resetKey={state.success ? 'reset' : undefined}
-            required={!isEdit}
-            error={Boolean(fieldError('imageFile'))}
-            helperText={fieldError('imageFile')}
-          />
-        </div>
+        <ImageUploadField
+          previewUrl={imagePreviewUrl ?? undefined}
+          label={t('fields.image')}
+          placeholder={t('image.placeholder')}
+          uploadLabel={t('image.upload')}
+          maxSizeHint={t('image.maxSizeHint')}
+          tooLargeLabel={t('image.tooLarge', { max: `${maxImageMb}MB` })}
+          clearLabel={t('image.clear')}
+          maxSizeMb={maxImageMb}
+          resetKey={state.success ? 'reset' : undefined}
+          required={!isEdit}
+          error={Boolean(fieldError('imageFile'))}
+          helperText={fieldError('imageFile')}
+        />
       </FormSection>
 
       <Divider />

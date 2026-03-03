@@ -1,3 +1,10 @@
+.root {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
 .preview {
   width: 160px;
   height: 120px;
@@ -25,8 +32,15 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
 
 .hint {
   color: #78839a;
+}
+
+@media (max-width: 600px) {
+  .root {
+    grid-template-columns: 1fr;
+  }
 }

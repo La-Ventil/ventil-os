@@ -150,33 +150,35 @@ export default function ImageUploadField({
   const hasError = Boolean(localError) || error;
 
   return (
-    <Stack spacing={1} className={styles.controls}>
+    <div className={styles.root}>
       <ImagePreview label={label} preview={preview} placeholder={placeholder} id={inputId} />
-      <Stack direction="row" spacing={1} alignItems="center">
-        <AdminButton variant="contained" component="label">
-          {uploadLabel}
-          <input
-            type="file"
-            name={fileInputName}
-            accept={accept}
-            hidden
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            required={required}
-          />
-        </AdminButton>
-        <AdminButton variant="outlined" color="secondary" onClick={handleClear} type="button">
-          {clearLabel}
-        </AdminButton>
-      </Stack>
-      {showHelper ? (
-        <Typography variant="caption" color={hasError ? 'error' : 'text.secondary'}>
-          {effectiveHelper}
+      <Stack spacing={1} className={styles.controls}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <AdminButton variant="contained" component="label">
+            {uploadLabel}
+            <input
+              type="file"
+              name={fileInputName}
+              accept={accept}
+              hidden
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              required={required}
+            />
+          </AdminButton>
+          <AdminButton variant="outlined" color="secondary" onClick={handleClear} type="button">
+            {clearLabel}
+          </AdminButton>
+        </Stack>
+        {showHelper ? (
+          <Typography variant="caption" color={hasError ? 'error' : 'text.secondary'}>
+            {effectiveHelper}
+          </Typography>
+        ) : null}
+        <Typography variant="caption" color="text.secondary">
+          {hintText}
         </Typography>
-      ) : null}
-      <Typography variant="caption" color="text.secondary">
-        {hintText}
-      </Typography>
-    </Stack>
+      </Stack>
+    </div>
   );
 }
