@@ -89,6 +89,25 @@ Keep manual checks for:
 - zoom/reflow (`200%` to `400%`)
 - RGAA-inspired human review
 
+## Form feedback helpers (`@repo/form`)
+
+`@repo/form` now has two distinct client-facing concerns:
+
+- `@repo/form/form-errors`
+  - field-level helpers for inline rendering
+  - example: read the first message for `email` next to an input
+- `@repo/form/form-feedback`
+  - aggregated feedback helpers for banners, dialogs, toasts, and action responses
+  - example: derive one user-facing success/error message from a whole `FormState`
+
+Practical rule:
+
+- use `form-errors` when the UI is rendering a message under one specific field
+- use `form-feedback` when the UI needs one normalized message for an action result
+
+This keeps per-field rendering separate from "global feedback" orchestration and avoids
+re-implementing ad hoc `first field error wins` logic in `apps/web`.
+
 ## Playwright suite structure (`apps/web/e2e`)
 
 - `fixtures/`: shared `test.extend(...)` fixtures (seed users, `loginAs`)

@@ -1,5 +1,10 @@
 import type { FormState } from '../form-state';
 
+/**
+ * Aggregated form feedback helpers for banners, toasts, dialogs, and action responses.
+ * Unlike `@repo/form/form-errors`, this layer is not field-specific: it resolves a
+ * displayable success/error message from a whole FormState or action result.
+ */
 export type FormFieldErrors<FormData> = FormState<FormData>['fieldErrors'] | Record<string, string[]>;
 
 export type FormErrorMessageStrategy = 'message-first' | 'first-field' | 'join-fields';
