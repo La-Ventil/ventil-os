@@ -73,6 +73,14 @@ export default function MachineReservationModalRouteClient({
     const canAct = isOwner || Boolean(canManageReservations);
     return canAct && MachineReservation.isUpcoming(reservation, new Date());
   }, [canManageReservations, currentUserId, reservation]);
+  const closeReservationModal = useCallback(() => {
+    setIsOpen(false);
+    router.push(closeHref);
+  }, [closeHref, router]);
+  const closeReservationFlow = useCallback(() => {
+    closeReservationModal();
+    router.refresh();
+  }, [closeReservationModal, router]);
   const normalizeReservationActionResult = useCallback(
     (result: ReservationActionResult): ReservationActionResult => {
       const feedback = resolveFormFeedback(result, {
@@ -94,12 +102,10 @@ export default function MachineReservationModalRouteClient({
 
     const result = normalizeReservationActionResult(await cancelMachineReservationAction(reservation.id));
     if (result.success) {
-      setIsOpen(false);
-      router.push(closeHref);
-      router.refresh();
+      closeReservationFlow();
     }
     return result;
-  }, [closeHref, normalizeReservationActionResult, reservation, router]);
+  }, [closeReservationFlow, normalizeReservationActionResult, reservation]);
 
   useEffect(() => {
     setIsOpen(Boolean(machine));
@@ -107,10 +113,8 @@ export default function MachineReservationModalRouteClient({
 
   useEffect(() => {
     if (!state.success) return;
-    setIsOpen(false);
-    router.push(closeHref);
-    router.refresh();
-  }, [closeHref, router, state.success]);
+    closeReservationFlow();
+  }, [closeReservationFlow, state.success]);
 
   if (!machine) {
     return null;
@@ -126,10 +130,7 @@ export default function MachineReservationModalRouteClient({
       formState={formState}
       currentUserId={currentUserId}
       open={isOpen}
-      onClose={() => {
-        setIsOpen(false);
-        router.push(closeHref);
-      }}
+      onClose={closeReservationModal}
       onCancelReservation={reservation && canCancelReservation ? handleCancelReservation : undefined}
     />
   );
