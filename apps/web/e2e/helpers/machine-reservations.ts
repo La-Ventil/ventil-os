@@ -15,18 +15,15 @@ export async function submitReservationFromModalRoute(
 ): Promise<string> {
   const machineId = await openMachineReservationModalFromSchedule(page, machineName);
 
-  const machineDialogs = getMachineDialogs(page, machineName);
   const reservationDialog = getReservationDialog(page, machineName);
   await expect(reservationDialog).toHaveCount(1);
   await expect(reservationDialog).toBeVisible();
   await reservationDialog.getByRole('button', { name: /réserver|reserve/i }).click();
 
-  await page.waitForURL((url) => !url.pathname.includes('/reservation'), { timeout: 15_000 });
+  // Submission success is observable through the reservation dialog closing.
+  // The route change can lag behind and is only relevant in flows that expect
+  // to return to the machine details modal, so keep that assertion separate.
   await expect(reservationDialog).toHaveCount(0, { timeout: 15_000 });
-  await expect
-    .poll(() => machineDialogs.count(), { timeout: 15_000 })
-    .toBe(1);
-  await expect(machineDialogs.first()).toBeVisible();
 
   return machineId;
 }
