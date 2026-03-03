@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/La-Ventil/ventil-os/compare/v0.0.17...v0.0.18) (2026-03-03)
+
+
+### Features
+
+* **web:** add dedicated user open badge management ([9ea4504](https://github.com/La-Ventil/ventil-os/commit/9ea4504580d14437d5b59703542ba5497d327b07))
+
+
+### Bug Fixes
+
+* **web:** improve badge assignment responsiveness ([df79cf6](https://github.com/La-Ventil/ventil-os/commit/df79cf6ae803ad510904ab80accb83ae4d2c37d5))
+
+
+### Performance
+
+* **e2e:** speed up shared database setup and cleanup ([3c7496c](https://github.com/La-Ventil/ventil-os/commit/3c7496cdd9e70c399539b365515dfea8fa85519a))
+
+
+### Docs
+
+* **adr:** clarify ui ownership boundaries ([5f1239c](https://github.com/La-Ventil/ventil-os/commit/5f1239c25d7911bd7cb39073362c7714a41fbad0))
+* **form:** clarify field errors vs aggregated feedback ([16f648b](https://github.com/La-Ventil/ventil-os/commit/16f648bbf6addba79a6695ec1087266d0b2ba972))
+* **product:** add admin visualization screen ([8ad8c58](https://github.com/La-Ventil/ventil-os/commit/8ad8c58714f19973b2fce4619b6f189c61947e75))
+
 ### [0.0.17](https://github.com/La-Ventil/ventil-os/compare/v0.0.16...v0.0.17) (2026-03-02)
 
 
