@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { changePasswordFormSchema, type ChangePasswordFormInput } from '@repo/application/forms';
 import { changePassword } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getUserProfileFromSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
@@ -18,7 +19,7 @@ export async function changePasswordAction(
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
-    return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+    return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
   }
 
   const userProfile = await getUserProfileFromSession();
@@ -32,7 +33,7 @@ export async function changePasswordAction(
       const fieldErrors = {
         currentPassword: [t('validation.password.invalid')]
       };
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     return formError(values, { message: t('validation.genericError') });

@@ -5,7 +5,8 @@ import { machineReservationFormSchema } from '@repo/application';
 import { reserveMachine, updateReservation } from '@repo/application/machines/usecases';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../auth';
 import { revalidatePath } from 'next/cache';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
@@ -28,7 +29,7 @@ export async function reserveMachineAction(
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
-    return formValidationError(previousState.values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+    return formValidationError(previousState.values, fieldErrors, fieldErrorsToMessage(fieldErrors));
   }
 
   const startsAt = new Date(data.startsAt);

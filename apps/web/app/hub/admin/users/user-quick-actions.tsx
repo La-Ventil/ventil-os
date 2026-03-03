@@ -33,7 +33,7 @@ export default function UserQuickActions({ user, labels }: UserQuickActionsProps
       label={labels.manage}
       disabled={isPending}
       items={[
-        { label: labels.openBadges, href: `/hub/admin/users/${user.id}` },
+        { label: labels.openBadges, href: `/hub/admin/users/${user.id}/open-badges` },
         { label: labels.edit, href: `/hub/admin/users/${user.id}/edit` },
         { label: user.blocked ? labels.unblock : labels.block, onClick: handleToggleBlocked }
       ]}

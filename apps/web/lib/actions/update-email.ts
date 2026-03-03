@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { changeEmailFormSchema, type ChangeEmailFormInput } from '@repo/application/forms';
 import { requestEmailChange } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getUserProfileFromSession } from '../auth';
 import { sendEmailVerification } from '../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
@@ -20,7 +21,7 @@ export async function updateEmailAction(
 
   if (!success) {
     const fieldErrors = zodErrorToFieldErrors(error, t);
-    return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+    return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
   }
 
   const userProfile = await getUserProfileFromSession();
@@ -41,14 +42,14 @@ export async function updateEmailAction(
       const fieldErrors = {
         currentPassword: [t('validation.password.invalid')]
       };
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     if (result.reason === 'email-already-used') {
       const fieldErrors = {
         newEmail: [t('validation.emailAlreadyUsed')]
       };
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     return formError(values, { message: t('validation.genericError') });

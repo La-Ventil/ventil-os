@@ -5,7 +5,8 @@ import { canManageUsers } from '@repo/application';
 import { updateProfile, viewUserProfileById } from '@repo/application/users/usecases';
 import { parseProfileFormInput, type ProfileFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
@@ -37,7 +38,7 @@ export async function updateUserProfileAction(
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     const profileFormData: ProfileFormInput = data;

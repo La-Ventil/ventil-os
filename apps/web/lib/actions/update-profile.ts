@@ -5,7 +5,8 @@ import { updateProfile } from '@repo/application/users/usecases';
 import { ProfileFormInput, parseProfileFormInput } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../auth';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function updateProfileAction(
@@ -19,7 +20,7 @@ export async function updateProfileAction(
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     const profileFormData: ProfileFormInput = data;

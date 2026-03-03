@@ -32,6 +32,6 @@ export async function openAdminUserOpenBadgesPage(page: Page, email: string): Pr
   const menu = await openRowQuickActions(page, row, /gérer|manage/i);
   await clickQuickAction(menu, /open badges?/i);
 
-  await page.waitForURL(/\/hub\/admin\/users\/[^/]+$/);
+  await page.waitForURL(/\/hub\/admin\/users\/[^/]+\/open-badges$/);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 }

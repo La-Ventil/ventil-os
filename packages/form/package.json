@@ -10,7 +10,8 @@
     "./form-state-builders": "./src/form-state-builders.ts",
     "./form-action-state": "./src/form-action-state.ts",
     "./use-form-action-state": "./src/use-form-action-state.ts",
-    "./use-js-enabled": "./src/use-js-enabled.ts"
+    "./use-js-enabled": "./src/use-js-enabled.ts",
+    "./form-feedback": "./src/feedback/index.ts"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",

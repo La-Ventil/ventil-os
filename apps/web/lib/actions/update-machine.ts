@@ -10,7 +10,8 @@ import { canManageMachines } from '@repo/application';
 import { updateMachine } from '@repo/application/machines/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { resolveImageUpload } from '../image-upload';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
@@ -29,7 +30,7 @@ export async function updateMachineAction(
   const parseResult = machineUpdateRequestSchema.safeParse(formData);
   if (!parseResult.success) {
     const fieldErrors = zodErrorToFieldErrors(parseResult.error, t);
-    return formValidationError(previousState.values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+    return formValidationError(previousState.values, fieldErrors, fieldErrorsToMessage(fieldErrors));
   }
 
   const request = parseResult.data as MachineUpdateRequest;

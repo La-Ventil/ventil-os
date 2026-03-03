@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { signUp } from '@repo/application/users/usecases';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
-import { fieldErrorsToSingleMessage, zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { sendEmailVerification } from '../email';
 import { formDataToValues } from '@repo/form/form-data';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
@@ -19,7 +20,7 @@ export async function registerUserAction(
   try {
     if (!success) {
       const fieldErrors = zodErrorToFieldErrors(error, t);
-      return formValidationError(values, fieldErrors, fieldErrorsToSingleMessage(fieldErrors));
+      return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
     const signupFormData: SignupFormInput = data;
@@ -39,7 +40,7 @@ export async function registerUserAction(
       };
 
       return formError(values, {
-        message: fieldErrorsToSingleMessage(fieldErrors),
+        message: fieldErrorsToMessage(fieldErrors),
         fieldErrors
       });
     }

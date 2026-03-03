@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { requestPasswordReset } from '@repo/application/users/usecases';
 import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
-import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { sendPasswordResetEmail } from '../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
@@ -22,7 +23,7 @@ export async function resetPasswordAction(
       return formValidationError(
         values,
         fieldErrors,
-        fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 })
+        fieldErrorsToMessage(fieldErrors, { maxMessages: 1 })
       );
     }
 

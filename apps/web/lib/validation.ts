@@ -45,26 +45,3 @@ export function zodErrorToFieldErrors(err: ZodError, t: Translate): Record<strin
 
   return out;
 }
-
-export function fieldErrorsToSingleMessage(
-  fieldErrors: Record<string, string[]>,
-  options?: {
-    separator?: string;
-    deduplicate?: boolean;
-    maxMessages?: number;
-  }
-): string {
-  const { separator = ' ', deduplicate = true, maxMessages } = options ?? {};
-
-  let messages = Object.values(fieldErrors).flat();
-
-  if (deduplicate) {
-    messages = Array.from(new Set(messages));
-  }
-
-  if (typeof maxMessages === 'number') {
-    messages = messages.slice(0, maxMessages);
-  }
-
-  return messages.join(separator);
-}

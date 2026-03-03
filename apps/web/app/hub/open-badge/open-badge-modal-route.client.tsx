@@ -4,13 +4,13 @@ import type { JSX } from 'react';
 import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import OpenBadgeModal from '@repo/ui/open-badge/open-badge-modal';
 import { assignOpenBadgeAction } from '../../../lib/actions/assign-open-badge';
 import { useDelayedAction } from '../../../lib/hooks/use-delayed-action';
-import { fieldErrorsToSingleMessage } from '../../../lib/validation';
 
 type OpenBadgeModalRouteClientProps = {
   openBadge: OpenBadgeViewModel | null;
@@ -30,7 +30,7 @@ export default function OpenBadgeModalRouteClient({
   const [isOpen, setIsOpen] = useState(Boolean(openBadge));
   const [isAssignOpen, setIsAssignOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [feedback, setFeedback] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
+  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
   const { schedule, cancel } = useDelayedAction();
 
   const handleAssignClose = () => {
@@ -91,19 +91,20 @@ export default function OpenBadgeModalRouteClient({
             startTransition(async () => {
               setFeedback(null);
               const result = await assignOpenBadgeAction(payload);
+              const nextFeedback = resolveFormFeedback(result, {
+                fallbackErrorMessage: t('error'),
+                fallbackSuccessMessage: t('confirm'),
+                errorStrategy: 'join-fields'
+              });
+
+              if (nextFeedback) {
+                setFeedback(nextFeedback);
+              }
 
               if (!result.success) {
-                const firstFieldError = result.fieldErrors
-                  ? fieldErrorsToSingleMessage(result.fieldErrors, { maxMessages: 1 })
-                  : undefined;
-                setFeedback({
-                  type: 'error',
-                  message: firstFieldError ?? result.message ?? t('error')
-                });
                 return;
               }
 
-              setFeedback({ type: 'success', message: result.message ?? t('confirm') });
               schedule(handleAssignClose);
             });
           }}

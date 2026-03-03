@@ -4,7 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import { resetPassword } from '@repo/application/users/usecases';
 import { UpdatePasswordFormInput, updatePasswordFormSchema } from '@repo/application/forms';
 import { FormState } from '@repo/form/form-state';
-import { zodErrorToFieldErrors, fieldErrorsToSingleMessage } from '../validation';
+import { zodErrorToFieldErrors } from '../validation';
+import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export type UpdatePasswordActionValues = UpdatePasswordFormInput & {
@@ -29,7 +30,7 @@ export async function updatePasswordAction(
       return formValidationError(
         values,
         fieldErrors,
-        fieldErrorsToSingleMessage(fieldErrors, { maxMessages: 1 }),
+        fieldErrorsToMessage(fieldErrors, { maxMessages: 1 }),
         { token: previousState.token }
       );
     }

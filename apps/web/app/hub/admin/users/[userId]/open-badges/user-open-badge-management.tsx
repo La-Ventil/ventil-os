@@ -8,24 +8,23 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminButton from '@repo/ui/admin/admin-button';
 import AdminTable from '@repo/ui/admin/admin-table';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import ListEmptyState from '@repo/ui/list-empty-state';
 import Section from '@repo/ui/section';
-import RowQuickActionsMenu from '../row-quick-actions-menu';
-import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
-import { removeUserOpenBadgeAction } from '../../../../lib/actions/remove-user-open-badge';
-import { setUserOpenBadgeLevelAction } from '../../../../lib/actions/set-user-open-badge-level';
+import RowQuickActionsMenu from '../../../row-quick-actions-menu';
+import { assignOpenBadgeAction } from '../../../../../../lib/actions/assign-open-badge';
+import { removeUserOpenBadgeAction } from '../../../../../../lib/actions/remove-user-open-badge';
+import { setUserOpenBadgeLevelAction } from '../../../../../../lib/actions/set-user-open-badge-level';
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { OpenBadge } from '@repo/domain/badge/open-badge';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import styles from './user-open-badge-management.module.css';
-
-type Feedback = { type: 'error' | 'success'; message: string } | null;
 
 type UserOpenBadgeManagementProps = {
   user: UserAdminViewModel;
@@ -64,8 +63,8 @@ export default function UserOpenBadgeManagement({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isAssignOpen, setIsAssignOpen] = useState(false);
-  const [pageFeedback, setPageFeedback] = useState<Feedback>(null);
-  const [modalFeedback, setModalFeedback] = useState<Feedback>(null);
+  const [pageFeedback, setPageFeedback] = useState<FormFeedback | null>(null);
+  const [modalFeedback, setModalFeedback] = useState<FormFeedback | null>(null);
 
   const selectedUser = useMemo<UserSummaryWithOpenBadgeLevelViewModel>(
     () => ({
@@ -86,24 +85,29 @@ export default function UserOpenBadgeManagement({
     setIsAssignOpen(false);
   };
 
+  const resolvePageFeedback = <TValues,>(state: {
+    success: boolean;
+    message?: string;
+    fieldErrors: Partial<Record<keyof TValues, string[]>>;
+  }): FormFeedback | null =>
+    resolveFormFeedback(state, {
+      fallbackErrorMessage: labels.feedback.genericError,
+      errorStrategy: 'join-fields'
+    });
+
   const handleAssign = (payload: { userId: string; openBadgeId: string; level: number }) => {
     startTransition(async () => {
       setModalFeedback(null);
       const result = await assignOpenBadgeAction(payload);
+      const nextFeedback = resolvePageFeedback(result);
 
       if (!result.success) {
-        setModalFeedback({
-          type: 'error',
-          message: result.message ?? labels.feedback.genericError
-        });
+        setModalFeedback(nextFeedback);
         return;
       }
 
       closeAssignModal();
-      setPageFeedback({
-        type: 'success',
-        message: result.message ?? labels.feedback.genericError
-      });
+      setPageFeedback(nextFeedback);
       router.refresh();
     });
   };
@@ -116,11 +120,7 @@ export default function UserOpenBadgeManagement({
         openBadgeId: badge.id,
         level: nextLevel
       });
-
-      setPageFeedback({
-        type: result.success ? 'success' : 'error',
-        message: result.message ?? labels.feedback.genericError
-      });
+      setPageFeedback(resolvePageFeedback(result));
       if (result.success) {
         router.refresh();
       }
@@ -135,11 +135,7 @@ export default function UserOpenBadgeManagement({
         openBadgeId: badge.id,
         level: previousLevel
       });
-
-      setPageFeedback({
-        type: result.success ? 'success' : 'error',
-        message: result.message ?? labels.feedback.genericError
-      });
+      setPageFeedback(resolvePageFeedback(result));
       if (result.success) {
         router.refresh();
       }
@@ -153,11 +149,7 @@ export default function UserOpenBadgeManagement({
         userId: user.id,
         openBadgeId: badge.id
       });
-
-      setPageFeedback({
-        type: result.success ? 'success' : 'error',
-        message: result.message ?? labels.feedback.genericError
-      });
+      setPageFeedback(resolvePageFeedback(result));
       if (result.success) {
         router.refresh();
       }
