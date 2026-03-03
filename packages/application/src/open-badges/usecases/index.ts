@@ -6,6 +6,7 @@ export * from './browse-open-badges-as-admin.query';
 export * from './can-assign-open-badge.query';
 export * from './remove-open-badge.command';
 export * from './remove-open-badge-from-user.command';
+export * from './set-user-open-badge-level.command';
 export * from './set-open-badge-status.command';
 export * from './update-open-badge.command';
 export * from './view-open-badge.query';

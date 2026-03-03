@@ -21,221 +21,8 @@
     "public": {
       "home": {
         "messageBienvenue": "Welcome to the La-Ventil app.",
-        "messageOnboarding": "To get started, please fill in the information below."
-      }
-    }
-  },
-  "common": {
-    "actions": {
-      "back": "Back",
-      "retry": "Retry"
-    },
-    "errors": {
-      "invalid": "Please check the form fields.",
-      "network": "Unable to reach the server. Check your connection and try again."
-    },
-    "status": {
-      "loading": "Loading..."
-    }
-  },
-  "validation": {
-    "genericError": "An unexpected error occurred :(",
-    "emailAlreadyUsed": "This email address is already in use.",
-    "imageTooLarge": "Image too large (max {max}).",
-    "imageInvalidType": "Invalid image type. Please upload png, jpg, gif or webp.",
-    "emailRequired": "Please enter your email address.",
-    "emailInvalid": "The email address is not valid.",
-    "email": {
-      "confirmationMismatch": "Email addresses do not match."
-    },
-    "password": {
-      "minLength": "Your password must be at least 7 characters.",
-      "maxLength": "Your password must be at most 20 characters.",
-      "uppercaseRequired": "Your password must include at least one uppercase letter.",
-      "lowercaseRequired": "Your password must include at least one lowercase letter.",
-      "numberRequired": "Your password must include at least one number.",
-      "specialCharacterRequired": "Your password must include at least one special character (!@#$%^&*).",
-      "confirmationRequired": "Please confirm your password.",
-      "invalid": "The current password is incorrect.",
-      "confirmationMismatch": "Passwords do not match."
-    },
-    "signup": {
-      "firstNameRequired": "Please enter your first name.",
-      "firstNameMaxLength": "First name must be at most 40 characters.",
-      "firstNameNoEmoji": "First name cannot include emojis.",
-      "lastNameRequired": "Please enter your last name.",
-      "lastNameMaxLength": "Last name must be at most 40 characters.",
-      "lastNameNoEmoji": "Last name cannot include emojis.",
-      "roleRequired": "Please select a profile.",
-      "profileRequired": "Please select a profile.",
-      "termsRequired": "You must accept the privacy policy.",
-      "educationLevelRequired": "Please select a school level."
-    },
-    "profile": {
-      "firstNameRequired": "Please enter your first name.",
-      "firstNameMaxLength": "First name must be at most 40 characters.",
-      "firstNameNoEmoji": "First name cannot include emojis.",
-      "lastNameRequired": "Please enter your last name.",
-      "lastNameMaxLength": "Last name must be at most 40 characters.",
-      "lastNameNoEmoji": "Last name cannot include emojis.",
-      "profileRequired": "Please select a profile.",
-      "termsRequired": "You must accept the privacy policy.",
-      "educationLevelRequired": "Please select a school level."
-    },
-    "machineReservation": {
-      "machineRequired": "Please select a machine.",
-      "startsAtRequired": "Please select a start time.",
-      "startsAtInvalid": "Start time is invalid.",
-      "durationRequired": "Please select a duration."
-    },
-    "machine": {
-      "nameRequired": "Please enter a machine name.",
-      "nameMaxLength": "Machine name must be at most 35 characters.",
-      "descriptionRequired": "Please enter a description.",
-      "descriptionMaxLength": "Description must be at most 100 characters.",
-      "imageRequired": "Please add an image."
-    },
-    "openBadge": {
-      "nameRequired": "Please enter an open badge name.",
-      "nameMaxLength": "Open badge name must be at most 35 characters.",
-      "descriptionRequired": "Please enter a description.",
-      "descriptionMaxLength": "Description must be at most 100 characters.",
-      "imageRequired": "Please add an image.",
-      "levelTitleRequired": "Please enter a level title.",
-      "levelTitleMaxLength": "Level title must be at most 35 characters.",
-      "levelDescriptionRequired": "Please enter a level description.",
-      "levelDescriptionMaxLength": "Level description must be at most 100 characters.",
-      "levelAtLeastOne": "At least one level is required.",
-      "idRequired": "Open badge not found."
-    }
-  },
-  "resetPassword": {
-    "success": "If your email exists in our database, a password reset link has been sent to you.",
-    "emailSubject": "[{appName}] Reset your password",
-    "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
-  },
-  "machineReservation": {
-    "badgeRequired": "You need the required open badge to reserve this machine.",
-    "startsAtInPast": "You cannot reserve a past time slot.",
-    "overlap": "This time slot is already reserved.",
-    "inactive": "This machine is currently unavailable.",
-    "machineRequired": "Selected machine was not found.",
-    "notFound": "Reservation not found.",
-    "unauthorized": "You cannot modify this reservation.",
-    "alreadyStarted": "The reservation has already started. You can no longer cancel it.",
-    "notStarted": "The reservation has not started yet.",
-    "alreadyEnded": "The reservation has already ended.",
-    "cancelled": "This reservation has already been cancelled."
-  },
-  "machine": {
-    "create": {
-      "success": "Machine created.",
-      "error": "Unable to create the machine.",
-      "unauthorized": "You are not allowed to create a machine."
-    },
-    "update": {
-      "success": "Machine updated.",
-      "error": "Unable to update the machine.",
-      "unauthorized": "You are not allowed to update this machine.",
-      "notFound": "Machine not found."
-    }
-  },
-  "openBadge": {
-    "create": {
-      "success": "Open badge created.",
-      "error": "Unable to create the open badge.",
-      "unauthorized": "You are not allowed to create an open badge."
-    },
-    "update": {
-      "success": "Open badge updated.",
-      "error": "Unable to update the open badge.",
-      "unauthorized": "You are not allowed to update this open badge.",
-      "notFound": "Open badge not found."
-    },
-    "status": {
-      "attachedToMachines": "Detach this open badge from machines before disabling it."
-    },
-    "assign": {
-      "unauthorized": "You are not allowed to assign this open badge.",
-      "awarderNotFound": "Assigning user was not found.",
-      "targetNotFound": "Target user was not found."
-    }
-  },
-  "user": {
-    "notFound": "User not found.",
-    "update": {
-      "success": "User updated.",
-      "error": "Unable to update the user.",
-      "unauthorized": "You are not allowed to update this user.",
-      "notFound": "User not found."
-    }
-  },
-  "emailSignature": "— The {appName} team",
-  "verifyEmail": {
-    "emailSubject": "[{appName}] Verify your email",
-    "emailText": "Hello {name}!\nPlease verify your email by clicking the link below:\n{verifyUrl}\n"
-  },
-  "forms": {
-    "fields": {
-      "email": "Email",
-      "currentEmail": "Current email",
-      "currentPassword": "Current password",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "password": "Password",
-      "passwordConfirmation": "Confirm password",
-      "newEmail": "New email",
-      "newEmailConfirmation": "Confirm new email",
-      "newPassword": "New password",
-      "newPasswordConfirmation": "Confirm new password",
-      "educationLevel": "School level",
-      "profile": "Usage profile",
-      "terms": "I accept the <link>privacy policy</link>"
-    },
-    "placeholders": {
-      "email": "email@email.com",
-      "currentEmail": "current email",
-      "currentPassword": "current password",
-      "firstName": "my first name",
-      "lastName": "my last name",
-      "password": "minimum 7 characters",
-      "passwordConfirmation": "same password as the previous field",
-      "newEmail": "new email address",
-      "newEmailConfirmation": "confirm new email",
-      "newPassword": "minimum 5 characters",
-      "newPasswordConfirmation": "confirm new password"
-    },
-    "actions": {
-      "submitResetPassword": "Send reset link",
-      "submitUpdatePassword": "Change my password",
-      "resendEmailVerification": "Resend link",
-      "cancelEmailChange": "Cancel change",
-      "updateEmail": "Update email",
-      "updatePassword": "Update password",
-      "updateProfile": "Update",
-      "submitSignup": "Sign up",
-      "submitLogin": "Sign in"
-    },
-    "messages": {
-      "signInSuccess": "Signed in successfully.",
-      "signInFailed": "Sign-in failed.",
-      "signInBlocked": "Your account has been blocked. You cannot access Ventil O.S.",
-      "signInUnverified": "Please verify your email address before signing in.",
-      "profileUpdated": "Your profile has been updated.",
-      "emailVerificationSent": "A verification email has been sent.",
-      "emailChangePending": "An email change is pending for {email}.",
-      "emailChangeCanceled": "The email change has been canceled.",
-      "emailVerificationNotPending": "No email change is pending.",
-      "emailUpdated": "Your email has been updated.",
-      "passwordUpdated": "Your password has been updated."
-    }
-  },
-  "pages": {
-    "public": {
-      "home": {
-        "messageBienvenue": "Welcome to the La-Ventil app.",
         "messageOnboarding": "To get started, please fill in the information below.",
-        "coverAlt": "Illustration of La-Ventil, a Repair Caf\u00e9 makerspace and learning hub.",
+        "coverAlt": "Illustration of La-Ventil, a Repair Café makerspace and learning hub.",
         "ctaSignup": "Sign up",
         "ctaSignin": "Sign in"
       },
@@ -516,12 +303,12 @@
             "openBadgesAssigned": "open badges assigned",
             "assign": "assign"
           },
-    "actions": {
-      "manage": "Manage",
-      "openBadges": "Open badges",
-      "edit": "Edit",
-      "block": "Block",
-      "unblock": "Unblock"
+          "actions": {
+            "manage": "Manage",
+            "openBadges": "Open badges",
+            "edit": "Edit",
+            "block": "Block",
+            "unblock": "Unblock"
           },
           "adminStatus": {
             "none": "no",
@@ -532,24 +319,50 @@
             "active": "active",
             "blocked": "blocked"
           },
-        "assignModal": {
-          "title": "Assign an open badge",
-          "subtitle": "Choose the level and the user concerned.",
-          "badgeLabel": "Open badge",
-          "levelLabel": "Assigned level",
-          "userLabel": "User",
-          "userSearchPlaceholder": "Search a user",
-          "cancel": "Back",
-          "confirm": "Assign",
-          "illustrationPlaceholder": "Illustration in progress",
-          "error": "Unable to assign the open badge.",
-          "remove": {
-            "title": "Remove the current open badge",
-            "description": "If this badge should no longer be attached to this user, remove it.",
-            "action": "Remove",
-            "success": "Open badge removed."
+          "assignModal": {
+            "title": "Assign an open badge",
+            "subtitle": "Choose the level and the user concerned.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Assigned level",
+            "userLabel": "User",
+            "userSearchPlaceholder": "Search a user",
+            "cancel": "Back",
+            "confirm": "Assign",
+            "illustrationPlaceholder": "Illustration in progress",
+            "error": "Unable to assign the open badge.",
+            "remove": {
+              "title": "Remove the current open badge",
+              "description": "If this badge should no longer be attached to this user, remove it.",
+              "action": "Remove",
+              "success": "Open badge removed."
+            }
+          },
+          "badgeManagement": {
+            "title": "{name} open badges",
+            "subtitle": "Management",
+            "intro": "Manage the open badges assigned to {name}.",
+            "actions": {
+              "assign": "Assign an open badge",
+              "manage": "Manage",
+              "upgrade": "Upgrade",
+              "downgrade": "Downgrade",
+              "remove": "Remove"
+            },
+            "columns": {
+              "actions": "actions",
+              "image": "image",
+              "badge": "open badge",
+              "level": "current level"
+            },
+            "empty": {
+              "title": "No open badge assigned.",
+              "description": "Use the main action to assign a new open badge."
+            },
+            "feedback": {
+              "genericError": "Something went wrong.",
+              "levelUpdated": "Open badge level updated."
+            }
           }
-        }
         },
         "usersEdit": {
           "title": "Edit user",
@@ -745,6 +558,211 @@
           }
         }
       }
+    }
+  },
+  "common": {
+    "actions": {
+      "back": "Back",
+      "retry": "Retry"
+    },
+    "errors": {
+      "invalid": "Please check the form fields.",
+      "network": "Unable to reach the server. Check your connection and try again."
+    },
+    "status": {
+      "loading": "Loading..."
+    }
+  },
+  "validation": {
+    "genericError": "An unexpected error occurred :(",
+    "emailAlreadyUsed": "This email address is already in use.",
+    "imageTooLarge": "Image too large (max {max}).",
+    "imageInvalidType": "Invalid image type. Please upload png, jpg, gif or webp.",
+    "emailRequired": "Please enter your email address.",
+    "emailInvalid": "The email address is not valid.",
+    "email": {
+      "confirmationMismatch": "Email addresses do not match."
+    },
+    "password": {
+      "minLength": "Your password must be at least 7 characters.",
+      "maxLength": "Your password must be at most 20 characters.",
+      "uppercaseRequired": "Your password must include at least one uppercase letter.",
+      "lowercaseRequired": "Your password must include at least one lowercase letter.",
+      "numberRequired": "Your password must include at least one number.",
+      "specialCharacterRequired": "Your password must include at least one special character (!@#$%^&*).",
+      "confirmationRequired": "Please confirm your password.",
+      "invalid": "The current password is incorrect.",
+      "confirmationMismatch": "Passwords do not match."
+    },
+    "signup": {
+      "firstNameRequired": "Please enter your first name.",
+      "firstNameMaxLength": "First name must be at most 40 characters.",
+      "firstNameNoEmoji": "First name cannot include emojis.",
+      "lastNameRequired": "Please enter your last name.",
+      "lastNameMaxLength": "Last name must be at most 40 characters.",
+      "lastNameNoEmoji": "Last name cannot include emojis.",
+      "roleRequired": "Please select a profile.",
+      "profileRequired": "Please select a profile.",
+      "termsRequired": "You must accept the privacy policy.",
+      "educationLevelRequired": "Please select a school level."
+    },
+    "profile": {
+      "firstNameRequired": "Please enter your first name.",
+      "firstNameMaxLength": "First name must be at most 40 characters.",
+      "firstNameNoEmoji": "First name cannot include emojis.",
+      "lastNameRequired": "Please enter your last name.",
+      "lastNameMaxLength": "Last name must be at most 40 characters.",
+      "lastNameNoEmoji": "Last name cannot include emojis.",
+      "profileRequired": "Please select a profile.",
+      "termsRequired": "You must accept the privacy policy.",
+      "educationLevelRequired": "Please select a school level."
+    },
+    "machineReservation": {
+      "machineRequired": "Please select a machine.",
+      "startsAtRequired": "Please select a start time.",
+      "startsAtInvalid": "Start time is invalid.",
+      "durationRequired": "Please select a duration."
+    },
+    "machine": {
+      "nameRequired": "Please enter a machine name.",
+      "nameMaxLength": "Machine name must be at most 35 characters.",
+      "descriptionRequired": "Please enter a description.",
+      "descriptionMaxLength": "Description must be at most 100 characters.",
+      "imageRequired": "Please add an image."
+    },
+    "openBadge": {
+      "nameRequired": "Please enter an open badge name.",
+      "nameMaxLength": "Open badge name must be at most 35 characters.",
+      "descriptionRequired": "Please enter a description.",
+      "descriptionMaxLength": "Description must be at most 100 characters.",
+      "imageRequired": "Please add an image.",
+      "levelTitleRequired": "Please enter a level title.",
+      "levelTitleMaxLength": "Level title must be at most 35 characters.",
+      "levelDescriptionRequired": "Please enter a level description.",
+      "levelDescriptionMaxLength": "Level description must be at most 100 characters.",
+      "levelAtLeastOne": "At least one level is required.",
+      "idRequired": "Open badge not found."
+    }
+  },
+  "resetPassword": {
+    "success": "If your email exists in our database, a password reset link has been sent to you.",
+    "emailSubject": "[{appName}] Reset your password",
+    "emailText": "Hello {name}!\nHere is the link to update your password:\n{resetUrl}\n"
+  },
+  "machineReservation": {
+    "badgeRequired": "You need the required open badge to reserve this machine.",
+    "startsAtInPast": "You cannot reserve a past time slot.",
+    "overlap": "This time slot is already reserved.",
+    "inactive": "This machine is currently unavailable.",
+    "machineRequired": "Selected machine was not found.",
+    "notFound": "Reservation not found.",
+    "unauthorized": "You cannot modify this reservation.",
+    "alreadyStarted": "The reservation has already started. You can no longer cancel it.",
+    "notStarted": "The reservation has not started yet.",
+    "alreadyEnded": "The reservation has already ended.",
+    "cancelled": "This reservation has already been cancelled."
+  },
+  "machine": {
+    "create": {
+      "success": "Machine created.",
+      "error": "Unable to create the machine.",
+      "unauthorized": "You are not allowed to create a machine."
+    },
+    "update": {
+      "success": "Machine updated.",
+      "error": "Unable to update the machine.",
+      "unauthorized": "You are not allowed to update this machine.",
+      "notFound": "Machine not found."
+    }
+  },
+  "openBadge": {
+    "create": {
+      "success": "Open badge created.",
+      "error": "Unable to create the open badge.",
+      "unauthorized": "You are not allowed to create an open badge."
+    },
+    "update": {
+      "success": "Open badge updated.",
+      "error": "Unable to update the open badge.",
+      "unauthorized": "You are not allowed to update this open badge.",
+      "notFound": "Open badge not found."
+    },
+    "status": {
+      "attachedToMachines": "Detach this open badge from machines before disabling it."
+    },
+    "assign": {
+      "unauthorized": "You are not allowed to assign this open badge.",
+      "awarderNotFound": "Assigning user was not found.",
+      "targetNotFound": "Target user was not found."
+    }
+  },
+  "user": {
+    "notFound": "User not found.",
+    "update": {
+      "success": "User updated.",
+      "error": "Unable to update the user.",
+      "unauthorized": "You are not allowed to update this user.",
+      "notFound": "User not found."
+    }
+  },
+  "emailSignature": "— The {appName} team",
+  "verifyEmail": {
+    "emailSubject": "[{appName}] Verify your email",
+    "emailText": "Hello {name}!\nPlease verify your email by clicking the link below:\n{verifyUrl}\n"
+  },
+  "forms": {
+    "fields": {
+      "email": "Email",
+      "currentEmail": "Current email",
+      "currentPassword": "Current password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "password": "Password",
+      "passwordConfirmation": "Confirm password",
+      "newEmail": "New email",
+      "newEmailConfirmation": "Confirm new email",
+      "newPassword": "New password",
+      "newPasswordConfirmation": "Confirm new password",
+      "educationLevel": "School level",
+      "profile": "Usage profile",
+      "terms": "I accept the <link>privacy policy</link>"
+    },
+    "placeholders": {
+      "email": "email@email.com",
+      "currentEmail": "current email",
+      "currentPassword": "current password",
+      "firstName": "my first name",
+      "lastName": "my last name",
+      "password": "minimum 7 characters",
+      "passwordConfirmation": "same password as the previous field",
+      "newEmail": "new email address",
+      "newEmailConfirmation": "confirm new email",
+      "newPassword": "minimum 5 characters",
+      "newPasswordConfirmation": "confirm new password"
+    },
+    "actions": {
+      "submitResetPassword": "Send reset link",
+      "submitUpdatePassword": "Change my password",
+      "resendEmailVerification": "Resend link",
+      "cancelEmailChange": "Cancel change",
+      "updateEmail": "Update email",
+      "updatePassword": "Update password",
+      "updateProfile": "Update",
+      "submitSignup": "Sign up",
+      "submitLogin": "Sign in"
+    },
+    "messages": {
+      "signInSuccess": "Signed in successfully.",
+      "signInFailed": "Sign-in failed.",
+      "signInBlocked": "Your account has been blocked. You cannot access Ventil O.S.",
+      "signInUnverified": "Please verify your email address before signing in.",
+      "profileUpdated": "Your profile has been updated.",
+      "emailVerificationSent": "A verification email has been sent.",
+      "emailChangePending": "An email change is pending for {email}.",
+      "emailChangeCanceled": "The email change has been canceled.",
+      "emailVerificationNotPending": "No email change is pending.",
+      "emailUpdated": "Your email has been updated.",
+      "passwordUpdated": "Your password has been updated."
     }
   },
   "profileSelector": {

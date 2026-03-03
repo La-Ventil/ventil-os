@@ -18,226 +18,9 @@
     "public": {
       "home": {
         "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
-        "messageOnboarding": "Pour commencer l’aventure, merci de saisir les informations ci-dessous."
-      }
-    }
-  },
-  "common": {
-    "actions": {
-      "back": "Retour",
-      "retry": "Réessayer"
-    },
-    "errors": {
-      "invalid": "Veuillez vérifier les champs du formulaire.",
-      "network": "Impossible de contacter le serveur. Vérifiez votre connexion et réessayez."
-    },
-    "status": {
-      "loading": "Chargement..."
-    }
-  },
-  "validation": {
-    "imageTooLarge": "Image trop lourde (max {max}).",
-    "imageInvalidType": "Format d'image invalide. Merci d'envoyer png, jpg, gif ou webp.",
-    "emailRequired": "Veuillez renseigner votre adresse email.",
-    "emailInvalid": "L'adresse email n'est pas valide.",
-    "genericError": "Une erreur inattendue est survenue :(",
-    "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
-    "email": {
-      "confirmationMismatch": "Les adresses email ne correspondent pas."
-    },
-    "password": {
-      "minLength": "Votre mot de passe doit contenir au moins 7 caractères.",
-      "maxLength": "Votre mot de passe ne peut pas dépasser 20 caractères.",
-      "uppercaseRequired": "Votre mot de passe doit contenir au moins une lettre majuscule.",
-      "lowercaseRequired": "Votre mot de passe doit contenir au moins une lettre minuscule.",
-      "numberRequired": "Votre mot de passe doit contenir au moins un chiffre.",
-      "specialCharacterRequired": "Votre mot de passe doit contenir au moins un caractère spécial (!@#$%^&*).",
-      "confirmationRequired": "Veuillez confirmer votre mot de passe.",
-      "invalid": "Le mot de passe actuel est incorrect.",
-      "confirmationMismatch": "Les mots de passe ne correspondent pas."
-    },
-    "signup": {
-      "firstNameRequired": "Veuillez renseigner votre prénom.",
-      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
-      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
-      "lastNameRequired": "Veuillez renseigner votre nom.",
-      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
-      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
-      "roleRequired": "Veuillez sélectionner un profil.",
-      "profileRequired": "Veuillez sélectionner un profil.",
-      "termsRequired": "Vous devez accepter la politique de confidentialité.",
-      "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
-    },
-    "profile": {
-      "firstNameRequired": "Veuillez renseigner votre prénom.",
-      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
-      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
-      "lastNameRequired": "Veuillez renseigner votre nom.",
-      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
-      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
-      "profileRequired": "Veuillez sélectionner un profil.",
-      "termsRequired": "Vous devez accepter la politique de confidentialité.",
-      "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
-    },
-    "openBadge": {
-      "nameRequired": "Veuillez renseigner un nom d’open badge.",
-      "nameMaxLength": "Le nom de l’open badge ne doit pas dépasser 35 caractères.",
-      "descriptionRequired": "Veuillez renseigner une description.",
-      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
-      "imageRequired": "Veuillez ajouter une image.",
-      "levelTitleRequired": "Veuillez renseigner le titre du niveau.",
-      "levelTitleMaxLength": "Le titre du niveau ne doit pas dépasser 35 caractères.",
-      "levelDescriptionRequired": "Veuillez renseigner la description du niveau.",
-      "levelDescriptionMaxLength": "La description du niveau ne doit pas dépasser 100 caractères.",
-      "levelAtLeastOne": "Au moins un niveau est requis.",
-      "idRequired": "Badge introuvable."
-    },
-    "machineReservation": {
-      "machineRequired": "Veuillez sélectionner une machine.",
-      "startsAtRequired": "Veuillez sélectionner un horaire de début.",
-      "startsAtInvalid": "La date de début est invalide.",
-      "durationRequired": "Veuillez sélectionner une durée."
-    },
-    "machine": {
-      "nameRequired": "Veuillez renseigner un nom de machine.",
-      "nameMaxLength": "Le nom de la machine ne doit pas dépasser 35 caractères.",
-      "descriptionRequired": "Veuillez renseigner une description.",
-      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
-      "imageRequired": "Veuillez ajouter une image."
-    }
-  },
-  "openBadge": {
-    "create": {
-      "success": "Open badge créé.",
-      "error": "Impossible de créer l'open badge.",
-      "unauthorized": "Vous n'avez pas les droits pour créer un open badge."
-    },
-    "update": {
-      "success": "Open badge mis à jour.",
-      "error": "Impossible de mettre à jour l'open badge.",
-      "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
-      "notFound": "Open badge introuvable."
-    },
-    "status": {
-      "attachedToMachines": "Retirez cet open badge des machines liées avant de le désactiver."
-    },
-    "assign": {
-      "unauthorized": "Vous n'avez pas les droits pour attribuer cet open badge.",
-      "awarderNotFound": "L'utilisateur attribuant le badge est introuvable.",
-      "targetNotFound": "L'utilisateur ciblé est introuvable."
-    }
-  },
-  "resetPassword": {
-    "success": "Si votre email existe dans notre base de donnée, un email permettant de changer de mot de passe vous a été envoyé.",
-    "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
-    "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
-  },
-  "machineReservation": {
-    "badgeRequired": "Vous devez avoir le badge requis pour réserver cette machine.",
-    "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
-    "overlap": "Ce créneau est déjà réservé.",
-    "inactive": "Cette machine n'est pas disponible pour le moment.",
-    "machineRequired": "La machine sélectionnée est introuvable.",
-    "notFound": "Réservation introuvable.",
-    "unauthorized": "Vous ne pouvez pas modifier cette réservation.",
-    "alreadyStarted": "La réservation a déjà commencé. Vous ne pouvez plus l'annuler.",
-    "notStarted": "La réservation n'a pas encore commencé.",
-    "alreadyEnded": "La réservation est déjà terminée.",
-    "cancelled": "Cette réservation a déjà été annulée."
-  },
-  "machine": {
-    "create": {
-      "success": "Machine créée.",
-      "error": "Impossible de créer la machine.",
-      "unauthorized": "Vous n'avez pas les droits pour créer une machine."
-    },
-    "update": {
-      "success": "Machine mise à jour.",
-      "error": "Impossible de mettre à jour la machine.",
-      "unauthorized": "Vous n'avez pas les droits pour modifier cette machine.",
-      "notFound": "Machine introuvable."
-    }
-  },
-  "user": {
-    "notFound": "Utilisateur introuvable.",
-    "update": {
-      "success": "Utilisateur mis à jour.",
-      "error": "Impossible de mettre à jour l’utilisateur.",
-      "unauthorized": "Vous n’êtes pas autorisé à modifier cet utilisateur.",
-      "notFound": "Utilisateur introuvable."
-    }
-  },
-  "emailSignature": "— L’équipe {appName}",
-  "verifyEmail": {
-    "emailSubject": "[{appName}] Vérification de votre email",
-    "emailText": "Bonjour {name} !\nVeuillez vérifier votre email en cliquant sur le lien ci-dessous :\n{verifyUrl}\n"
-  },
-  "forms": {
-    "fields": {
-      "email": "Email",
-      "currentEmail": "Email actuel",
-      "currentPassword": "Mot de passe actuel",
-      "firstName": "Prénom",
-      "lastName": "Nom",
-      "password": "Mot de passe",
-      "passwordConfirmation": "Confirmation du mot de passe",
-      "newEmail": "Nouvel email",
-      "newEmailConfirmation": "Confirmation du nouvel email",
-      "newPassword": "Nouveau mot de passe",
-      "newPasswordConfirmation": "Confirmation du nouveau mot de passe",
-      "educationLevel": "Niveau scolaire",
-      "profile": "Profil d’utilisation",
-      "terms": "J’accepte la <link>politique de confidentialité</link>"
-    },
-    "placeholders": {
-      "email": "email@email.com",
-      "currentEmail": "email actuel",
-      "currentPassword": "mot de passe actuel",
-      "firstName": "mon prénom",
-      "lastName": "mon nom",
-      "password": "minimum 7 caractères",
-      "passwordConfirmation": "même mot de passe que le champ précédent",
-      "newEmail": "nouvel email",
-      "newEmailConfirmation": "confirmer le nouvel email",
-      "newPassword": "minimum 5 caractères",
-      "newPasswordConfirmation": "confirmer le nouveau mot de passe"
-    },
-    "actions": {
-      "submitResetPassword": "Envoyer le lien de réinitialisation.",
-      "submitUpdatePassword": "Changer mon mot de passe",
-      "resendEmailVerification": "Renvoyer le lien",
-      "cancelEmailChange": "Annuler le changement",
-      "updateEmail": "Modifier l’email",
-      "updatePassword": "Modifier le mot de passe",
-      "updateProfile": "Modifier",
-      "submitSignup": "S'inscrire",
-      "submitLogin": "Se connecter"
-    },
-    "errors": {
-      "network": "Erreur réseau. Veuillez réessayer.",
-      "invalid": "Certains champs sont invalides."
-    },
-    "messages": {
-      "signInSuccess": "Connexion réussie.",
-      "signInFailed": "Identifiants invalides.",
-      "signInBlocked": "Votre compte a été bloqué. Vous ne pouvez pas accéder à Ventil O.S.",
-      "signInUnverified": "Veuillez vérifier votre adresse email avant de vous connecter.",
-      "profileUpdated": "Votre profil a été mis à jour.",
-      "emailVerificationSent": "Un email de vérification a été envoyé.",
-      "emailChangePending": "Un changement d’email est en attente pour {email}.",
-      "emailChangeCanceled": "Le changement d’email a été annulé.",
-      "emailVerificationNotPending": "Aucun changement d’email en attente.",
-      "emailUpdated": "Votre email a bien été mis à jour.",
-      "passwordUpdated": "Votre mot de passe a bien été mis à jour."
-    }
-  },
-  "pages": {
-    "public": {
-      "home": {
-        "messageBienvenue": "Bienvenue sur l’application de La-Ventil.",
         "messageOnboarding": "Ventil O.S. vous permet d'utiliser tous les services avancées du tiers-lieu éducatif.",
         "messageAccountCreation": "Pour commencer l’aventure, merci de saisir les informations ci-dessous.",
-        "coverAlt": "Illustration de La-Ventil, espace de fabrication et d'apprentissage du Repair Caf\u00e9.",
+        "coverAlt": "Illustration de La-Ventil, espace de fabrication et d'apprentissage du Repair Café.",
         "ctaSignup": "M'inscrire",
         "ctaSignin": "Connexion"
       },
@@ -518,12 +301,12 @@
             "openBadgesAssigned": "open badges attribués",
             "assign": "attribuer"
           },
-    "actions": {
-      "manage": "Gérer",
-      "openBadges": "Open badges",
-      "edit": "Modifier",
-      "block": "Bloquer",
-      "unblock": "Débloquer"
+          "actions": {
+            "manage": "Gérer",
+            "openBadges": "Open badges",
+            "edit": "Modifier",
+            "block": "Bloquer",
+            "unblock": "Débloquer"
           },
           "adminStatus": {
             "none": "non",
@@ -534,24 +317,50 @@
             "active": "actif",
             "blocked": "bloqué"
           },
-        "assignModal": {
-          "title": "Attribution d’un open badge",
-          "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
-          "badgeLabel": "Open badge",
-          "levelLabel": "Niveau attribué",
-          "userLabel": "Utilisateur",
-          "userSearchPlaceholder": "Rechercher un utilisateur",
-          "cancel": "Retour",
-          "confirm": "Attribuer",
-          "illustrationPlaceholder": "Illustration en cours",
-          "error": "Impossible d’attribuer l’open badge.",
-          "remove": {
-            "title": "Retirer l’open badge actuel",
-            "description": "Retirez cet open badge si cet utilisateur ne doit plus l’avoir.",
-            "action": "Retirer",
-            "success": "Open badge retiré."
+          "assignModal": {
+            "title": "Attribution d’un open badge",
+            "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
+            "badgeLabel": "Open badge",
+            "levelLabel": "Niveau attribué",
+            "userLabel": "Utilisateur",
+            "userSearchPlaceholder": "Rechercher un utilisateur",
+            "cancel": "Retour",
+            "confirm": "Attribuer",
+            "illustrationPlaceholder": "Illustration en cours",
+            "error": "Impossible d’attribuer l’open badge.",
+            "remove": {
+              "title": "Retirer l’open badge actuel",
+              "description": "Retirez cet open badge si cet utilisateur ne doit plus l’avoir.",
+              "action": "Retirer",
+              "success": "Open badge retiré."
+            }
+          },
+          "badgeManagement": {
+            "title": "Open badges de {name}",
+            "subtitle": "Gestion",
+            "intro": "Gérez les open badges attribués à {name}.",
+            "actions": {
+              "assign": "Assigner un open badge",
+              "manage": "Gérer",
+              "upgrade": "Monter de niveau",
+              "downgrade": "Descendre de niveau",
+              "remove": "Supprimer"
+            },
+            "columns": {
+              "actions": "actions",
+              "image": "illustration",
+              "badge": "open badge",
+              "level": "niveau actuel"
+            },
+            "empty": {
+              "title": "Aucun open badge attribué.",
+              "description": "Utilisez l’action principale pour attribuer un nouvel open badge."
+            },
+            "feedback": {
+              "genericError": "Une erreur est survenue.",
+              "levelUpdated": "Niveau de l’open badge mis à jour."
+            }
           }
-        }
         },
         "usersEdit": {
           "title": "Modifier un utilisateur",
@@ -747,6 +556,215 @@
           }
         }
       }
+    }
+  },
+  "common": {
+    "actions": {
+      "back": "Retour",
+      "retry": "Réessayer"
+    },
+    "errors": {
+      "invalid": "Veuillez vérifier les champs du formulaire.",
+      "network": "Impossible de contacter le serveur. Vérifiez votre connexion et réessayez."
+    },
+    "status": {
+      "loading": "Chargement..."
+    }
+  },
+  "validation": {
+    "imageTooLarge": "Image trop lourde (max {max}).",
+    "imageInvalidType": "Format d'image invalide. Merci d'envoyer png, jpg, gif ou webp.",
+    "emailRequired": "Veuillez renseigner votre adresse email.",
+    "emailInvalid": "L'adresse email n'est pas valide.",
+    "genericError": "Une erreur inattendue est survenue :(",
+    "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
+    "email": {
+      "confirmationMismatch": "Les adresses email ne correspondent pas."
+    },
+    "password": {
+      "minLength": "Votre mot de passe doit contenir au moins 7 caractères.",
+      "maxLength": "Votre mot de passe ne peut pas dépasser 20 caractères.",
+      "uppercaseRequired": "Votre mot de passe doit contenir au moins une lettre majuscule.",
+      "lowercaseRequired": "Votre mot de passe doit contenir au moins une lettre minuscule.",
+      "numberRequired": "Votre mot de passe doit contenir au moins un chiffre.",
+      "specialCharacterRequired": "Votre mot de passe doit contenir au moins un caractère spécial (!@#$%^&*).",
+      "confirmationRequired": "Veuillez confirmer votre mot de passe.",
+      "invalid": "Le mot de passe actuel est incorrect.",
+      "confirmationMismatch": "Les mots de passe ne correspondent pas."
+    },
+    "signup": {
+      "firstNameRequired": "Veuillez renseigner votre prénom.",
+      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
+      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
+      "lastNameRequired": "Veuillez renseigner votre nom.",
+      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
+      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
+      "roleRequired": "Veuillez sélectionner un profil.",
+      "profileRequired": "Veuillez sélectionner un profil.",
+      "termsRequired": "Vous devez accepter la politique de confidentialité.",
+      "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
+    },
+    "profile": {
+      "firstNameRequired": "Veuillez renseigner votre prénom.",
+      "firstNameMaxLength": "Le prénom ne doit pas dépasser 40 caractères.",
+      "firstNameNoEmoji": "Le prénom ne doit pas contenir d’emoji.",
+      "lastNameRequired": "Veuillez renseigner votre nom.",
+      "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
+      "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
+      "profileRequired": "Veuillez sélectionner un profil.",
+      "termsRequired": "Vous devez accepter la politique de confidentialité.",
+      "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."
+    },
+    "openBadge": {
+      "nameRequired": "Veuillez renseigner un nom d’open badge.",
+      "nameMaxLength": "Le nom de l’open badge ne doit pas dépasser 35 caractères.",
+      "descriptionRequired": "Veuillez renseigner une description.",
+      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
+      "imageRequired": "Veuillez ajouter une image.",
+      "levelTitleRequired": "Veuillez renseigner le titre du niveau.",
+      "levelTitleMaxLength": "Le titre du niveau ne doit pas dépasser 35 caractères.",
+      "levelDescriptionRequired": "Veuillez renseigner la description du niveau.",
+      "levelDescriptionMaxLength": "La description du niveau ne doit pas dépasser 100 caractères.",
+      "levelAtLeastOne": "Au moins un niveau est requis.",
+      "idRequired": "Badge introuvable."
+    },
+    "machineReservation": {
+      "machineRequired": "Veuillez sélectionner une machine.",
+      "startsAtRequired": "Veuillez sélectionner un horaire de début.",
+      "startsAtInvalid": "La date de début est invalide.",
+      "durationRequired": "Veuillez sélectionner une durée."
+    },
+    "machine": {
+      "nameRequired": "Veuillez renseigner un nom de machine.",
+      "nameMaxLength": "Le nom de la machine ne doit pas dépasser 35 caractères.",
+      "descriptionRequired": "Veuillez renseigner une description.",
+      "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
+      "imageRequired": "Veuillez ajouter une image."
+    }
+  },
+  "openBadge": {
+    "create": {
+      "success": "Open badge créé.",
+      "error": "Impossible de créer l'open badge.",
+      "unauthorized": "Vous n'avez pas les droits pour créer un open badge."
+    },
+    "update": {
+      "success": "Open badge mis à jour.",
+      "error": "Impossible de mettre à jour l'open badge.",
+      "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
+      "notFound": "Open badge introuvable."
+    },
+    "status": {
+      "attachedToMachines": "Retirez cet open badge des machines liées avant de le désactiver."
+    },
+    "assign": {
+      "unauthorized": "Vous n'avez pas les droits pour attribuer cet open badge.",
+      "awarderNotFound": "L'utilisateur attribuant le badge est introuvable.",
+      "targetNotFound": "L'utilisateur ciblé est introuvable."
+    }
+  },
+  "resetPassword": {
+    "success": "Si votre email existe dans notre base de donnée, un email permettant de changer de mot de passe vous a été envoyé.",
+    "emailSubject": "[{appName}] Réinitialisation de votre mot de passe",
+    "emailText": "Bonjour {name} !\nVoici le lien permettant de mettre à jour votre mot de passe :\n{resetUrl}\n"
+  },
+  "machineReservation": {
+    "badgeRequired": "Vous devez avoir le badge requis pour réserver cette machine.",
+    "startsAtInPast": "Vous ne pouvez pas réserver un créneau passé.",
+    "overlap": "Ce créneau est déjà réservé.",
+    "inactive": "Cette machine n'est pas disponible pour le moment.",
+    "machineRequired": "La machine sélectionnée est introuvable.",
+    "notFound": "Réservation introuvable.",
+    "unauthorized": "Vous ne pouvez pas modifier cette réservation.",
+    "alreadyStarted": "La réservation a déjà commencé. Vous ne pouvez plus l'annuler.",
+    "notStarted": "La réservation n'a pas encore commencé.",
+    "alreadyEnded": "La réservation est déjà terminée.",
+    "cancelled": "Cette réservation a déjà été annulée."
+  },
+  "machine": {
+    "create": {
+      "success": "Machine créée.",
+      "error": "Impossible de créer la machine.",
+      "unauthorized": "Vous n'avez pas les droits pour créer une machine."
+    },
+    "update": {
+      "success": "Machine mise à jour.",
+      "error": "Impossible de mettre à jour la machine.",
+      "unauthorized": "Vous n'avez pas les droits pour modifier cette machine.",
+      "notFound": "Machine introuvable."
+    }
+  },
+  "user": {
+    "notFound": "Utilisateur introuvable.",
+    "update": {
+      "success": "Utilisateur mis à jour.",
+      "error": "Impossible de mettre à jour l’utilisateur.",
+      "unauthorized": "Vous n’êtes pas autorisé à modifier cet utilisateur.",
+      "notFound": "Utilisateur introuvable."
+    }
+  },
+  "emailSignature": "— L’équipe {appName}",
+  "verifyEmail": {
+    "emailSubject": "[{appName}] Vérification de votre email",
+    "emailText": "Bonjour {name} !\nVeuillez vérifier votre email en cliquant sur le lien ci-dessous :\n{verifyUrl}\n"
+  },
+  "forms": {
+    "fields": {
+      "email": "Email",
+      "currentEmail": "Email actuel",
+      "currentPassword": "Mot de passe actuel",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "password": "Mot de passe",
+      "passwordConfirmation": "Confirmation du mot de passe",
+      "newEmail": "Nouvel email",
+      "newEmailConfirmation": "Confirmation du nouvel email",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordConfirmation": "Confirmation du nouveau mot de passe",
+      "educationLevel": "Niveau scolaire",
+      "profile": "Profil d’utilisation",
+      "terms": "J’accepte la <link>politique de confidentialité</link>"
+    },
+    "placeholders": {
+      "email": "email@email.com",
+      "currentEmail": "email actuel",
+      "currentPassword": "mot de passe actuel",
+      "firstName": "mon prénom",
+      "lastName": "mon nom",
+      "password": "minimum 7 caractères",
+      "passwordConfirmation": "même mot de passe que le champ précédent",
+      "newEmail": "nouvel email",
+      "newEmailConfirmation": "confirmer le nouvel email",
+      "newPassword": "minimum 5 caractères",
+      "newPasswordConfirmation": "confirmer le nouveau mot de passe"
+    },
+    "actions": {
+      "submitResetPassword": "Envoyer le lien de réinitialisation.",
+      "submitUpdatePassword": "Changer mon mot de passe",
+      "resendEmailVerification": "Renvoyer le lien",
+      "cancelEmailChange": "Annuler le changement",
+      "updateEmail": "Modifier l’email",
+      "updatePassword": "Modifier le mot de passe",
+      "updateProfile": "Modifier",
+      "submitSignup": "S'inscrire",
+      "submitLogin": "Se connecter"
+    },
+    "errors": {
+      "network": "Erreur réseau. Veuillez réessayer.",
+      "invalid": "Certains champs sont invalides."
+    },
+    "messages": {
+      "signInSuccess": "Connexion réussie.",
+      "signInFailed": "Identifiants invalides.",
+      "signInBlocked": "Votre compte a été bloqué. Vous ne pouvez pas accéder à Ventil O.S.",
+      "signInUnverified": "Veuillez vérifier votre adresse email avant de vous connecter.",
+      "profileUpdated": "Votre profil a été mis à jour.",
+      "emailVerificationSent": "Un email de vérification a été envoyé.",
+      "emailChangePending": "Un changement d’email est en attente pour {email}.",
+      "emailChangeCanceled": "Le changement d’email a été annulé.",
+      "emailVerificationNotPending": "Aucun changement d’email en attente.",
+      "emailUpdated": "Votre email a bien été mis à jour.",
+      "passwordUpdated": "Votre mot de passe a bien été mis à jour."
     }
   },
   "profileSelector": {

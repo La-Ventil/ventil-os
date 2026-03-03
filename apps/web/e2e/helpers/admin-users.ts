@@ -19,3 +19,19 @@ export async function openAdminUserEditPage(page: Page, email: string): Promise<
   await page.waitForURL(/\/hub\/admin\/users\/[^/]+\/edit$/);
   await expect(page.locator('form')).toBeVisible();
 }
+
+export async function openAdminUserOpenBadgesPage(page: Page, email: string): Promise<void> {
+  await page.goto('/hub/admin/users');
+
+  const table = page.getByRole('table');
+  await expect(table).toBeVisible();
+
+  const row = getAdminUsersRowByEmail(page, email);
+  await expect(row).toBeVisible();
+
+  const menu = await openRowQuickActions(page, row, /gérer|manage/i);
+  await clickQuickAction(menu, /open badges?/i);
+
+  await page.waitForURL(/\/hub\/admin\/users\/[^/]+$/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+}

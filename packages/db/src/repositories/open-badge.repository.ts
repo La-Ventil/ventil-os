@@ -218,6 +218,50 @@ export class OpenBadgeRepository {
     });
   }
 
+  async setUserOpenBadgeLevel(input: {
+    userId: string;
+    openBadgeId: string;
+    level: number;
+    awardedById: string;
+  }) {
+    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
+      where: {
+        openBadgeId_level: {
+          openBadgeId: input.openBadgeId,
+          level: input.level
+        }
+      },
+      select: { id: true }
+    });
+
+    if (!openBadgeLevel) {
+      throw new Error('Open badge level not found.');
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.openBadgeProgress.deleteMany({
+        where: {
+          userId: input.userId,
+          openBadgeId: input.openBadgeId
+        }
+      });
+
+      return tx.openBadgeProgress.create({
+        data: {
+          userId: input.userId,
+          openBadgeId: input.openBadgeId,
+          highestLevelId: openBadgeLevel.id,
+          levelHistory: {
+            create: {
+              openBadgeLevelId: openBadgeLevel.id,
+              awardedById: input.awardedById
+            }
+          }
+        }
+      });
+    });
+  }
+
   async removeUserOpenBadgeProgress(userId: string, openBadgeId: string): Promise<void> {
     await this.prisma.openBadgeProgress.deleteMany({
       where: {

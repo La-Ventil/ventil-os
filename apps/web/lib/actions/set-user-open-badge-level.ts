@@ -1,23 +1,23 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { assignOpenBadge } from '@repo/application/open-badges/usecases';
-import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
 import { getTranslations } from 'next-intl/server';
-import type { FormState } from '@repo/form/form-state';
-import { getServerSession } from '../auth';
-import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { setUserOpenBadgeLevel } from '@repo/application/open-badges/usecases';
+import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
 import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
+import type { FormState } from '@repo/form/form-state';
+import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { getServerSession } from '../auth';
 
-type AssignOpenBadgeInput = {
+type SetUserOpenBadgeLevelInput = {
   userId: string;
   openBadgeId: string;
   level: number;
 };
 
-export async function assignOpenBadgeAction(
-  input: AssignOpenBadgeInput
-): Promise<FormState<AssignOpenBadgeInput>> {
+export async function setUserOpenBadgeLevelAction(
+  input: SetUserOpenBadgeLevelInput
+): Promise<FormState<SetUserOpenBadgeLevelInput>> {
   const t = await getTranslations();
   const session = await getServerSession();
 
@@ -37,7 +37,7 @@ export async function assignOpenBadgeAction(
   }
 
   try {
-    await assignOpenBadge(parsed.data, {
+    await setUserOpenBadgeLevel(parsed.data, {
       id: session.user.id,
       email: session.user.email ?? null,
       globalAdmin: session.user.globalAdmin,
@@ -49,7 +49,9 @@ export async function assignOpenBadgeAction(
 
     return formSuccess(
       parsed.data,
-      t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
+      t('pages.hub.admin.users.badgeManagement.feedback.levelUpdated', {
+        defaultMessage: 'Open badge level updated.'
+      })
     );
   } catch (error) {
     if (isOpenBadgeError(error)) {
