@@ -2,11 +2,21 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { machineCreateRequestSchema } from '@repo/application/forms';
-import MachineCreateForm, { machineCreateInitialState } from '@repo/ui/forms/machine-create.form';
+import { machineCreateRequestSchema, type MachineCreateFormInput } from '@repo/application/forms';
+import MachineForm from '@repo/ui/forms/machine.form';
+import { createFormState } from '@repo/form/form-state';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { useTranslations } from 'next-intl';
 import { createMachineAction } from '../../../../../lib/actions/create-machine';
+
+const machineCreateInitialState = createFormState<MachineCreateFormInput>({
+  name: '',
+  description: '',
+  imageFile: undefined,
+  badgeRequired: true,
+  badgeQuery: '',
+  activationEnabled: true
+});
 
 export default function MachineCreateFormClient() {
   const router = useRouter();
@@ -28,5 +38,5 @@ export default function MachineCreateFormClient() {
     }
   }, [router, state.success]);
 
-  return <MachineCreateForm formState={formState} />;
+  return <MachineForm formState={formState} />;
 }

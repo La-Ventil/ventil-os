@@ -7,7 +7,7 @@ import {
   machineUpdateRequestSchema,
   type MachineUpdateRequest
 } from '@repo/application/forms';
-import MachineCreateForm from '@repo/ui/forms/machine-create.form';
+import MachineForm from '@repo/ui/forms/machine.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
@@ -50,7 +50,7 @@ export default function MachineEditFormClient({ machine }: MachineEditFormClient
   }, [router, state.success]);
 
   return (
-    <MachineCreateForm
+    <MachineForm
       formState={formState}
       imagePreviewUrl={machine.imageUrl ?? undefined}
       imageRequired={false}

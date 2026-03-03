@@ -20,15 +20,14 @@ import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';
-import { createFormState } from '@repo/form/form-state';
 import FormAlert from './form-alert';
 import Form from './form';
 import { useEffect, useState } from 'react';
-import styles from './machine-create.form.module.css';
+import styles from './machine.form.module.css';
 
 type MachineFormValues = MachineCreateFormInput | MachineUpdateFormInput;
 
-export interface MachineCreateFormProps {
+export interface MachineFormProps {
   formState: FormActionStateTuple<MachineFormValues>;
   imagePreviewUrl?: string;
   imageRequired?: boolean;
@@ -36,22 +35,13 @@ export interface MachineCreateFormProps {
   submitLabel?: string;
 }
 
-export const machineCreateInitialState = createFormState<MachineCreateFormInput>({
-  name: '',
-  description: '',
-  imageFile: undefined,
-  badgeRequired: true,
-  badgeQuery: '',
-  activationEnabled: true
-});
-
-export default function MachineCreateForm({
+export default function MachineForm({
   formState: [state, action, isPending, handleSubmit, handleRetry],
   imagePreviewUrl,
   imageRequired = false,
   backHref = '/hub/admin/machines',
   submitLabel
-}: MachineCreateFormProps) {
+}: MachineFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
   const tRoot = useTranslations();
   const fieldError = (field: keyof MachineCreateFormInput) => fieldErrorMessage(state, field);
