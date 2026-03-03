@@ -23,6 +23,7 @@ Rules:
 - Default tab is enforced by redirect to a canonical route.
 - Modals use parallel routes (`@modal`) to remain deep-linkable.
 - Modals must not break base navigation or SSR.
+- Route files and route-coupled modal wrappers stay in `apps/web`; reusable dialog/view components should live in `packages/ui`.
 
 ---
 

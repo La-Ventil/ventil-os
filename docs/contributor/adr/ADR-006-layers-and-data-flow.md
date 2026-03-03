@@ -45,6 +45,12 @@ Constraints / pragmatic choices:
 - The shared form package (@repo/form) owns reusable form state and hooks.
 - Pragmatic rule: Prisma entities may be treated as domain objects when needed.
 
+UI ownership:
+- `apps/web` should contain route files (`page.tsx`, `layout.tsx`, parallel-route files), server-action wiring, and thin route-specific wrappers.
+- `packages/ui` should contain reusable presentational and client components, including generic admin/list/form widgets.
+- A component should stay in `apps/web` only when it directly depends on route params, route navigation, page-specific data assembly, or web-only action orchestration.
+- When a component becomes route-agnostic or reusable across pages, move it out of `apps/web` into `packages/ui`.
+
 Related ADRs:
 - ADR-008 (Form handling and validation strategy)
 - ADR-009 (Access control and role rules)
