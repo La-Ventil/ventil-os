@@ -9,6 +9,7 @@ import AdminOpenBadgesTable from '@repo/ui/admin/admin-open-badges-table';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import TableSection from '@repo/ui/table-section';
 import { OpenBadgeAdminStatus } from '@repo/view-models/open-badge-admin';
 import OpenBadgeQuickActions from './open-badge-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
@@ -71,14 +72,14 @@ export default async function AdminOpenBadgesPage() {
         </Link>
       </AdminActionsSection>
 
-      <Section pt={0}>
+      <TableSection pt={0}>
         <AdminOpenBadgesTable
           badges={badges}
           columns={labels.columns}
           statusLabelFor={statusLabelFor}
           renderActions={(badge) => <OpenBadgeQuickActions badge={badge} labels={labels.actions} />}
         />
-      </Section>
+      </TableSection>
     </>
   );
 }

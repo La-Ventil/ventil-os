@@ -1,5 +1,7 @@
 .table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px;
 }
 
 .table :global(.MuiTableCell-head) {
@@ -7,6 +9,35 @@
   text-transform: none;
 }
 
+.table :global(.MuiTableBody-root .MuiTableRow-root) {
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px #c5cdde4e;
+  overflow: hidden;
+}
+
+.table :global(.MuiTableBody-root .MuiTableRow-root:hover .MuiTableCell-body) {
+  background-color: rgb(235, 244, 255);
+  border-left: 1px solid white;
+}
+
+.table :global(.MuiTableBody-root .MuiTableRow-root .MuiTableCell-body:first-of-type) {
+  border-radius: 20px 0 0 20px;
+}
+
+.table :global(.MuiTableBody-root .MuiTableRow-root .MuiTableCell-body:last-of-type) {
+  border-radius: 0 20px 20px 0;
+}
+
+.table :global(.MuiTableCell-body) {
+  background-color: #ffffff;
+  font-size: 1.5rem;
+  border-left: 1px solid var(--mui-palette-background-default);
+}
+
+.table :global(.MuiTableRow-head) {
+  background-color: transparent;
+}
+
 .table :global(.MuiTableRow-root:hover) {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: transparent;
 }

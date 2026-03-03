@@ -5,6 +5,7 @@ import AdminUsersTable from '@repo/ui/admin/admin-users-table';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import TableSection from '@repo/ui/table-section';
 import UserQuickActions from './user-quick-actions';
 
 export const dynamic = 'force-dynamic';
@@ -69,7 +70,7 @@ export default async function AdminUsersPage() {
         <Typography variant="body1">{labels.intro}</Typography>
       </Section>
 
-      <Section>
+      <TableSection>
         <AdminUsersTable
           users={users}
           columns={labels.columns}
@@ -77,7 +78,7 @@ export default async function AdminUsersPage() {
           statusLabelFor={statusLabelFor}
           renderActions={(user) => <UserQuickActions user={user} labels={labels.actions} />}
         />
-      </Section>
+      </TableSection>
     </>
   );
 }

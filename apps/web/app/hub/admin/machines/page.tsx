@@ -9,6 +9,7 @@ import AdminMachinesTable from '@repo/ui/admin/admin-machines-table';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
+import TableSection from '@repo/ui/table-section';
 import { MachineAdminStatus } from '@repo/view-models/machine-admin';
 import MachineQuickActions from './machine-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
@@ -70,14 +71,14 @@ export default async function AdminMachinesPage() {
         </Link>
       </AdminActionsSection>
 
-      <Section pt={0}>
+      <TableSection pt={0}>
         <AdminMachinesTable
           machines={machines}
           columns={labels.columns}
           statusLabelFor={statusLabelFor}
           renderActions={(machine) => <MachineQuickActions machine={machine} labels={labels.actions} />}
         />
-      </Section>
+      </TableSection>
     </>
   );
 }
