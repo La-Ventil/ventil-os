@@ -11,7 +11,8 @@
     "./form-action-state": "./src/form-action-state.ts",
     "./use-form-action-state": "./src/use-form-action-state.ts",
     "./use-js-enabled": "./src/use-js-enabled.ts",
-    "./form-feedback": "./src/feedback/index.ts"
+    "./form-feedback": "./src/feedback/index.ts",
+    "./zod-errors": "./src/zod-errors.ts"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",

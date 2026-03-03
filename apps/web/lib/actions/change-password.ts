@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { changePasswordFormSchema, type ChangePasswordFormInput } from '@repo/application/forms';
 import { changePassword } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getUserProfileFromSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';

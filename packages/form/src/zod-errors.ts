@@ -1,23 +1,21 @@
-import type { TranslationValues } from 'next-intl';
 import { ZodError } from 'zod';
+
+type Translate = (key: string, values?: Record<string, string | number | Date>) => string;
 
 export function isValidationError(err: unknown): err is ZodError {
   return Boolean(err && (err instanceof ZodError || (err as ZodError).name === 'ZodError'));
 }
 
-type Translate = (key: string, values?: TranslationValues) => string;
-
 export function zodErrorToFieldErrors(err: ZodError, t: Translate): Record<string, string[]> {
   const out: Record<string, string[]> = {};
 
-  // Utilitaire pour pousser une erreur sur un champ
   const push = (field: string, msg: string) => {
     (out[field] ??= []).push(msg);
   };
 
   const safeTranslate = (key: string, fallback: string) => {
     try {
-      return t(key, { defaultMessage: fallback });
+      return t(key, { defaultMessage: fallback } as Record<string, string>);
     } catch {
       return fallback;
     }

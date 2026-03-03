@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { changeEmailFormSchema, type ChangeEmailFormInput } from '@repo/application/forms';
 import { requestEmailChange } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getUserProfileFromSession } from '../auth';
 import { sendEmailVerification } from '../email';

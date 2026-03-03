@@ -1,16 +1,12 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import {
-  machineCreateRequestSchema,
-  type MachineCreateData,
-  type MachineCreateRequest
-} from '@repo/application/forms';
+import { machineCreateRequestSchema, type MachineCreateData, type MachineCreateRequest } from '@repo/application/forms';
 import { canManageMachines } from '@repo/application';
 import { addMachine } from '@repo/application/machines/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { resolveImageUpload } from '../image-upload';
-import { zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';

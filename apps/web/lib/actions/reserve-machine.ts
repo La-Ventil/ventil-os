@@ -5,7 +5,7 @@ import { machineReservationFormSchema } from '@repo/application';
 import { reserveMachine, updateReservation } from '@repo/application/machines/usecases';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
-import { zodErrorToFieldErrors } from '../validation';
+import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../auth';
 import { revalidatePath } from 'next/cache';
