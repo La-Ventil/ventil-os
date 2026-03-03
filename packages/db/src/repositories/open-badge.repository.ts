@@ -1,4 +1,4 @@
-import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
+import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 import type {
@@ -15,6 +15,58 @@ import {
 
 export class OpenBadgeRepository {
   constructor(private prisma: PrismaClient) {}
+
+  private async getOpenBadgeLevelOrThrow(
+    openBadgeId: string,
+    level: number
+  ): Promise<{ id: string; level: number }> {
+    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
+      where: {
+        openBadgeId_level: {
+          openBadgeId,
+          level
+        }
+      },
+      select: { id: true, level: true }
+    });
+
+    if (!openBadgeLevel) {
+      throw new Error('Open badge level not found.');
+    }
+
+    return openBadgeLevel;
+  }
+
+  private async replaceUserOpenBadgeProgressAtLevel(
+    tx: Prisma.TransactionClient,
+    input: {
+      userId: string;
+      openBadgeId: string;
+      openBadgeLevelId: string;
+      awardedById: string;
+    }
+  ) {
+    await tx.openBadgeProgress.deleteMany({
+      where: {
+        userId: input.userId,
+        openBadgeId: input.openBadgeId
+      }
+    });
+
+    return tx.openBadgeProgress.create({
+      data: {
+        userId: input.userId,
+        openBadgeId: input.openBadgeId,
+        highestLevelId: input.openBadgeLevelId,
+        levelHistory: {
+          create: {
+            openBadgeLevelId: input.openBadgeLevelId,
+            awardedById: input.awardedById
+          }
+        }
+      }
+    });
+  }
 
   private normalizeOpenBadge(badge: OpenBadgePayload): OpenBadgeReadModel {
     return {
@@ -149,19 +201,7 @@ export class OpenBadgeRepository {
   }
 
   async awardOpenBadgeLevel(input: { userId: string; openBadgeId: string; level: number; awardedById: string }) {
-    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
-      where: {
-        openBadgeId_level: {
-          openBadgeId: input.openBadgeId,
-          level: input.level
-        }
-      },
-      select: { id: true, level: true }
-    });
-
-    if (!openBadgeLevel) {
-      throw new Error('Open badge level not found.');
-    }
+    const openBadgeLevel = await this.getOpenBadgeLevelOrThrow(input.openBadgeId, input.level);
 
     return this.prisma.$transaction(async (tx) => {
       const progress = await tx.openBadgeProgress.upsert({
@@ -224,40 +264,14 @@ export class OpenBadgeRepository {
     level: number;
     awardedById: string;
   }) {
-    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
-      where: {
-        openBadgeId_level: {
-          openBadgeId: input.openBadgeId,
-          level: input.level
-        }
-      },
-      select: { id: true }
-    });
-
-    if (!openBadgeLevel) {
-      throw new Error('Open badge level not found.');
-    }
+    const openBadgeLevel = await this.getOpenBadgeLevelOrThrow(input.openBadgeId, input.level);
 
     return this.prisma.$transaction(async (tx) => {
-      await tx.openBadgeProgress.deleteMany({
-        where: {
-          userId: input.userId,
-          openBadgeId: input.openBadgeId
-        }
-      });
-
-      return tx.openBadgeProgress.create({
-        data: {
-          userId: input.userId,
-          openBadgeId: input.openBadgeId,
-          highestLevelId: openBadgeLevel.id,
-          levelHistory: {
-            create: {
-              openBadgeLevelId: openBadgeLevel.id,
-              awardedById: input.awardedById
-            }
-          }
-        }
+      return this.replaceUserOpenBadgeProgressAtLevel(tx, {
+        userId: input.userId,
+        openBadgeId: input.openBadgeId,
+        openBadgeLevelId: openBadgeLevel.id,
+        awardedById: input.awardedById
       });
     });
   }
