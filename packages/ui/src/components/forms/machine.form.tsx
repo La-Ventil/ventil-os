@@ -1,6 +1,5 @@
 'use client';
 
-import Divider from '@mui/material/Divider';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';

@@ -55,18 +55,19 @@ export default function AssignOpenBadgeForm({
     () => openBadges.find((badge) => badge.id === selectedOpenBadgeId) ?? openBadges[0] ?? null,
     [openBadges, selectedOpenBadgeId]
   );
-  const levelOptions = selectedOpenBadge?.levels ?? [];
   const assignableLevelOptions = useMemo(() => {
     if (!selectedOpenBadge) {
       return [];
     }
+
+    const levelOptions = selectedOpenBadge.levels;
 
     if (!isUserSelectionDisabled) {
       return levelOptions;
     }
 
     return levelOptions.filter((level) => level.level > selectedOpenBadge.activeLevel);
-  }, [isUserSelectionDisabled, levelOptions, selectedOpenBadge]);
+  }, [isUserSelectionDisabled, selectedOpenBadge]);
   const [selectedLevel, setSelectedLevel] = useState(
     assignableLevelOptions[0] ? String(assignableLevelOptions[0].level) : ''
   );

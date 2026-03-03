@@ -36,12 +36,14 @@ export default function OpenBadgeModal({
   onAssign
 }: OpenBadgeModalProps): JSX.Element | null {
   const t = useTranslations('pages.hub.openBadges');
+  const titleId = useId();
+  const descriptionId = useId();
+
   if (!openBadge) {
     return null;
   }
+
   const { levels } = openBadge;
-  const titleId = useId();
-  const descriptionId = useId();
 
   return (
     <ModalLayout

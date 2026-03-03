@@ -65,23 +65,21 @@ test.describe('Admin users journeys', () => {
       await expect(page.locator(`input[name="profile"][value="${UPDATED_PROFILE}"]`)).toBeChecked();
       await expect(page.getByRole('combobox', { name: /niveau scolaire|education level/i })).toHaveCount(0);
     } finally {
-      if (!shouldRestore) {
-        return;
+      if (shouldRestore) {
+        await openAdminUserEditPage(page, USER_EMAIL);
+        const firstNameInput = page.getByRole('textbox', { name: /^(prénom|first name)$/i });
+        const lastNameInput = page.getByRole('textbox', { name: /^(nom|last name)$/i });
+        const originalProfileInput = page.locator(`input[name="profile"][value="${ORIGINAL_PROFILE}"]`);
+        const educationLevelInput = page.getByRole('combobox', { name: /niveau scolaire|education level/i });
+
+        await firstNameInput.fill(originalFirstName);
+        await lastNameInput.fill(originalLastName);
+        await originalProfileInput.check();
+        await educationLevelInput.click();
+        await page.getByRole('option', { name: ORIGINAL_EDUCATION_LEVEL_LABEL }).click();
+        await page.getByRole('button', { name: /modifier|update/i }).click();
+        await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
       }
-
-      await openAdminUserEditPage(page, USER_EMAIL);
-      const firstNameInput = page.getByRole('textbox', { name: /^(prénom|first name)$/i });
-      const lastNameInput = page.getByRole('textbox', { name: /^(nom|last name)$/i });
-      const originalProfileInput = page.locator(`input[name="profile"][value="${ORIGINAL_PROFILE}"]`);
-      const educationLevelInput = page.getByRole('combobox', { name: /niveau scolaire|education level/i });
-
-      await firstNameInput.fill(originalFirstName);
-      await lastNameInput.fill(originalLastName);
-      await originalProfileInput.check();
-      await educationLevelInput.click();
-      await page.getByRole('option', { name: ORIGINAL_EDUCATION_LEVEL_LABEL }).click();
-      await page.getByRole('button', { name: /modifier|update/i }).click();
-      await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
     }
   });
 });

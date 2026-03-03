@@ -88,7 +88,7 @@ export default defineConfig({
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
-      webServer: workerParallelMode
+  webServer: workerParallelMode
     ? undefined
     : {
         command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
@@ -117,7 +117,7 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    ...projects,
+    ...projects
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

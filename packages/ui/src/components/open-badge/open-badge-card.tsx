@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import type { OpenBadgeViewModel, OpenBadgeLevelViewModel as DomainOpenBadgeLevel } from '@repo/view-models/open-badge';
 import Link from 'next/link';
 import CardHeader from '../card-header';

@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Typography from '@mui/material/Typography';
 import type { MachineViewModel } from '@repo/view-models/machine';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import CardList from './card-list';
@@ -43,10 +42,7 @@ export default function MachineTabs({
         }
       : undefined;
 
-  const machineById = useMemo(
-    () => new Map(machines.map((machine) => [machine.id, machine])),
-    [machines]
-  );
+  const machineById = useMemo(() => new Map(machines.map((machine) => [machine.id, machine])), [machines]);
 
   return (
     <>

@@ -27,41 +27,41 @@ type E2EWorkerFixtures = {
 
 export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
   workerWebRuntime: [
-    async ({}, use, workerInfo) => {
+    async (_workerArgs, runFixture, workerInfo) => {
       const runtime = await createWorkerWebRuntime(workerInfo);
       try {
-        await use(runtime);
+        await runFixture(runtime);
       } finally {
         await runtime?.stop();
       }
     },
     { scope: 'worker', auto: true }
   ],
-  context: async ({ browser, contextOptions, baseURL, workerWebRuntime }, use) => {
+  context: async ({ browser, contextOptions, baseURL, workerWebRuntime }, runFixture) => {
     const context = await browser.newContext({
       ...(contextOptions ?? {}),
       baseURL: workerWebRuntime?.baseURL ?? baseURL
     });
 
     try {
-      await use(context as BrowserContext);
+      await runFixture(context as BrowserContext);
     } finally {
       await context.close();
     }
   },
-  page: async ({ context }, use) => {
+  page: async ({ context }, runFixture) => {
     const page = await context.newPage();
     try {
-      await use(page);
+      await runFixture(page);
     } finally {
       await page.close();
     }
   },
-  seedUsers: async ({}, use) => {
-    await use(seedUsers);
+  seedUsers: async (_testArgs, runFixture) => {
+    await runFixture(seedUsers);
   },
-  loginAs: async ({ page }, use) => {
-    await use(async (role) => {
+  loginAs: async ({ page }, runFixture) => {
+    await runFixture(async (role) => {
       await loginWithCredentials(page, seedUsers[role]);
     });
   }

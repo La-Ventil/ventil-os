@@ -15,7 +15,6 @@ import {
   SCHEDULE_START_HOUR
 } from '@repo/domain/machine/reservation-schedule';
 import { isReservationSlotInPast } from '@repo/domain/machine/reservation-rules';
-import { MachineReservation } from '@repo/domain/machine/machine-reservation';
 import {
   canCancelReservationNow,
   type ReservationActor
@@ -101,8 +100,7 @@ export default function MachineReservationSchedule({
           const actor: ReservationActor | null = currentUserId
             ? { id: currentUserId, globalAdmin: Boolean(canManageReservations) }
             : null;
-          const isEditable =
-            Boolean(onReservationClick) && canCancelReservationNow(reservation, actor, now);
+          const isEditable = Boolean(onReservationClick) && canCancelReservationNow(reservation, actor, now);
 
           return (
             <MachineReservationScheduleCard
