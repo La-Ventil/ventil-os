@@ -12,7 +12,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import { ThemeSection } from '@repo/ui/theme';
-import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
+import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
 
 type EditUserModalRouteProps = {
   profile: UserProfile;
@@ -21,12 +21,7 @@ type EditUserModalRouteProps = {
   handleSubmit: FormAction<AdminProfileFormInput>;
 };
 
-export default function EditUserModalRoute({
-  profile,
-  userId,
-  closeHref,
-  handleSubmit
-}: EditUserModalRouteProps) {
+export default function EditUserModalRoute({ profile, userId, closeHref, handleSubmit }: EditUserModalRouteProps) {
   const router = useRouter();
   const t = useTranslations('pages.hub.admin.usersEdit');
   const tCommon = useTranslations('common');

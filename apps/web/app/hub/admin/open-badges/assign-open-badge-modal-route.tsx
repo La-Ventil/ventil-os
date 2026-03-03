@@ -9,7 +9,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/assign-open-badge';
-import { useDelayedAction } from '../../../../lib/hooks/use-delayed-action';
+import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
 
 type AssignOpenBadgeModalRouteProps = {
   openBadge: OpenBadgeViewModel | null;
