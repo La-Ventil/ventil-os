@@ -5,6 +5,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import AdminUsersTable from './admin-users-table';
+import styles from './page.module.css';
 
 export default async function AdminUsersPage() {
   const t = await getTranslations('pages.hub.admin.users');
@@ -65,7 +66,7 @@ export default async function AdminUsersPage() {
         <Typography variant="body1">{labels.intro}</Typography>
       </Section>
 
-      <Section>
+      <Section className={styles.tableSection}>
         <AdminUsersTable
           users={users}
           columns={labels.columns}
