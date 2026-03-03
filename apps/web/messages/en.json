@@ -319,24 +319,6 @@
             "active": "active",
             "blocked": "blocked"
           },
-          "assignModal": {
-            "title": "Assign an open badge",
-            "subtitle": "Choose the level and the user concerned.",
-            "badgeLabel": "Open badge",
-            "levelLabel": "Assigned level",
-            "userLabel": "User",
-            "userSearchPlaceholder": "Search a user",
-            "cancel": "Back",
-            "confirm": "Assign",
-            "illustrationPlaceholder": "Illustration in progress",
-            "error": "Unable to assign the open badge.",
-            "remove": {
-              "title": "Remove the current open badge",
-              "description": "If this badge should no longer be attached to this user, remove it.",
-              "action": "Remove",
-              "success": "Open badge removed."
-            }
-          },
           "badgeManagement": {
             "title": "{name} open badges",
             "subtitle": "Management",
@@ -360,7 +342,20 @@
             },
             "feedback": {
               "genericError": "Something went wrong.",
-              "levelUpdated": "Open badge level updated."
+              "levelUpdated": "Open badge level updated.",
+              "removed": "Open badge removed."
+            },
+            "assignDialog": {
+              "title": "Assign an open badge",
+              "subtitle": "Choose the level and the user concerned.",
+              "badgeLabel": "Open badge",
+              "levelLabel": "Assigned level",
+              "userLabel": "User",
+              "userSearchPlaceholder": "Search a user",
+              "cancel": "Back",
+              "confirm": "Assign",
+              "illustrationPlaceholder": "Illustration in progress",
+              "error": "Unable to assign the open badge."
             }
           }
         },

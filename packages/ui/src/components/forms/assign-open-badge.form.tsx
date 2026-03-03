@@ -24,7 +24,7 @@ type AssignOpenBadgeFormProps = {
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadges: OpenBadgeViewModel[];
-  translationNamespace?: string;
+  translationNamespace: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
   titleId?: string;
@@ -38,7 +38,7 @@ export default function AssignOpenBadgeForm({
   user,
   users,
   openBadges,
-  translationNamespace = 'pages.hub.admin.users.assignModal',
+  translationNamespace,
   isSubmitting = false,
   userSelectionDisabled,
   titleId,

@@ -317,24 +317,6 @@
             "active": "actif",
             "blocked": "bloqué"
           },
-          "assignModal": {
-            "title": "Attribution d’un open badge",
-            "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
-            "badgeLabel": "Open badge",
-            "levelLabel": "Niveau attribué",
-            "userLabel": "Utilisateur",
-            "userSearchPlaceholder": "Rechercher un utilisateur",
-            "cancel": "Retour",
-            "confirm": "Attribuer",
-            "illustrationPlaceholder": "Illustration en cours",
-            "error": "Impossible d’attribuer l’open badge.",
-            "remove": {
-              "title": "Retirer l’open badge actuel",
-              "description": "Retirez cet open badge si cet utilisateur ne doit plus l’avoir.",
-              "action": "Retirer",
-              "success": "Open badge retiré."
-            }
-          },
           "badgeManagement": {
             "title": "Open badges de {name}",
             "subtitle": "Gestion",
@@ -358,7 +340,20 @@
             },
             "feedback": {
               "genericError": "Une erreur est survenue.",
-              "levelUpdated": "Niveau de l’open badge mis à jour."
+              "levelUpdated": "Niveau de l’open badge mis à jour.",
+              "removed": "Open badge retiré."
+            },
+            "assignDialog": {
+              "title": "Attribution d’un open badge",
+              "subtitle": "Choisissez le niveau et l’utilisateur concerné.",
+              "badgeLabel": "Open badge",
+              "levelLabel": "Niveau attribué",
+              "userLabel": "Utilisateur",
+              "userSearchPlaceholder": "Rechercher un utilisateur",
+              "cancel": "Retour",
+              "confirm": "Attribuer",
+              "illustrationPlaceholder": "Illustration en cours",
+              "error": "Impossible d’attribuer l’open badge."
             }
           }
         },

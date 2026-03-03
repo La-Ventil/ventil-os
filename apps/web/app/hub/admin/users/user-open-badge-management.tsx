@@ -251,7 +251,7 @@ export default function UserOpenBadgeManagement({
         user={selectedUser}
         users={[selectedUser]}
         openBadges={assignableBadges}
-        translationNamespace="pages.hub.admin.users.assignModal"
+        translationNamespace="pages.hub.admin.users.badgeManagement.assignDialog"
         isSubmitting={isPending}
         userSelectionDisabled
         onConfirm={handleAssign}

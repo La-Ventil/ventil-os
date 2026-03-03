@@ -14,7 +14,7 @@ type AssignOpenBadgeModalProps = {
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadges: OpenBadgeViewModel[];
-  translationNamespace?: string;
+  translationNamespace: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
@@ -27,7 +27,7 @@ export default function AssignOpenBadgeModal({
   user,
   users,
   openBadges,
-  translationNamespace = 'pages.hub.admin.users.assignModal',
+  translationNamespace,
   isSubmitting = false,
   userSelectionDisabled,
   onConfirm,

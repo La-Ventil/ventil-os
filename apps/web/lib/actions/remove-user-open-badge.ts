@@ -51,7 +51,7 @@ export async function removeUserOpenBadgeAction(
 
     return formSuccess(
       parsed.data,
-      t('pages.hub.admin.users.assignModal.remove.success', {
+      t('pages.hub.admin.users.badgeManagement.feedback.removed', {
         defaultMessage: 'Open badge removed.'
       })
     );
