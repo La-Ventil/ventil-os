@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import styles from './danger-zone.module.css';
 
 export type DangerZoneProps = {
@@ -24,13 +25,13 @@ export default function DangerZone({
   onAction,
   onSuccess
 }: DangerZoneProps): JSX.Element {
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
 
   return (
     <Alert severity="error" icon={false} className={styles.alert}>
       <AlertTitle className={styles.title}>{title}</AlertTitle>
       {description}
-      {feedback ? <span className={styles.feedback}>{feedback}</span> : null}
+      {feedback ? <span className={styles.feedback}>{feedback.message}</span> : null}
       <Button
         variant="outlined"
         color="error"
@@ -39,8 +40,9 @@ export default function DangerZone({
         onClick={async () => {
           setFeedback(null);
           const result = await onAction();
+          const nextFeedback = resolveFormFeedback(result);
           if (!result.success) {
-            setFeedback(result.message ?? null);
+            setFeedback(nextFeedback);
             return;
           }
           onSuccess();

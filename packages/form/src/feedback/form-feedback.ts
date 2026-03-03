@@ -61,12 +61,12 @@ export function fieldErrorsToMessage<FormData>(
 }
 
 export function resolveFormErrorMessage<FormData>(
-  state: Pick<FormState<FormData>, 'message' | 'fieldErrors'>,
+  state: Pick<FormState<FormData>, 'message'> & { fieldErrors?: FormFieldErrors<FormData> },
   options?: ResolveFormErrorMessageOptions
 ): string {
   const { fallbackMessage = '', errorStrategy = 'message-first', ...fieldOptions } = options ?? {};
   const normalizedMessage = normalizeMessage(state.message);
-  const flattenedFieldErrors = flattenFieldErrors(state.fieldErrors, fieldOptions);
+  const flattenedFieldErrors = state.fieldErrors ? flattenFieldErrors(state.fieldErrors, fieldOptions) : [];
   const firstFieldMessage = flattenedFieldErrors[0];
   const joinedFieldMessage = flattenedFieldErrors.join(fieldOptions.separator ?? ' ');
 
@@ -82,7 +82,7 @@ export function resolveFormErrorMessage<FormData>(
 }
 
 export function resolveFormFeedback<FormData>(
-  state: Pick<FormState<FormData>, 'success' | 'message' | 'fieldErrors'>,
+  state: Pick<FormState<FormData>, 'success' | 'message'> & { fieldErrors?: FormFieldErrors<FormData> },
   options?: ResolveFormFeedbackOptions
 ): FormFeedback | null {
   if (state.success) {

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useFormatter, useTranslations } from 'next-intl';
+import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import type { MachineViewModel } from '@repo/view-models/machine';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
@@ -55,7 +56,7 @@ export default function MachineReservationListCard({
   const format = useFormatter();
   const t = useTranslations('pages.hub.fabLab');
   const router = useRouter();
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
   const [isPending, startTransition] = useTransition();
   const users = listMachineReservationUsers(reservation);
   const visibleUsers = users.slice(0, 3);
@@ -81,11 +82,18 @@ export default function MachineReservationListCard({
     startTransition(async () => {
       setFeedback(null);
       const result = await action(reservation.id);
+      const nextFeedback = resolveFormFeedback(result, {
+        fallbackErrorMessage: canRelease
+          ? t('reservations.error.release')
+          : t('reservations.error.cancel'),
+        fallbackSuccessMessage: successMessage
+      });
+      if (nextFeedback) {
+        setFeedback(nextFeedback);
+      }
       if (!result.success) {
-        setFeedback({ type: 'error', message: result.message });
         return;
       }
-      setFeedback({ type: 'success', message: result.message || successMessage });
       router.refresh();
     });
   };

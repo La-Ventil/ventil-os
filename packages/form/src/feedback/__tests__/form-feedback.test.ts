@@ -91,4 +91,18 @@ describe('resolveFormFeedback', () => {
       )
     ).toEqual({ type: 'error', message: 'Required Too short' });
   });
+
+  it('supports action results without field errors', () => {
+    expect(
+      resolveFormFeedback(
+        {
+          success: false,
+          message: 'Unable to proceed'
+        },
+        {
+          fallbackErrorMessage: 'Generic error'
+        }
+      )
+    ).toEqual({ type: 'error', message: 'Unable to proceed' });
+  });
 });
