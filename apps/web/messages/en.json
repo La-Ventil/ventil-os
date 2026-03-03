@@ -210,77 +210,13 @@
           }
         },
         "openBadgesCreate": {
-          "title": "Create an open badge",
-          "fields": {
-            "name": "Open badge name",
-            "description": "Short description",
-            "image": "Image",
-            "levelTitle": "Level 1: title",
-            "levelDescription": "Level 1: description"
-          },
-          "image": {
-            "placeholder": "Illustration in progress",
-            "upload": "Upload",
-            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
-            "tooLarge": "File too large (max {max}).",
-            "clear": "Clear"
-          },
-          "levels": {
-            "add": "+ Add a level",
-            "remove": "Remove",
-            "chipPrefix": "Level",
-            "min": "At least one level is required"
-          },
-          "delivery": {
-            "title": "Issuance",
-            "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",
-            "levelLabel": "Level",
-            "levelOption": "At level {level}"
-          },
-          "activation": {
-            "title": "Activation",
-            "description": "If the badge is active, it can be assigned to users.",
-            "note": "A badge linked to one or more machines cannot be disabled until it is detached."
-          },
-          "actions": {
-            "back": "Back",
-            "save": "Save"
-          }
+          "title": "Create an open badge"
         },
         "openBadgesEdit": {
           "title": "Edit an open badge"
         },
         "machinesCreate": {
-          "title": "Create a machine",
-          "fields": {
-            "name": "Machine name *",
-            "description": "Short description *",
-            "image": "Image"
-          },
-          "image": {
-            "placeholder": "Illustration in progress",
-            "upload": "Upload",
-            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
-            "tooLarge": "File too large (max {max}).",
-            "clear": "Clear"
-          },
-          "badgeRequirement": {
-            "title": "Open badge required to use the machine",
-            "description": "If checked, the machine will be linked to an open badge to validate its use and reservation. If unchecked, the machine can be used without prior training and reserved by any user.",
-            "searchLabel": "Search an open badge",
-            "searchPlaceholder": "Search the open badge title",
-            "badgeType": "Badge type",
-            "badgeName": "Badge name",
-            "removeLabel": "Remove open badge"
-          },
-          "activation": {
-            "title": "Activation",
-            "description": "If the machine is active, it can be used and reserved by users. If disabled, it will no longer appear in the list of available machines."
-          },
-          "actions": {
-            "back": "Back",
-            "save": "Save"
-          }
+          "title": "Create a machine"
         },
         "users": {
           "title": "User administration",
@@ -347,7 +283,7 @@
             },
             "assignDialog": {
               "title": "Assign an open badge",
-              "subtitle": "Choose the level and the user concerned.",
+              "subtitle": "Choose the level and the user.",
               "badgeLabel": "Open badge",
               "levelLabel": "Assigned level",
               "userLabel": "User",
@@ -363,6 +299,65 @@
           "title": "Edit user",
           "subtitle": "Information",
           "intro": "Update the account information."
+        },
+        "machineForm": {
+          "fields": {
+            "name": "Machine name *",
+            "description": "Short description *",
+            "image": "Image"
+          },
+          "image": {
+            "placeholder": "Illustration in progress",
+            "upload": "Upload",
+            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
+            "tooLarge": "File too large (max {max}).",
+            "clear": "Clear"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "If the machine is active, it can be used and reserved by users. If disabled, it will no longer appear in the list of available machines."
+          },
+          "actions": {
+            "back": "Back",
+            "save": "Save"
+          }
+        },
+        "openBadgeForm": {
+          "fields": {
+            "name": "Open badge name",
+            "description": "Short description",
+            "image": "Image",
+            "levelTitle": "Level 1: title",
+            "levelDescription": "Level 1: description"
+          },
+          "image": {
+            "placeholder": "Illustration in progress",
+            "upload": "Upload",
+            "maxSizeHint": "PNG, JPG, GIF or WEBP. Max 5MB.",
+            "tooLarge": "File too large (max {max}).",
+            "clear": "Clear"
+          },
+          "levels": {
+            "add": "+ Add a level",
+            "remove": "Remove",
+            "chipPrefix": "Level",
+            "min": "At least one level is required"
+          },
+          "delivery": {
+            "title": "Issuance",
+            "description": "If checked, a non-admin user can issue the open badge once they reach a specific level.",
+            "levelLabel": "Level",
+            "levelOption": "At level {level}"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "If the badge is active, it can be assigned to users.",
+            "note": "A badge linked to one or more machines cannot be disabled until it is detached."
+          },
+          "actions": {
+            "back": "Back",
+            "save": "Save"
+          }
         }
       },
       "profile": {

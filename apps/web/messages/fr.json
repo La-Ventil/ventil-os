@@ -164,7 +164,7 @@
           }
         },
         "machinesEdit": {
-          "title": "Modification d'une machine",
+          "title": "Modification d’une machine",
           "actions": {
             "save": "Enregistrer"
           }
@@ -208,77 +208,13 @@
           }
         },
         "openBadgesCreate": {
-          "title": "Création d’un open badge",
-          "fields": {
-            "name": "Nom de l’open badge",
-            "description": "Description courte",
-            "image": "Image",
-            "levelTitle": "Niveau 1 : titre",
-            "levelDescription": "Niveau 1 : description"
-          },
-          "image": {
-            "placeholder": "Illustration en cours",
-            "upload": "Télécharger",
-            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
-            "tooLarge": "Fichier trop lourd (max {max}).",
-            "clear": "Effacer"
-          },
-          "levels": {
-            "add": "+ Ajouter un niveau",
-            "remove": "Supprimer",
-            "chipPrefix": "Niveau",
-            "min": "Au moins un niveau est requis"
-          },
-          "delivery": {
-            "title": "Délivrance",
-            "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
-            "levelLabel": "Niveau",
-            "levelOption": "Au niveau {level}"
-          },
-          "activation": {
-            "title": "Activation",
-            "description": "Si le badge est actif, il pourra être attribué aux utilisateurs.",
-            "note": "Un open badge lié à une ou plusieurs machines ne peut pas être désactivé tant qu’il reste attaché."
-          },
-          "actions": {
-            "back": "Retour",
-            "save": "Enregistrer"
-          }
+          "title": "Création d’un open badge"
         },
         "openBadgesEdit": {
           "title": "Modification d’un open badge"
         },
         "machinesCreate": {
-          "title": "Création d’une machine",
-          "fields": {
-            "name": "Nom de la machine *",
-            "description": "Description courte *",
-            "image": "Image"
-          },
-          "image": {
-            "placeholder": "Illustration en cours",
-            "upload": "Télécharger",
-            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
-            "tooLarge": "Fichier trop lourd (max {max}).",
-            "clear": "Effacer"
-          },
-          "badgeRequirement": {
-            "title": "Open badge pour utiliser la machine",
-            "description": "Si coché, la machine sera liée à un open badge pour valider son utilisation et sa réservation. Si décoché, la machine pourra être utilisée sans formation préalable et réservée par tout utilisateur.",
-            "searchLabel": "Rechercher un open badge",
-            "searchPlaceholder": "Rechercher l’intitulé de l’open badge",
-            "badgeType": "Type de badge",
-            "badgeName": "Nom du badge",
-            "removeLabel": "Retirer l’open badge"
-          },
-          "activation": {
-            "title": "Activation",
-            "description": "Si la machine est active, elle pourra être utilisée et réservée par les utilisateurs. Si désactivée, elle n’apparaîtra plus dans la liste des machines disponibles."
-          },
-          "actions": {
-            "back": "Retour",
-            "save": "Enregistrer"
-          }
+          "title": "Création d’une machine"
         },
         "users": {
           "title": "Administration des utilisateurs",
@@ -361,6 +297,65 @@
           "title": "Modifier un utilisateur",
           "subtitle": "Information",
           "intro": "Mettez à jour les informations du compte."
+        },
+        "machineForm": {
+          "fields": {
+            "name": "Nom de la machine *",
+            "description": "Description courte *",
+            "image": "Image"
+          },
+          "image": {
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger",
+            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
+            "tooLarge": "Fichier trop lourd (max {max}).",
+            "clear": "Effacer"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "Si la machine est active, elle pourra être utilisée et réservée par les utilisateurs. Si désactivée, elle n’apparaîtra plus dans la liste des machines disponibles."
+          },
+          "actions": {
+            "back": "Retour",
+            "save": "Enregistrer"
+          }
+        },
+        "openBadgeForm": {
+          "fields": {
+            "name": "Nom de l’open badge",
+            "description": "Description courte",
+            "image": "Image",
+            "levelTitle": "Niveau 1 : titre",
+            "levelDescription": "Niveau 1 : description"
+          },
+          "image": {
+            "placeholder": "Illustration en cours",
+            "upload": "Télécharger",
+            "maxSizeHint": "PNG, JPG, GIF ou WEBP. Max 5 Mo.",
+            "tooLarge": "Fichier trop lourd (max {max}).",
+            "clear": "Effacer"
+          },
+          "levels": {
+            "add": "+ Ajouter un niveau",
+            "remove": "Supprimer",
+            "chipPrefix": "Niveau",
+            "min": "Au moins un niveau est requis"
+          },
+          "delivery": {
+            "title": "Délivrance",
+            "description": "Si coché, un utilisateur non administrateur pourra délivrer l’open badge lorsqu’il aura atteint un niveau spécifique.",
+            "levelLabel": "Niveau",
+            "levelOption": "Au niveau {level}"
+          },
+          "activation": {
+            "title": "Activation",
+            "description": "Si le badge est actif, il pourra être attribué aux utilisateurs.",
+            "note": "Un open badge lié à une ou plusieurs machines ne peut pas être désactivé tant qu’il reste attaché."
+          },
+          "actions": {
+            "back": "Retour",
+            "save": "Enregistrer"
+          }
         }
       },
       "profile": {

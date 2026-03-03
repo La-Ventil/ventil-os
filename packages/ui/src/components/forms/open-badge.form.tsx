@@ -44,7 +44,7 @@ export default function OpenBadgeForm({
   badgeId,
   imagePreviewUrl
 }: OpenBadgeFormProps) {
-  const t = useTranslations('pages.hub.admin.openBadgesCreate');
+  const t = useTranslations('pages.hub.admin.openBadgeForm');
   const tRoot = useTranslations();
   const fieldError = (field: keyof OpenBadgeCreateRequest) => fieldErrorMessage(state, field);
   const nestedFieldErrors = state.fieldErrors as Record<string, string[] | undefined>;

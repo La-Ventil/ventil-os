@@ -41,7 +41,7 @@ export default function MachineForm({
   backHref = '/hub/admin/machines',
   submitLabel
 }: MachineFormProps) {
-  const t = useTranslations('pages.hub.admin.machinesCreate');
+  const t = useTranslations('pages.hub.admin.machineForm');
   const tRoot = useTranslations();
   const fieldError = (field: keyof MachineCreateFormInput) => fieldErrorMessage(state, field);
   const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
