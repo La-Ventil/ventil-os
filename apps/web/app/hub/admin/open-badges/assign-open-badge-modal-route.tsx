@@ -30,6 +30,7 @@ export default function AssignOpenBadgeModalRoute({
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<FormFeedback | null>(null);
   const { schedule, cancel } = useDelayedAction();
+  const openBadgeId = openBadge?.id ?? null;
 
   const handleClose = () => {
     cancel();
@@ -39,12 +40,12 @@ export default function AssignOpenBadgeModalRoute({
   };
 
   useEffect(() => {
-    setIsOpen(Boolean(openBadge));
-    if (openBadge) {
+    setIsOpen(Boolean(openBadgeId));
+    if (openBadgeId) {
       cancel();
       setFeedback(null);
     }
-  }, [openBadge, cancel]);
+  }, [openBadgeId, cancel]);
 
   useEffect(() => {
     if (isOpen) {

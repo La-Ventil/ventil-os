@@ -10,11 +10,10 @@ export default async function AdminOpenBadgesModalPage({
   params
 }: AdminOpenBadgesModalPageProps): Promise<JSX.Element | null> {
   const { badgeId } = await params;
-  const openBadge = await viewOpenBadge(badgeId);
+  const [openBadge, users] = await Promise.all([viewOpenBadge(badgeId), browseAssignableUsersForOpenBadge(badgeId)]);
   if (!openBadge) {
     return null;
   }
 
-  const users = await browseAssignableUsersForOpenBadge(badgeId);
   return <AssignOpenBadgeModalRoute openBadge={openBadge} users={users} closeHref="/hub/admin/open-badges" />;
 }
