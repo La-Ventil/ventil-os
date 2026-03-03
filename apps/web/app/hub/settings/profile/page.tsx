@@ -10,11 +10,11 @@ import ProfileForm from '@repo/ui/forms/profile.form';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
-import { changePasswordAction } from '../../../../lib/actions/change-password';
-import { cancelEmailChangeAction } from '../../../../lib/actions/cancel-email-change';
-import { resendEmailChangeAction } from '../../../../lib/actions/resend-email-change';
-import { updateEmailAction } from '../../../../lib/actions/update-email';
-import { updateProfileAction } from '../../../../lib/actions/update-profile';
+import { changePasswordAction } from '../../../../lib/actions/auth/change-password';
+import { cancelEmailChangeAction } from '../../../../lib/actions/auth/cancel-email-change';
+import { resendEmailChangeAction } from '../../../../lib/actions/auth/resend-email-change';
+import { updateEmailAction } from '../../../../lib/actions/auth/update-email';
+import { updateProfileAction } from '../../../../lib/actions/users/update-profile';
 import { getUserProfileFromSession } from '../../../../lib/auth';
 
 export default async function Page(): Promise<JSX.Element> {

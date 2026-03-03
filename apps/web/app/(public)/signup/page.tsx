@@ -12,7 +12,7 @@ import Link from '@repo/ui/link';
 import { signupFormSchema } from '@repo/application/forms';
 import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
-import { registerUserAction } from '../../../lib/actions/register-user';
+import { registerUserAction } from '../../../lib/actions/auth/register-user';
 import styles from './page.module.css';
 
 export default function Page(): JSX.Element {

@@ -7,7 +7,7 @@ import MachineForm from '@repo/ui/forms/machine.form';
 import { createFormState } from '@repo/form/form-state';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { useTranslations } from 'next-intl';
-import { createMachineAction } from '../../../../../lib/actions/create-machine';
+import { createMachineAction } from '../../../../../lib/actions/machines/create-machine';
 
 const machineCreateInitialState = createFormState<MachineCreateFormInput>({
   name: '',

@@ -1,21 +1,19 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { canManageUsers } from '@repo/application';
 import { updateProfile, viewUserProfileById } from '@repo/application/users/usecases';
-import { parseAdminProfileFormInput, type AdminProfileFormInput } from '@repo/application/forms';
-import type { UserRole } from '@repo/domain/user/user-role';
+import { parseProfileFormInput, type ProfileFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
-export async function updateAdminUserProfileAction(
-  previousState: FormState<AdminProfileFormInput>,
+export async function updateUserProfileAction(
+  previousState: FormState<ProfileFormInput>,
   formData: FormData
-): Promise<FormState<AdminProfileFormInput>> {
+): Promise<FormState<ProfileFormInput>> {
   const t = await getTranslations();
   const session = await getServerSession();
   const userCanManageUsers = canManageUsers(session?.user);
@@ -34,8 +32,8 @@ export async function updateAdminUserProfileAction(
     return formError(previousState.values, { message: t('user.update.notFound') });
   }
 
-  const { success, data, error } = parseAdminProfileFormInput(formData);
-  const values = Object.fromEntries(formData) as unknown as AdminProfileFormInput;
+  const { success, data, error } = parseProfileFormInput(formData, userProfile.profile);
+  const values = Object.fromEntries(formData) as unknown as ProfileFormInput;
 
   try {
     if (!success) {
@@ -43,13 +41,12 @@ export async function updateAdminUserProfileAction(
       return formValidationError(values, fieldErrors, fieldErrorsToMessage(fieldErrors));
     }
 
+    const profileFormData: ProfileFormInput = data;
     await updateProfile(userId, {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      educationLevel: data.educationLevel,
-      profile: data.profile as UserRole
+      firstName: profileFormData.firstName,
+      lastName: profileFormData.lastName,
+      educationLevel: profileFormData.educationLevel
     });
-    revalidatePath('/hub/admin/users', 'layout');
 
     return formSuccess(values, t('user.update.success'));
   } catch (e) {

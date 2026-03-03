@@ -3,8 +3,8 @@
 import { useTransition } from 'react';
 import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
-import { setOpenBadgeStatusAction } from '../../../../lib/actions/set-open-badge-status';
-import { removeOpenBadgeAction } from '../../../../lib/actions/remove-open-badge';
+import { setOpenBadgeStatusAction } from '../../../../lib/actions/open-badges/set-open-badge-status';
+import { removeOpenBadgeAction } from '../../../../lib/actions/open-badges/remove-open-badge';
 
 type OpenBadgeQuickActionsProps = {
   badge: OpenBadgeAdminViewModel;
@@ -20,8 +20,7 @@ type OpenBadgeQuickActionsProps = {
 export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickActionsProps) {
   const [isPending, startTransition] = useTransition();
   const canRemove = badge.assignedCount === 0;
-  const canToggleStatus =
-    badge.status !== OpenBadgeAdminStatus.Active || badge.machineLinksCount === 0;
+  const canToggleStatus = badge.status !== OpenBadgeAdminStatus.Active || badge.machineLinksCount === 0;
 
   const handleToggleStatus = () => {
     if (!canToggleStatus) {
@@ -29,9 +28,7 @@ export default function OpenBadgeQuickActions({ badge, labels }: OpenBadgeQuickA
     }
 
     const nextStatus =
-      badge.status === OpenBadgeAdminStatus.Active
-        ? OpenBadgeAdminStatus.Inactive
-        : OpenBadgeAdminStatus.Active;
+      badge.status === OpenBadgeAdminStatus.Active ? OpenBadgeAdminStatus.Inactive : OpenBadgeAdminStatus.Active;
 
     startTransition(async () => {
       const formData = new FormData();

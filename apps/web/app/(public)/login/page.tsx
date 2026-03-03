@@ -7,7 +7,7 @@ import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
-import { resolveSignInFailureMessageAction } from '../../../lib/actions/resolve-sign-in-failure-message';
+import { resolveSignInFailureMessageAction } from '../../../lib/actions/auth/resolve-sign-in-failure-message';
 
 type LoginPageProps = {
   searchParams:

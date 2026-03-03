@@ -3,7 +3,7 @@
 import { useTransition } from 'react';
 import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/view-models/machine-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
-import { setMachineStatusAction } from '../../../../lib/actions/set-machine-status';
+import { setMachineStatusAction } from '../../../../lib/actions/machines/set-machine-status';
 
 type MachineQuickActionsProps = {
   machine: MachineAdminViewModel;
@@ -20,9 +20,7 @@ export default function MachineQuickActions({ machine, labels }: MachineQuickAct
 
   const handleToggleStatus = () => {
     const nextStatus =
-      machine.status === MachineAdminStatus.Active
-        ? MachineAdminStatus.Inactive
-        : MachineAdminStatus.Active;
+      machine.status === MachineAdminStatus.Active ? MachineAdminStatus.Inactive : MachineAdminStatus.Active;
 
     startTransition(async () => {
       const formData = new FormData();

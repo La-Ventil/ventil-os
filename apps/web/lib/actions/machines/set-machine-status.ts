@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { canManageMachines } from '@repo/application';
 import { ActivityStatus } from '@repo/domain/activity-status';
 import { setMachineStatus } from '@repo/application/machines/usecases';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 
 export async function setMachineStatusAction(formData: FormData): Promise<void> {
   const session = await getServerSession();
@@ -21,8 +21,7 @@ export async function setMachineStatusAction(formData: FormData): Promise<void> 
     return;
   }
 
-  const status =
-    nextStatus === ActivityStatus.Active ? ActivityStatus.Active : ActivityStatus.Inactive;
+  const status = nextStatus === ActivityStatus.Active ? ActivityStatus.Active : ActivityStatus.Inactive;
 
   await setMachineStatus({ id: machineId, status });
   revalidatePath('/hub/admin/machines');

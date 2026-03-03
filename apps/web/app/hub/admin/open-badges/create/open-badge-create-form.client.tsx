@@ -7,7 +7,7 @@ import { openBadgeCreateRequestSchema, type OpenBadgeCreateRequest } from '@repo
 import OpenBadgeForm from '@repo/ui/forms/open-badge.form';
 import { createFormState } from '@repo/form/form-state';
 import { useFormActionState } from '@repo/form/use-form-action-state';
-import { createOpenBadgeAction } from '../../../../../lib/actions/create-open-badge';
+import { createOpenBadgeAction } from '../../../../../lib/actions/open-badges/create-open-badge';
 
 const openBadgeCreateInitialState = createFormState<OpenBadgeCreateRequest>({
   name: '',

@@ -7,7 +7,7 @@ import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
 import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import type { FormState } from '@repo/form/form-state';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 
 type RemoveUserOpenBadgeInput = {
   userId: string;
@@ -26,9 +26,7 @@ export async function removeUserOpenBadgeAction(
     });
   }
 
-  const parsed = assignOpenBadgeFormInputSchema
-    .pick({ userId: true, openBadgeId: true })
-    .safeParse(input);
+  const parsed = assignOpenBadgeFormInputSchema.pick({ userId: true, openBadgeId: true }).safeParse(input);
 
   if (!parsed.success) {
     return formValidationError(

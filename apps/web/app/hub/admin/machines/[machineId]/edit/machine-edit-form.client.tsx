@@ -3,16 +3,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import {
-  machineUpdateRequestSchema,
-  type MachineUpdateRequest
-} from '@repo/application/forms';
+import { machineUpdateRequestSchema, type MachineUpdateRequest } from '@repo/application/forms';
 import MachineForm from '@repo/ui/forms/machine.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import { MachineAdminStatus } from '@repo/view-models/machine-admin';
-import { updateMachineAction } from '../../../../../../lib/actions/update-machine';
+import { updateMachineAction } from '../../../../../../lib/actions/machines/update-machine';
 
 type MachineEditFormClientProps = {
   machine: MachineDetailsViewModel;

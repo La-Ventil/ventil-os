@@ -13,11 +13,11 @@ import { useFormActionState } from '@repo/form/use-form-action-state';
 import MachineReservationModal from '@repo/ui/machine/machine-reservation-modal';
 import { createMachineReservationInitialState } from '@repo/ui/machine/machine-reservation-form';
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
-import { reserveMachineAction } from '../../../lib/actions/reserve-machine';
+import { reserveMachineAction } from '../../../lib/actions/machines/reserve-machine';
 import {
   cancelMachineReservationAction,
   type ReservationActionResult
-} from '../../../lib/actions/cancel-machine-reservation';
+} from '../../../lib/actions/machines/cancel-machine-reservation';
 
 type MachineReservationModalRouteClientProps = {
   machine: MachineDetailsViewModel | null;

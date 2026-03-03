@@ -7,7 +7,7 @@ import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 import { revalidatePath } from 'next/cache';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { canManageUsers } from '@repo/application';
 import { setUserBlocked } from '@repo/application/users/usecases';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 
 export async function setUserBlockedAction(formData: FormData): Promise<void> {
   const session = await getServerSession();

@@ -2,11 +2,12 @@
 
 import { revalidatePath } from 'next/cache';
 import { canManageBadges } from '@repo/application';
-import { removeOpenBadge } from '@repo/application/open-badges/usecases';
+import { ActivityStatus } from '@repo/domain/activity-status';
+import { setOpenBadgeStatus } from '@repo/application/open-badges/usecases';
 import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 
-export async function removeOpenBadgeAction(formData: FormData): Promise<void> {
+export async function setOpenBadgeStatusAction(formData: FormData): Promise<void> {
   const session = await getServerSession();
   const userCanManageBadges = canManageBadges(session?.user);
 
@@ -15,12 +16,16 @@ export async function removeOpenBadgeAction(formData: FormData): Promise<void> {
   }
 
   const badgeId = formData.get('badgeId');
-  if (typeof badgeId !== 'string') {
+  const nextStatus = formData.get('nextStatus');
+
+  if (typeof badgeId !== 'string' || typeof nextStatus !== 'string') {
     return;
   }
 
+  const status = nextStatus === ActivityStatus.Active ? ActivityStatus.Active : ActivityStatus.Inactive;
+
   try {
-    await removeOpenBadge({ id: badgeId });
+    await setOpenBadgeStatus({ id: badgeId, status });
     revalidatePath('/hub/admin/open-badges');
   } catch (error) {
     if (isOpenBadgeError(error)) {

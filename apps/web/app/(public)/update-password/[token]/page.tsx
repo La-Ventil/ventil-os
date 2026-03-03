@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../lib/actions/update-password';
+import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../lib/actions/auth/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
 export default function Page(): JSX.Element {

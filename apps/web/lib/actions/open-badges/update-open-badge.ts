@@ -9,10 +9,10 @@ import {
 import { canManageBadges } from '@repo/application';
 import { updateOpenBadge } from '@repo/application/open-badges/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { resolveImageUpload } from '../image-upload';
+import { resolveImageUpload } from '../../image-upload';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
-import { getServerSession } from '../auth';
+import { getServerSession } from '../../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 

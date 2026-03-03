@@ -6,8 +6,8 @@ import { requestEmailChange } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
-import { getUserProfileFromSession } from '../auth';
-import { sendEmailVerification } from '../email';
+import { getUserProfileFromSession } from '../../auth';
+import { sendEmailVerification } from '../../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isUserError } from '@repo/domain/user/user-errors';
 

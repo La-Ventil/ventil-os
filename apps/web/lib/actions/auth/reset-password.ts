@@ -6,7 +6,7 @@ import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/applicati
 import { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
-import { sendPasswordResetEmail } from '../email';
+import { sendPasswordResetEmail } from '../../email';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 
 export async function resetPasswordAction(

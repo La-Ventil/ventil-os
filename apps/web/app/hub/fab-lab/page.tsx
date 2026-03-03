@@ -8,8 +8,8 @@ import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import { MachineIcon } from '@repo/ui/icons/machine-icon';
 import MachineTabs from '@repo/ui/machine-tabs';
-import { cancelMachineReservationAction } from '../../../lib/actions/cancel-machine-reservation';
-import { releaseMachineReservationAction } from '../../../lib/actions/release-machine-reservation';
+import { cancelMachineReservationAction } from '../../../lib/actions/machines/cancel-machine-reservation';
+import { releaseMachineReservationAction } from '../../../lib/actions/machines/release-machine-reservation';
 import { getServerSession } from '../../../lib/auth';
 import styles from './page.module.css';
 

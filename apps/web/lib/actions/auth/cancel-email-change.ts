@@ -1,9 +1,9 @@
- 'use server';
+'use server';
 
 import { getTranslations } from 'next-intl/server';
 import { cancelEmailChange } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { getUserProfileFromSession } from '../auth';
+import { getUserProfileFromSession } from '../../auth';
 import { formError, formSuccess } from '@repo/form/form-state-builders';
 
 type EmptyForm = Record<string, never>;

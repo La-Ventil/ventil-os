@@ -1,23 +1,21 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getTranslations } from 'next-intl/server';
-import { setUserOpenBadgeLevel } from '@repo/application/open-badges/usecases';
+import { assignOpenBadge } from '@repo/application/open-badges/usecases';
 import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
-import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
+import { getTranslations } from 'next-intl/server';
 import type { FormState } from '@repo/form/form-state';
+import { getServerSession } from '../../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
-import { getServerSession } from '../auth';
+import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 
-type SetUserOpenBadgeLevelInput = {
+type AssignOpenBadgeInput = {
   userId: string;
   openBadgeId: string;
   level: number;
 };
 
-export async function setUserOpenBadgeLevelAction(
-  input: SetUserOpenBadgeLevelInput
-): Promise<FormState<SetUserOpenBadgeLevelInput>> {
+export async function assignOpenBadgeAction(input: AssignOpenBadgeInput): Promise<FormState<AssignOpenBadgeInput>> {
   const t = await getTranslations();
   const session = await getServerSession();
 
@@ -37,7 +35,7 @@ export async function setUserOpenBadgeLevelAction(
   }
 
   try {
-    await setUserOpenBadgeLevel(parsed.data, {
+    await assignOpenBadge(parsed.data, {
       id: session.user.id,
       email: session.user.email ?? null,
       globalAdmin: session.user.globalAdmin,
@@ -49,9 +47,7 @@ export async function setUserOpenBadgeLevelAction(
 
     return formSuccess(
       parsed.data,
-      t('pages.hub.admin.users.badgeManagement.feedback.levelUpdated', {
-        defaultMessage: 'Open badge level updated.'
-      })
+      t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
     );
   } catch (error) {
     if (isOpenBadgeError(error)) {
