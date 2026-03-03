@@ -19,7 +19,7 @@ import ImageUploadField from '../inputs/image-upload-field';
 import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import { createFormState } from '@repo/form/form-state';
 import FormAlert from './form-alert';
 import Form from './form';
@@ -54,7 +54,7 @@ export default function MachineCreateForm({
 }: MachineCreateFormProps) {
   const t = useTranslations('pages.hub.admin.machinesCreate');
   const tRoot = useTranslations();
-  const fieldError = (field: keyof MachineCreateFormInput) => firstFieldError(state, field);
+  const fieldError = (field: keyof MachineCreateFormInput) => fieldErrorMessage(state, field);
   const machineId = 'id' in state.values ? (state.values as MachineUpdateFormInput).id : undefined;
   const maxImageMb = IMAGE_UPLOAD_MAX_MB;
   const [name, setName] = useState(state.values.name);

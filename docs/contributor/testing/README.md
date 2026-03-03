@@ -95,7 +95,9 @@ Keep manual checks for:
 
 - `@repo/form/form-errors`
   - field-level helpers for inline rendering
-  - example: read the first message for `email` next to an input
+  - examples:
+    - `fieldErrorsFor(...)` to read all messages for one field
+    - `fieldErrorMessage(...)` to choose an explicit field strategy (`first` or `join`)
 - `@repo/form/form-feedback`
   - aggregated feedback helpers for banners, dialogs, toasts, and action responses
   - example: derive one user-facing success/error message from a whole `FormState`

@@ -12,7 +12,7 @@ import { UserProfile } from '@repo/view-models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
 import { FormAction } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import Link from '../link';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
@@ -38,7 +38,7 @@ export default function ProfileForm({ profilePromise, handleSubmit, userId, back
       educationLevel: profile.educationLevel ?? ''
     }
   });
-  const fieldError = (field: keyof ProfileFormInput) => firstFieldError(formState, field);
+  const fieldError = (field: keyof ProfileFormInput) => fieldErrorMessage(formState, field);
   const showEducationLevel = requiresEducationLevel(profile.profile);
 
   return (

@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import { ResetPasswordFormInput } from '@repo/application/forms';
 import { FormActionState } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import Link from '../link';
 
 export interface ResetPasswordFormProps {
@@ -29,7 +29,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
       email: ''
     }
   });
-  const fieldError = (field: keyof ResetPasswordFormInput) => firstFieldError(formState, field);
+  const fieldError = (field: keyof ResetPasswordFormInput) => fieldErrorMessage(formState, field);
 
   return (
     <form action={formAction}>

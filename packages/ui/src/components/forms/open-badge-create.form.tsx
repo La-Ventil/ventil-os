@@ -26,7 +26,7 @@ import FormActions from '../form-actions';
 import FormSection from '../form-section';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import FormAlert from './form-alert';
 import Form from './form';
 import styles from './open-badge-create.form.module.css';
@@ -59,7 +59,7 @@ export default function OpenBadgeCreateForm({
 }: OpenBadgeCreateFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgesCreate');
   const tRoot = useTranslations();
-  const fieldError = (field: keyof OpenBadgeCreateRequest) => firstFieldError(state, field);
+  const fieldError = (field: keyof OpenBadgeCreateRequest) => fieldErrorMessage(state, field);
   const nestedFieldErrors = state.fieldErrors as Record<string, string[] | undefined>;
   const nestedFieldError = (fieldPath: string) => nestedFieldErrors[fieldPath]?.[0];
   const isEdit = Boolean(badgeId);

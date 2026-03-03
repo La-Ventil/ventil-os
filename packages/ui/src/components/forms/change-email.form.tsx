@@ -9,7 +9,7 @@ import type { ChangeEmailFormInput } from '@repo/application/forms';
 import type { FormActionState } from '@repo/form/form-action-state';
 import type { FormState } from '@repo/form/form-state';
 import { createFormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import Form from './form';
 import FormActions from '../form-actions';
 import Stack from '@mui/material/Stack';
@@ -50,7 +50,7 @@ export default function ChangeEmailForm({
     cancelEmailChange,
     emptyState
   );
-  const fieldError = (field: keyof ChangeEmailFormInput) => firstFieldError(formState, field);
+  const fieldError = (field: keyof ChangeEmailFormInput) => fieldErrorMessage(formState, field);
   const pendingMessage = resendState.message || cancelState.message;
 
   return (

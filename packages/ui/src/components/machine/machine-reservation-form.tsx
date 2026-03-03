@@ -16,7 +16,7 @@ import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import UserAutocomplete from '../inputs/user-autocomplete';
 import LocalizedDateTimePicker from '../inputs/localized-date-time-picker';
 import FormAlert from '../forms/form-alert';
@@ -71,7 +71,7 @@ export default function MachineReservationForm({
   const t = useTranslations('pages.hub.fabLab');
   const format = useFormatter();
   const timeZone = useTimeZone();
-  const fieldError = (field: keyof MachineReservationFormInput) => firstFieldError(state, field);
+  const fieldError = (field: keyof MachineReservationFormInput) => fieldErrorMessage(state, field);
   const [participants, setParticipants] = useState<UserSummaryViewModel[]>(() => initialParticipants ?? []);
   const [startDate, setStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const filteredParticipants = useMemo(

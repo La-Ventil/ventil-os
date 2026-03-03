@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import type { ChangePasswordFormInput } from '@repo/application/forms';
 import type { FormActionState } from '@repo/form/form-action-state';
 import type { FormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import Form from './form';
 import FormActions from '../form-actions';
 
@@ -29,7 +29,7 @@ export default function ChangePasswordForm({ handleSubmit }: ChangePasswordFormP
       passwordConfirmation: ''
     }
   });
-  const fieldError = (field: keyof ChangePasswordFormInput) => firstFieldError(formState, field);
+  const fieldError = (field: keyof ChangePasswordFormInput) => fieldErrorMessage(formState, field);
 
   return (
     <Form action={formAction}>

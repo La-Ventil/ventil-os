@@ -14,7 +14,7 @@ import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import { FormAction } from '@repo/form/form-action-state';
 import { FormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 
 export interface AdminUserEditFormProps {
   profilePromise: Promise<UserProfile>;
@@ -44,7 +44,7 @@ export default function AdminUserEditForm({
       educationLevel: profile.educationLevel ?? ''
     }
   });
-  const fieldError = (field: keyof AdminProfileFormInput) => firstFieldError(formState, field);
+  const fieldError = (field: keyof AdminProfileFormInput) => fieldErrorMessage(formState, field);
   const showEducationLevel = requiresEducationLevel(selectedProfile);
 
   useEffect(() => {

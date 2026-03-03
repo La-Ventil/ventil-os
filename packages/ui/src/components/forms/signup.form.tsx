@@ -27,7 +27,7 @@ import PrivacyPolicyContent from '../privacy-policy-content';
 import TextField from '@mui/material/TextField';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
-import { firstFieldError } from '@repo/form/form-errors';
+import { fieldErrorMessage } from '@repo/form/form-errors';
 import FormAlert from './form-alert';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -54,7 +54,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const tCommon = useTranslations('common');
   const tPolicy = useTranslations('pages.public.privacyPolicy');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
-  const fieldError = (field: keyof SignupFormInput) => firstFieldError(state, field);
+  const fieldError = (field: keyof SignupFormInput) => fieldErrorMessage(state, field);
   const resolveProfileType = (value?: string): UserRole =>
     Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
   const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
