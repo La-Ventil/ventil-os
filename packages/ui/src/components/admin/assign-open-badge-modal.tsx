@@ -1,6 +1,7 @@
 'use client';
 
 import { useId } from 'react';
+import type { FormFeedback } from '@repo/form/form-feedback';
 import AssignOpenBadgeForm from '../forms/assign-open-badge.form';
 import ModalLayout from '../modal-layout';
 import { useTranslations } from 'next-intl';
@@ -18,7 +19,7 @@ type AssignOpenBadgeModalProps = {
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
-  feedback?: { type: 'error' | 'success'; message: string } | null;
+  feedback?: FormFeedback | null;
 };
 
 export default function AssignOpenBadgeModal({

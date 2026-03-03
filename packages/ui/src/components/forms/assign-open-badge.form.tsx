@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
+import type { FormFeedback } from '@repo/form/form-feedback';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
@@ -31,7 +32,7 @@ type AssignOpenBadgeFormProps = {
   descriptionId?: string;
   onConfirm: (payload: { userId: string; openBadgeId: string; level: number }) => void;
   onCancel: () => void;
-  feedback?: { type: 'error' | 'success'; message: string } | null;
+  feedback?: FormFeedback | null;
 };
 
 export default function AssignOpenBadgeForm({
