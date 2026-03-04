@@ -27,7 +27,8 @@ type E2EWorkerFixtures = {
 
 export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
   workerWebRuntime: [
-    async ({}, runFixture, workerInfo) => {
+    async ({ browserName }, runFixture, workerInfo) => {
+      void browserName;
       const runtime = await createWorkerWebRuntime(workerInfo);
       try {
         await runFixture(runtime);
@@ -57,7 +58,8 @@ export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
       await page.close();
     }
   },
-  seedUsers: async ({}, runFixture) => {
+  seedUsers: async ({ browserName }, runFixture) => {
+    void browserName;
     await runFixture(seedUsers);
   },
   loginAs: async ({ page }, runFixture) => {
