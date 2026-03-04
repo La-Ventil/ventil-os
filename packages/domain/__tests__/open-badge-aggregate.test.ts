@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { OpenBadge } from '@repo/domain/badge/open-badge';
-import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
+import { OpenBadge } from '../badge/open-badge';
+import { OpenBadgeLevel } from '../badge/open-badge-level';
 
 describe('OpenBadge aggregate', () => {
   it('sorts levels and validates active level', () => {

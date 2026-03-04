@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { ActivityStatus } from '@repo/domain/activity-status';
-import { MachineAvailability } from '@repo/domain/machine/machine-availability';
-import { Machine, MachineReservationSlot } from '@repo/domain/machine/machine';
-import { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
+import { ActivityStatus } from '../activity-status';
+import { MachineAvailability } from '../machine/machine-availability';
+import { Machine, MachineReservationSlot } from '../machine/machine';
+import { MachineReservationStatus } from '../machine/machine-reservation-status';
 
 const baseMachine = (reservations: MachineReservationSlot[] = []) =>
   Machine.from({

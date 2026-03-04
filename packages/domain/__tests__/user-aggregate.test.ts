@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { User } from '@repo/domain/user/user';
-import { Email } from '@repo/domain/user/email';
-import { UserRole } from '@repo/domain/user/user-role';
+import { User } from '../user/user';
+import { Email } from '../user/email';
+import { UserRole } from '../user/user-role';
 
 const baseUser = () =>
   User.from({

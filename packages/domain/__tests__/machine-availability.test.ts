@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { MachineAvailability, resolveMachineAvailability } from '@repo/domain/machine/machine-availability';
-import { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
+import { MachineAvailability, resolveMachineAvailability } from '../machine/machine-availability';
+import { MachineReservationStatus } from '../machine/machine-reservation-status';
 
 const now = new Date('2026-02-16T10:00:00.000Z');
 const dayEnd = new Date('2026-02-16T23:59:59.000Z');
