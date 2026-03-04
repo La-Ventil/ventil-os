@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.20](https://github.com/La-Ventil/ventil-os/compare/v0.0.19...v0.0.20) (2026-03-04)
+
+
+### Bug Fixes
+
+* **open-badges:** hide inactive badges in hub ([7273685](https://github.com/La-Ventil/ventil-os/commit/7273685f57ac947a458f71affbc0a168634c2152))
+* **open-badges:** hide inactive earned badges in hub ([82d0ec1](https://github.com/La-Ventil/ventil-os/commit/82d0ec1dddcaf3148e7fb36f64758ea6e9c7140d))
+
 ### [0.0.19](https://github.com/La-Ventil/ventil-os/compare/v0.0.18...v0.0.19) (2026-03-04)
 
 
