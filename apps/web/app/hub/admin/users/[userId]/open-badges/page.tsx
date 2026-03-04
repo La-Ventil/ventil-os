@@ -16,9 +16,7 @@ type AdminUserOpenBadgesPageProps = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminUserOpenBadgesPage({
-  params
-}: AdminUserOpenBadgesPageProps) {
+export default async function AdminUserOpenBadgesPage({ params }: AdminUserOpenBadgesPageProps) {
   const session = await getServerSession();
   const userCanManageUsers = canManageUsers(session?.user);
 
@@ -29,7 +27,7 @@ export default async function AdminUserOpenBadgesPage({
   const { userId } = await params;
   const [users, badges, assignableBadges] = await Promise.all([
     browseUsersAsAdmin(),
-    viewUserOpenBadges(userId),
+    viewUserOpenBadges(userId, { includeInactive: true }),
     browseOpenBadges(userId)
   ]);
   const user = users.find((entry) => entry.id === userId);
