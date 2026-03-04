@@ -15,6 +15,7 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import { OpenBadge } from '@repo/domain/badge/open-badge';
+import { canAdvanceOpenBadgeLevel } from '@repo/domain/badge/open-badge-level-transition-policy';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
@@ -66,7 +67,7 @@ export default function AssignOpenBadgeForm({
       return levelOptions;
     }
 
-    return levelOptions.filter((level) => level.level > selectedOpenBadge.activeLevel);
+    return levelOptions.filter((level) => canAdvanceOpenBadgeLevel(selectedOpenBadge.activeLevel, level.level));
   }, [isUserSelectionDisabled, selectedOpenBadge]);
   const [selectedLevel, setSelectedLevel] = useState(
     assignableLevelOptions[0] ? String(assignableLevelOptions[0].level) : ''
@@ -77,7 +78,7 @@ export default function AssignOpenBadgeForm({
       return users;
     }
 
-    return users.filter((option) => (option.currentOpenBadgeLevel ?? 0) < selectedLevelNumber);
+    return users.filter((option) => canAdvanceOpenBadgeLevel(option.currentOpenBadgeLevel, selectedLevelNumber));
   }, [isUserSelectionDisabled, selectedLevelNumber, users]);
   const [selectedUserId, setSelectedUserId] = useState(user?.id ?? '');
   const canSubmit = Boolean(selectedOpenBadge && selectedLevel && selectedUserId);

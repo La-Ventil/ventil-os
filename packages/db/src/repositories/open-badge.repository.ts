@@ -1,25 +1,23 @@
 import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
+import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
+import {
+  canAdvanceOpenBadgeLevel,
+  canDowngradeOpenBadgeLevel
+} from '@repo/domain/badge/open-badge-level-transition-policy';
 import type {
   OpenBadgeAdminReadModel,
   OpenBadgeProgressReadModel,
   OpenBadgeReadModel
 } from '../read-models/open-badge';
 import type { OpenBadgeAdminPayload, OpenBadgeProgressPayload, OpenBadgePayload } from '../selects/open-badge';
-import {
-  openBadgeProgressInclude,
-  openBadgeInclude,
-  openBadgeAdminSelect
-} from '../selects/open-badge';
+import { openBadgeProgressInclude, openBadgeInclude, openBadgeAdminSelect } from '../selects/open-badge';
 
 export class OpenBadgeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private async getOpenBadgeLevelOrThrow(
-    openBadgeId: string,
-    level: number
-  ): Promise<{ id: string; level: number }> {
+  private async getOpenBadgeLevelOrThrow(openBadgeId: string, level: number): Promise<{ id: string; level: number }> {
     const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
       where: {
         openBadgeId_level: {
@@ -139,10 +137,7 @@ export class OpenBadgeRepository {
     return progress?.highestLevel?.level ?? null;
   }
 
-  async getUserHighestOpenBadgeLevels(
-    userId: string,
-    openBadgeIds: string[]
-  ): Promise<Map<string, number | null>> {
+  async getUserHighestOpenBadgeLevels(userId: string, openBadgeIds: string[]): Promise<Map<string, number | null>> {
     if (!openBadgeIds.length) {
       return new Map();
     }
@@ -195,9 +190,7 @@ export class OpenBadgeRepository {
       orderBy: { openBadge: { name: 'asc' } }
     });
 
-    return (progresses as OpenBadgeProgressPayload[]).map((progress) =>
-      this.normalizeOpenBadgeProgress(progress)
-    );
+    return (progresses as OpenBadgeProgressPayload[]).map((progress) => this.normalizeOpenBadgeProgress(progress));
   }
 
   async awardOpenBadgeLevel(input: { userId: string; openBadgeId: string; level: number; awardedById: string }) {
@@ -217,6 +210,19 @@ export class OpenBadgeRepository {
         },
         update: {}
       });
+
+      const currentHighest = await tx.openBadgeProgress.findUnique({
+        where: { id: progress.id },
+        select: {
+          highestLevel: {
+            select: { id: true, level: true }
+          }
+        }
+      });
+
+      if (!canAdvanceOpenBadgeLevel(currentHighest?.highestLevel?.level ?? null, openBadgeLevel.level)) {
+        throw new OpenBadgeError('openBadge.assign.invalidLevelTransition');
+      }
 
       const existingLevel = await tx.openBadgeLevelProgress.findUnique({
         where: {
@@ -238,15 +244,6 @@ export class OpenBadgeRepository {
         });
       }
 
-      const currentHighest = await tx.openBadgeProgress.findUnique({
-        where: { id: progress.id },
-        select: {
-          highestLevel: {
-            select: { id: true, level: true }
-          }
-        }
-      });
-
       if (!currentHighest?.highestLevel || openBadgeLevel.level >= currentHighest.highestLevel.level) {
         await tx.openBadgeProgress.update({
           where: { id: progress.id },
@@ -258,15 +255,28 @@ export class OpenBadgeRepository {
     });
   }
 
-  async setUserOpenBadgeLevel(input: {
-    userId: string;
-    openBadgeId: string;
-    level: number;
-    awardedById: string;
-  }) {
+  async setUserOpenBadgeLevel(input: { userId: string; openBadgeId: string; level: number; awardedById: string }) {
     const openBadgeLevel = await this.getOpenBadgeLevelOrThrow(input.openBadgeId, input.level);
 
     return this.prisma.$transaction(async (tx) => {
+      const currentHighest = await tx.openBadgeProgress.findUnique({
+        where: {
+          userId_openBadgeId: {
+            userId: input.userId,
+            openBadgeId: input.openBadgeId
+          }
+        },
+        select: {
+          highestLevel: {
+            select: { level: true }
+          }
+        }
+      });
+
+      if (!canDowngradeOpenBadgeLevel(currentHighest?.highestLevel?.level ?? null, openBadgeLevel.level)) {
+        throw new OpenBadgeError('openBadge.assign.invalidLevelTransition');
+      }
+
       return this.replaceUserOpenBadgeProgressAtLevel(tx, {
         userId: input.userId,
         openBadgeId: input.openBadgeId,

@@ -650,7 +650,8 @@
     "assign": {
       "unauthorized": "Vous n'avez pas les droits pour attribuer cet open badge.",
       "awarderNotFound": "L'utilisateur attribuant le badge est introuvable.",
-      "targetNotFound": "L'utilisateur ciblé est introuvable."
+      "targetNotFound": "L'utilisateur ciblé est introuvable.",
+      "invalidLevelTransition": "Les niveaux d’un open badge doivent évoluer un par un."
     }
   },
   "resetPassword": {

@@ -683,7 +683,8 @@
     "assign": {
       "unauthorized": "You are not allowed to assign this open badge.",
       "awarderNotFound": "Assigning user was not found.",
-      "targetNotFound": "Target user was not found."
+      "targetNotFound": "Target user was not found.",
+      "invalidLevelTransition": "Open badge levels must move one step at a time."
     }
   },
   "user": {

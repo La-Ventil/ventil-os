@@ -1,5 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
 import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
+import { canDowngradeOpenBadgeLevel } from '@repo/domain/badge/open-badge-level-transition-policy';
 import type { Command } from '../../usecase';
 import { userExists } from '../../users/guards/user-exists';
 import { canAssignOpenBadge, type OpenBadgeAssigner } from './can-assign-open-badge.query';
@@ -31,6 +32,11 @@ export const setUserOpenBadgeLevel: Command<[SetUserOpenBadgeLevelInput, OpenBad
   const targetExists = await userExists(input.userId);
   if (!targetExists) {
     throw new OpenBadgeError('openBadge.assign.targetNotFound');
+  }
+
+  const highestLevel = await openBadgeRepository.getUserHighestOpenBadgeLevel(input.userId, input.openBadgeId);
+  if (!canDowngradeOpenBadgeLevel(highestLevel, input.level)) {
+    throw new OpenBadgeError('openBadge.assign.invalidLevelTransition');
   }
 
   await openBadgeRepository.setUserOpenBadgeLevel({
