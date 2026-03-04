@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.19](https://github.com/La-Ventil/ventil-os/compare/v0.0.18...v0.0.19) (2026-03-04)
+
+
+### Features
+
+* **open-badges:** enforce stepwise level transitions ([6c5af85](https://github.com/La-Ventil/ventil-os/commit/6c5af855a7c2425d38dfdf1ba98c18ca118c0602))
+
 ### [0.0.18](https://github.com/La-Ventil/ventil-os/compare/v0.0.17...v0.0.18) (2026-03-03)
 
 
