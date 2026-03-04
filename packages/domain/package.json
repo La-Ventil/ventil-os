@@ -15,10 +15,12 @@
   },
   "scripts": {
     "lint:staged": "echo \"skip lint:staged (domain)\"",
+    "check-types": "tsc --noEmit",
     "test": "vitest",
     "test:unit": "vitest run"
   },
   "devDependencies": {
+    "typescript": "5.9.3",
     "vitest": "^3.2.4"
   }
 }
