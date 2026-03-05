@@ -1,9 +1,11 @@
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import { openBadgeRepository } from '@repo/db';
+import { isActive } from '@repo/domain/activity-status';
 import type { Query } from '../../usecase';
+import { mapOpenBadgeToViewModel } from '../../presenters/open-badge';
 import { buildOpenBadgeAssignableUsersByBadgeIdAndLevel } from './open-badge-assignment-options.query';
 import { browseAssignableUsersForOpenBadge } from './browse-assignable-users-for-open-badge.query';
-import { viewOpenBadge } from './view-open-badge.query';
 
 export type OpenBadgeAssignContext = {
   openBadge: OpenBadgeViewModel;
@@ -14,16 +16,20 @@ export type OpenBadgeAssignContext = {
 export const viewOpenBadgeAssignContext: Query<[string], OpenBadgeAssignContext | null> = async (
   openBadgeId: string
 ) => {
-  const openBadge = await viewOpenBadge(openBadgeId);
+  const openBadge = await openBadgeRepository.getOpenBadgeById(openBadgeId);
   if (!openBadge) {
     return null;
   }
+  if (!isActive(openBadge.status)) {
+    return null;
+  }
 
+  const mappedBadge: OpenBadgeViewModel = mapOpenBadgeToViewModel(openBadge);
   const users = await browseAssignableUsersForOpenBadge(openBadgeId);
-  const userIdsByOpenBadgeIdAndLevel = await buildOpenBadgeAssignableUsersByBadgeIdAndLevel([openBadge], users);
+  const userIdsByOpenBadgeIdAndLevel = await buildOpenBadgeAssignableUsersByBadgeIdAndLevel([mappedBadge], users);
 
   return {
-    openBadge,
+    openBadge: mappedBadge,
     users,
     userIdsByOpenBadgeIdAndLevel
   };
