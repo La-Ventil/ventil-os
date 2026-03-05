@@ -57,11 +57,13 @@ export default function OpenBadgeForm({
   const name = useZodLiveValidation({
     schema: openBadgeNameSchema,
     value: state.values.name,
+    serverError: fieldError('name'),
     t: (key) => tRoot(key)
   });
   const description = useZodLiveValidation({
     schema: openBadgeDescriptionSchema,
     value: state.values.description,
+    serverError: fieldError('description'),
     t: (key) => tRoot(key)
   });
   const initialLevels = useMemo(
@@ -107,27 +109,13 @@ export default function OpenBadgeForm({
       {badgeId ? <input type="hidden" name="id" value={badgeId} /> : null}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
-        <TextField
-          name="name"
-          value={name.value}
-          onChange={(event) => name.setValue(event.currentTarget.value)}
-          onBlur={name.markTouched}
-          label={t('fields.name')}
-          required
-          fullWidth
-          error={Boolean(name.errors.length || fieldError('name'))}
-          helperText={name.errors.length ? name.errors.join(' ') : fieldError('name')}
-        />
+        <TextField name="name" label={t('fields.name')} required fullWidth {...name.fieldProps()} />
         <TextField
           name="description"
-          value={description.value}
-          onChange={(event) => description.setValue(event.currentTarget.value)}
-          onBlur={description.markTouched}
           label={t('fields.description')}
           required
           fullWidth
-          error={Boolean(description.errors.length || fieldError('description'))}
-          helperText={description.errors.length ? description.errors.join(' ') : fieldError('description')}
+          {...description.fieldProps()}
         />
       </FormSection>
 

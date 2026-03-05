@@ -49,11 +49,13 @@ export default function MachineForm({
   const name = useZodLiveValidation({
     schema: machineNameSchema,
     value: state.values.name,
+    serverError: fieldError('name'),
     t: (key) => tRoot(key)
   });
   const description = useZodLiveValidation({
     schema: machineDescriptionSchema,
     value: state.values.description,
+    serverError: fieldError('description'),
     t: (key) => tRoot(key)
   });
 
@@ -62,27 +64,13 @@ export default function MachineForm({
       {machineId ? <input type="hidden" name="id" defaultValue={machineId} /> : null}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <FormSection>
-        <TextField
-          name="name"
-          value={name.value}
-          onChange={(event) => name.setValue(event.currentTarget.value)}
-          onBlur={name.markTouched}
-          label={t('fields.name')}
-          required
-          fullWidth
-          error={Boolean(name.errors.length || fieldError('name'))}
-          helperText={name.errors.length ? name.errors.join(' ') : fieldError('name')}
-        />
+        <TextField name="name" {...name.fieldProps()} label={t('fields.name')} required fullWidth />
         <TextField
           name="description"
-          value={description.value}
-          onChange={(event) => description.setValue(event.currentTarget.value)}
-          onBlur={description.markTouched}
+          {...description.fieldProps()}
           label={t('fields.description')}
           required
           fullWidth
-          error={Boolean(description.errors.length || fieldError('description'))}
-          helperText={description.errors.length ? description.errors.join(' ') : fieldError('description')}
         />
 
         <ImageUploadField

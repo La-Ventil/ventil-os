@@ -14,6 +14,7 @@
     "./use-form-action-state": "./src/use-form-action-state.ts",
     "./use-js-enabled": "./src/use-js-enabled.ts",
     "./use-zod-live-validation": "./src/use-zod-live-validation.ts",
+    "./use-server-field-validation": "./src/use-server-field-validation.ts",
     "./form-feedback": "./src/feedback/index.ts",
     "./zod-errors": "./src/zod-errors.ts"
   },

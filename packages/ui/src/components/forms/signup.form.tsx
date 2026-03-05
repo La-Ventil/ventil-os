@@ -21,6 +21,7 @@ import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';
 import { useZodLiveValidation } from '@repo/form/use-zod-live-validation';
+import { useServerFieldValidation } from '@repo/form/use-server-field-validation';
 import { usePasswordConfirmationValidation } from '../../hooks/use-password-confirmation-validation';
 import FormAlert from './form-alert';
 import FormControl from '@mui/material/FormControl';
@@ -49,23 +50,31 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const tPolicy = useTranslations('pages.public.privacyPolicy');
   const [state, action, isPending, handleSubmit, handleRetry] = formState;
   const fieldError = (field: keyof SignupFormInput) => fieldErrorMessage(state, field);
+
   const resolveProfileType = (value?: string): UserRole =>
     Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
   const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
   const firstName = useZodLiveValidation({
     schema: nameSchema(),
     value: state.values.firstName,
+    serverError: fieldError('firstName'),
     t: (key) => tRoot(key)
   });
   const lastName = useZodLiveValidation({
     schema: nameSchema(),
     value: state.values.lastName,
+    serverError: fieldError('lastName'),
     t: (key) => tRoot(key)
   });
   const password = useZodLiveValidation({
     schema: passwordSchema,
     value: state.values.password,
+    serverError: fieldError('password'),
     t: (key) => tRoot(key)
+  });
+  const email = useServerFieldValidation({
+    value: state.values.email,
+    serverError: fieldError('email')
   });
   const { passwordConfirmation, errors: passwordConfirmationErrors } = usePasswordConfirmationValidation({
     password: password.value,
@@ -82,7 +91,6 @@ export default function SignupForm({ formState }: SignupFormProps) {
 
   const defaultEducationLevel =
     state.values.educationLevel || (requiresEducationLevel(selectedProfile) ? EducationLevel.Premiere : '');
-
   return (
     <>
       <Form action={action} onSubmit={handleSubmit}>
@@ -90,47 +98,33 @@ export default function SignupForm({ formState }: SignupFormProps) {
           <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
           <TextField
             name="firstName"
-            value={firstName.value}
-            onChange={(event) => firstName.setValue(event.currentTarget.value)}
-            onBlur={firstName.markTouched}
             label={t('fields.firstName')}
             placeholder={t('placeholders.firstName')}
             required
-            error={Boolean(firstName.errors.length || fieldError('firstName'))}
-            helperText={firstName.errors.length ? firstName.errors.join(' ') : fieldError('firstName')}
+            {...firstName.fieldProps()}
           />
           <TextField
             name="lastName"
-            value={lastName.value}
-            onChange={(event) => lastName.setValue(event.currentTarget.value)}
-            onBlur={lastName.markTouched}
             label={t('fields.lastName')}
             placeholder={t('placeholders.lastName')}
             required
-            error={Boolean(lastName.errors.length || fieldError('lastName'))}
-            helperText={lastName.errors.length ? lastName.errors.join(' ') : fieldError('lastName')}
+            {...lastName.fieldProps()}
           />
           <TextField
-            name={'email'}
-            type={'email'}
-            defaultValue={state.values.email}
+            name="email"
+            type="email"
             label={t('fields.email')}
             placeholder={t('placeholders.email')}
             required
-            error={Boolean(fieldError('email'))}
-            helperText={fieldError('email')}
+            {...email.fieldProps()}
           />
           <TextField
             name="password"
             type="password"
-            value={password.value}
-            onChange={(event) => password.setValue(event.currentTarget.value)}
-            onBlur={password.markTouched}
             label={t('fields.password')}
             placeholder={t('placeholders.password')}
             required
-            error={Boolean(password.errors.length || fieldError('password'))}
-            helperText={password.errors.length ? password.errors.join(' ') : fieldError('password')}
+            {...password.fieldProps()}
           />
           <TextField
             name="passwordConfirmation"
