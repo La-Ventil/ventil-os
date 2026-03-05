@@ -31,6 +31,11 @@ Use-cases as orchestrators:
 - Use-cases **orchestrate**: they fetch data from repositories, call domain policies/aggregates, and map to VM/VO.
 - Domain stays **pure** (no I/O) and owns invariants; repositories stay **thin** (data access only).
 - When a use-case grows, extract pure logic into domain policies/services instead of duplicating rules in application.
+- Invariants policy:
+  - Domain defines invariants (e.g. open badge level transitions, machine reservation windows, status transitions).
+  - Application use-cases enforce these invariants before persisting.
+  - Repositories may still enforce constraints as defensive storage checks, but they are not the primary policy source.
+- Web actions/routes do not enforce business invariants; they should remain transport/orchestration only.
 
 Command vs query mapping (CQRS-lite):
 - **Commands (write path)**: repositories **rehydrate domain aggregates**. Use-cases call domain rules and persist changes.
@@ -58,6 +63,7 @@ Related ADRs:
 
 ## Consequences
 - New features must add an Application use-case instead of calling repos from Web.
+- Business invariants must be validated in the Application/use-case boundary; repositories should never be considered the policy location.
 - Introduce light VO (BadgeId, BadgeLevel, UserRef, etc.) to encode invariants.
 - Update repos to return stable DTO/VO; UI mappers consume homogeneous VM.
 - Seeds must stay aligned with use-case expectations (badges/machines/admins present).
