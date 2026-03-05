@@ -5,6 +5,7 @@ import { viewOpenBadgeAssignContext } from './view-open-badge-assign-context.que
 const mockBrowseAssignableUsersForOpenBadge = vi.fn();
 const mockBuildMap = vi.fn();
 const mockGetOpenBadgeById = vi.fn();
+const mockCanAssignOpenBadge = vi.fn();
 
 vi.mock('@repo/db', () => ({
   openBadgeRepository: {
@@ -18,6 +19,9 @@ vi.mock('./browse-assignable-users-for-open-badge.query', () => ({
 
 vi.mock('./open-badge-assignment-options.query', () => ({
   buildOpenBadgeAssignableUsersByBadgeIdAndLevel: (...args: [unknown[], unknown[]]) => mockBuildMap(...args)
+}));
+vi.mock('./can-assign-open-badge.query', () => ({
+  canAssignOpenBadge: (...args: [string, unknown?]) => mockCanAssignOpenBadge(...args)
 }));
 
 describe('viewOpenBadgeAssignContext', () => {
@@ -51,6 +55,7 @@ describe('viewOpenBadgeAssignContext', () => {
         '1': ['user-id']
       }
     });
+    mockCanAssignOpenBadge.mockResolvedValue(true);
   });
 
   afterEach(() => {
@@ -60,7 +65,7 @@ describe('viewOpenBadgeAssignContext', () => {
   it('returns null when badge does not exist', async () => {
     mockGetOpenBadgeById.mockResolvedValue(null);
 
-    const context = await viewOpenBadgeAssignContext('missing-id');
+    const context = await viewOpenBadgeAssignContext('missing-id', null);
 
     expect(context).toBeNull();
     expect(mockBrowseAssignableUsersForOpenBadge).not.toHaveBeenCalled();
@@ -73,7 +78,10 @@ describe('viewOpenBadgeAssignContext', () => {
       status: ActivityStatus.Inactive
     });
 
-    const context = await viewOpenBadgeAssignContext('badge-id');
+    const context = await viewOpenBadgeAssignContext('badge-id', {
+      id: 'admin-id',
+      globalAdmin: true
+    });
 
     expect(context).toBeNull();
     expect(mockBrowseAssignableUsersForOpenBadge).not.toHaveBeenCalled();
@@ -81,7 +89,10 @@ describe('viewOpenBadgeAssignContext', () => {
   });
 
   it('returns assignment context for active badges', async () => {
-    const context = await viewOpenBadgeAssignContext('badge-id');
+    const context = await viewOpenBadgeAssignContext('badge-id', {
+      id: 'admin-id',
+      globalAdmin: true
+    });
 
     expect(context).toEqual({
       openBadge: expect.objectContaining({
@@ -105,5 +116,22 @@ describe('viewOpenBadgeAssignContext', () => {
     });
     expect(mockBrowseAssignableUsersForOpenBadge).toHaveBeenCalledWith('badge-id');
     expect(mockBuildMap).toHaveBeenCalledWith([expect.objectContaining({ id: badge.id })], [userSummary]);
+  });
+
+  it('returns null when actor is not authorized to assign this badge', async () => {
+    mockCanAssignOpenBadge.mockResolvedValue(false);
+
+    const context = await viewOpenBadgeAssignContext('badge-id', {
+      id: 'student-id',
+      globalAdmin: false
+    });
+
+    expect(context).toBeNull();
+    expect(mockCanAssignOpenBadge).toHaveBeenCalledWith('badge-id', {
+      id: 'student-id',
+      globalAdmin: false
+    });
+    expect(mockBrowseAssignableUsersForOpenBadge).not.toHaveBeenCalled();
+    expect(mockBuildMap).not.toHaveBeenCalled();
   });
 });

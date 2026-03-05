@@ -6,6 +6,7 @@ import type { Query } from '../../usecase';
 import { mapOpenBadgeToViewModel } from '../../presenters/open-badge';
 import { buildOpenBadgeAssignableUsersByBadgeIdAndLevel } from './open-badge-assignment-options.query';
 import { browseAssignableUsersForOpenBadge } from './browse-assignable-users-for-open-badge.query';
+import { canAssignOpenBadge, type OpenBadgeAssigner } from './can-assign-open-badge.query';
 
 export type OpenBadgeAssignContext = {
   openBadge: OpenBadgeViewModel;
@@ -13,14 +14,19 @@ export type OpenBadgeAssignContext = {
   userIdsByOpenBadgeIdAndLevel: Record<string, Record<string, string[]>>;
 };
 
-export const viewOpenBadgeAssignContext: Query<[string], OpenBadgeAssignContext | null> = async (
-  openBadgeId: string
+export const viewOpenBadgeAssignContext: Query<[string, OpenBadgeAssigner?], OpenBadgeAssignContext | null> = async (
+  openBadgeId: string,
+  currentUser: OpenBadgeAssigner | null = null
 ) => {
   const openBadge = await openBadgeRepository.getOpenBadgeById(openBadgeId);
   if (!openBadge) {
     return null;
   }
   if (!isActive(openBadge.status)) {
+    return null;
+  }
+  const canAssign = await canAssignOpenBadge(openBadgeId, currentUser ?? undefined);
+  if (!canAssign) {
     return null;
   }
 
