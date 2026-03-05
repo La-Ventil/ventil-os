@@ -11,5 +11,6 @@ export * from './set-user-open-badge-level.command';
 export * from './set-open-badge-status.command';
 export * from './update-open-badge.command';
 export * from './view-open-badge.query';
+export * from './view-open-badge-assign-context.query';
 export * from './view-open-badge-edit.query';
 export * from './view-user-open-badges.query';
