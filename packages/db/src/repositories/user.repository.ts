@@ -16,25 +16,13 @@ import type { UserCredentialsReadModel } from '../read-models/user-credentials';
 import type { UserAdminReadModel } from '../read-models/user-admin';
 import type { UserPasswordResetReadModel } from '../read-models/user-password-reset';
 import type { UserProfileReadModel } from '../read-models/user-profile';
-import type {
-  UserSummaryReadModel,
-  UserSummaryWithOpenBadgeLevelReadModel
-} from '../read-models/user-summary';
+import type { UserSummaryReadModel, UserSummaryWithOpenBadgeLevelReadModel } from '../read-models/user-summary';
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
   private normalizeUserProfile(user: UserProfilePayload): UserProfileReadModel {
-    const {
-      email,
-      pendingEmail,
-      educationLevel,
-      profile,
-      studentProfile,
-      externalProfile,
-      lastName,
-      ...rest
-    } = user;
+    const { email, pendingEmail, educationLevel, profile, studentProfile, externalProfile, lastName, ...rest } = user;
 
     return {
       ...rest,
@@ -122,6 +110,19 @@ export class UserRepository {
     });
 
     return maybeUser ? this.normalizeUserProfile(maybeUser as UserProfilePayload) : null;
+  }
+
+  async isUserBlocked(userId: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { blocked: true }
+    });
+
+    if (!user) {
+      return true;
+    }
+
+    return user.blocked;
   }
 
   async findUserCredentialsByEmail(email: string): Promise<UserCredentialsReadModel | null> {

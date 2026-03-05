@@ -1,11 +1,6 @@
 import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
-import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
-import {
-  canAdvanceOpenBadgeLevel,
-  canDowngradeOpenBadgeLevel
-} from '@repo/domain/badge/open-badge-level-transition-policy';
 import type {
   OpenBadgeAdminReadModel,
   OpenBadgeProgressReadModel,
@@ -220,10 +215,6 @@ export class OpenBadgeRepository {
         }
       });
 
-      if (!canAdvanceOpenBadgeLevel(currentHighest?.highestLevel?.level ?? null, openBadgeLevel.level)) {
-        throw new OpenBadgeError('openBadge.assign.invalidLevelTransition');
-      }
-
       const existingLevel = await tx.openBadgeLevelProgress.findUnique({
         where: {
           progressId_openBadgeLevelId: {
@@ -259,24 +250,6 @@ export class OpenBadgeRepository {
     const openBadgeLevel = await this.getOpenBadgeLevelOrThrow(input.openBadgeId, input.level);
 
     return this.prisma.$transaction(async (tx) => {
-      const currentHighest = await tx.openBadgeProgress.findUnique({
-        where: {
-          userId_openBadgeId: {
-            userId: input.userId,
-            openBadgeId: input.openBadgeId
-          }
-        },
-        select: {
-          highestLevel: {
-            select: { level: true }
-          }
-        }
-      });
-
-      if (!canDowngradeOpenBadgeLevel(currentHighest?.highestLevel?.level ?? null, openBadgeLevel.level)) {
-        throw new OpenBadgeError('openBadge.assign.invalidLevelTransition');
-      }
-
       return this.replaceUserOpenBadgeProgressAtLevel(tx, {
         userId: input.userId,
         openBadgeId: input.openBadgeId,

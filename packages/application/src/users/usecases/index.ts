@@ -9,6 +9,7 @@ export * from './sign-up.command';
 export * from './update-profile.command';
 export * from './set-user-blocked.command';
 export * from './change-password.command';
+export * from './is-user-blocked.query';
 export * from './request-password-reset.command';
 export * from './reset-password.command';
 export * from './request-email-change.command';

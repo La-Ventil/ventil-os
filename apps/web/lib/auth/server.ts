@@ -1,8 +1,7 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession as getNextAuthServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { viewUserProfile } from '@repo/application/users/usecases';
-import { prismaClient } from '@repo/db';
+import { isUserBlocked, viewUserProfile } from '@repo/application/users/usecases';
 import { authOptions } from './config';
 
 export async function getServerSession(
@@ -13,12 +12,8 @@ export async function getServerSession(
     return session;
   }
 
-  const status = await prismaClient.user.findUnique({
-    where: { id: session.user.id },
-    select: { blocked: true }
-  });
-
-  if (status?.blocked) {
+  const blocked = await isUserBlocked(session.user.id);
+  if (blocked) {
     return null;
   }
 
