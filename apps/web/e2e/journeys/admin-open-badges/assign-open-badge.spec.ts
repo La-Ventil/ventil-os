@@ -26,4 +26,10 @@ test.describe('Admin open badges journeys', () => {
     });
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 10_000 });
   });
+
+  test('non-admin users cannot open assign modal directly', async ({ page, loginAs }) => {
+    await loginAs('student');
+    await page.goto('/hub/admin/open-badges/@modal/does-not-exist');
+    await expect(page).toHaveURL('/hub/profile');
+  });
 });
