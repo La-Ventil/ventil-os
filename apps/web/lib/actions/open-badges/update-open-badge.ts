@@ -14,7 +14,7 @@ import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
-import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
+import { withOpenBadgeFormError } from './open-badge-action-errors';
 
 export async function updateOpenBadgeAction(
   previousState: FormState<OpenBadgeUpdateRequest>,
@@ -66,10 +66,6 @@ export async function updateOpenBadgeAction(
 
     return formSuccess(responseValues, t('openBadge.update.success'));
   } catch (err) {
-    if (isOpenBadgeError(err)) {
-      return formError(responseValues, { message: t(err.code) });
-    }
-    console.error(err);
-    return formError(responseValues, { message: t('openBadge.update.error') });
+    return withOpenBadgeFormError(responseValues, err, t, 'openBadge.update.error');
   }
 }

@@ -1,5 +1,10 @@
 import type { JSX } from 'react';
-import { browseAssignableUsersForOpenBadge, canAssignOpenBadge, viewOpenBadge } from '@repo/application/open-badges/usecases';
+import {
+  browseAssignableUsersForOpenBadge,
+  buildOpenBadgeAssignableUsersByBadgeIdAndLevel,
+  canAssignOpenBadge,
+  viewOpenBadge
+} from '@repo/application/open-badges/usecases';
 import OpenBadgeModalRouteClient from '../../../open-badge-modal-route.client';
 import { isOpenBadgeTab } from '../../layout';
 import { getServerSession } from '../../../../../../lib/auth';
@@ -15,12 +20,16 @@ export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageP
     return null;
   }
 
-  const [openBadge, canAssign] = await Promise.all([viewOpenBadge(badgeId), canAssignOpenBadge(badgeId, session?.user)]);
+  const [openBadge, canAssign] = await Promise.all([
+    viewOpenBadge(badgeId),
+    canAssignOpenBadge(badgeId, session?.user)
+  ]);
   if (!openBadge) {
     return null;
   }
 
   const users = canAssign ? await browseAssignableUsersForOpenBadge(badgeId) : [];
+  const userIdsByOpenBadgeIdAndLevel = await buildOpenBadgeAssignableUsersByBadgeIdAndLevel([openBadge], users);
 
   return (
     <OpenBadgeModalRouteClient
@@ -28,6 +37,7 @@ export default async function OpenBadgeModalPage({ params }: OpenBadgeModalPageP
       closeHref={`/hub/open-badge/${tab}`}
       canAssign={canAssign}
       users={users}
+      userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
     />
   );
 }

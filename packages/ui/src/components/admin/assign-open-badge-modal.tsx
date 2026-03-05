@@ -9,12 +9,15 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { ThemeSection } from '../../theme';
 
+type UserIdsByOpenBadgeIdAndLevel = Record<string, Record<string, string[]>>;
+
 type AssignOpenBadgeModalProps = {
   open: boolean;
   onClose: () => void;
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadges: OpenBadgeViewModel[];
+  userIdsByOpenBadgeIdAndLevel: UserIdsByOpenBadgeIdAndLevel;
   translationNamespace: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
@@ -28,6 +31,7 @@ export default function AssignOpenBadgeModal({
   user,
   users,
   openBadges,
+  userIdsByOpenBadgeIdAndLevel,
   translationNamespace,
   isSubmitting = false,
   userSelectionDisabled,
@@ -55,6 +59,7 @@ export default function AssignOpenBadgeModal({
         user={user}
         users={users}
         openBadges={openBadges}
+        userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
         translationNamespace={translationNamespace}
         isSubmitting={isSubmitting}
         userSelectionDisabled={userSelectionDisabled}

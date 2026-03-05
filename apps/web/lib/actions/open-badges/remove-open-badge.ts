@@ -3,8 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { canManageBadges } from '@repo/application';
 import { removeOpenBadge } from '@repo/application/open-badges/usecases';
-import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import { getServerSession } from '../../auth';
+import { isOpenBadgeDomainError } from './open-badge-action-errors';
 
 export async function removeOpenBadgeAction(formData: FormData): Promise<void> {
   const session = await getServerSession();
@@ -23,7 +23,7 @@ export async function removeOpenBadgeAction(formData: FormData): Promise<void> {
     await removeOpenBadge({ id: badgeId });
     revalidatePath('/hub/admin/open-badges');
   } catch (error) {
-    if (isOpenBadgeError(error)) {
+    if (isOpenBadgeDomainError(error)) {
       return;
     }
     throw error;

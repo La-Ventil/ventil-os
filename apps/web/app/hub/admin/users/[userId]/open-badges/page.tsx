@@ -2,7 +2,11 @@ import { redirect } from 'next/navigation';
 import Typography from '@mui/material/Typography';
 import { getTranslations } from 'next-intl/server';
 import { canManageUsers } from '@repo/application';
-import { browseOpenBadges, viewUserOpenBadges } from '@repo/application/open-badges/usecases';
+import {
+  browseOpenBadges,
+  buildOpenBadgeAssignableUsersForFixedUserByBadgeIdAndLevel,
+  viewUserOpenBadges
+} from '@repo/application/open-badges/usecases';
 import { browseUsersAsAdmin } from '@repo/application/users/usecases';
 import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
@@ -25,7 +29,7 @@ export default async function AdminUserOpenBadgesPage({ params }: AdminUserOpenB
   }
 
   const { userId } = await params;
-  const [users, badges, assignableBadges] = await Promise.all([
+  const [users, badges, allAssignableBadges] = await Promise.all([
     browseUsersAsAdmin(),
     viewUserOpenBadges(userId, { includeInactive: true }),
     browseOpenBadges(userId)
@@ -37,6 +41,13 @@ export default async function AdminUserOpenBadgesPage({ params }: AdminUserOpenB
   }
 
   const t = await getTranslations('pages.hub.admin.users.badgeManagement');
+  const assignableBadges = allAssignableBadges.filter((badge) =>
+    badge.levels.some((level) => level.level > badge.activeLevel)
+  );
+  const userIdsByOpenBadgeIdAndLevel = await buildOpenBadgeAssignableUsersForFixedUserByBadgeIdAndLevel(
+    assignableBadges,
+    userId
+  );
 
   return (
     <>
@@ -49,9 +60,8 @@ export default async function AdminUserOpenBadgesPage({ params }: AdminUserOpenB
       <UserOpenBadgeManagement
         user={user}
         badges={badges}
-        assignableBadges={assignableBadges.filter((badge) =>
-          badge.levels.some((level) => level.level > badge.activeLevel)
-        )}
+        assignableBadges={assignableBadges}
+        userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
         labels={{
           actions: {
             assign: t('actions.assign'),

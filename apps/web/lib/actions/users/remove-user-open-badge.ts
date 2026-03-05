@@ -4,10 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { removeOpenBadgeFromUser } from '@repo/application/open-badges/usecases';
 import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
-import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import type { FormState } from '@repo/form/form-state';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { getServerSession } from '../../auth';
+import { withOpenBadgeFormError } from '../open-badges/open-badge-action-errors';
 
 type RemoveUserOpenBadgeInput = {
   userId: string;
@@ -54,11 +54,6 @@ export async function removeUserOpenBadgeAction(
       })
     );
   } catch (error) {
-    if (isOpenBadgeError(error)) {
-      return formError(parsed.data, { message: t(error.code) });
-    }
-
-    console.error(error);
-    return formError(parsed.data, { message: t('validation.genericError') });
+    return withOpenBadgeFormError(parsed.data, error, t, 'validation.genericError');
   }
 }

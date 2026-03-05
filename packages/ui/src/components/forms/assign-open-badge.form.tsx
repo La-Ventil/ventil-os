@@ -15,17 +15,19 @@ import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
 import { OpenBadge } from '@repo/domain/badge/open-badge';
-import { canAdvanceOpenBadgeLevel } from '@repo/domain/badge/open-badge-level-transition-policy';
 import Section from '../section';
 import SectionSubtitle from '../section-subtitle';
 import SectionTitle from '../section-title';
 import UserAutocomplete from '../inputs/user-autocomplete';
 import styles from './assign-open-badge.form.module.css';
 
+type UserIdsByOpenBadgeIdAndLevel = Record<string, Record<string, string[]>>;
+
 type AssignOpenBadgeFormProps = {
   user: UserSummaryWithOpenBadgeLevelViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
   openBadges: OpenBadgeViewModel[];
+  userIdsByOpenBadgeIdAndLevel: UserIdsByOpenBadgeIdAndLevel;
   translationNamespace: string;
   isSubmitting?: boolean;
   userSelectionDisabled?: boolean;
@@ -40,6 +42,7 @@ export default function AssignOpenBadgeForm({
   user,
   users,
   openBadges,
+  userIdsByOpenBadgeIdAndLevel,
   translationNamespace,
   isSubmitting = false,
   userSelectionDisabled,
@@ -56,30 +59,34 @@ export default function AssignOpenBadgeForm({
     () => openBadges.find((badge) => badge.id === selectedOpenBadgeId) ?? openBadges[0] ?? null,
     [openBadges, selectedOpenBadgeId]
   );
+  const selectedBadgeEligibleUsersByLevel = useMemo(
+    () => (selectedOpenBadge ? (userIdsByOpenBadgeIdAndLevel[selectedOpenBadge.id] ?? null) : null),
+    [selectedOpenBadge, userIdsByOpenBadgeIdAndLevel]
+  );
   const assignableLevelOptions = useMemo(() => {
     if (!selectedOpenBadge) {
       return [];
     }
 
     const levelOptions = selectedOpenBadge.levels;
-
-    if (!isUserSelectionDisabled) {
+    if (!selectedBadgeEligibleUsersByLevel) {
       return levelOptions;
     }
 
-    return levelOptions.filter((level) => canAdvanceOpenBadgeLevel(selectedOpenBadge.activeLevel, level.level));
-  }, [isUserSelectionDisabled, selectedOpenBadge]);
+    return levelOptions.filter((level) => (selectedBadgeEligibleUsersByLevel[String(level.level)] ?? []).length > 0);
+  }, [selectedBadgeEligibleUsersByLevel, selectedOpenBadge]);
   const [selectedLevel, setSelectedLevel] = useState(
     assignableLevelOptions[0] ? String(assignableLevelOptions[0].level) : ''
   );
   const selectedLevelNumber = Number.parseInt(selectedLevel, 10);
   const userOptions = useMemo(() => {
-    if (isUserSelectionDisabled || Number.isNaN(selectedLevelNumber)) {
+    if (!selectedBadgeEligibleUsersByLevel || Number.isNaN(selectedLevelNumber)) {
       return users;
     }
 
-    return users.filter((option) => canAdvanceOpenBadgeLevel(option.currentOpenBadgeLevel, selectedLevelNumber));
-  }, [isUserSelectionDisabled, selectedLevelNumber, users]);
+    const allowedUserIds = new Set(selectedBadgeEligibleUsersByLevel[String(selectedLevelNumber)] ?? []);
+    return users.filter((option) => allowedUserIds.has(option.id));
+  }, [selectedBadgeEligibleUsersByLevel, selectedLevelNumber, users]);
   const [selectedUserId, setSelectedUserId] = useState(user?.id ?? '');
   const canSubmit = Boolean(selectedOpenBadge && selectedLevel && selectedUserId);
   const selectedUser = useMemo(

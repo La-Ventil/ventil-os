@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/open-badges/assign-open-badge';
 import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
@@ -14,6 +15,7 @@ import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
 type AssignOpenBadgeModalRouteProps = {
   openBadge: OpenBadgeViewModel | null;
   users: UserSummaryWithOpenBadgeLevelViewModel[];
+  userIdsByOpenBadgeIdAndLevel: OpenBadgeAssignableUsersByBadgeIdAndLevel;
   translationNamespace?: string;
   closeHref: string;
 };
@@ -21,6 +23,7 @@ type AssignOpenBadgeModalRouteProps = {
 export default function AssignOpenBadgeModalRoute({
   openBadge,
   users,
+  userIdsByOpenBadgeIdAndLevel,
   translationNamespace = 'pages.hub.admin.openBadges.assignModal',
   closeHref
 }: AssignOpenBadgeModalRouteProps): JSX.Element | null {
@@ -86,6 +89,7 @@ export default function AssignOpenBadgeModalRoute({
       user={null}
       users={users}
       openBadges={[openBadge]}
+      userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
       translationNamespace={translationNamespace}
       isSubmitting={isPending}
       feedback={feedback}

@@ -15,12 +15,14 @@ import { setUserOpenBadgeLevelAction } from '../../../../../../lib/actions/users
 import type { UserAdminViewModel } from '@repo/view-models/user-admin';
 import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import styles from './user-open-badge-management.module.css';
 
 type UserOpenBadgeManagementProps = {
   user: UserAdminViewModel;
   badges: OpenBadgeViewModel[];
   assignableBadges: OpenBadgeViewModel[];
+  userIdsByOpenBadgeIdAndLevel: OpenBadgeAssignableUsersByBadgeIdAndLevel;
   labels: {
     actions: {
       assign: string;
@@ -49,6 +51,7 @@ export default function UserOpenBadgeManagement({
   user,
   badges,
   assignableBadges,
+  userIdsByOpenBadgeIdAndLevel,
   labels
 }: UserOpenBadgeManagementProps) {
   const router = useRouter();
@@ -180,6 +183,7 @@ export default function UserOpenBadgeManagement({
         user={selectedUser}
         users={[selectedUser]}
         openBadges={assignableBadges}
+        userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
         translationNamespace="pages.hub.admin.users.badgeManagement.assignDialog"
         isSubmitting={isPending}
         userSelectionDisabled

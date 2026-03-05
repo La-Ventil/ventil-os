@@ -1,4 +1,5 @@
 export * from './add-open-badge.command';
+export * from './open-badge-assignment-options.query';
 export * from './assign-open-badge.command';
 export * from './browse-assignable-users-for-open-badge.query';
 export * from './browse-open-badges.query';
