@@ -13,12 +13,16 @@ export const canAssignOpenBadge: Query<[string, OpenBadgeAssigner?], boolean> = 
   openBadgeId: string,
   user?: OpenBadgeAssigner
 ) => {
+  const badge = await openBadgeRepository.getOpenBadgeAdminById(openBadgeId);
+  if (!badge) {
+    return false;
+  }
+
   const trainerThreshold = await openBadgeRepository.getTrainerThresholdLevel(openBadgeId);
-  const highestLevel = user?.id
-    ? await openBadgeRepository.getUserHighestOpenBadgeLevel(user.id, openBadgeId)
-    : null;
+  const highestLevel = user?.id ? await openBadgeRepository.getUserHighestOpenBadgeLevel(user.id, openBadgeId) : null;
 
   return canAssignOpenBadgePolicy({
+    badgeStatus: badge.status,
     userId: user?.id,
     admin: user ?? null,
     trainerThreshold,

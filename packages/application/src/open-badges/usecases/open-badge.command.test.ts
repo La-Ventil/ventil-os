@@ -37,7 +37,7 @@ describe('open-badge command invariants', () => {
     mockAwardOpenBadgeLevel.mockResolvedValue(null);
     mockSetOpenBadgeLevel.mockResolvedValue(null);
     mockSetOpenBadgeStatus.mockResolvedValue({ id: 'badge-id', status: 'inactive' });
-    mockGetOpenBadgeAdminById.mockResolvedValue({ _count: { machines: 0 } });
+    mockGetOpenBadgeAdminById.mockResolvedValue({ status: ActivityStatus.Active, _count: { machines: 0 } });
     mockUserRepositoryExists.mockImplementation(() => true);
   });
 
@@ -64,6 +64,15 @@ describe('open-badge command invariants', () => {
       level: 2,
       awardedById: adminUser.id
     });
+  });
+
+  it('prevents assigning on an inactive badge', async () => {
+    mockGetOpenBadgeAdminById.mockResolvedValue({ status: ActivityStatus.Inactive, _count: { machines: 0 } });
+    mockOpenBadgeHighest.mockResolvedValue(1);
+
+    await expect(assignOpenBadge({ userId: user.id, openBadgeId: 'badge-id', level: 2 }, adminUser)).rejects.toEqual(
+      expect.objectContaining({ code: 'openBadge.assign.unauthorized' })
+    );
   });
 
   it('prevents downgrading open badge level by more than one step', async () => {
