@@ -7,15 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import {
-  SignupFormInput,
-  DEFAULT_NAME_MAX_LENGTH,
-  containsEmoji,
-  PASSWORD_MIN_LENGTH,
-  passwordHasLowercase,
-  passwordHasNumber,
-  passwordHasUppercase
-} from '@repo/application/forms';
+import { SignupFormInput, nameSchema, passwordSchema } from '@repo/application/forms';
 import { EducationLevel } from '@repo/domain/user/education-level';
 import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
 import { useEffect, useId, useState } from 'react';
@@ -28,6 +20,8 @@ import TextField from '@mui/material/TextField';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';
+import { useZodLiveValidation } from '@repo/form/use-zod-live-validation';
+import { usePasswordConfirmationValidation } from '../../hooks/use-password-confirmation-validation';
 import FormAlert from './form-alert';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -58,14 +52,26 @@ export default function SignupForm({ formState }: SignupFormProps) {
   const resolveProfileType = (value?: string): UserRole =>
     Object.values(UserRole).includes(value as UserRole) ? (value as UserRole) : UserRole.Member;
   const [selectedProfile, setSelectedProfile] = useState<UserRole>(() => resolveProfileType(state.values.profile));
-  const [firstName, setFirstName] = useState(state.values.firstName);
-  const [lastName, setLastName] = useState(state.values.lastName);
-  const [password, setPassword] = useState(state.values.password);
-  const [passwordConfirmation, setPasswordConfirmation] = useState(state.values.passwordConfirmation);
-  const [firstNameTouched, setFirstNameTouched] = useState(false);
-  const [lastNameTouched, setLastNameTouched] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
-  const [passwordConfirmationTouched, setPasswordConfirmationTouched] = useState(false);
+  const firstName = useZodLiveValidation({
+    schema: nameSchema(),
+    value: state.values.firstName,
+    t: (key) => tRoot(key)
+  });
+  const lastName = useZodLiveValidation({
+    schema: nameSchema(),
+    value: state.values.lastName,
+    t: (key) => tRoot(key)
+  });
+  const password = useZodLiveValidation({
+    schema: passwordSchema,
+    value: state.values.password,
+    t: (key) => tRoot(key)
+  });
+  const { passwordConfirmation, errors: passwordConfirmationErrors } = usePasswordConfirmationValidation({
+    password: password.value,
+    passwordConfirmation: state.values.passwordConfirmation,
+    t: (key) => tRoot(key)
+  });
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const privacyTitleId = useId();
   const privacyIntroId = useId();
@@ -74,47 +80,6 @@ export default function SignupForm({ formState }: SignupFormProps) {
     setSelectedProfile(resolveProfileType(state.values.profile));
   }, [state.values.profile]);
 
-  useEffect(() => {
-    setFirstName(state.values.firstName);
-  }, [state.values.firstName]);
-
-  useEffect(() => {
-    setLastName(state.values.lastName);
-  }, [state.values.lastName]);
-
-  useEffect(() => {
-    setPassword(state.values.password);
-  }, [state.values.password]);
-
-  useEffect(() => {
-    setPasswordConfirmation(state.values.passwordConfirmation);
-  }, [state.values.passwordConfirmation]);
-
-  const firstNameErrors = validateSignupNameErrors(firstName, firstNameTouched, {
-    required: tRoot('validation.signup.firstNameRequired'),
-    maxLength: tRoot('validation.signup.firstNameMaxLength'),
-    noEmoji: tRoot('validation.signup.firstNameNoEmoji')
-  });
-  const lastNameErrors = validateSignupNameErrors(lastName, lastNameTouched, {
-    required: tRoot('validation.signup.lastNameRequired'),
-    maxLength: tRoot('validation.signup.lastNameMaxLength'),
-    noEmoji: tRoot('validation.signup.lastNameNoEmoji')
-  });
-  const passwordErrors = validatePasswordErrors(password, passwordTouched, {
-    minLength: tRoot('validation.password.minLength'),
-    uppercaseRequired: tRoot('validation.password.uppercaseRequired'),
-    lowercaseRequired: tRoot('validation.password.lowercaseRequired'),
-    numberRequired: tRoot('validation.password.numberRequired')
-  });
-  const passwordConfirmationErrors = validatePasswordConfirmationErrors(
-    password,
-    passwordConfirmation,
-    passwordConfirmationTouched,
-    {
-      required: tRoot('validation.password.confirmationRequired'),
-      mismatch: tRoot('validation.password.confirmationMismatch')
-    }
-  );
   const defaultEducationLevel =
     state.values.educationLevel || (requiresEducationLevel(selectedProfile) ? EducationLevel.Premiere : '');
 
@@ -125,25 +90,25 @@ export default function SignupForm({ formState }: SignupFormProps) {
           <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
           <TextField
             name="firstName"
-            value={firstName}
-            onChange={(event) => setFirstName(event.currentTarget.value)}
-            onBlur={() => setFirstNameTouched(true)}
+            value={firstName.value}
+            onChange={(event) => firstName.setValue(event.currentTarget.value)}
+            onBlur={firstName.markTouched}
             label={t('fields.firstName')}
             placeholder={t('placeholders.firstName')}
             required
-            error={Boolean(firstNameErrors.length || fieldError('firstName'))}
-            helperText={firstNameErrors.length ? firstNameErrors.join(' ') : fieldError('firstName')}
+            error={Boolean(firstName.errors.length || fieldError('firstName'))}
+            helperText={firstName.errors.length ? firstName.errors.join(' ') : fieldError('firstName')}
           />
           <TextField
             name="lastName"
-            value={lastName}
-            onChange={(event) => setLastName(event.currentTarget.value)}
-            onBlur={() => setLastNameTouched(true)}
+            value={lastName.value}
+            onChange={(event) => lastName.setValue(event.currentTarget.value)}
+            onBlur={lastName.markTouched}
             label={t('fields.lastName')}
             placeholder={t('placeholders.lastName')}
             required
-            error={Boolean(lastNameErrors.length || fieldError('lastName'))}
-            helperText={lastNameErrors.length ? lastNameErrors.join(' ') : fieldError('lastName')}
+            error={Boolean(lastName.errors.length || fieldError('lastName'))}
+            helperText={lastName.errors.length ? lastName.errors.join(' ') : fieldError('lastName')}
           />
           <TextField
             name={'email'}
@@ -158,21 +123,21 @@ export default function SignupForm({ formState }: SignupFormProps) {
           <TextField
             name="password"
             type="password"
-            value={password}
-            onChange={(event) => setPassword(event.currentTarget.value)}
-            onBlur={() => setPasswordTouched(true)}
+            value={password.value}
+            onChange={(event) => password.setValue(event.currentTarget.value)}
+            onBlur={password.markTouched}
             label={t('fields.password')}
             placeholder={t('placeholders.password')}
             required
-            error={Boolean(passwordErrors.length || fieldError('password'))}
-            helperText={passwordErrors.length ? passwordErrors.join(' ') : fieldError('password')}
+            error={Boolean(password.errors.length || fieldError('password'))}
+            helperText={password.errors.length ? password.errors.join(' ') : fieldError('password')}
           />
           <TextField
             name="passwordConfirmation"
             type="password"
-            value={passwordConfirmation}
-            onChange={(event) => setPasswordConfirmation(event.currentTarget.value)}
-            onBlur={() => setPasswordConfirmationTouched(true)}
+            value={passwordConfirmation.value}
+            onChange={(event) => passwordConfirmation.setValue(event.currentTarget.value)}
+            onBlur={passwordConfirmation.markTouched}
             label={t('fields.passwordConfirmation')}
             placeholder={t('placeholders.passwordConfirmation')}
             required
@@ -258,89 +223,3 @@ export default function SignupForm({ formState }: SignupFormProps) {
     </>
   );
 }
-
-const validateSignupNameErrors = (
-  value: string,
-  touched: boolean,
-  messages: { required: string; maxLength: string; noEmoji: string }
-): string[] => {
-  const errors: string[] = [];
-
-  if (touched && value.length === 0) {
-    errors.push(messages.required);
-  }
-
-  if (value.length > DEFAULT_NAME_MAX_LENGTH) {
-    errors.push(messages.maxLength);
-  }
-
-  if (containsEmoji(value)) {
-    errors.push(messages.noEmoji);
-  }
-
-  return errors;
-};
-
-const validatePasswordErrors = (
-  value: string,
-  touched: boolean,
-  messages: {
-    minLength: string;
-    uppercaseRequired: string;
-    lowercaseRequired: string;
-    numberRequired: string;
-  }
-): string[] => {
-  const errors: string[] = [];
-
-  if (touched && value.length === 0) {
-    errors.push(messages.minLength);
-    return errors;
-  }
-
-  if (value.length === 0) {
-    return errors;
-  }
-
-  if (value.length < PASSWORD_MIN_LENGTH) {
-    errors.push(messages.minLength);
-  }
-
-  if (!passwordHasUppercase(value)) {
-    errors.push(messages.uppercaseRequired);
-  }
-
-  if (!passwordHasLowercase(value)) {
-    errors.push(messages.lowercaseRequired);
-  }
-
-  if (!passwordHasNumber(value)) {
-    errors.push(messages.numberRequired);
-  }
-
-  return errors;
-};
-
-const validatePasswordConfirmationErrors = (
-  password: string,
-  confirmation: string,
-  touched: boolean,
-  messages: { required: string; mismatch: string }
-): string[] => {
-  const errors: string[] = [];
-
-  if (touched && confirmation.length === 0) {
-    errors.push(messages.required);
-    return errors;
-  }
-
-  if (confirmation.length === 0) {
-    return errors;
-  }
-
-  if (password !== confirmation) {
-    errors.push(messages.mismatch);
-  }
-
-  return errors;
-};

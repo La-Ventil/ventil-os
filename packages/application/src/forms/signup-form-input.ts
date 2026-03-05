@@ -8,16 +8,8 @@ import { requiresEducationLevel } from '@repo/domain/user/user-role';
 
 export const signupFormSchema = zfd
   .formData({
-    firstName: nameSchema({
-      requiredMessage: 'validation.signup.firstNameRequired',
-      maxLengthMessage: 'validation.signup.firstNameMaxLength',
-      noEmojiMessage: 'validation.signup.firstNameNoEmoji'
-    }),
-    lastName: nameSchema({
-      requiredMessage: 'validation.signup.lastNameRequired',
-      maxLengthMessage: 'validation.signup.lastNameMaxLength',
-      noEmojiMessage: 'validation.signup.lastNameNoEmoji'
-    }),
+    firstName: nameSchema(),
+    lastName: nameSchema(),
     email: emailSchema,
     password: passwordSchema,
     passwordConfirmation: passwordConfirmationSchema,

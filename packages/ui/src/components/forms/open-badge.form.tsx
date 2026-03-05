@@ -15,8 +15,8 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   IMAGE_UPLOAD_MAX_MB,
   OpenBadgeCreateRequest,
-  OPEN_BADGE_DESCRIPTION_MAX_LENGTH,
-  OPEN_BADGE_NAME_MAX_LENGTH
+  openBadgeDescriptionSchema,
+  openBadgeNameSchema
 } from '@repo/application/forms';
 import SectionSubtitle from '../section-subtitle';
 import AdminButton from '../admin/admin-button';
@@ -28,6 +28,7 @@ import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';
 import FormAlert from './form-alert';
 import Form from './form';
+import { useZodLiveValidation } from '@repo/form/use-zod-live-validation';
 import styles from './open-badge.form.module.css';
 import type { OpenBadgeUpdateRequest } from '@repo/application/forms';
 
@@ -53,35 +54,24 @@ export default function OpenBadgeForm({
   const [deliveryEnabled, setDeliveryEnabled] = useState(state.values.deliveryEnabled);
   const [deliveryLevel, setDeliveryLevel] = useState(state.values.deliveryLevel || 'level-1');
   const [activationEnabled, setActivationEnabled] = useState(state.values.activationEnabled);
-  const [name, setName] = useState(state.values.name);
-  const [description, setDescription] = useState(state.values.description);
-  const [nameTouched, setNameTouched] = useState(false);
-  const [descriptionTouched, setDescriptionTouched] = useState(false);
+  const name = useZodLiveValidation({
+    schema: openBadgeNameSchema,
+    value: state.values.name,
+    t: (key) => tRoot(key)
+  });
+  const description = useZodLiveValidation({
+    schema: openBadgeDescriptionSchema,
+    value: state.values.description,
+    t: (key) => tRoot(key)
+  });
   const initialLevels = useMemo(
     () => (state.values.levels && state.values.levels.length ? state.values.levels : [{ title: '', description: '' }]),
     [state.values.levels]
   );
   const [levelsCount, setLevelsCount] = useState(initialLevels.length);
-  const nameErrors = validateOpenBadgeNameErrors(name, nameTouched, {
-    required: tRoot('validation.openBadge.nameRequired'),
-    maxLength: tRoot('validation.openBadge.nameMaxLength')
-  });
-  const descriptionErrors = validateOpenBadgeDescriptionErrors(description, descriptionTouched, {
-    required: tRoot('validation.openBadge.descriptionRequired'),
-    maxLength: tRoot('validation.openBadge.descriptionMaxLength')
-  });
-
   useEffect(() => {
     setLevelsCount(initialLevels.length);
   }, [initialLevels]);
-
-  useEffect(() => {
-    setName(state.values.name);
-  }, [state.values.name]);
-
-  useEffect(() => {
-    setDescription(state.values.description);
-  }, [state.values.description]);
 
   useEffect(() => {
     setDeliveryEnabled(state.values.deliveryEnabled);
@@ -119,25 +109,25 @@ export default function OpenBadgeForm({
       <FormSection>
         <TextField
           name="name"
-          value={name}
-          onChange={(event) => setName(event.currentTarget.value)}
-          onBlur={() => setNameTouched(true)}
+          value={name.value}
+          onChange={(event) => name.setValue(event.currentTarget.value)}
+          onBlur={name.markTouched}
           label={t('fields.name')}
           required
           fullWidth
-          error={Boolean(nameErrors.length || fieldError('name'))}
-          helperText={nameErrors.length ? nameErrors.join(' ') : fieldError('name')}
+          error={Boolean(name.errors.length || fieldError('name'))}
+          helperText={name.errors.length ? name.errors.join(' ') : fieldError('name')}
         />
         <TextField
           name="description"
-          value={description}
-          onChange={(event) => setDescription(event.currentTarget.value)}
-          onBlur={() => setDescriptionTouched(true)}
+          value={description.value}
+          onChange={(event) => description.setValue(event.currentTarget.value)}
+          onBlur={description.markTouched}
           label={t('fields.description')}
           required
           fullWidth
-          error={Boolean(descriptionErrors.length || fieldError('description'))}
-          helperText={descriptionErrors.length ? descriptionErrors.join(' ') : fieldError('description')}
+          error={Boolean(description.errors.length || fieldError('description'))}
+          helperText={description.errors.length ? description.errors.join(' ') : fieldError('description')}
         />
       </FormSection>
 
@@ -253,39 +243,3 @@ export default function OpenBadgeForm({
     </Form>
   );
 }
-
-const validateOpenBadgeNameErrors = (
-  value: string,
-  touched: boolean,
-  messages: { required: string; maxLength: string }
-): string[] => {
-  const errors: string[] = [];
-
-  if (touched && value.length === 0) {
-    errors.push(messages.required);
-  }
-
-  if (value.length > OPEN_BADGE_NAME_MAX_LENGTH) {
-    errors.push(messages.maxLength);
-  }
-
-  return errors;
-};
-
-const validateOpenBadgeDescriptionErrors = (
-  value: string,
-  touched: boolean,
-  messages: { required: string; maxLength: string }
-): string[] => {
-  const errors: string[] = [];
-
-  if (touched && value.length === 0) {
-    errors.push(messages.required);
-  }
-
-  if (value.length > OPEN_BADGE_DESCRIPTION_MAX_LENGTH) {
-    errors.push(messages.maxLength);
-  }
-
-  return errors;
-};

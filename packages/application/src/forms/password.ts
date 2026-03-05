@@ -19,3 +19,20 @@ export const passwordSchema = z
   });
 
 export const passwordConfirmationSchema = z.string().min(1, { message: 'validation.password.confirmationRequired' });
+
+export const passwordConfirmationMatchSchema = z
+  .object({
+    password: z.string(),
+    passwordConfirmation: passwordConfirmationSchema
+  })
+  .superRefine(({ password, passwordConfirmation }, ctx) => {
+    if (password !== passwordConfirmation) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'validation.password.confirmationMismatch',
+        path: ['passwordConfirmation']
+      });
+    }
+  });
+
+export type PasswordConfirmationMatchInput = z.infer<typeof passwordConfirmationMatchSchema>;
