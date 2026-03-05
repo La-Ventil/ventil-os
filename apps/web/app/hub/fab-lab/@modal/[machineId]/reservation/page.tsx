@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { viewMachineReservationFormContext } from '@repo/application/machines/usecases';
+import { viewMachineReservationForm } from '@repo/application/machines/usecases';
 import { getServerSession } from '../../../../../../lib/auth';
 import MachineReservationModalRouteClient from '../../../machine-reservation-modal-route.client';
 
@@ -17,7 +17,7 @@ export default async function MachineReservationModalPage({
     searchParams ?? Promise.resolve<{ start?: string; reservationId?: string }>({}),
     getServerSession()
   ]);
-  const context = await viewMachineReservationFormContext({
+  const context = await viewMachineReservationForm({
     machineId,
     reservationId: resolvedSearchParams.reservationId,
     start: resolvedSearchParams.start,

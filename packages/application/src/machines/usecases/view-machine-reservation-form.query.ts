@@ -12,7 +12,7 @@ import { browseUsersForReservation } from '../../users/usecases/browse-users-for
 import { viewMachineDetails } from './view-machine-details.query';
 import { viewMachineReservation } from './view-machine-reservation.query';
 
-export type ViewMachineReservationFormContextInput = {
+export type ViewMachineReservationFormInput = {
   machineId: string;
   reservationId?: string | null;
   start?: string | null;
@@ -20,7 +20,7 @@ export type ViewMachineReservationFormContextInput = {
   now?: Date;
 };
 
-export type MachineReservationFormContext = {
+export type MachineReservationFormView = {
   machine: MachineDetailsViewModel;
   participantOptions: UserSummaryViewModel[];
   startAt: Date;
@@ -29,10 +29,10 @@ export type MachineReservationFormContext = {
   canManageReservations: boolean;
 };
 
-export const viewMachineReservationFormContext: Query<
-  [ViewMachineReservationFormContextInput],
-  MachineReservationFormContext | null
-> = async (input: ViewMachineReservationFormContextInput) => {
+export const viewMachineReservationForm: Query<
+  [ViewMachineReservationFormInput],
+  MachineReservationFormView | null
+> = async (input: ViewMachineReservationFormInput) => {
   const [machine, reservation, participantOptions] = await Promise.all([
     viewMachineDetails(input.machineId),
     input.reservationId ? viewMachineReservation(input.reservationId) : Promise.resolve(null),

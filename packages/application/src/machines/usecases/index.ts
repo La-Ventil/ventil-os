@@ -9,7 +9,7 @@ export * from './update-machine.command';
 export * from './check-reservation-eligibility.query';
 export * from './view-machine-reservations.query';
 export * from './view-machine-reservation.query';
-export * from './view-machine-reservation-form-context.query';
+export * from './view-machine-reservation-form.query';
 export * from './browse-machines.query';
 export * from './browse-machines-as-admin.query';
 export * from './view-machine-details.query';

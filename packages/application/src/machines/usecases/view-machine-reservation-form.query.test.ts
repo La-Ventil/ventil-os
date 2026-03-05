@@ -5,7 +5,7 @@ import { MachineReservationStatus } from '@repo/domain/machine/machine-reservati
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
 import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
-import { viewMachineReservationFormContext } from './view-machine-reservation-form-context.query';
+import { viewMachineReservationForm } from './view-machine-reservation-form.query';
 
 const mockViewMachineDetails = vi.fn();
 const mockViewMachineReservation = vi.fn();
@@ -23,7 +23,7 @@ vi.mock('../../users/usecases/browse-users-for-reservation.query', () => ({
   browseUsersForReservation: () => mockBrowseUsersForReservation()
 }));
 
-describe('viewMachineReservationFormContext', () => {
+describe('viewMachineReservationForm', () => {
   const machine: MachineDetailsViewModel = {
     id: 'machine-id',
     category: 'printer',
@@ -80,7 +80,7 @@ describe('viewMachineReservationFormContext', () => {
   it('returns null when machine does not exist', async () => {
     mockViewMachineDetails.mockResolvedValue(null);
 
-    const context = await viewMachineReservationFormContext({
+    const context = await viewMachineReservationForm({
       machineId: 'missing-machine',
       reservationId: 'reservation-id',
       actor: { id: 'creator-id' }
@@ -95,7 +95,7 @@ describe('viewMachineReservationFormContext', () => {
       machineId: 'other-machine-id'
     });
 
-    const context = await viewMachineReservationFormContext({
+    const context = await viewMachineReservationForm({
       machineId: 'machine-id',
       reservationId: 'reservation-id',
       actor: { id: 'creator-id' }
@@ -105,7 +105,7 @@ describe('viewMachineReservationFormContext', () => {
   });
 
   it('returns null when actor cannot view reservation', async () => {
-    const context = await viewMachineReservationFormContext({
+    const context = await viewMachineReservationForm({
       machineId: 'machine-id',
       reservationId: 'reservation-id',
       actor: { id: 'other-user' }
@@ -115,7 +115,7 @@ describe('viewMachineReservationFormContext', () => {
   });
 
   it('returns context for reservation owner', async () => {
-    const context = await viewMachineReservationFormContext({
+    const context = await viewMachineReservationForm({
       machineId: 'machine-id',
       reservationId: 'reservation-id',
       actor: { id: 'creator-id', globalAdmin: false, pedagogicalAdmin: false }
@@ -135,14 +135,14 @@ describe('viewMachineReservationFormContext', () => {
     const now = new Date('2026-03-05T08:00:00.000Z');
     mockViewMachineReservation.mockResolvedValue(null);
 
-    const withQueryStart = await viewMachineReservationFormContext({
+    const withQueryStart = await viewMachineReservationForm({
       machineId: 'machine-id',
       reservationId: 'missing-id',
       start: '2026-03-05T09:30:00.000Z',
       actor: { id: 'admin-id', globalAdmin: true },
       now
     });
-    const withNowFallback = await viewMachineReservationFormContext({
+    const withNowFallback = await viewMachineReservationForm({
       machineId: 'machine-id',
       actor: { id: 'admin-id', globalAdmin: true },
       now
