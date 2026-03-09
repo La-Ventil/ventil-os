@@ -1,20 +1,24 @@
 'use client';
 
-import { use, useActionState, useEffect, useState } from 'react';
+import { use, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { AdminProfileFormInput } from '@repo/application/forms';
+import { AdminProfileFormInput, buildAdminProfileFormSchema } from '@repo/application/forms';
 import { UserProfile } from '@repo/view-models/user-profile';
-import { UserRole, requiresEducationLevel } from '@repo/domain/user/user-role';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
-import { FormAction } from '@repo/form/form-action-state';
-import { FormState } from '@repo/form/form-state';
-import { fieldErrorMessage } from '@repo/form/form-errors';
+import type { FormAction } from '@repo/form/form-action-state';
+import { createFormState } from '@repo/form/form-state';
+import { createFieldError } from '@repo/form/form-errors';
+import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';
+import { useFormActionState } from '@repo/form/use-form-action-state';
+import Form from './form';
+import FormActions from '../form-actions';
+import FormAlert from './form-alert';
+import { useProfileEducation } from '../../hooks/use-profile-education';
+import { useFieldState } from '@repo/form/use-field-state';
 
 export interface AdminUserEditFormProps {
   profilePromise: Promise<UserProfile>;
@@ -23,86 +27,90 @@ export interface AdminUserEditFormProps {
   onSuccess?: () => void;
 }
 
-export default function AdminUserEditForm({
-  profilePromise,
-  handleSubmit,
-  userId,
-  onSuccess
-}: AdminUserEditFormProps) {
+export default function AdminUserEditForm({ profilePromise, handleSubmit, userId, onSuccess }: AdminUserEditFormProps) {
   const t = useTranslations('forms');
+  const tRoot = useTranslations();
   const profile = use(profilePromise);
-  const [selectedProfile, setSelectedProfile] = useState<UserRole>(profile.profile);
-  const [formState, formAction, pending] = useActionState<FormState<AdminProfileFormInput>, FormData>(handleSubmit, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
+  const formSchema = buildAdminProfileFormSchema();
+
+  const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
+    action: handleSubmit,
+    initialState: createFormState<AdminProfileFormInput>({
       firstName: profile.firstName ?? '',
       lastName: profile.lastName,
       profile: profile.profile,
       educationLevel: profile.educationLevel ?? ''
-    }
+    }),
+    schema: formSchema,
+    translate: tRoot,
+    translateFieldError: tRoot
   });
-  const fieldError = (field: keyof AdminProfileFormInput) => fieldErrorMessage(formState, field);
-  const showEducationLevel = requiresEducationLevel(selectedProfile);
+
+  const fieldError = createFieldError<AdminProfileFormInput>(state);
+  const useFieldValidation = createFormFieldLiveValidation(formSchema, {
+    state,
+    t: (key: string) => tRoot(key)
+  });
+
+  const firstName = useFieldValidation('firstName');
+  const lastName = useFieldValidation('lastName');
+  const profileField = useFieldState<string>({ value: String(state.values.profile) });
+  const educationLevel = useFieldState<string>({
+    value: state.values.educationLevel ?? ''
+  });
+
+  const { showEducationLevel, resolvedEducationLevel } = useProfileEducation({
+    profile: profileField.value,
+    educationLevel: educationLevel.value
+  });
 
   useEffect(() => {
-    setSelectedProfile((formState.values.profile as UserRole | undefined) ?? profile.profile);
-  }, [formState.values.profile, profile.profile]);
-
-  useEffect(() => {
-    if (formState.success) {
+    if (state.success) {
       onSuccess?.();
     }
-  }, [formState.success, onSuccess]);
+  }, [state.success, onSuccess]);
 
   return (
-    <form action={formAction}>
+    <Form action={action} onSubmit={handleSubmitForm}>
+      <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <input type="hidden" name="userId" value={userId} />
       <Stack spacing={2}>
-        {formState.message && !pending ? (
-          <Alert severity={formState.success ? 'success' : 'error'}>{formState.message}</Alert>
-        ) : null}
         <TextField
           name="firstName"
-          defaultValue={formState.values.firstName}
           label={t('fields.firstName')}
           placeholder={t('placeholders.firstName')}
           required
-          error={Boolean(fieldError('firstName'))}
-          helperText={fieldError('firstName')}
+          {...firstName.fieldProps()}
         />
         <TextField
           name="lastName"
-          defaultValue={formState.values.lastName}
           label={t('fields.lastName')}
           placeholder={t('placeholders.lastName')}
           required
-          error={Boolean(fieldError('lastName'))}
-          helperText={fieldError('lastName')}
+          {...lastName.fieldProps()}
         />
         <ProfileRadioGroup
-          defaultValue={formState.values.profile}
+          value={profileField.value}
           error={Boolean(fieldError('profile'))}
           helperText={fieldError('profile')}
-          onChange={(value) => setSelectedProfile(value as UserRole)}
+          onChange={(value) => {
+            profileField.setValue(value);
+          }}
         />
         {showEducationLevel ? (
           <EducationLevelSelect
-            defaultValue={formState.values.educationLevel}
+            value={resolvedEducationLevel}
+            onChange={educationLevel.setValue}
             error={Boolean(fieldError('educationLevel'))}
             helperText={fieldError('educationLevel')}
           />
         ) : null}
       </Stack>
-      <Grid container spacing={2}>
-        <Grid>
-          <Button variant="contained" type="submit" disabled={pending}>
-            {t('actions.updateProfile')}
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+      <FormActions>
+        <Button variant="contained" type="submit" disabled={isPending}>
+          {t('actions.updateProfile')}
+        </Button>
+      </FormActions>
+    </Form>
   );
 }

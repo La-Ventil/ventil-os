@@ -4,16 +4,8 @@ import { UserRole, requiresEducationLevel, type UserRole as UserRoleValue } from
 import { nameSchema } from './name';
 
 const profileFormShape = {
-  firstName: nameSchema({
-    requiredMessage: 'validation.profile.firstNameRequired',
-    maxLengthMessage: 'validation.profile.firstNameMaxLength',
-    noEmojiMessage: 'validation.profile.firstNameNoEmoji'
-  }),
-  lastName: nameSchema({
-    requiredMessage: 'validation.profile.lastNameRequired',
-    maxLengthMessage: 'validation.profile.lastNameMaxLength',
-    noEmojiMessage: 'validation.profile.lastNameNoEmoji'
-  }),
+  firstName: nameSchema(),
+  lastName: nameSchema(),
   educationLevel: zfd.text(z.string().optional())
 };
 
@@ -34,10 +26,9 @@ export const parseProfileFormInput = (formData: FormData, role: UserRoleValue) =
   buildProfileFormSchema(role).safeParse(formData);
 
 const userRoleSchema = zfd.text(
-  z.string().refine(
-    (value): value is UserRoleValue => Object.values(UserRole).includes(value as UserRoleValue),
-    { message: 'validation.profile.roleRequired' }
-  )
+  z.string().refine((value): value is UserRoleValue => Object.values(UserRole).includes(value as UserRoleValue), {
+    message: 'validation.profile.roleRequired'
+  })
 );
 
 export const adminProfileFormSchema = zfd.formData({
@@ -56,8 +47,7 @@ export const buildAdminProfileFormSchema = () =>
     }
   });
 
-export const parseAdminProfileFormInput = (formData: FormData) =>
-  buildAdminProfileFormSchema().safeParse(formData);
+export const parseAdminProfileFormInput = (formData: FormData) => buildAdminProfileFormSchema().safeParse(formData);
 
 export type ProfileFormInput = z.infer<typeof profileFormSchema>;
 export type AdminProfileFormInput = z.infer<typeof adminProfileFormSchema>;

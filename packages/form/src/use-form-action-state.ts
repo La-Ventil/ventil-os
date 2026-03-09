@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { FormEventHandler } from 'react';
 import type { FormState } from './form-state';
 import type { FormAction, FormActionDispatch } from './form-action-state';
-import { formDataToValues } from './form-data';
+import { formDataToRedisplayValues, formDataToValues } from './form-data';
 
 type SchemaLike = z.ZodType<Record<string, unknown>>;
 type InferSchema<Schema extends SchemaLike> = z.infer<Schema>;
@@ -59,6 +59,13 @@ export function useFormActionState<Schema extends SchemaLike>({
 
   const effectiveState = clientState ?? state;
   const toValues = (formData: FormData) => formDataToValues(formData, schema) as Values;
+  const toValuesOrRedisplay = (formData: FormData, fallbackValues: Values): Values => {
+    try {
+      return toValues(formData);
+    } catch {
+      return formDataToRedisplayValues(formData, fallbackValues);
+    }
+  };
   const translateErrorMessage = (message: string) => {
     const looksLikeKey = message.includes('.') && !message.includes(' ');
     if (!looksLikeKey) return message;
@@ -77,16 +84,16 @@ export function useFormActionState<Schema extends SchemaLike>({
         .filter(([, messages]) => messages && messages.length > 0)
         .map(([field, messages]) => [field, (messages ?? []).map((message) => translateErrorMessage(message))])
     ) as FormState<Values>['fieldErrors'];
-  const createNetworkErrorState = (formData: FormData): FormState<Values> => ({
+  const createNetworkErrorState = (formData: FormData, fallbackValues: Values): FormState<Values> => ({
     success: false,
     valid: true,
     message: translate('errors.network'),
     fieldErrors: {},
-    values: toValues(formData)
+    values: toValuesOrRedisplay(formData, fallbackValues)
   });
-  const shouldBlockForOffline = (formData: FormData) => {
+  const shouldBlockForOffline = (formData: FormData, fallbackValues: Values) => {
     if (typeof navigator === 'undefined' || navigator.onLine) return false;
-    setClientState(createNetworkErrorState(formData));
+    setClientState(createNetworkErrorState(formData, fallbackValues));
     return true;
   };
 
@@ -104,32 +111,32 @@ export function useFormActionState<Schema extends SchemaLike>({
         valid: false,
         message: translate('errors.invalid'),
         fieldErrors,
-        values: initialState.values
+        values: formDataToRedisplayValues(formData, effectiveState.values)
       });
       return;
     }
 
     setClientState(null);
-    if (shouldBlockForOffline(formData)) return;
+    if (shouldBlockForOffline(formData, effectiveState.values)) return;
     try {
       startTransition(() => {
         actionStateAction(formData);
       });
     } catch {
-      setClientState(createNetworkErrorState(formData));
+      setClientState(createNetworkErrorState(formData, effectiveState.values));
     }
   };
 
   const handleRetry = async () => {
     if (!lastFormData) return;
     setClientState(null);
-    if (shouldBlockForOffline(lastFormData)) return;
+    if (shouldBlockForOffline(lastFormData, effectiveState.values)) return;
     try {
       startTransition(() => {
         actionStateAction(lastFormData);
       });
     } catch {
-      setClientState(createNetworkErrorState(lastFormData));
+      setClientState(createNetworkErrorState(lastFormData, effectiveState.values));
     }
   };
 

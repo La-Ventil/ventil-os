@@ -17,7 +17,10 @@ type FieldErrorMessageOptions = {
 
 type FieldErrorState<TValues> = Pick<FormState<TValues>, 'fieldErrors'>;
 
-const normalizeFieldMessages = (messages: string[], options?: Omit<FieldErrorMessageOptions, 'strategy' | 'separator'>): string[] => {
+const normalizeFieldMessages = (
+  messages: string[],
+  options?: Omit<FieldErrorMessageOptions, 'strategy' | 'separator'>
+): string[] => {
   const { deduplicate = false, maxMessages } = options ?? {};
   let nextMessages = messages.filter(Boolean);
 
@@ -60,3 +63,8 @@ export const fieldErrorMessage = <TValues>(
       return messages[0];
   }
 };
+
+export const createFieldError =
+  <TValues extends Record<string, unknown>>(state: FieldErrorState<TValues>) =>
+  (field: keyof TValues) =>
+    fieldErrorMessage(state, field);

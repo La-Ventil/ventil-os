@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useState, useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import type { FormControlLabelProps } from '@mui/material/FormControlLabel';
@@ -42,6 +42,7 @@ export function ProfileRadio({ label, caption, value, ...props }: ProfileRadioPr
 }
 
 export interface ProfileRadioGroupProps {
+  value?: string;
   defaultValue?: string;
   error?: boolean;
   helperText?: string;
@@ -49,16 +50,21 @@ export interface ProfileRadioGroupProps {
 }
 
 export default function ProfileRadioGroup({
+  value,
   defaultValue,
   error = false,
   helperText,
   onChange
 }: ProfileRadioGroupProps) {
   const t = useTranslations('profileSelector');
-  const [value, setValue] = useState<string>(defaultValue ?? UserRole.Member);
+  const [internalValue, setInternalValue] = useState<string>(defaultValue ?? UserRole.Member);
+  const resolvedValue = value ?? internalValue;
+
   useEffect(() => {
-    setValue(defaultValue ?? UserRole.Member);
-  }, [defaultValue]);
+    if (value === undefined) {
+      setInternalValue(defaultValue ?? UserRole.Member);
+    }
+  }, [value, defaultValue]);
 
   return (
     <FormControl className={styles.profileRadioGroupContainer} error={error}>
@@ -69,10 +75,12 @@ export default function ProfileRadioGroup({
       <FormGroup>
         <RadioGroup
           aria-labelledby="profile-label"
-          value={value}
+          value={resolvedValue}
           onChange={(event) => {
             const nextValue = String(event.target.value);
-            setValue(nextValue);
+            if (value === undefined) {
+              setInternalValue(nextValue);
+            }
             onChange?.(nextValue);
           }}
           name="profile"

@@ -2,22 +2,15 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { nameSchema } from './name';
-import { passwordConfirmationSchema, passwordSchema } from './password';
-import type { UserRole } from '@repo/domain/user/user-role';
+import { passwordConfirmationMatchSchema, passwordConfirmationSchema, passwordSchema } from './password';
+import { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
+export { resolveProfileType } from './profile-education';
 
 export const signupFormSchema = zfd
   .formData({
-    firstName: nameSchema({
-      requiredMessage: 'validation.signup.firstNameRequired',
-      maxLengthMessage: 'validation.signup.firstNameMaxLength',
-      noEmojiMessage: 'validation.signup.firstNameNoEmoji'
-    }),
-    lastName: nameSchema({
-      requiredMessage: 'validation.signup.lastNameRequired',
-      maxLengthMessage: 'validation.signup.lastNameMaxLength',
-      noEmojiMessage: 'validation.signup.lastNameNoEmoji'
-    }),
+    firstName: nameSchema(),
+    lastName: nameSchema(),
     email: emailSchema,
     password: passwordSchema,
     passwordConfirmation: passwordConfirmationSchema,
@@ -25,10 +18,7 @@ export const signupFormSchema = zfd
     terms: z.string().min(1, { message: 'validation.signup.termsRequired' }),
     educationLevel: zfd.text(z.string().optional())
   })
-  .refine(({ password, passwordConfirmation }) => password === passwordConfirmation, {
-    message: 'validation.password.confirmationMismatch',
-    path: ['passwordConfirmation']
-  })
+  .and(passwordConfirmationMatchSchema)
   .superRefine(({ profile, educationLevel }, ctx) => {
     if (requiresEducationLevel(profile as UserRole) && !educationLevel) {
       ctx.addIssue({

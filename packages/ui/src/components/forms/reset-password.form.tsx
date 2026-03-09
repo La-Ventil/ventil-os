@@ -1,64 +1,64 @@
 'use client';
 
-import { useActionState } from 'react';
 import { useTranslations } from 'next-intl';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { ResetPasswordFormInput } from '@repo/application/forms';
-import { FormActionState } from '@repo/form/form-action-state';
-import { FormState } from '@repo/form/form-state';
-import { fieldErrorMessage } from '@repo/form/form-errors';
+import { ResetPasswordFormInput, resetPasswordFormSchema } from '@repo/application/forms';
+import { createFormState } from '@repo/form/form-state';
+import { useFormActionState } from '@repo/form/use-form-action-state';
+import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';
+import Form from './form';
+import FormActions from '../form-actions';
+import FormAlert from './form-alert';
 import Link from '../link';
+import type { FormAction } from '@repo/form/form-action-state';
 
 export interface ResetPasswordFormProps {
-  handleSubmit: FormActionState<ResetPasswordFormInput>;
+  handleSubmit: FormAction<ResetPasswordFormInput>;
 }
 
 export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
-  const [formState, formAction, pending] = useActionState<FormState<ResetPasswordFormInput>, FormData>(handleSubmit, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
+  const tRoot = useTranslations();
+  const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
+    action: handleSubmit,
+    initialState: createFormState<ResetPasswordFormInput>({
       email: ''
-    }
+    }),
+    schema: resetPasswordFormSchema,
+    translate: tRoot,
+    translateFieldError: tRoot
   });
-  const fieldError = (field: keyof ResetPasswordFormInput) => fieldErrorMessage(formState, field);
+
+  const useEmailValidation = createFormFieldLiveValidation(resetPasswordFormSchema, {
+    state,
+    t: (key: string) => tRoot(key)
+  });
+
+  const email = useEmailValidation('email');
 
   return (
-    <form action={formAction}>
-      {formState?.message && !pending && (
-        <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
-      )}
+    <Form action={action} onSubmit={handleSubmitForm}>
+      <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <Stack spacing={2}>
         <TextField
           name={'email'}
-          defaultValue={formState.values.email}
           label={t('fields.email')}
           placeholder={t('placeholders.email')}
           required
-          error={Boolean(fieldError('email'))}
-          helperText={fieldError('email')}
+          {...email.fieldProps()}
         />
       </Stack>
-      <Grid container spacing={2}>
-        <Grid>
-          <Button variant="outlined" color="secondary" component={Link} href="/login">
-            {tCommon('actions.back')}
-          </Button>
-        </Grid>
-        <Grid>
-          <Button variant="contained" type="submit" disabled={pending}>
-            {t('actions.submitResetPassword')}
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+      <FormActions>
+        <Button variant="outlined" color="secondary" component={Link} href="/login">
+          {tCommon('actions.back')}
+        </Button>
+        <Button variant="contained" type="submit" disabled={isPending}>
+          {t('actions.submitResetPassword')}
+        </Button>
+      </FormActions>
+    </Form>
   );
 }

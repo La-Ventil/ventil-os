@@ -573,6 +573,11 @@
     "email": {
       "confirmationMismatch": "Email addresses do not match."
     },
+    "name": {
+      "required": "Please enter your first name or last name.",
+      "maxLength": "First or last name must be at most 40 characters.",
+      "noEmoji": "First or last name cannot include emojis."
+    },
     "password": {
       "minLength": "Your password must be at least 7 characters.",
       "maxLength": "Your password must be at most 20 characters.",

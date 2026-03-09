@@ -1,76 +1,97 @@
 'use client';
 
-import { useActionState } from 'react';
 import { useTranslations } from 'next-intl';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import type { ChangePasswordFormInput } from '@repo/application/forms';
-import type { FormActionState } from '@repo/form/form-action-state';
-import type { FormState } from '@repo/form/form-state';
-import { fieldErrorMessage } from '@repo/form/form-errors';
+import {
+  ChangePasswordFormInput,
+  changePasswordFormSchema,
+  passwordConfirmationMatchSchema
+} from '@repo/application/forms';
+import type { FormAction } from '@repo/form/form-action-state';
+import { createFormState } from '@repo/form/form-state';
+import { createFieldError } from '@repo/form/form-errors';
+import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';
+import { useFormActionState } from '@repo/form/use-form-action-state';
+import { useFormFieldCrossValidation } from '@repo/form/use-form-field-cross-validation';
 import Form from './form';
 import FormActions from '../form-actions';
+import FormAlert from './form-alert';
 
 export type ChangePasswordFormProps = {
-  handleSubmit: FormActionState<ChangePasswordFormInput>;
+  handleSubmit: FormAction<ChangePasswordFormInput>;
 };
 
 export default function ChangePasswordForm({ handleSubmit }: ChangePasswordFormProps) {
   const t = useTranslations('forms');
-  const [formState, formAction, pending] = useActionState<FormState<ChangePasswordFormInput>, FormData>(handleSubmit, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
+  const tRoot = useTranslations();
+  const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
+    action: handleSubmit,
+    initialState: createFormState<ChangePasswordFormInput>({
       currentPassword: '',
       password: '',
       passwordConfirmation: ''
-    }
+    }),
+    schema: changePasswordFormSchema,
+    translate: tRoot,
+    translateFieldError: tRoot
   });
-  const fieldError = (field: keyof ChangePasswordFormInput) => fieldErrorMessage(formState, field);
+
+  const useFieldValidation = createFormFieldLiveValidation(changePasswordFormSchema, {
+    state,
+    t: (key: string) => tRoot(key)
+  });
+  const currentPassword = useFieldValidation('currentPassword');
+  const password = useFieldValidation('password');
+  const fieldError = createFieldError<ChangePasswordFormInput>(state);
+  const passwordConfirmation = useFormFieldCrossValidation<ChangePasswordFormInput, 'passwordConfirmation'>({
+    values: {
+      ...state.values,
+      currentPassword: currentPassword.value,
+      password: password.value,
+      passwordConfirmation: state.values.passwordConfirmation
+    },
+    field: 'passwordConfirmation',
+    schema: passwordConfirmationMatchSchema,
+    t: (key: string) => tRoot(key),
+    serverError: fieldError('passwordConfirmation')
+  });
 
   return (
-    <Form action={formAction}>
-      {formState?.message && !pending && (
-        <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
-      )}
-      <TextField
-        name="currentPassword"
-        type="password"
-        defaultValue={formState.values.currentPassword}
-        label={t('fields.currentPassword')}
-        placeholder={t('placeholders.currentPassword')}
-        required
-        autoComplete="current-password"
-        error={Boolean(fieldError('currentPassword'))}
-        helperText={fieldError('currentPassword')}
-      />
-      <TextField
-        name="password"
-        type="password"
-        defaultValue={formState.values.password}
-        label={t('fields.newPassword')}
-        placeholder={t('placeholders.newPassword')}
-        required
-        autoComplete="new-password"
-        error={Boolean(fieldError('password'))}
-        helperText={fieldError('password')}
-      />
-      <TextField
-        name="passwordConfirmation"
-        type="password"
-        defaultValue={formState.values.passwordConfirmation}
-        label={t('fields.newPasswordConfirmation')}
-        placeholder={t('placeholders.newPasswordConfirmation')}
-        required
-        autoComplete="new-password"
-        error={Boolean(fieldError('passwordConfirmation'))}
-        helperText={fieldError('passwordConfirmation')}
-      />
+    <Form action={action} onSubmit={handleSubmitForm}>
+      <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
+      <Stack spacing={2}>
+        <TextField
+          name="currentPassword"
+          type="password"
+          label={t('fields.currentPassword')}
+          placeholder={t('placeholders.currentPassword')}
+          required
+          autoComplete="current-password"
+          {...currentPassword.fieldProps()}
+        />
+        <TextField
+          name="password"
+          type="password"
+          label={t('fields.newPassword')}
+          placeholder={t('placeholders.newPassword')}
+          required
+          autoComplete="new-password"
+          {...password.fieldProps()}
+        />
+        <TextField
+          name="passwordConfirmation"
+          type="password"
+          label={t('fields.newPasswordConfirmation')}
+          placeholder={t('placeholders.newPasswordConfirmation')}
+          required
+          autoComplete="new-password"
+          {...passwordConfirmation.fieldProps()}
+        />
+      </Stack>
       <FormActions>
-        <Button variant="contained" type="submit" disabled={pending}>
+        <Button variant="contained" type="submit" disabled={isPending}>
           {t('actions.updatePassword')}
         </Button>
       </FormActions>

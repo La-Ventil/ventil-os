@@ -5,17 +5,21 @@ import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import type { ChangeEmailFormInput } from '@repo/application/forms';
-import type { FormActionState } from '@repo/form/form-action-state';
+import { ChangeEmailFormInput, changeEmailFormSchema } from '@repo/application/forms';
+import type { FormAction, FormActionState } from '@repo/form/form-action-state';
 import type { FormState } from '@repo/form/form-state';
 import { createFormState } from '@repo/form/form-state';
-import { fieldErrorMessage } from '@repo/form/form-errors';
+import { createFieldError } from '@repo/form/form-errors';
+import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';
+import { useFormActionState } from '@repo/form/use-form-action-state';
+import { useFormFieldCrossValidation } from '@repo/form/use-form-field-cross-validation';
 import Form from './form';
 import FormActions from '../form-actions';
 import Stack from '@mui/material/Stack';
+import FormAlert from './form-alert';
 
 export type ChangeEmailFormProps = {
-  handleSubmit: FormActionState<ChangeEmailFormInput>;
+  handleSubmit: FormAction<ChangeEmailFormInput>;
   defaultEmail?: string | null;
   pendingEmail?: string | null;
   resendEmailChange: FormActionState<Record<string, never>>;
@@ -30,17 +34,39 @@ export default function ChangeEmailForm({
   cancelEmailChange
 }: ChangeEmailFormProps) {
   const t = useTranslations('forms');
-  const [formState, formAction, pending] = useActionState<FormState<ChangeEmailFormInput>, FormData>(handleSubmit, {
-    success: false,
-    valid: true,
-    message: '',
-    fieldErrors: {},
-    values: {
+  const tRoot = useTranslations();
+  const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
+    action: handleSubmit,
+    initialState: createFormState<ChangeEmailFormInput>({
       newEmail: defaultEmail ?? '',
       newEmailConfirmation: '',
       currentPassword: ''
-    }
+    }),
+    schema: changeEmailFormSchema,
+    translate: tRoot,
+    translateFieldError: tRoot
   });
+
+  const useFieldValidation = createFormFieldLiveValidation(changeEmailFormSchema, {
+    state,
+    t: (key: string) => tRoot(key)
+  });
+  const newEmail = useFieldValidation('newEmail');
+  const currentPassword = useFieldValidation('currentPassword');
+  const fieldError = createFieldError<ChangeEmailFormInput>(state);
+  const newEmailConfirmation = useFormFieldCrossValidation<ChangeEmailFormInput, 'newEmailConfirmation'>({
+    values: {
+      ...state.values,
+      newEmail: newEmail.value,
+      currentPassword: currentPassword.value,
+      newEmailConfirmation: state.values.newEmailConfirmation
+    },
+    field: 'newEmailConfirmation',
+    schema: changeEmailFormSchema,
+    t: (key: string) => tRoot(key),
+    serverError: fieldError('newEmailConfirmation')
+  });
+
   const emptyState = createFormState<Record<string, never>>({});
   const [resendState, resendAction, resendPending] = useActionState<FormState<Record<string, never>>, FormData>(
     resendEmailChange,
@@ -50,20 +76,15 @@ export default function ChangeEmailForm({
     cancelEmailChange,
     emptyState
   );
-  const fieldError = (field: keyof ChangeEmailFormInput) => fieldErrorMessage(formState, field);
   const pendingMessage = resendState.message || cancelState.message;
 
   return (
     <>
       {pendingEmail && (
         <Stack spacing={2}>
-          <Alert severity="info">
-            {t('messages.emailChangePending', { email: pendingEmail })}
-          </Alert>
+          <Alert severity="info">{t('messages.emailChangePending', { email: pendingEmail })}</Alert>
           {pendingMessage && !resendPending && !cancelPending && (
-            <Alert severity={resendState.success || cancelState.success ? 'success' : 'error'}>
-              {pendingMessage}
-            </Alert>
+            <Alert severity={resendState.success || cancelState.success ? 'success' : 'error'}>{pendingMessage}</Alert>
           )}
           <Stack direction="row" spacing={2}>
             <form action={resendAction}>
@@ -79,52 +100,46 @@ export default function ChangeEmailForm({
           </Stack>
         </Stack>
       )}
-      <Form action={formAction}>
-        {formState?.message && !pending && (
-          <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
-        )}
-        <TextField
-          name="currentEmail"
-          type="email"
-          value={defaultEmail ?? ''}
-          label={t('fields.currentEmail')}
-          placeholder={t('placeholders.currentEmail')}
-          disabled
-          InputProps={{ readOnly: true }}
-        />
-        <TextField
-          name="newEmail"
-          type="email"
-          defaultValue={formState.values.newEmail}
-          label={t('fields.newEmail')}
-          placeholder={t('placeholders.newEmail')}
-          required
-          error={Boolean(fieldError('newEmail'))}
-          helperText={fieldError('newEmail')}
-        />
-        <TextField
-          name="newEmailConfirmation"
-          type="email"
-          defaultValue={formState.values.newEmailConfirmation}
-          label={t('fields.newEmailConfirmation')}
-          placeholder={t('placeholders.newEmailConfirmation')}
-          required
-          error={Boolean(fieldError('newEmailConfirmation'))}
-          helperText={fieldError('newEmailConfirmation')}
-        />
-        <TextField
-          name="currentPassword"
-          type="password"
-          defaultValue={formState.values.currentPassword}
-          label={t('fields.currentPassword')}
-          placeholder={t('placeholders.currentPassword')}
-          required
-          autoComplete="current-password"
-          error={Boolean(fieldError('currentPassword'))}
-          helperText={fieldError('currentPassword')}
-        />
+      <Form action={action} onSubmit={handleSubmitForm}>
+        <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
+        <Stack spacing={2}>
+          <TextField
+            name="currentEmail"
+            type="email"
+            value={defaultEmail ?? ''}
+            label={t('fields.currentEmail')}
+            placeholder={t('placeholders.currentEmail')}
+            disabled
+            InputProps={{ readOnly: true }}
+          />
+          <TextField
+            name="newEmail"
+            type="email"
+            label={t('fields.newEmail')}
+            placeholder={t('placeholders.newEmail')}
+            required
+            {...newEmail.fieldProps()}
+          />
+          <TextField
+            name="newEmailConfirmation"
+            type="email"
+            label={t('fields.newEmailConfirmation')}
+            placeholder={t('placeholders.newEmailConfirmation')}
+            required
+            {...newEmailConfirmation.fieldProps()}
+          />
+          <TextField
+            name="currentPassword"
+            type="password"
+            label={t('fields.currentPassword')}
+            placeholder={t('placeholders.currentPassword')}
+            required
+            autoComplete="current-password"
+            {...currentPassword.fieldProps()}
+          />
+        </Stack>
         <FormActions>
-          <Button variant="contained" type="submit" disabled={pending}>
+          <Button variant="contained" type="submit" disabled={isPending}>
             {t('actions.updateEmail')}
           </Button>
         </FormActions>

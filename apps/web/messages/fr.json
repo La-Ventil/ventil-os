@@ -571,6 +571,11 @@
     "email": {
       "confirmationMismatch": "Les adresses email ne correspondent pas."
     },
+    "name": {
+      "required": "Veuillez renseigner votre prénom ou nom.",
+      "maxLength": "Le prénom ou le nom ne doit pas dépasser 40 caractères.",
+      "noEmoji": "Le prénom ou le nom ne doit pas contenir d’emoji."
+    },
     "password": {
       "minLength": "Votre mot de passe doit contenir au moins 7 caractères.",
       "maxLength": "Votre mot de passe ne peut pas dépasser 20 caractères.",

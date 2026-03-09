@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { formDataToValues } from '../form-data';
+import { formDataToRedisplayValues, formDataToValues } from '../form-data';
 
 describe('zfd.formData parsing (values)', () => {
   it('parses single values as strings', () => {
@@ -158,6 +158,73 @@ describe('formDataToValues', () => {
     expect(formDataToValues(fd, schema, { dropFiles: false })).toEqual({
       title: 'Badge',
       image: expect.any(File)
+    });
+  });
+});
+
+describe('formDataToRedisplayValues', () => {
+  it('preserves user input for invalid fields and nested bracket paths', () => {
+    const fd = new FormData();
+    fd.set('name', 'A');
+    fd.set('levels[0].title', 'Niveau 1');
+    fd.set('levels[0].description', 'Desc 1');
+    fd.set('levels[1].title', 'Niveau 2');
+    fd.set('levels[1].description', 'Desc 2');
+
+    const previousValues = {
+      name: '',
+      levels: [{ title: '', description: '' }]
+    };
+
+    expect(formDataToRedisplayValues(fd, previousValues)).toEqual({
+      name: 'A',
+      levels: [
+        { title: 'Niveau 1', description: 'Desc 1' },
+        { title: 'Niveau 2', description: 'Desc 2' }
+      ]
+    });
+  });
+
+  it('does not resurrect removed repeated items when redisplaying invalid form data', () => {
+    const fd = new FormData();
+    fd.set('name', 'A');
+    fd.set('levels[0].title', 'Niveau 1');
+    fd.set('levels[0].description', 'Desc 1');
+    fd.set('levels[1].title', 'Niveau 2');
+    fd.set('levels[1].description', 'Desc 2');
+
+    const previousValues = {
+      name: '',
+      levels: [
+        { title: 'Old 1', description: 'Old Desc 1' },
+        { title: 'Old 2', description: 'Old Desc 2' },
+        { title: 'Should be removed', description: 'Should be removed' }
+      ]
+    };
+
+    expect(formDataToRedisplayValues(fd, previousValues)).toEqual({
+      name: 'A',
+      levels: [
+        { title: 'Niveau 1', description: 'Desc 1' },
+        { title: 'Niveau 2', description: 'Desc 2' }
+      ]
+    });
+  });
+
+  it('resets unchecked checkbox-like values', () => {
+    const fd = new FormData();
+    fd.set('email', 'user@example.com');
+
+    const previousValues = {
+      email: '',
+      terms: 'on',
+      activationEnabled: true
+    };
+
+    expect(formDataToRedisplayValues(fd, previousValues)).toEqual({
+      email: 'user@example.com',
+      terms: '',
+      activationEnabled: false
     });
   });
 });
