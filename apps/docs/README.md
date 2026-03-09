@@ -4,7 +4,8 @@
 
 The canonical content lives in:
 
-- `docs/user/`
+- `docs/user/fr/` (French user guides)
+- `docs/user/en/` (English user guides)
 - `docs/admin/`
 - `docs/contributor/`
 

@@ -1,9 +1,7 @@
 # Events
 
-Placeholder.
+This guide will cover:
 
-This page will document:
-
-- browsing events
+- finding events
 - registering
 - checking participation details

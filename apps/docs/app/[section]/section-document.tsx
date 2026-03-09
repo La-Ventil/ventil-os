@@ -5,9 +5,12 @@ import MarkdownRenderer from '../../components/markdown-renderer';
 import {
   formatDocLabel,
   readSectionDocument,
+  resolveSectionRoute,
   rootReferences,
   sectionLabels,
-  type SectionKey
+  userDocLocales,
+  type SectionKey,
+  type UserDocLocale
 } from '../../lib/content';
 
 const isActiveLink = (currentHref: string, href: string): boolean => currentHref === href;
@@ -18,18 +21,30 @@ type BreadcrumbItem = {
   href: string | null;
 };
 
-const buildBreadcrumb = (section: SectionKey, slug: string[]): BreadcrumbItem[] => {
+const buildBreadcrumb = (
+  section: SectionKey,
+  routePrefix: string,
+  slug: string[],
+  locale: UserDocLocale | null
+): BreadcrumbItem[] => {
   const items: BreadcrumbItem[] = [
     { label: 'Docs', href: '/' },
     { label: sectionLabels[section], href: `/${section}` }
   ];
+
+  if (locale) {
+    items.push({
+      label: userDocLocales[locale],
+      href: routePrefix
+    });
+  }
 
   const route: string[] = [];
   for (const segment of slug) {
     route.push(segment);
     items.push({
       label: formatDocLabel(segment),
-      href: `/${section}/${route.join('/')}`
+      href: `${routePrefix}/${route.join('/')}`
     });
   }
 
@@ -45,10 +60,84 @@ const buildBreadcrumb = (section: SectionKey, slug: string[]): BreadcrumbItem[] 
   return items;
 };
 
+const sectionDescription = (section: SectionKey): string => {
+  if (section === 'user') {
+    return 'Practical guides for creating your account, booking machines, and understanding your badges.';
+  }
+
+  if (section === 'admin') {
+    return 'Operational guides for running Ventil O.S. in production.';
+  }
+
+  return 'Architecture, testing, ADRs, and contribution workflows.';
+};
+
+const emptyStateText = (locale: UserDocLocale | null): string =>
+  locale === 'fr'
+    ? "Aucun README n'est encore disponible pour ce dossier."
+    : 'No README was found for this directory yet.';
+
+const renderUserLanguageHome = (): JSX.Element => (
+  <main className={styles.page}>
+    <div className={styles.shell}>
+      <aside className={styles.sidebar}>
+        <Link href="/" className={styles.brand}>
+          Ventil O.S. Docs
+        </Link>
+        <h1 className={styles.sidebarTitle}>{sectionLabels.user}</h1>
+        <p className={styles.sidebarText}>
+          Choose a language to read user-facing guides. French is the default for the high-school audience.
+        </p>
+        <span className={styles.sectionLabel}>Languages</span>
+        <nav className={styles.nav} aria-label="User guide languages">
+          {Object.entries(userDocLocales).map(([locale, label]) => (
+            <Link key={locale} href={`/user/${locale}`} className={styles.navLink}>
+              <span className={styles.navLabel}>{label}</span>
+              <span className={styles.navMeta}>User documentation</span>
+            </Link>
+          ))}
+        </nav>
+      </aside>
+
+      <section className={styles.content}>
+        <header className={styles.header}>
+          <span className={styles.eyebrow}>User Help</span>
+          <h2 className={styles.title}>Choose your language</h2>
+          <p className={styles.description}>
+            User help is available in French and English. Pick one language to keep navigation and links consistent.
+          </p>
+        </header>
+        <div className={styles.grid}>
+          {Object.entries(userDocLocales).map(([locale, label]) => (
+            <article key={locale} className={styles.card}>
+              <Link href={`/user/${locale}`} className={styles.homeLink}>
+                <span className={styles.entryTitle}>{label}</span>
+                <span className={styles.entryMeta}>Open the user guides in {label}.</span>
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+);
+
 export const renderSectionDocument = async (section: SectionKey, routeSlug: string[] = []): Promise<JSX.Element> => {
-  const document = await readSectionDocument(section, routeSlug);
-  const currentHref = routeSlug.length === 0 ? `/${section}` : `/${section}/${routeSlug.join('/')}`;
-  const breadcrumb = buildBreadcrumb(section, routeSlug);
+  const sectionRoute = resolveSectionRoute(section, routeSlug);
+  if (section === 'user' && sectionRoute.locale === null) {
+    return renderUserLanguageHome();
+  }
+
+  const document = await readSectionDocument(section, sectionRoute.contentSlug, {
+    locale: sectionRoute.locale ?? undefined,
+    routePrefix: sectionRoute.routePrefix
+  });
+
+  const currentHref =
+    sectionRoute.contentSlug.length === 0
+      ? sectionRoute.routePrefix
+      : `${sectionRoute.routePrefix}/${sectionRoute.contentSlug.join('/')}`;
+  const breadcrumb = buildBreadcrumb(section, sectionRoute.routePrefix, sectionRoute.contentSlug, sectionRoute.locale);
 
   return (
     <main className={styles.page}>
@@ -58,12 +147,32 @@ export const renderSectionDocument = async (section: SectionKey, routeSlug: stri
             Ventil O.S. Docs
           </Link>
           <h1 className={styles.sidebarTitle}>{sectionLabels[section]}</h1>
-          <p className={styles.sidebarText}>Read the section overview, then drill down into files and nested directories.</p>
+          <p className={styles.sidebarText}>{sectionDescription(section)}</p>
+
+          {sectionRoute.locale ? (
+            <>
+              <span className={styles.sectionLabel}>Language</span>
+              <nav className={styles.secondaryNav} aria-label="User guide language">
+                {Object.entries(userDocLocales).map(([locale, label]) => (
+                  <Link
+                    key={locale}
+                    href={`/user/${locale}`}
+                    className={`${styles.secondaryLink}${sectionRoute.locale === locale ? ` ${styles.activeLink}` : ''}`}
+                    aria-current={sectionRoute.locale === locale ? 'page' : undefined}
+                  >
+                    <span className={styles.secondaryLabel}>{label}</span>
+                  </Link>
+                ))}
+              </nav>
+            </>
+          ) : null}
+
+          <span className={styles.sectionLabel}>In this section</span>
           <nav className={styles.nav} aria-label={`${sectionLabels[section]} navigation`}>
             <Link
-              href={`/${section}`}
-              className={linkClassName(isActiveLink(currentHref, `/${section}`))}
-              aria-current={isActiveLink(currentHref, `/${section}`) ? 'page' : undefined}
+              href={sectionRoute.routePrefix}
+              className={linkClassName(isActiveLink(currentHref, sectionRoute.routePrefix))}
+              aria-current={isActiveLink(currentHref, sectionRoute.routePrefix) ? 'page' : undefined}
             >
               <span className={styles.navLabel}>Section home</span>
               <span className={styles.navMeta}>{sectionLabels[section]}</span>
@@ -80,8 +189,9 @@ export const renderSectionDocument = async (section: SectionKey, routeSlug: stri
               </Link>
             ))}
           </nav>
-          <span className={styles.sectionLabel}>Repository references</span>
-          <nav className={styles.secondaryNav} aria-label="Repository references">
+
+          <span className={styles.sectionLabel}>Project references</span>
+          <nav className={styles.secondaryNav} aria-label="Project references">
             {rootReferences.map((reference) => (
               <Link key={reference.key} href={`/reference/${reference.key}`} className={styles.secondaryLink}>
                 <span className={styles.secondaryLabel}>{reference.label}</span>
@@ -108,11 +218,11 @@ export const renderSectionDocument = async (section: SectionKey, routeSlug: stri
                 )
               )}
             </nav>
-            <span className={styles.eyebrow}>{section}</span>
+            <span className={styles.eyebrow}>
+              {sectionRoute.locale ? `${section} • ${sectionRoute.locale}` : section}
+            </span>
             <h2 className={styles.title}>{document.title}</h2>
-            <p className={styles.description}>
-              This view reads the canonical file directly from `docs/` and exposes its sibling entries.
-            </p>
+            <p className={styles.description}>This page renders the canonical Markdown document from the repository.</p>
           </header>
 
           <article className={styles.mainCard}>
@@ -137,7 +247,7 @@ export const renderSectionDocument = async (section: SectionKey, routeSlug: stri
                 ))}
               </div>
             ) : document.content === '' ? (
-              <p className={styles.emptyState}>No README was found for this directory yet.</p>
+              <p className={styles.emptyState}>{emptyStateText(sectionRoute.locale)}</p>
             ) : null}
           </article>
         </section>

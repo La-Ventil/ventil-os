@@ -1,14 +1,17 @@
 # User Documentation
 
-This section will become the main help entry point for people using Ventil O.S.
+User-facing documentation is localized.
 
-## Planned Guides
+## Language folders
 
-- `docs/user/getting-started.md`
-- `docs/user/account.md`
-- `docs/user/machine-reservations.md`
-- `docs/user/open-badges.md`
-- `docs/user/events.md`
-- `docs/user/faq.md`
+- `docs/user/fr/` for French user guides (default audience)
+- `docs/user/en/` for English user guides
 
-These files are placeholders for now so the user-facing documentation structure exists before the content is fully written.
+## Planned guides in each language
+
+- `getting-started.md`
+- `account.md`
+- `machine-reservations.md`
+- `open-badges.md`
+- `events.md`
+- `faq.md`

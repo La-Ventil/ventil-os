@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Ventil O.S. Docs',
-  description: 'Documentation portal for Ventil O.S.'
+  title: 'Ventil O.S. Help Center',
+  description: 'User help, admin guides, and contributor documentation for Ventil O.S.'
 };
 
 export default function RootLayout({

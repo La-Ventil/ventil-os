@@ -1,12 +1,12 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 import styles from './docs.module.css';
-import { rootReferences, sectionLabels } from '../lib/content';
+import { rootReferences, sectionLabels, userDocLocales } from '../lib/content';
 
 const sectionDescriptions: Record<keyof typeof sectionLabels, string> = {
-  user: 'Help content for people using Ventil O.S. day to day.',
-  admin: 'Operational guides for people managing the back office.',
-  contributor: 'Engineering, architecture, testing, accessibility, and product references.'
+  user: 'Step-by-step help for students and other users of the platform.',
+  admin: 'Operational playbooks for people running the back office.',
+  contributor: 'Architecture, testing, accessibility, and product references.'
 };
 
 export default function HomePage(): JSX.Element {
@@ -15,11 +15,12 @@ export default function HomePage(): JSX.Element {
       <div className={styles.shell}>
         <aside className={styles.sidebar}>
           <span className={styles.brand}>Ventil O.S.</span>
-          <h1 className={styles.sidebarTitle}>Documentation</h1>
+          <h1 className={styles.sidebarTitle}>Help & Documentation</h1>
           <p className={styles.sidebarText}>
-            `docs/` remains the source of truth. This app is the reading layer for user, admin, and contributor
+            Start here for user help. Admin and contributor sections remain available for operational and technical
             documentation.
           </p>
+          <span className={styles.sectionLabel}>Main sections</span>
           <nav className={styles.nav} aria-label="Main documentation sections">
             {Object.entries(sectionLabels).map(([key, label]) => (
               <Link key={key} href={`/${key}`} className={styles.navLink}>
@@ -28,25 +29,53 @@ export default function HomePage(): JSX.Element {
               </Link>
             ))}
           </nav>
-          <span className={styles.sectionLabel}>Repository references</span>
-          <nav className={styles.secondaryNav} aria-label="Repository references">
-            {rootReferences.map((reference) => (
-              <Link key={reference.key} href={`/reference/${reference.key}`} className={styles.secondaryLink}>
-                <span className={styles.secondaryLabel}>{reference.label}</span>
-                <span className={styles.secondaryMeta}>{reference.description}</span>
+
+          <span className={styles.sectionLabel}>User languages</span>
+          <nav className={styles.secondaryNav} aria-label="User documentation languages">
+            {Object.entries(userDocLocales).map(([locale, label]) => (
+              <Link key={locale} href={`/user/${locale}`} className={styles.secondaryLink}>
+                <span className={styles.secondaryLabel}>{label}</span>
+                <span className={styles.secondaryMeta}>User help</span>
               </Link>
             ))}
           </nav>
         </aside>
         <section className={styles.content}>
           <header className={styles.header}>
-            <span className={styles.eyebrow}>Portal</span>
-            <h2 className={styles.title}>Audience-first documentation</h2>
+            <span className={styles.eyebrow}>User Help</span>
+            <h2 className={styles.title}>Get help with Ventil O.S.</h2>
             <p className={styles.description}>
-              The docs are split by audience so end users, admins, and contributors do not have to navigate the
-              same level of detail.
+              Use these guides to get started quickly: account creation, machine reservations, open badges, and profile
+              management.
             </p>
           </header>
+
+          <div className={styles.grid}>
+            <article className={styles.card}>
+              <Link href="/user/fr/getting-started" className={styles.homeLink}>
+                <span className={styles.entryTitle}>Commencer (FR)</span>
+                <span className={styles.entryMeta}>Parcours de démarrage pour les utilisateurs francophones.</span>
+              </Link>
+            </article>
+            <article className={styles.card}>
+              <Link href="/user/fr/machine-reservations" className={styles.homeLink}>
+                <span className={styles.entryTitle}>Réserver une machine</span>
+                <span className={styles.entryMeta}>Choisir un créneau, modifier, annuler, libérer.</span>
+              </Link>
+            </article>
+            <article className={styles.card}>
+              <Link href="/user/en/getting-started" className={styles.homeLink}>
+                <span className={styles.entryTitle}>Get Started (EN)</span>
+                <span className={styles.entryMeta}>Quick onboarding for English-speaking users.</span>
+              </Link>
+            </article>
+            <article className={styles.card}>
+              <Link href="/user/en/open-badges" className={styles.homeLink}>
+                <span className={styles.entryTitle}>Understand Open Badges</span>
+                <span className={styles.entryMeta}>Levels, progress, and earned badges in your profile.</span>
+              </Link>
+            </article>
+          </div>
 
           <div className={styles.grid}>
             {Object.entries(sectionLabels).map(([key, label]) => (
@@ -60,12 +89,9 @@ export default function HomePage(): JSX.Element {
           </div>
 
           <header className={styles.header}>
-            <span className={styles.eyebrow}>Repository</span>
-            <h2 className={styles.title}>Useful project documents</h2>
-            <p className={styles.description}>
-              Root-level repository files remain visible from the docs app, while their long-lived content can move
-              into `docs/` over time.
-            </p>
+            <span className={styles.eyebrow}>Project</span>
+            <h2 className={styles.title}>Technical and project references</h2>
+            <p className={styles.description}>These documents are mostly intended for maintainers and contributors.</p>
           </header>
 
           <div className={styles.grid}>

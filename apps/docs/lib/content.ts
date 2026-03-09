@@ -3,12 +3,23 @@ import path from 'node:path';
 import { notFound } from 'next/navigation';
 
 export const sectionLabels = {
-  user: 'User Documentation',
-  admin: 'Admin Documentation',
-  contributor: 'Contributor Documentation'
+  user: 'User Help',
+  admin: 'Admin Guides',
+  contributor: 'Contributor Docs'
 } as const;
 
 export type SectionKey = keyof typeof sectionLabels;
+
+export const userDocLocales = {
+  fr: 'Français',
+  en: 'English'
+} as const;
+
+export type UserDocLocale = keyof typeof userDocLocales;
+
+export const defaultUserDocLocale: UserDocLocale = 'fr';
+
+const isUserDocLocale = (value: string): value is UserDocLocale => value in userDocLocales;
 
 type RootReference = {
   key: 'project' | 'changelog' | 'contributing';
@@ -66,8 +77,12 @@ export const resolveDocsRoot = async (): Promise<string> => {
   return path.join(repoRoot, 'docs');
 };
 
-export const resolveSectionRoot = async (section: SectionKey): Promise<string> => {
+export const resolveSectionRoot = async (section: SectionKey, locale?: UserDocLocale): Promise<string> => {
   const docsRoot = await resolveDocsRoot();
+  if (section === 'user' && locale) {
+    return path.join(docsRoot, section, locale);
+  }
+
   return path.join(docsRoot, section);
 };
 
@@ -85,6 +100,45 @@ export const getSectionKey = (value: string): SectionKey => {
   }
 
   return value;
+};
+
+export type ResolvedSectionRoute = {
+  section: SectionKey;
+  locale: UserDocLocale | null;
+  contentSlug: string[];
+  routePrefix: string;
+};
+
+export const resolveSectionRoute = (section: SectionKey, routeSlug: string[] = []): ResolvedSectionRoute => {
+  if (section !== 'user') {
+    return {
+      section,
+      locale: null,
+      contentSlug: routeSlug,
+      routePrefix: `/${section}`
+    };
+  }
+
+  if (routeSlug.length === 0) {
+    return {
+      section,
+      locale: null,
+      contentSlug: [],
+      routePrefix: '/user'
+    };
+  }
+
+  const localeSegment = routeSlug[0];
+  if (!localeSegment || !isUserDocLocale(localeSegment)) {
+    notFound();
+  }
+
+  return {
+    section,
+    locale: localeSegment,
+    contentSlug: routeSlug.slice(1),
+    routePrefix: `/user/${localeSegment}`
+  };
 };
 
 export const getRootReference = (name: string): RootReference => {
@@ -180,6 +234,18 @@ export const getSectionStaticParams = async (): Promise<Array<{ section: Section
   for (const section of Object.keys(sectionLabels) as SectionKey[]) {
     params.push({ section });
 
+    if (section === 'user') {
+      for (const locale of Object.keys(userDocLocales) as UserDocLocale[]) {
+        const sectionRoot = await resolveSectionRoot(section, locale);
+        const collected = await collectDirectory(sectionRoot);
+
+        params.push({ section, slug: [locale] });
+        params.push(...collected.directories.map((slug) => ({ section, slug: [locale, ...slug] })));
+        params.push(...collected.markdownFiles.map((slug) => ({ section, slug: [locale, ...toRouteSlug(slug)] })));
+      }
+      continue;
+    }
+
     const sectionRoot = await resolveSectionRoot(section);
     const collected = await collectDirectory(sectionRoot);
 
@@ -208,8 +274,18 @@ export const getDocsSourceStaticParams = async (): Promise<Array<{ slug: string[
 export const getRootReferenceStaticParams = (): Array<{ name: RootReference['key'] }> =>
   rootReferences.map((reference) => ({ name: reference.key }));
 
-export const listSectionEntries = async (section: SectionKey, slug: string[] = []): Promise<DirectoryEntry[]> => {
-  const sectionRoot = await resolveSectionRoot(section);
+type SectionReadOptions = {
+  locale?: UserDocLocale;
+  routePrefix?: string;
+};
+
+export const listSectionEntries = async (
+  section: SectionKey,
+  slug: string[] = [],
+  options: SectionReadOptions = {}
+): Promise<DirectoryEntry[]> => {
+  const sectionRoot = await resolveSectionRoot(section, options.locale);
+  const routePrefix = options.routePrefix ?? `/${section}`;
   const targetPath = path.join(sectionRoot, ...slug);
   ensureInsideRoot(sectionRoot, targetPath);
 
@@ -225,7 +301,7 @@ export const listSectionEntries = async (section: SectionKey, slug: string[] = [
     .filter((entry) => entry.name !== 'README.md')
     .map((entry) => {
       const nextSlug = [...slug, entry.name];
-      const routeHref = `/${section}/${nextSlug.join('/')}`;
+      const routeHref = `${routePrefix}/${nextSlug.join('/')}`;
 
       if (entry.isDirectory()) {
         return {
@@ -241,7 +317,7 @@ export const listSectionEntries = async (section: SectionKey, slug: string[] = [
         return {
           name: entry.name,
           title: toTitle(entry.name),
-          href: `/${section}/${routeSlug.join('/')}`,
+          href: `${routePrefix}/${routeSlug.join('/')}`,
           kind: 'markdown' as const
         };
       }
@@ -249,7 +325,7 @@ export const listSectionEntries = async (section: SectionKey, slug: string[] = [
       return {
         name: entry.name,
         title: entry.name,
-        href: `/source/docs/${section}/${nextSlug.join('/')}`,
+        href: `/source/docs/${[section, options.locale, ...nextSlug].filter(Boolean).join('/')}`,
         kind: 'asset' as const
       };
     })
@@ -294,11 +370,7 @@ const resolveSectionTarget = async (
     return null;
   }
 
-  const markdownPath = path.join(
-    sectionRoot,
-    ...routeSlug.slice(0, -1),
-    `${routeSlug[routeSlug.length - 1]}.md`
-  );
+  const markdownPath = path.join(sectionRoot, ...routeSlug.slice(0, -1), `${routeSlug[routeSlug.length - 1]}.md`);
   ensureInsideRoot(sectionRoot, markdownPath);
 
   const markdownStat = await statSafe(markdownPath);
@@ -309,8 +381,17 @@ const resolveSectionTarget = async (
   return { targetPath: markdownPath, targetStat: markdownStat };
 };
 
-export const readSectionDocument = async (section: SectionKey, routeSlug: string[] = []): Promise<DocumentData> => {
-  const sectionRoot = await resolveSectionRoot(section);
+export const readSectionDocument = async (
+  section: SectionKey,
+  routeSlug: string[] = [],
+  options: SectionReadOptions = {}
+): Promise<DocumentData> => {
+  const sectionRoot = await resolveSectionRoot(section, options.locale);
+  const sourcePathPrefix = options.locale ? [section, options.locale] : [section];
+  const sectionTitleFallback =
+    section === 'user' && options.locale
+      ? `${sectionLabels.user} (${userDocLocales[options.locale]})`
+      : sectionLabels[section];
   const resolvedTarget = await resolveSectionTarget(sectionRoot, routeSlug);
   if (!resolvedTarget) {
     notFound();
@@ -320,11 +401,11 @@ export const readSectionDocument = async (section: SectionKey, routeSlug: string
 
   if (targetStat.isDirectory()) {
     const readmePath = path.join(targetPath, 'README.md');
-    const entries = await listSectionEntries(section, routeSlug);
+    const entries = await listSectionEntries(section, routeSlug, options);
 
     if (!(await fileExists(readmePath))) {
       return {
-        title: lastSegmentTitle(routeSlug, sectionLabels[section]),
+        title: lastSegmentTitle(routeSlug, sectionTitleFallback),
         sourceHref: null,
         content: '',
         entries,
@@ -334,9 +415,9 @@ export const readSectionDocument = async (section: SectionKey, routeSlug: string
 
     return buildMarkdownDocument(
       readmePath,
-      `/source/docs/${section}/${[...routeSlug, 'README.md'].join('/')}`,
-      { repoPath: ['docs', section, ...routeSlug, 'README.md'] },
-      lastSegmentTitle(routeSlug, sectionLabels[section]),
+      `/source/docs/${[...sourcePathPrefix, ...routeSlug, 'README.md'].join('/')}`,
+      { repoPath: ['docs', ...sourcePathPrefix, ...routeSlug, 'README.md'] },
+      lastSegmentTitle(routeSlug, sectionTitleFallback),
       entries
     );
   }
@@ -345,11 +426,16 @@ export const readSectionDocument = async (section: SectionKey, routeSlug: string
     notFound();
   }
 
+  const markdownFileSegment = routeSlug[routeSlug.length - 1];
+  if (!markdownFileSegment) {
+    notFound();
+  }
+
   return buildMarkdownDocument(
     targetPath,
-    `/source/docs/${section}/${[...routeSlug.slice(0, -1), `${routeSlug[routeSlug.length - 1]}.md`].join('/')}`,
-    { repoPath: ['docs', section, ...routeSlug.slice(0, -1), `${routeSlug[routeSlug.length - 1]}.md`] },
-    toTitle(routeSlug[routeSlug.length - 1] ?? section),
+    `/source/docs/${[...sourcePathPrefix, ...routeSlug.slice(0, -1), `${markdownFileSegment}.md`].join('/')}`,
+    { repoPath: ['docs', ...sourcePathPrefix, ...routeSlug.slice(0, -1), `${markdownFileSegment}.md`] },
+    toTitle(markdownFileSegment),
     []
   );
 };
@@ -413,19 +499,25 @@ const repoPathToDocsHref = (repoPath: string[]): string | null => {
     return null;
   }
 
-  const lastSegment = rest.at(-1);
+  const isUserSection = sectionCandidate === 'user';
+  const localePrefix = isUserSection && rest[0] && isUserDocLocale(rest[0]) ? (`/${rest[0]}` as const) : '';
+  const restWithoutLocale = localePrefix ? rest.slice(1) : rest;
+
+  const lastSegment = restWithoutLocale.at(-1);
   if (!lastSegment) {
-    return `/${sectionCandidate}`;
+    return `/${sectionCandidate}${localePrefix}`;
   }
 
   if (lastSegment === 'README.md') {
-    const routeSegments = rest.slice(0, -1);
-    return routeSegments.length === 0 ? `/${sectionCandidate}` : `/${sectionCandidate}/${routeSegments.join('/')}`;
+    const routeSegments = restWithoutLocale.slice(0, -1);
+    return routeSegments.length === 0
+      ? `/${sectionCandidate}${localePrefix}`
+      : `/${sectionCandidate}${localePrefix}/${routeSegments.join('/')}`;
   }
 
   if (lastSegment.endsWith('.md')) {
-    const routeSegments = [...rest.slice(0, -1), toRouteSegment(lastSegment)];
-    return `/${sectionCandidate}/${routeSegments.join('/')}`;
+    const routeSegments = [...restWithoutLocale.slice(0, -1), toRouteSegment(lastSegment)];
+    return `/${sectionCandidate}${localePrefix}/${routeSegments.join('/')}`;
   }
 
   return `/source/docs/${[sectionCandidate, ...rest].join('/')}`;
