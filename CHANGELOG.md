@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.22](https://github.com/La-Ventil/ventil-os/compare/v0.0.21...v0.0.22) (2026-03-09)
+
+
+### Docs
+
+* **user:** localize user guides and reframe docs home for app users ([342a44d](https://github.com/La-Ventil/ventil-os/commit/342a44dda404854433ac9f1af820d45148a45d9b))
+
 ### [0.0.21](https://github.com/La-Ventil/ventil-os/compare/v0.0.20...v0.0.21) (2026-03-09)
 
 
