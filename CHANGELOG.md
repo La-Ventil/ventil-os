@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.21](https://github.com/La-Ventil/ventil-os/compare/v0.0.20...v0.0.21) (2026-03-09)
+
+
+### Features
+
+* **open-badges:** guard assign context to active badges ([7d1bab7](https://github.com/La-Ventil/ventil-os/commit/7d1bab7a0402cc9fe4d1e3e595195923428b0750))
+* **open-badges:** move assignability policy to application and share form error handling ([758bb6d](https://github.com/La-Ventil/ventil-os/commit/758bb6d7b2e6ca6a958e469b1b257e49186a6f6b))
+
+
+### Bug Fixes
+
+* **open-badges:** block assignment on inactive badge ([4f9c0d4](https://github.com/La-Ventil/ventil-os/commit/4f9c0d45a30437896106efb30596146614137dfd))
+* **web:** protect open badge assign modal from unauthorized access ([d271625](https://github.com/La-Ventil/ventil-os/commit/d2716250e7b559dcd4101eac87f5b9b776de0849))
+
+
+### Docs
+
+* **adr:** reinforce invariant ownership on application use-cases ([60fd259](https://github.com/La-Ventil/ventil-os/commit/60fd25942089c0039de8acfb798cc26254a0b945))
+
 ### [0.0.20](https://github.com/La-Ventil/ventil-os/compare/v0.0.19...v0.0.20) (2026-03-04)
 
 
