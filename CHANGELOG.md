@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.23](https://github.com/La-Ventil/ventil-os/compare/v0.0.22...v0.0.23) (2026-03-10)
+
+
+### Bug Fixes
+
+* **application:** avoid broad Turbopack fs pattern in upload storage ([4aa75ab](https://github.com/La-Ventil/ventil-os/commit/4aa75ab69ac058d57cdf0f267bdd68be87bd70bb))
+* **form:** support Zod intersection schemas in field live validation ([98ee661](https://github.com/La-Ventil/ventil-os/commit/98ee6616f770f47afa6541a013151e091801d724))
+
 ### [0.0.22](https://github.com/La-Ventil/ventil-os/compare/v0.0.21...v0.0.22) (2026-03-09)
 
 
