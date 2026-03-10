@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
+import { pathToFileURL } from 'url';
 import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from './uploads-constants';
 
 export { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB };
@@ -82,8 +83,9 @@ export async function validateAndStoreImage(
   await ensureUploadRoot(uploadRoot);
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filepath = path.join(uploadRoot, filename);
-  await fs.writeFile(filepath, buffer);
+  const uploadRootUrl = pathToFileURL(`${uploadRoot}${path.sep}`);
+  const fileUrl = new URL(filename, uploadRootUrl);
+  await fs.writeFile(fileUrl, buffer);
 
   return { url: path.posix.join(publicPath, filename) };
 }
