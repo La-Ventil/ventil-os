@@ -10,6 +10,11 @@ type UnwrappableSchema = z.ZodType & {
   unwrap: () => z.ZodType;
 };
 
+type IntersectionSchemaDef = {
+  left: z.ZodType;
+  right: z.ZodType;
+};
+
 const MAX_UNWRAP_DEPTH = 16;
 const OBJECT_SCHEMA_CACHE = new WeakMap<z.ZodType, z.ZodObject<z.ZodRawShape> | null>();
 const FIELD_SCHEMA_CACHE = new WeakMap<z.ZodType, Map<string, ZodFieldValidationSchema>>();
@@ -18,12 +23,37 @@ const isUnwrappableSchema = (schema: z.ZodType): schema is UnwrappableSchema => 
   return typeof (schema as Partial<UnwrappableSchema>).unwrap === 'function';
 };
 
+const mergeObjectSchemas = (
+  left: z.ZodObject<z.ZodRawShape>,
+  right: z.ZodObject<z.ZodRawShape>
+): z.ZodObject<z.ZodRawShape> => {
+  return z.object({ ...left.shape, ...right.shape }) as z.ZodObject<z.ZodRawShape>;
+};
+
+const resolveIntersectionSchema = (
+  intersectionSchema: z.ZodIntersection<z.ZodType, z.ZodType>
+): z.ZodObject<z.ZodRawShape> | null => {
+  const def = (intersectionSchema as unknown as { _def: IntersectionSchemaDef })._def;
+  const leftObject = resolveObjectSchema(def.left);
+  const rightObject = resolveObjectSchema(def.right);
+
+  if (leftObject && rightObject) {
+    return mergeObjectSchemas(leftObject, rightObject);
+  }
+
+  return leftObject ?? rightObject;
+};
+
 const resolveObjectSchema = (schema: z.ZodType): z.ZodObject<z.ZodRawShape> | null => {
   let current: z.ZodType = schema;
 
   for (let depth = 0; depth < MAX_UNWRAP_DEPTH; depth += 1) {
     if (current instanceof z.ZodObject) {
       return current as z.ZodObject<z.ZodRawShape>;
+    }
+
+    if (current instanceof z.ZodIntersection) {
+      return resolveIntersectionSchema(current as z.ZodIntersection<z.ZodType, z.ZodType>);
     }
 
     if (current instanceof z.ZodPipe) {
