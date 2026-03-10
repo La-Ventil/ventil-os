@@ -1,5 +1,6 @@
 export * from './view-user-profile.query';
 export * from './view-user-profile-by-id.query';
+export * from './view-admin-statistics.query';
 export * from './browse-users-as-admin.query';
 export * from './browse-users-for-reservation.query';
 export * from './view-user-stats.query';

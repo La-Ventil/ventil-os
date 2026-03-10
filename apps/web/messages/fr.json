@@ -131,6 +131,7 @@
         },
         "admin": {
           "title": "Administration",
+          "statisticsLink": "Statistiques La-Ventil",
           "machineLink": "Administration machine",
           "openBadgeLink": "Administration open badge",
           "userLink": "Administration utilisateurs"
@@ -138,6 +139,37 @@
       },
       "admin": {
         "title": "Administration",
+        "statistics": {
+          "title": "Statistiques de La-Ventil",
+          "subtitle": "Information",
+          "intro": "Vue globale des activités de la communauté depuis le début du projet.",
+          "overview": {
+            "users": "Utilisateurs",
+            "events": "Évènements",
+            "openBadges": "Open badges",
+            "machines": "Machines",
+            "totalUsers": "Total",
+            "members": "Ventil’acteurs",
+            "alumni": "Élèves visiteurs",
+            "teachers": "Enseignants",
+            "contributors": "Intervenants",
+            "visitors": "Visiteurs",
+            "organizedEvents": "Organisés",
+            "eventParticipants": "Participants",
+            "createdOpenBadges": "Créés",
+            "deliveredOpenBadges": "Délivrés",
+            "createdMachines": "Créées",
+            "machineUsages": "Utilisations"
+          },
+          "graph": {
+            "productionTitle": "Indice de production",
+            "productionDescription": "Regroupe le nombre d’utilisation des machines et de réparation d’objets.",
+            "exchangeTitle": "Indice d’échange",
+            "exchangeDescription": "Modélise les liens d’échanges entre la formation Open badge et la participation aux évènements.",
+            "generatedAt": "Données calculées le {value}.",
+            "empty": "Aucun utilisateur à afficher."
+          }
+        },
         "machines": {
           "title": "Administration des machines",
           "subtitle": "Information",

@@ -10,6 +10,7 @@ import MenuList, { MenuListItem } from './menu-list';
 import styles from './drawer-menu.module.css';
 import { adminFablabIcon as AdminFablabIcon } from './icons/admin-fablab-icon';
 import { adminOpenBadgeIcon as AdminOpenBadgeIcon } from './icons/admin-open-badge-icon';
+import { adminStatIcon as AdminStatIcon } from './icons/admin-stat-icon';
 import { adminUserIcon as AdminUserIcon } from './icons/admin-user-icon';
 import { EventIcon } from './icons/event-icon';
 import { ProfileIcon } from './icons/profile-icon';
@@ -124,6 +125,14 @@ export default function DrawerMenu({
 
         {isAdmin ? (
           <>
+            <MenuListItem
+              icon={<AdminStatIcon />}
+              label={tDrawer('admin.statisticsLink')}
+              href="/hub/admin/statistics"
+              linkComponent={Link}
+              className={getThemeSectionClassName(ThemeSection.Admin)}
+              onClick={onClose}
+            />
             {canManageBadges ? (
               <>
                 <MenuListItem

@@ -1,0 +1,106 @@
+.card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.content {
+  padding: 0 16px 14px !important;
+}
+
+.contentWithIcon {
+  padding-left: 76px !important;
+}
+
+.content:last-child {
+  padding-bottom: 14px !important;
+}
+
+.header {
+  padding: 6px 16px 0 !important;
+  align-items: flex-start !important;
+}
+
+.header :global(.MuiCardHeader-avatar) {
+  margin: 0 8px 0 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header :global(.MuiCardHeader-content) {
+  margin: 0;
+  padding-top: 2px;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.icon :global(.MuiSvgIcon-root) {
+  font-size: 2.8rem !important;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(20, 27, 45, 0.88);
+}
+
+.metrics {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 240px;
+  width: 100%;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.label {
+  margin: 0;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(20, 27, 45, 0.8);
+}
+
+.value {
+  margin: 0;
+  font-size: 1rem !important;
+  line-height: 1.2;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em !important;
+  font-variant-numeric: tabular-nums;
+  color: var(--mui-palette-primary-main);
+}
+
+.valueBlue {
+  color: #317bf4;
+}
+
+.valueYellow {
+  color: #d6a20a;
+}
+
+.valueRed {
+  color: #e64f2a;
+}

@@ -27,6 +27,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/d3-force": "^3.0.10",
     "@turbo/gen": "^2.7.6",
     "@types/react": "19.2.5",
     "eslint": "^9.34.0",
@@ -41,6 +42,7 @@
     "@repo/form": "workspace:*",
     "@repo/view-models": "workspace:*",
     "clsx": "^2.1.1",
+    "d3-force": "^3.0.0",
     "dayjs": "^1.11.19",
     "next": "^16.1.6",
     "next-auth": "^4.24.13",

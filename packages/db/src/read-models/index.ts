@@ -1,4 +1,5 @@
 export type { EventReadModel } from './event';
+export type { AdminStatisticsReadModel } from './admin-statistics';
 export type { MachineDetailsReadModel } from './machine-details';
 export type { MachineSummaryReadModel, MachineAdminReadModel } from './machine';
 export type { MachineReservationReadModel, MachineReservationAvailabilityReadModel } from './machine-reservation';

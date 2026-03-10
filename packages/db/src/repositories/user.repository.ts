@@ -1,7 +1,7 @@
-import { type Prisma, type PrismaClient } from '@prisma/client';
+import { RegistrationStatus, type Prisma, type PrismaClient } from '@prisma/client';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
-import { deriveUserRole } from '@repo/domain/user/user-role';
+import { deriveUserRole, type UserRole } from '@repo/domain/user/user-role';
 import { userProfileSelect } from '../selects/user-profile';
 import { userCredentialsSelect } from '../selects/user-credentials';
 import { userAdminSelect } from '../selects/user-admin';
@@ -17,6 +17,29 @@ import type { UserAdminReadModel } from '../read-models/user-admin';
 import type { UserPasswordResetReadModel } from '../read-models/user-password-reset';
 import type { UserProfileReadModel } from '../read-models/user-profile';
 import type { UserSummaryReadModel, UserSummaryWithOpenBadgeLevelReadModel } from '../read-models/user-summary';
+import type { AdminStatisticsReadModel } from '../read-models/admin-statistics';
+
+type ExchangeEdgeAccumulator = {
+  sourceUserId: string;
+  targetUserId: string;
+  eventExchanges: number;
+  openBadgeExchanges: number;
+  exchanges: number;
+};
+
+const MAX_EDGE_WIDTH_PX = 12;
+const MACHINE_RESERVATION_STATUS_CONFIRMED = 'confirmed' as const;
+
+const createRoleCountMap = (): Record<UserRole, number> => ({
+  member: 0,
+  alumni: 0,
+  teacher: 0,
+  contributor: 0,
+  visitor: 0
+});
+
+const toEdgeKey = (leftUserId: string, rightUserId: string): string =>
+  leftUserId < rightUserId ? `${leftUserId}:${rightUserId}` : `${rightUserId}:${leftUserId}`;
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -308,6 +331,213 @@ export class UserRepository {
     ]);
 
     return { eventsCount, openBadgesCount, openBadgesAssignedCount, machinesCount };
+  }
+
+  async getAdminStatistics(now: Date): Promise<AdminStatisticsReadModel> {
+    const activeEventRegistrationStatuses = [RegistrationStatus.registered, RegistrationStatus.attended];
+
+    const [
+      users,
+      eventsOrganizedCount,
+      eventParticipantsCount,
+      openBadgesCreatedCount,
+      openBadgesDeliveredCount,
+      machinesCreatedCount,
+      machineUsagesCount,
+      machineCreatorUsageRows,
+      machineParticipantUsageRows,
+      eventExchangeRows,
+      openBadgeExchangeRows
+    ] = await Promise.all([
+      this.prisma.user.findMany({
+        orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          image: true,
+          profile: true,
+          studentProfile: true,
+          externalProfile: true,
+          blocked: true
+        }
+      }),
+      this.prisma.event.count(),
+      this.prisma.eventRegistration.count({
+        where: {
+          status: {
+            in: activeEventRegistrationStatuses
+          }
+        }
+      }),
+      this.prisma.openBadge.count(),
+      this.prisma.openBadgeLevelProgress.count(),
+      this.prisma.machine.count(),
+      this.prisma.machineReservation.count({
+        where: {
+          status: MACHINE_RESERVATION_STATUS_CONFIRMED,
+          endsAt: { lt: now }
+        }
+      }),
+      this.prisma.machineReservation.groupBy({
+        by: ['creatorId'],
+        where: {
+          status: MACHINE_RESERVATION_STATUS_CONFIRMED,
+          endsAt: { lt: now }
+        },
+        _count: {
+          _all: true
+        }
+      }),
+      this.prisma.machineReservationParticipant.groupBy({
+        by: ['userId'],
+        where: {
+          reservation: {
+            status: MACHINE_RESERVATION_STATUS_CONFIRMED,
+            endsAt: { lt: now }
+          }
+        },
+        _count: {
+          _all: true
+        }
+      }),
+      this.prisma.eventRegistration.findMany({
+        where: {
+          status: {
+            in: activeEventRegistrationStatuses
+          }
+        },
+        select: {
+          userId: true,
+          event: {
+            select: {
+              creatorId: true
+            }
+          }
+        }
+      }),
+      this.prisma.openBadgeLevelProgress.findMany({
+        select: {
+          awardedById: true,
+          progress: {
+            select: {
+              userId: true
+            }
+          }
+        }
+      })
+    ]);
+
+    const machineUsagesByUser = new Map<string, number>();
+    for (const row of machineCreatorUsageRows) {
+      machineUsagesByUser.set(row.creatorId, row._count._all);
+    }
+    for (const row of machineParticipantUsageRows) {
+      const currentCount = machineUsagesByUser.get(row.userId) ?? 0;
+      machineUsagesByUser.set(row.userId, currentCount + row._count._all);
+    }
+
+    const edgeMap = new Map<string, ExchangeEdgeAccumulator>();
+    const addExchange = (leftUserId: string, rightUserId: string, type: 'event' | 'openBadge'): void => {
+      if (leftUserId === rightUserId) {
+        return;
+      }
+
+      const edgeKey = toEdgeKey(leftUserId, rightUserId);
+      const existingEdge = edgeMap.get(edgeKey);
+      if (!existingEdge) {
+        const sourceUserId = leftUserId < rightUserId ? leftUserId : rightUserId;
+        const targetUserId = leftUserId < rightUserId ? rightUserId : leftUserId;
+        edgeMap.set(edgeKey, {
+          sourceUserId,
+          targetUserId,
+          exchanges: 1,
+          eventExchanges: type === 'event' ? 1 : 0,
+          openBadgeExchanges: type === 'openBadge' ? 1 : 0
+        });
+        return;
+      }
+
+      existingEdge.exchanges += 1;
+      if (type === 'event') {
+        existingEdge.eventExchanges += 1;
+      } else {
+        existingEdge.openBadgeExchanges += 1;
+      }
+    };
+
+    for (const eventExchangeRow of eventExchangeRows) {
+      addExchange(eventExchangeRow.userId, eventExchangeRow.event.creatorId, 'event');
+    }
+    for (const openBadgeExchangeRow of openBadgeExchangeRows) {
+      addExchange(openBadgeExchangeRow.awardedById, openBadgeExchangeRow.progress.userId, 'openBadge');
+    }
+
+    const exchangesByUser = new Map<string, number>();
+    const edges = Array.from(edgeMap.values())
+      .map((edge) => {
+        exchangesByUser.set(edge.sourceUserId, (exchangesByUser.get(edge.sourceUserId) ?? 0) + edge.exchanges);
+        exchangesByUser.set(edge.targetUserId, (exchangesByUser.get(edge.targetUserId) ?? 0) + edge.exchanges);
+        return {
+          ...edge,
+          widthPx: Math.min(MAX_EDGE_WIDTH_PX, Math.max(1, edge.exchanges))
+        };
+      })
+      .sort((left, right) => right.exchanges - left.exchanges);
+
+    const usersByRole = createRoleCountMap();
+    const nodes = users
+      .map((user) => {
+        const role = deriveUserRole({
+          profile: user.profile,
+          studentProfile: user.studentProfile,
+          externalProfile: user.externalProfile
+        });
+        usersByRole[role] += 1;
+
+        const machinesUsedCount = machineUsagesByUser.get(user.id) ?? 0;
+        const repairedObjectsCount = 0;
+        const productionIndex = machinesUsedCount + repairedObjectsCount;
+        const exchangeCount = exchangesByUser.get(user.id) ?? 0;
+
+        return {
+          userId: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          avatarUrl: user.image,
+          role,
+          blocked: user.blocked,
+          productionIndex,
+          machinesUsedCount,
+          repairedObjectsCount,
+          exchangeCount,
+          inactive: productionIndex === 0 && exchangeCount === 0
+        };
+      })
+      .sort((left, right) => {
+        if (left.inactive !== right.inactive) {
+          return left.inactive ? 1 : -1;
+        }
+        return right.exchangeCount - left.exchangeCount;
+      });
+
+    return {
+      overview: {
+        usersCount: users.length,
+        usersByRole,
+        eventsOrganizedCount,
+        eventParticipantsCount,
+        openBadgesCreatedCount,
+        openBadgesDeliveredCount,
+        machinesCreatedCount,
+        machineUsagesCount
+      },
+      network: {
+        generatedAt: now,
+        nodes,
+        edges
+      }
+    };
   }
 
   async setResetToken(userId: string, resetToken: string, resetTokenExpiry: Date) {
