@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.25](https://github.com/La-Ventil/ventil-os/compare/v0.0.24...v0.0.25) (2026-03-12)
+
+
+### Features
+
+* **admin:** refactor statistics page and user network graph ([07bd6bb](https://github.com/La-Ventil/ventil-os/commit/07bd6bbbd287a7a385669b33bc13403448c3fc07))
+
 ### [0.0.24](https://github.com/La-Ventil/ventil-os/compare/v0.0.23...v0.0.24) (2026-03-10)
 
 
