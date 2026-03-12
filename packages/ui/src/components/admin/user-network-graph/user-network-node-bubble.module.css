@@ -1,0 +1,68 @@
+.root {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 0;
+}
+
+.halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: rgba(73, 144, 255, 0.3);
+  border: none;
+}
+
+.bubble {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 98px;
+  height: 98px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 18px rgba(15, 27, 67, 0.15);
+}
+
+.focused {
+  box-shadow:
+    0 0 0 4px rgba(47, 109, 225, 0.45),
+    0 8px 18px rgba(15, 27, 67, 0.2);
+}
+
+.avatar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  overflow: hidden;
+  border: none;
+  background: rgba(255, 255, 255, 1);
+}
+
+.roleBadge {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 38px);
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f6de1;
+  font-size: 13px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}

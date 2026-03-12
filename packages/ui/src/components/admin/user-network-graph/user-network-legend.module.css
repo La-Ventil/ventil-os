@@ -1,0 +1,58 @@
+.legend {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 320px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.legendItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.legendHalo {
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(73, 144, 255, 0.48);
+  flex-shrink: 0;
+}
+
+.legendEdge {
+  display: inline-block;
+  width: 38px;
+  height: 0;
+  border-top: 6px solid #2f6de1;
+  margin-top: 16px;
+  flex-shrink: 0;
+}
+
+.legendText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.legendTitle {
+  margin: 0;
+  font-size: 1.04rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: rgba(20, 27, 45, 0.95);
+}
+
+.legendDescription {
+  margin: 0;
+  max-width: 250px;
+  color: rgba(20, 27, 45, 0.85);
+  line-height: 1.3;
+}

@@ -4,38 +4,6 @@
   gap: 10px;
 }
 
-.iconUsers {
-  color: var(--mui-palette-user-main);
-}
-
-.valueUsers {
-  color: var(--mui-palette-user-main);
-}
-
-.iconEvents {
-  color: var(--mui-palette-event-main);
-}
-
-.valueEvents {
-  color: var(--mui-palette-event-main);
-}
-
-.iconOpenBadges {
-  color: var(--mui-palette-openBadge-main);
-}
-
-.valueOpenBadges {
-  color: var(--mui-palette-openBadge-main);
-}
-
-.iconMachines {
-  color: var(--mui-palette-fabLab-main);
-}
-
-.valueMachines {
-  color: var(--mui-palette-fabLab-main);
-}
-
 @media (max-width: 1150px) {
   .root {
     grid-template-columns: repeat(2, minmax(180px, 1fr));

@@ -43,6 +43,7 @@
   justify-content: center;
   font-size: 2.8rem;
   line-height: 1;
+  color: var(--mui-palette-secondary-main, var(--mui-palette-primary-main));
 }
 
 .icon :global(.MuiSvgIcon-root) {
@@ -90,7 +91,7 @@
   font-weight: 800 !important;
   letter-spacing: 0.03em !important;
   font-variant-numeric: tabular-nums;
-  color: var(--mui-palette-primary-main);
+  color: var(--mui-palette-secondary-main, var(--mui-palette-primary-main));
 }
 
 .valueBlue {

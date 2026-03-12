@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.graph {
+  position: relative;
+  width: 100%;
+  min-height: 660px;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: none;
+}
+
+.emptyState {
+  margin: 0;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
+  color: var(--mui-palette-text-secondary);
+}
+
+.edgeLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.edge {
+  stroke: #2f6de1;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+.nodeLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.generatedAt {
+  margin: 0;
+  color: var(--mui-palette-text-secondary);
+  font-size: 0.82rem;
+}

@@ -14,10 +14,9 @@ export type AdminMetricCardMetric = {
 };
 
 export type AdminMetricCardProps = {
+  className?: string;
   title: string;
   icon?: ReactNode;
-  iconClassName?: string;
-  metricValueClassName?: string;
   metrics: AdminMetricCardMetric[];
 };
 
@@ -29,20 +28,14 @@ const metricToneClassKeyByTone: Record<AdminMetricCardTone, MetricToneClassKey> 
   red: 'valueRed'
 };
 
-export default function AdminMetricCard({
-  title,
-  icon,
-  iconClassName,
-  metricValueClassName,
-  metrics
-}: AdminMetricCardProps) {
+export default function AdminMetricCard({ className, title, icon, metrics }: AdminMetricCardProps) {
   return (
-    <Card className={styles.card} elevation={0} component="article">
+    <Card className={`${styles.card} ${className ?? ''}`} elevation={0} component="article">
       <CardHeader
         className={styles.header}
         avatar={
           icon ? (
-            <span className={`${styles.icon} ${iconClassName ?? ''}`} aria-hidden="true">
+            <span className={styles.icon} aria-hidden="true">
               {icon}
             </span>
           ) : undefined
@@ -63,9 +56,7 @@ export default function AdminMetricCard({
               <Typography
                 component="dd"
                 variant="h5"
-                className={`${styles.value} ${
-                  metric.tone ? (styles[metricToneClassKeyByTone[metric.tone]] ?? '') : (metricValueClassName ?? '')
-                }`}
+                className={`${styles.value} ${metric.tone ? (styles[metricToneClassKeyByTone[metric.tone]] ?? '') : ''}`}
               >
                 {metric.value.toLocaleString()}
               </Typography>
