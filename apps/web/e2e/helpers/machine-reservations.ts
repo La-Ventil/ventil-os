@@ -20,10 +20,23 @@ export async function submitReservationFromModalRoute(
   await expect(reservationDialog).toBeVisible();
   await reservationDialog.getByRole('button', { name: /réserver|reserve/i }).click();
 
-  // Submission success is observable through the reservation dialog closing.
-  // The route change can lag behind and is only relevant in flows that expect
-  // to return to the machine details modal, so keep that assertion separate.
-  await expect(reservationDialog).toHaveCount(0, { timeout: 15_000 });
+  await expect
+    .poll(
+      async () => {
+        if ((await reservationDialog.count()) === 0) {
+          return 'closed';
+        }
+
+        const pathname = new URL(page.url()).pathname;
+        if (pathname === `/hub/fab-lab/${machineId}`) {
+          return 'returned-to-machine';
+        }
+
+        return 'pending';
+      },
+      { timeout: 30_000 }
+    )
+    .not.toBe('pending');
 
   return machineId;
 }
@@ -48,10 +61,7 @@ export async function openMyReservationsTab(page: Page): Promise<void> {
 export const getReservationCard = (page: Page, machineName: RegExp = /Bambu Lab X1C/i): Locator =>
   page.locator('.MuiCard-root[class*="machine-reservation-list-card"]').filter({ hasText: machineName }).first();
 
-export function setLatestReservationActive(args: {
-  creatorEmail?: string;
-  dbSlot?: string;
-}): Promise<void> {
+export function setLatestReservationActive(args: { creatorEmail?: string; dbSlot?: string }): Promise<void> {
   return getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationActiveNow({
     creatorEmail: args.creatorEmail
   });
@@ -59,6 +69,18 @@ export function setLatestReservationActive(args: {
 
 export function setLatestReservationUpcoming(args: { creatorEmail?: string; dbSlot?: string }): Promise<void> {
   return getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationUpcomingSoon({
+    creatorEmail: args.creatorEmail
+  });
+}
+
+export function setLatestReservationPast(args: { creatorEmail?: string; dbSlot?: string }): Promise<void> {
+  return getMachineReservationTestRepository(args.dbSlot).setLatestConfirmedReservationPast({
+    creatorEmail: args.creatorEmail
+  });
+}
+
+export function cancelLatestReservation(args: { creatorEmail?: string; dbSlot?: string }): Promise<string> {
+  return getMachineReservationTestRepository(args.dbSlot).cancelLatestConfirmedReservation({
     creatorEmail: args.creatorEmail
   });
 }

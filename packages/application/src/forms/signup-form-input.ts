@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { nameSchema } from './name';
-import { passwordConfirmationMatchSchema, passwordConfirmationSchema, passwordSchema } from './password';
+import { passwordConfirmationSchema, passwordSchema } from './password';
 import { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
 export { resolveProfileType } from './profile-education';
@@ -18,8 +18,15 @@ export const signupFormSchema = zfd
     terms: z.string().min(1, { message: 'validation.signup.termsRequired' }),
     educationLevel: zfd.text(z.string().optional())
   })
-  .and(passwordConfirmationMatchSchema)
-  .superRefine(({ profile, educationLevel }, ctx) => {
+  .superRefine(({ password, passwordConfirmation, profile, educationLevel }, ctx) => {
+    if (password !== passwordConfirmation) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'validation.password.confirmationMismatch',
+        path: ['passwordConfirmation']
+      });
+    }
+
     if (requiresEducationLevel(profile as UserRole) && !educationLevel) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

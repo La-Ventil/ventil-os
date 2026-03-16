@@ -22,6 +22,8 @@ const activeReservationFixtureWindow = (now: Date): DateInterval => reservationF
 
 const upcomingReservationFixtureWindow = (now: Date): DateInterval => reservationFixtureWindowFromOffset(30, 15, now);
 
+const pastReservationFixtureWindow = (now: Date): DateInterval => reservationFixtureWindowFromOffset(-45, 15, now);
+
 export class MachineReservationTestRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -103,6 +105,28 @@ export class MachineReservationTestRepository {
     now: Date = new Date()
   ): Promise<void> {
     return this.setLatestConfirmedReservationWindow(input, upcomingReservationFixtureWindow(now));
+  }
+
+  async setLatestConfirmedReservationPast(
+    input: SetLatestConfirmedReservationTimingInput,
+    now: Date = new Date()
+  ): Promise<void> {
+    return this.setLatestConfirmedReservationWindow(input, pastReservationFixtureWindow(now));
+  }
+
+  async cancelLatestConfirmedReservation(input: SetLatestConfirmedReservationTimingInput): Promise<string> {
+    const reservationId = await this.getLatestConfirmedReservationId(input);
+
+    await this.prisma.machineReservation.update({
+      where: {
+        id: reservationId
+      },
+      data: {
+        status: 'cancelled'
+      }
+    });
+
+    return reservationId;
   }
 }
 
