@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  type KeyboardEvent,
-  type KeyboardEventHandler,
-  type MouseEvent,
-  type MouseEventHandler
-} from 'react';
+import { useCallback, type MouseEvent, type MouseEventHandler } from 'react';
 
 type UserNetworkGraphNodeLifecycleHandlers = {
   onFocusNode: (userId: string) => void;
@@ -21,7 +15,6 @@ export type UseUserNetworkGraphNodeInteractionReturn = {
   onMouseLeave: MouseEventHandler<HTMLElement>;
   onFocus: () => void;
   onBlur: () => void;
-  onKeyDown: KeyboardEventHandler<HTMLElement>;
   onClick: MouseEventHandler<HTMLElement>;
 };
 
@@ -55,24 +48,11 @@ export function useUserNetworkGraphNodeInteraction({
     [onTogglePin, userId]
   );
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLElement>) => {
-      if (event.key !== 'Enter' && event.key !== ' ') {
-        return;
-      }
-
-      event.preventDefault();
-      onTogglePin(userId);
-    },
-    [onTogglePin, userId]
-  );
-
   return {
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
     onFocus: activate,
     onBlur: deactivate,
-    onKeyDown: handleKeyDown,
     onClick: handleClick
   };
 }

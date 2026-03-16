@@ -42,22 +42,20 @@ export default function UserNetworkGraphNodeShell({
   });
 
   return (
-    <div
+    <button
+      type="button"
       className={clsx(styles.node, inactive && styles.inactiveNode, isActive && styles.activeNode)}
       style={{ left: x, top: y }}
       title={`${fullName} — ${roleLabel}`}
       aria-label={`${fullName} (${roleLabel})`}
-      role="button"
-      tabIndex={0}
       aria-pressed={isPinned}
       onMouseEnter={interaction.onMouseEnter}
       onMouseLeave={interaction.onMouseLeave}
       onFocus={interaction.onFocus}
       onBlur={interaction.onBlur}
       onClick={interaction.onClick}
-      onKeyDown={interaction.onKeyDown}
     >
       {children}
-    </div>
+    </button>
   );
 }

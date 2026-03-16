@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   forceCenter,
   forceCollide,
@@ -28,8 +28,14 @@ const NODE_RADIUS_PX = 28;
 const AVATAR_DIAMETER_PX = 50;
 const MAX_PRODUCTION_HALO_PX = 48;
 const GRAPH_PADDING_PX = NODE_RADIUS_PX + MAX_PRODUCTION_HALO_PX + 16;
+const MIN_GRAPH_WIDTH_PX = 360;
+const MIN_GRAPH_HEIGHT_PX = 420;
+const MIN_NODE_SPACING_PX = 56;
+const MAX_NODE_SPACING_PX = 112;
 
 export type UserNetworkGraphLabels = {
+  label: string;
+  interactionHint: string;
   productionTitle: string;
   productionDescription: string;
   exchangeTitle: string;
@@ -57,7 +63,67 @@ const clamp = (value: number, min: number, max: number): number => Math.min(Math
 const nodeHaloRadius = (productionIndex: number): number =>
   NODE_RADIUS_PX + Math.min(MAX_PRODUCTION_HALO_PX, Math.max(0, productionIndex));
 
+const graphChargeStrength = (nodeCount: number): number => -Math.min(420, 180 + nodeCount * 6);
+
+const graphLinkStrength = (nodeCount: number): number => {
+  if (nodeCount > 80) {
+    return 0.09;
+  }
+
+  if (nodeCount > 40) {
+    return 0.11;
+  }
+
+  return 0.14;
+};
+
+const graphVelocityDecay = (nodeCount: number): number => {
+  if (nodeCount > 80) {
+    return 0.34;
+  }
+
+  if (nodeCount > 40) {
+    return 0.3;
+  }
+
+  return 0.26;
+};
+
+const graphAlphaDecay = (nodeCount: number): number => {
+  if (nodeCount > 80) {
+    return 0.08;
+  }
+
+  if (nodeCount > 40) {
+    return 0.06;
+  }
+
+  return 0.045;
+};
+
+const initialNodePosition = (
+  index: number,
+  nodeCount: number,
+  width: number,
+  height: number
+): Pick<GraphNode, 'x' | 'y'> => {
+  const columns = Math.max(1, Math.ceil(Math.sqrt(nodeCount)));
+  const rows = Math.max(1, Math.ceil(nodeCount / columns));
+  const column = index % columns;
+  const row = Math.floor(index / columns);
+  const spacingX = clamp(Math.floor(width / (columns + 1)), MIN_NODE_SPACING_PX, MAX_NODE_SPACING_PX);
+  const spacingY = clamp(Math.floor(height / (rows + 1)), MIN_NODE_SPACING_PX, MAX_NODE_SPACING_PX);
+  const firstX = width / 2 - ((columns - 1) * spacingX) / 2;
+  const firstY = height / 2 - ((rows - 1) * spacingY) / 2;
+
+  return {
+    x: firstX + column * spacingX,
+    y: firstY + row * spacingY
+  };
+};
+
 export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGraphProps) {
+  const instructionsId = useId();
   const graphRef = useRef<HTMLDivElement | null>(null);
   const simulationNodesRef = useRef<GraphNode[]>([]);
   const simulationLinksRef = useRef<GraphLink[]>([]);
@@ -79,8 +145,8 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
       }
 
       setSize({
-        width: Math.max(360, Math.floor(entry.contentRect.width)),
-        height: Math.max(420, Math.floor(entry.contentRect.height))
+        width: Math.max(MIN_GRAPH_WIDTH_PX, Math.floor(entry.contentRect.width)),
+        height: Math.max(MIN_GRAPH_HEIGHT_PX, Math.floor(entry.contentRect.height))
       });
     });
 
@@ -92,10 +158,10 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
   }, []);
 
   useEffect(() => {
+    const nodeCount = nodes.length;
     const graphNodes: GraphNode[] = nodes.map((node, index) => ({
       ...node,
-      x: (index % 8) * 40 + size.width / 3,
-      y: Math.floor(index / 8) * 40 + size.height / 3
+      ...initialNodePosition(index, nodeCount, size.width, size.height)
     }));
     const graphLinks: GraphLink[] = edges.map((edge) => ({
       ...edge,
@@ -114,14 +180,16 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
     const centerX = size.width / 2;
     const centerY = size.height / 2;
     const simulation = forceSimulation(graphNodes)
+      .velocityDecay(graphVelocityDecay(nodeCount))
+      .alphaDecay(graphAlphaDecay(nodeCount))
       .force('center', forceCenter(centerX, centerY))
-      .force('charge', forceManyBody<GraphNode>().strength(-220))
+      .force('charge', forceManyBody<GraphNode>().strength(graphChargeStrength(nodeCount)))
       .force(
         'link',
         forceLink<GraphNode, GraphLink>(graphLinks)
           .id((node) => node.userId)
           .distance((link) => 110 + Math.min(140, Math.max(0, link.exchanges * 2)))
-          .strength(0.14)
+          .strength(graphLinkStrength(nodeCount))
       )
       .force(
         'collide',
@@ -195,10 +263,22 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
       <div
         className={styles.graph}
         ref={graphRef}
+        role="region"
+        aria-label={labels.label}
+        aria-describedby={instructionsId}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            setPinnedUserId(null);
+            setHoveredUserId(null);
+          }
+        }}
         onClick={() => {
           setPinnedUserId(null);
         }}
       >
+        <p id={instructionsId} className={styles.srOnly}>
+          {labels.interactionHint}
+        </p>
         {nodes.length === 0 ? <p className={styles.emptyState}>{labels.empty}</p> : null}
         <UserNetworkGraphEdgeLayer
           edges={positionedLinks}

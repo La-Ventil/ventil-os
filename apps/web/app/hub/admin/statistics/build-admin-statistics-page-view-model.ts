@@ -34,6 +34,8 @@ export function buildAdminStatisticsPageViewModel({
   });
   const roleByKey = buildRoleLabels((key) => tProfile(key));
   const labels: UserNetworkGraphProps['labels'] = {
+    label: tStatistics('graph.label'),
+    interactionHint: tStatistics('graph.interactionHint'),
     productionTitle: tStatistics('graph.productionTitle'),
     productionDescription: tStatistics('graph.productionDescription'),
     exchangeTitle: tStatistics('graph.exchangeTitle'),

@@ -6,6 +6,10 @@
   pointer-events: auto;
   cursor: pointer;
   outline: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  appearance: none;
 }
 
 .inactiveNode {

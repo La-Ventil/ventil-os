@@ -162,6 +162,8 @@
             "machineUsages": "Utilisations"
           },
           "graph": {
+            "label": "Graphe du reseau d'utilisateurs",
+            "interactionHint": "Placez le focus ou survolez un utilisateur pour afficher l'infobulle. Cliquez ou appuyez sur Entree ou Espace pour epingler un utilisateur. Appuyez sur Echap pour effacer la selection en cours.",
             "productionTitle": "Indice de production",
             "productionDescription": "Regroupe le nombre d’utilisation des machines et de réparation d’objets.",
             "exchangeTitle": "Indice d’échange",

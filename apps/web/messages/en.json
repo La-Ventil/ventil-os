@@ -164,6 +164,8 @@
             "machineUsages": "Usages"
           },
           "graph": {
+            "label": "User network graph",
+            "interactionHint": "Focus or hover a user to inspect the tooltip. Click or press Enter or Space to pin a user. Press Escape to clear the current selection.",
             "productionTitle": "Production index",
             "productionDescription": "Groups the number of machine usages and repaired objects.",
             "exchangeTitle": "Exchange index",
