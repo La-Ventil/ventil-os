@@ -30,7 +30,9 @@
       },
       "updatePassword": {
         "title": "Mettre à jour mon mot de passe",
-        "intro": "Mettre à jour mon mot de passe"
+        "intro": "Mettre à jour mon mot de passe",
+        "success": "Votre mot de passe a bien été changé.",
+        "invalidToken": "Ce lien de réinitialisation n'existe pas ou n'est plus valide."
       },
       "verifyEmail": {
         "title": "Vérifier mon email",

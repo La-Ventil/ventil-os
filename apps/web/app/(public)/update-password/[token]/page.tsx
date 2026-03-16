@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Link from '@repo/ui/link';
 import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../lib/actions/auth/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
@@ -34,12 +35,15 @@ export default function Page(): JSX.Element {
   };
   const [formState, formAction, pending] = useActionState(updatePasswordAction, initialState);
   const router = useRouter();
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [submittedPassword, setSubmittedPassword] = useState('');
 
   useEffect(() => {
-    if (formState?.success && formState.values.email) {
-      signInAndRedirect(router)(formState.values.email, formState.values.password);
+    if (formState?.success && formState.values.email && submittedPassword) {
+      void signInAndRedirect(router)(formState.values.email, submittedPassword);
     }
-  }, [formState, router]);
+  }, [formState, router, submittedPassword]);
 
   return (
     <Box>
@@ -50,27 +54,36 @@ export default function Page(): JSX.Element {
           <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>
         )}
       </Stack>
-      <form action={formAction}>
+      <form
+        action={formAction}
+        onSubmit={() => {
+          setSubmittedPassword(password);
+        }}
+      >
         <input type="hidden" name="email" defaultValue={formState.values.email} />
         <Stack spacing={2}>
           <TextField
             name="password"
-            defaultValue={formState.values.password}
+            value={password}
+            onChange={(event) => setPassword(event.currentTarget.value)}
             label={tForms('fields.password')}
             placeholder={tForms('placeholders.password')}
             required
+            type="password"
           />
           <TextField
             name="passwordConfirmation"
-            defaultValue={formState.values.passwordConfirmation}
+            value={passwordConfirmation}
+            onChange={(event) => setPasswordConfirmation(event.currentTarget.value)}
             label={tForms('fields.passwordConfirmation')}
             placeholder={tForms('placeholders.passwordConfirmation')}
             required
+            type="password"
           />
         </Stack>
         <Grid container spacing={2}>
           <Grid>
-            <Button variant="outlined" color="secondary">
+            <Button variant="outlined" color="secondary" component={Link} href="/login">
               {tCommon('actions.back')}
             </Button>
           </Grid>

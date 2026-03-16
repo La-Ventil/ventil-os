@@ -32,7 +32,9 @@
       },
       "updatePassword": {
         "title": "Update my password",
-        "intro": "Update my password"
+        "intro": "Update my password",
+        "success": "Your password has been updated.",
+        "invalidToken": "This password reset link does not exist or is no longer valid."
       },
       "verifyEmail": {
         "title": "Verify my email",

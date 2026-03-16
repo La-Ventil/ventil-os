@@ -1,0 +1,56 @@
+import { expect, test } from '../../fixtures/test';
+import { getAuthTestRepository } from '../../helpers/auth-test-repository';
+
+const newPassword = 'Renewed123';
+
+test.describe('Update password journey', () => {
+  test('password reset lets the user sign in with a new password', async ({ page, seedUsers, workerWebRuntime }) => {
+    await page.goto('/forgot-password');
+    await page.locator('input[name="email"]').fill(seedUsers.student.email);
+    await page.locator('form button[type="submit"]').click();
+
+    await expect(
+      page
+        .getByRole('alert')
+        .filter({ hasText: /mot de passe|password/i })
+        .first()
+    ).toContainText(/mot de passe|password/i);
+
+    const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(
+      seedUsers.student.email
+    );
+
+    await page.goto(`/update-password/${resetToken}`);
+    await page.locator('input[name="password"]').fill(newPassword);
+    await page.locator('input[name="passwordConfirmation"]').fill(newPassword);
+    await page.locator('form button[type="submit"]').click();
+
+    await expect(page).toHaveURL(/\/hub\/profile/, { timeout: 15_000 });
+
+    await page.context().clearCookies();
+    await page.goto('/login');
+    await page.locator('input[name="email"]').fill(seedUsers.student.email);
+    await page.locator('input[name="password"]').fill(seedUsers.student.password);
+    await page.locator('form button[type="submit"]').click();
+
+    await expect(page).toHaveURL(/\/login/);
+    await expect(
+      page
+        .getByRole('alert')
+        .filter({ hasText: /identifiants|mot de passe|password/i })
+        .first()
+    ).toContainText(/identifiants|mot de passe|password/i);
+
+    await page.locator('input[name="password"]').fill(newPassword);
+    await page.locator('form button[type="submit"]').click();
+    await expect(page).toHaveURL(/\/hub\/profile/, { timeout: 15_000 });
+  });
+
+  test('back button from update password returns to login', async ({ page }) => {
+    await page.goto('/update-password/fake-token');
+
+    await page.getByRole('link', { name: /retour|back/i }).click();
+
+    await expect(page).toHaveURL(/\/login$/);
+  });
+});
