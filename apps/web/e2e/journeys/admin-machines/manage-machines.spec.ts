@@ -13,6 +13,21 @@ const tinyPngFile = {
 };
 
 test.describe('Admin machine journeys', () => {
+  test('admin can create a machine without an image', async ({ page, loginAs }) => {
+    const machineName = `PW machine ${Date.now()}`;
+
+    await loginAs('globalAdmin');
+    await page.goto('/hub/admin/machines/create');
+
+    await page.locator('input[name="name"]').fill(machineName);
+    await page.locator('input[name="description"]').fill('Created without an image for end-to-end coverage.');
+
+    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+
+    await expect(page).toHaveURL(/\/hub\/admin\/machines$/, { timeout: 15_000 });
+    await expect(page.getByRole('row', { name: new RegExp(machineName, 'i') })).toBeVisible();
+  });
+
   test('admin can create a machine from the create form', async ({ page, loginAs }) => {
     const machineName = createUniqueMachineName();
 
