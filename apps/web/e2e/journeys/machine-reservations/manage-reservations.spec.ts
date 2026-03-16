@@ -82,6 +82,20 @@ test.describe('Machine reservation management journeys', () => {
     await expect(getReservationCard(page)).toHaveCount(0);
   });
 
+  test('cancelled reservations are hidden from the user reservations list', async ({
+    page,
+    loginAs,
+    workerWebRuntime
+  }) => {
+    await loginAs('globalAdmin');
+    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
+
+    await cancelLatestReservation({ dbSlot: workerWebRuntime?.dbSlot });
+    await openMyReservationsTab(page);
+
+    await expect(getReservationCard(page)).toHaveCount(0);
+  });
+
   test('cancelled reservations are removed from the machine schedule', async ({
     page,
     loginAs,

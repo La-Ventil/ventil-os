@@ -7,6 +7,14 @@ type SetLatestConfirmedReservationTimingInput = {
   creatorEmail?: string;
 };
 
+type CreateConfirmedReservationInput = {
+  machineName: string;
+  creatorEmail: string;
+  startsAt: Date;
+  durationMinutes: number;
+  participantEmails?: string[];
+};
+
 const MINUTE_MS = 60_000;
 
 const reservationFixtureWindowFromOffset = (
@@ -26,6 +34,61 @@ const pastReservationFixtureWindow = (now: Date): DateInterval => reservationFix
 
 export class MachineReservationTestRepository {
   constructor(private readonly prisma: PrismaClient) {}
+
+  private async requireMachineIdByName(machineName: string): Promise<string> {
+    const machine = await this.prisma.machine.findFirst({
+      where: { name: machineName },
+      select: { id: true }
+    });
+
+    if (!machine) {
+      throw new Error(`No machine found for name ${machineName}`);
+    }
+
+    return machine.id;
+  }
+
+  private async requireUserIdByEmail(email: string): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true }
+    });
+
+    if (!user) {
+      throw new Error(`No user found for email ${email}`);
+    }
+
+    return user.id;
+  }
+
+  async createConfirmedReservation(input: CreateConfirmedReservationInput): Promise<string> {
+    const machineId = await this.requireMachineIdByName(input.machineName);
+    const creatorId = await this.requireUserIdByEmail(input.creatorEmail);
+    const participantIds = await Promise.all(
+      (input.participantEmails ?? []).map((email) => this.requireUserIdByEmail(email))
+    );
+    const window = reservationWindowFor(input.startsAt, input.durationMinutes);
+
+    const reservation = await this.prisma.machineReservation.create({
+      data: {
+        machineId,
+        creatorId,
+        startsAt: window.start,
+        endsAt: window.end,
+        status: 'confirmed',
+        participants: participantIds.length
+          ? {
+              create: participantIds.map((userId) => ({ userId }))
+            }
+          : undefined
+      },
+      select: {
+        id: true
+      }
+    });
+
+    return reservation.id;
+  }
 
   async getLatestConfirmedReservationId(input: SetLatestConfirmedReservationTimingInput): Promise<string> {
     const where: Prisma.MachineReservationWhereInput = {

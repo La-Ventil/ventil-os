@@ -26,6 +26,7 @@ export async function openMachineReservationModalFromSchedule(
   machineName: RegExp = /Bambu Lab X1C/i
 ): Promise<string> {
   const machineId = await openMachineDetails(page, machineName);
+
   const machineDialog = page.getByRole('dialog', { name: machineName });
 
   const slotButton = machineDialog
@@ -39,4 +40,26 @@ export async function openMachineReservationModalFromSchedule(
   await expect(page.getByRole('dialog', { name: machineName })).toBeVisible({ timeout: 15_000 });
 
   return machineId;
+}
+
+export async function setMachineDetailsDay(
+  page: Page,
+  day: Date,
+  machineName: RegExp = /Bambu Lab X1C/i
+): Promise<void> {
+  const machineDialog = page.getByRole('dialog', { name: machineName }).first();
+  await expect(machineDialog).toBeVisible();
+
+  const dateInput = machineDialog.getByRole('textbox', { name: /^date$/i });
+  await expect(dateInput).toBeVisible();
+
+  const formattedDay = new Intl.DateTimeFormat('fr-FR', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(day);
+
+  await dateInput.fill(formattedDay);
+  await dateInput.press('Tab');
 }

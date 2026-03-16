@@ -74,6 +74,7 @@ export default function MachineReservationForm({
   const fieldError = (field: keyof MachineReservationFormInput) => fieldErrorMessage(state, field);
   const [participants, setParticipants] = useState<UserSummaryViewModel[]>(() => initialParticipants ?? []);
   const [startDate, setStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
+  const [pickerStartDate, setPickerStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const filteredParticipants = useMemo(
     () => excludeBy(participants, (user) => user.id, currentUserId),
     [participants, currentUserId]
@@ -83,12 +84,16 @@ export default function MachineReservationForm({
     () => excludeBy(participantOptions, (user) => user.id, currentUserId),
     [participantOptions, currentUserId]
   );
-  const isStartDateValid = startDate.isValid();
-  const serializedStartAt = isStartDateValid ? startDate.toDate().toISOString() : '';
+  const isStartDateValid = pickerStartDate.isValid();
+  const serializedStartAt = startDate.toDate().toISOString();
 
   useEffect(() => {
     const parsed = parseIsoDate(state.values.startsAt);
-    if (parsed) setStartDate(toZonedDayjs(parsed, timeZone));
+    if (parsed) {
+      const zonedStartDate = toZonedDayjs(parsed, timeZone);
+      setStartDate(zonedStartDate);
+      setPickerStartDate(zonedStartDate);
+    }
   }, [state.values.startsAt, timeZone]);
 
   useEffect(() => {
@@ -97,12 +102,12 @@ export default function MachineReservationForm({
 
   const formattedStart = useMemo(
     () =>
-      isStartDateValid ? format.dateTime(startDate.toDate(), { dateStyle: 'short', timeStyle: 'short', timeZone }) : '',
-    [format, isStartDateValid, startDate, timeZone]
+      isStartDateValid
+        ? format.dateTime(pickerStartDate.toDate(), { dateStyle: 'short', timeStyle: 'short', timeZone })
+        : '',
+    [format, isStartDateValid, pickerStartDate, timeZone]
   );
-  const confirmLabel = reservationId
-    ? t('modal.reservationForm.update')
-    : t('modal.reservationForm.confirm');
+  const confirmLabel = reservationId ? t('modal.reservationForm.update') : t('modal.reservationForm.confirm');
 
   const handleParticipantsChange = (nextParticipants: UserSummaryViewModel[]) => {
     setParticipants(excludeBy(nextParticipants, (user) => user.id, currentUserId));
@@ -124,9 +129,15 @@ export default function MachineReservationForm({
 
       <LocalizedDateTimePicker
         label={t('modal.reservationForm.startLabel')}
-        value={startDate}
+        value={pickerStartDate}
         onChange={(value: Dayjs | null) => {
-          if (value) {
+          if (!value) {
+            return;
+          }
+
+          setPickerStartDate(value);
+
+          if (value.isValid()) {
             setStartDate(value);
           }
         }}
