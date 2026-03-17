@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
 import { openMachineDetails, setMachineDetailsDay } from '../../helpers/fab-lab';
 import { getMachineReservationTestRepository } from '../../helpers/machine-reservation-test-repository';
+import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-repository';
 
 const THIRTY_MINUTES_MS = 30 * 60_000;
 const NINETY_MINUTES_MS = 90 * 60_000;
@@ -254,5 +255,53 @@ test.describe('Machine reservation update journey', () => {
 
     const updatedWindow = await reservations.getReservationWindow(reservationId);
     expect(updatedWindow.end.getTime() - updatedWindow.start.getTime()).toBe(THIRTY_MINUTES_MS);
+  });
+
+  test('reservation update is rejected when the owner no longer meets the machine badge requirement', async ({
+    page,
+    loginAs,
+    seedUsers,
+    workerWebRuntime
+  }) => {
+    const startsAt = createEditableReservationStart(120);
+
+    await loginAs('globalAdmin');
+
+    const reservations = getMachineReservationTestRepository(workerWebRuntime?.dbSlot);
+    const badgeRepository = getOpenBadgeTestRepository(workerWebRuntime?.dbSlot);
+    const reservationId = await reservations.createConfirmedReservation({
+      machineName: SECOND_BAMBU_MACHINE_NAME,
+      creatorEmail: seedUsers.globalAdmin.email,
+      startsAt,
+      durationMinutes: 15
+    });
+
+    const machineId = await openMachineDetails(page, SECOND_BAMBU_MACHINE);
+    await openEditableReservation({
+      machineId,
+      reservationId,
+      startsAt,
+      durationMinutes: 15,
+      page
+    });
+
+    const reservationDialog = page.getByRole('dialog', { name: SECOND_BAMBU_MACHINE }).filter({
+      has: page.getByRole('button', { name: /mettre à jour|update/i })
+    });
+
+    await expect(reservationDialog).toBeVisible();
+
+    await badgeRepository.removeProgressForUserByBadgeName(seedUsers.globalAdmin.email, 'Impression 3D Bambu Lab');
+
+    await reservationDialog.getByRole('combobox', { name: /durée|duration/i }).click();
+    await page.getByRole('option', { name: /30 min/i }).click();
+    await reservationDialog.getByRole('button', { name: /mettre à jour|update/i }).click();
+
+    await expect(
+      reservationDialog.getByRole('alert').filter({ hasText: /badge requis|required open badge/i })
+    ).toBeVisible({
+      timeout: 10_000
+    });
+    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`));
   });
 });

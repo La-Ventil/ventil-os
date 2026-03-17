@@ -19,6 +19,34 @@ export class OpenBadgeTestRepository {
       data: { status }
     });
   }
+
+  async removeProgressForUserByBadgeName(userEmail: string, badgeName: string): Promise<void> {
+    const [user, badge] = await Promise.all([
+      this.prisma.user.findUnique({
+        where: { email: userEmail },
+        select: { id: true }
+      }),
+      this.prisma.openBadge.findFirst({
+        where: { name: badgeName },
+        select: { id: true }
+      })
+    ]);
+
+    if (!user) {
+      throw new Error(`User not found for email ${userEmail}`);
+    }
+
+    if (!badge) {
+      throw new Error(`Open badge not found for name ${badgeName}`);
+    }
+
+    await this.prisma.openBadgeProgress.deleteMany({
+      where: {
+        userId: user.id,
+        openBadgeId: badge.id
+      }
+    });
+  }
 }
 
 const repositoriesBySlot = new Map<string, OpenBadgeTestRepository>();
