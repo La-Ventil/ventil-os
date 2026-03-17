@@ -8,6 +8,7 @@ const mockOpenBadgeHighest = vi.fn();
 const mockAwardOpenBadgeLevel = vi.fn();
 const mockSetOpenBadgeLevel = vi.fn();
 const mockGetOpenBadgeAdminById = vi.fn();
+const mockGetOpenBadgeById = vi.fn();
 const mockSetOpenBadgeStatus = vi.fn();
 const mockTrainerThreshold = vi.fn();
 const mockUserRepositoryExists = vi.fn();
@@ -18,6 +19,7 @@ vi.mock('@repo/db', () => ({
     awardOpenBadgeLevel: (...args: [Record<string, unknown>]) => mockAwardOpenBadgeLevel(...args),
     setUserOpenBadgeLevel: (...args: [Record<string, unknown>]) => mockSetOpenBadgeLevel(...args),
     getOpenBadgeAdminById: (...args: [string]) => mockGetOpenBadgeAdminById(...args),
+    getOpenBadgeById: (...args: [string]) => mockGetOpenBadgeById(...args),
     setOpenBadgeStatus: (...args: [string, string]) => mockSetOpenBadgeStatus(...args),
     getTrainerThresholdLevel: (...args: [string]) => mockTrainerThreshold(...args)
   },
@@ -38,6 +40,7 @@ describe('open-badge command invariants', () => {
     mockSetOpenBadgeLevel.mockResolvedValue(null);
     mockSetOpenBadgeStatus.mockResolvedValue({ id: 'badge-id', status: 'inactive' });
     mockGetOpenBadgeAdminById.mockResolvedValue({ status: ActivityStatus.Active, _count: { machines: 0 } });
+    mockGetOpenBadgeById.mockResolvedValue({ id: 'badge-id', status: ActivityStatus.Active });
     mockUserRepositoryExists.mockImplementation(() => true);
   });
 
@@ -67,7 +70,7 @@ describe('open-badge command invariants', () => {
   });
 
   it('prevents assigning on an inactive badge', async () => {
-    mockGetOpenBadgeAdminById.mockResolvedValue({ status: ActivityStatus.Inactive, _count: { machines: 0 } });
+    mockGetOpenBadgeById.mockResolvedValue({ id: 'badge-id', status: ActivityStatus.Inactive });
     mockOpenBadgeHighest.mockResolvedValue(1);
 
     await expect(assignOpenBadge({ userId: user.id, openBadgeId: 'badge-id', level: 2 }, adminUser)).rejects.toEqual(

@@ -5,11 +5,14 @@ import { viewOpenBadgeAssignContext } from './view-open-badge-assign-context.que
 const mockBrowseAssignableUsersForOpenBadge = vi.fn();
 const mockBuildMap = vi.fn();
 const mockGetOpenBadgeById = vi.fn();
-const mockCanAssignOpenBadge = vi.fn();
+const mockGetTrainerThresholdLevel = vi.fn();
+const mockGetUserHighestOpenBadgeLevel = vi.fn();
 
 vi.mock('@repo/db', () => ({
   openBadgeRepository: {
-    getOpenBadgeById: (...args: [string]) => mockGetOpenBadgeById(...args)
+    getOpenBadgeById: (...args: [string]) => mockGetOpenBadgeById(...args),
+    getTrainerThresholdLevel: (...args: [string]) => mockGetTrainerThresholdLevel(...args),
+    getUserHighestOpenBadgeLevel: (...args: [string, string]) => mockGetUserHighestOpenBadgeLevel(...args)
   }
 }));
 
@@ -19,9 +22,6 @@ vi.mock('./browse-assignable-users-for-open-badge.query', () => ({
 
 vi.mock('./open-badge-assignment-options.query', () => ({
   buildOpenBadgeAssignableUsersByBadgeIdAndLevel: (...args: [unknown[], unknown[]]) => mockBuildMap(...args)
-}));
-vi.mock('./can-assign-open-badge.query', () => ({
-  canAssignOpenBadge: (...args: [string, unknown?]) => mockCanAssignOpenBadge(...args)
 }));
 
 describe('viewOpenBadgeAssignContext', () => {
@@ -49,13 +49,14 @@ describe('viewOpenBadgeAssignContext', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetOpenBadgeById.mockResolvedValue(badge);
+    mockGetTrainerThresholdLevel.mockResolvedValue(null);
+    mockGetUserHighestOpenBadgeLevel.mockResolvedValue(null);
     mockBrowseAssignableUsersForOpenBadge.mockResolvedValue([userSummary]);
     mockBuildMap.mockResolvedValue({
       [badge.id]: {
         '1': ['user-id']
       }
     });
-    mockCanAssignOpenBadge.mockResolvedValue(true);
   });
 
   afterEach(() => {
@@ -116,10 +117,12 @@ describe('viewOpenBadgeAssignContext', () => {
     });
     expect(mockBrowseAssignableUsersForOpenBadge).toHaveBeenCalledWith('badge-id');
     expect(mockBuildMap).toHaveBeenCalledWith([expect.objectContaining({ id: badge.id })], [userSummary]);
+    expect(mockGetOpenBadgeById).toHaveBeenCalledTimes(1);
   });
 
   it('returns null when actor is not authorized to assign this badge', async () => {
-    mockCanAssignOpenBadge.mockResolvedValue(false);
+    mockGetTrainerThresholdLevel.mockResolvedValue(2);
+    mockGetUserHighestOpenBadgeLevel.mockResolvedValue(1);
 
     const context = await viewOpenBadgeAssignContext('badge-id', {
       id: 'student-id',
@@ -127,10 +130,7 @@ describe('viewOpenBadgeAssignContext', () => {
     });
 
     expect(context).toBeNull();
-    expect(mockCanAssignOpenBadge).toHaveBeenCalledWith('badge-id', {
-      id: 'student-id',
-      globalAdmin: false
-    });
+    expect(mockGetUserHighestOpenBadgeLevel).toHaveBeenCalledWith('student-id', 'badge-id');
     expect(mockBrowseAssignableUsersForOpenBadge).not.toHaveBeenCalled();
     expect(mockBuildMap).not.toHaveBeenCalled();
   });

@@ -1,4 +1,5 @@
 import { machineRepository } from '@repo/db';
+import { isActive } from '@repo/domain/activity-status';
 import type { MachineViewModel } from '@repo/view-models/machine';
 import { mapMachineToViewModel } from '../../presenters/machine';
 import type { Query } from '../../usecase';
@@ -8,7 +9,7 @@ export const browseMachines: Query<[string, Date?], MachineViewModel[]> = async 
   timeZone: string,
   date: Date = new Date()
 ) => {
-  const machines = await machineRepository.listMachines();
+  const machines = (await machineRepository.listMachines()).filter((machine) => isActive(machine.status));
   const baseMachines = machines.map(mapMachineToViewModel);
   const availabilityById = await resolveMachinesAvailability({
     machines: baseMachines,

@@ -25,4 +25,5 @@ export async function setMachineStatusAction(formData: FormData): Promise<void> 
 
   await setMachineStatus({ id: machineId, status });
   revalidatePath('/hub/admin/machines');
+  revalidatePath('/hub/fab-lab', 'layout');
 }
