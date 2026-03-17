@@ -9,13 +9,15 @@ import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
 import { MachineAdminStatus } from '@repo/view-models/machine-admin';
+import type { OpenBadgeRequirementOptionViewModel } from '@repo/view-models/open-badge-requirement-option';
 import { updateMachineAction } from '../../../../../../lib/actions/machines/update-machine';
 
 type MachineEditFormClientProps = {
   machine: MachineDetailsViewModel;
+  openBadgeOptions: OpenBadgeRequirementOptionViewModel[];
 };
 
-export default function MachineEditFormClient({ machine }: MachineEditFormClientProps) {
+export default function MachineEditFormClient({ machine, openBadgeOptions }: MachineEditFormClientProps) {
   const router = useRouter();
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
@@ -26,7 +28,8 @@ export default function MachineEditFormClient({ machine }: MachineEditFormClient
     description: machine.description ?? '',
     imageFile: undefined,
     badgeRequired: machine.badgeRequirements.length > 0,
-    badgeQuery: '',
+    requiredOpenBadgeId: machine.badgeRequirements[0]?.openBadge.id ?? '',
+    requiredOpenBadgeLevelId: machine.badgeRequirements[0]?.level?.id ?? '',
     activationEnabled: machine.status === MachineAdminStatus.Active
   });
 
@@ -49,6 +52,7 @@ export default function MachineEditFormClient({ machine }: MachineEditFormClient
   return (
     <MachineForm
       formState={formState}
+      openBadgeOptions={openBadgeOptions}
       imagePreviewUrl={machine.imageUrl ?? undefined}
       imageRequired={false}
       submitLabel={tRoot('pages.hub.admin.machinesEdit.actions.save')}

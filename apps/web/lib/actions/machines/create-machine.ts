@@ -43,7 +43,8 @@ export async function createMachineAction(
     description: request.description ?? previousState.values.description,
     imageUrl: imageUpload.imageUrl ?? null,
     badgeRequired: request.badgeRequired ?? false,
-    badgeQuery: request.badgeQuery ?? '',
+    requiredOpenBadgeId: request.badgeRequired ? (request.requiredOpenBadgeId ?? '') : '',
+    requiredOpenBadgeLevelId: request.badgeRequired ? (request.requiredOpenBadgeLevelId ?? '') : '',
     activationEnabled: request.activationEnabled ?? false
   };
 
@@ -53,7 +54,16 @@ export async function createMachineAction(
       description: values.description,
       imageUrl: values.imageUrl,
       activationEnabled: values.activationEnabled,
-      creatorId: session.user.id
+      creatorId: session.user.id,
+      badgeRequirements:
+        values.badgeRequired && values.requiredOpenBadgeId
+          ? [
+              {
+                openBadgeId: values.requiredOpenBadgeId,
+                openBadgeLevelId: values.requiredOpenBadgeLevelId || null
+              }
+            ]
+          : []
     });
 
     return formSuccess(responseValues, t('machine.create.success'));

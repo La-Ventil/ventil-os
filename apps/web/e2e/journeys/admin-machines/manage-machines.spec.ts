@@ -44,6 +44,39 @@ test.describe('Admin machine journeys', () => {
     await expect(page.getByRole('row', { name: new RegExp(machineName, 'i') })).toBeVisible();
   });
 
+  test('admin can create a machine with an open badge requirement', async ({ page, loginAs }) => {
+    const machineName = createUniqueMachineName();
+
+    await loginAs('globalAdmin');
+    await page.goto('/hub/admin/machines/create');
+
+    await page.locator('input[name="name"]').fill(machineName);
+    await page.locator('input[name="description"]').fill('Created with an open badge requirement.');
+
+    await page.getByRole('checkbox', { name: /exiger un open badge|require an open badge/i }).click();
+
+    const badgeAutocomplete = page.getByRole('combobox', { name: /^open badge$/i });
+    await badgeAutocomplete.fill('Impression 3D');
+    await page.getByRole('option', { name: /Impression 3D Bambu Lab/i }).click();
+
+    await page.getByRole('combobox', { name: /niveau minimum|minimum level/i }).click();
+    await page.getByRole('option', { name: /1\s*-\s*(Utilisateur autonome|Autonomous user)/i }).click();
+
+    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+
+    await expect(page).toHaveURL(/\/hub\/admin\/machines$/);
+
+    const row = page.getByRole('row', { name: new RegExp(machineName, 'i') });
+    await expect(row).toBeVisible();
+
+    const menu = await openRowQuickActions(page, row, /administration|manage/i);
+    await clickQuickAction(menu, /modifier|edit/i);
+
+    await expect(page).toHaveURL(/\/hub\/admin\/machines\/[^/]+\/edit$/);
+    await expect(page.getByRole('combobox', { name: /^open badge$/i })).toHaveValue(/Impression 3D Bambu Lab/i);
+    await expect(page.getByRole('combobox', { name: /niveau minimum|minimum level/i })).toContainText(/1\s*-/i);
+  });
+
   test('admin can edit a machine from row quick actions', async ({ page, loginAs }) => {
     const updatedName = `Laserbox ${Date.now()}`;
 

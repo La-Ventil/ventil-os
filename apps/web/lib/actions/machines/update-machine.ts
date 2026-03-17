@@ -45,7 +45,8 @@ export async function updateMachineAction(
     description: request.description ?? previousState.values.description,
     imageUrl: imageUpload.imageUrl,
     badgeRequired: request.badgeRequired ?? false,
-    badgeQuery: request.badgeQuery ?? '',
+    requiredOpenBadgeId: request.badgeRequired ? (request.requiredOpenBadgeId ?? '') : '',
+    requiredOpenBadgeLevelId: request.badgeRequired ? (request.requiredOpenBadgeLevelId ?? '') : '',
     activationEnabled: request.activationEnabled ?? false
   };
 
@@ -55,7 +56,16 @@ export async function updateMachineAction(
       name: values.name,
       description: values.description,
       imageUrl: values.imageUrl,
-      activationEnabled: values.activationEnabled
+      activationEnabled: values.activationEnabled,
+      badgeRequirements:
+        values.badgeRequired && values.requiredOpenBadgeId
+          ? [
+              {
+                openBadgeId: values.requiredOpenBadgeId,
+                openBadgeLevelId: values.requiredOpenBadgeLevelId || null
+              }
+            ]
+          : []
     });
 
     return formSuccess(responseValues, t('machine.update.success'));

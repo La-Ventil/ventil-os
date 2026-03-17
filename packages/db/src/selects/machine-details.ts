@@ -27,6 +27,7 @@ export const machineDetailsSelect = {
       requiredOpenBadgeLevel: {
         select: {
           id: true,
+          openBadgeId: true,
           title: true,
           level: true
         }

@@ -1,15 +1,33 @@
 import { describe, expect, it } from 'vitest';
 import { ActivityStatus } from '../activity-status';
+import { OpenBadgeRequirement } from '../badge/open-badge-requirement';
+import { OpenBadgeRequirementRule } from '../badge/open-badge-requirement-rule';
 import { MachineAvailability } from '../machine/machine-availability';
 import { Machine, MachineReservationSlot } from '../machine/machine';
 import { MachineReservationStatus } from '../machine/machine-reservation-status';
 
-const baseMachine = (reservations: MachineReservationSlot[] = []) =>
+const badgeRequirement = OpenBadgeRequirement.from({
+  id: 'requirement-1',
+  rule: OpenBadgeRequirementRule.All,
+  openBadge: {
+    id: 'badge-1',
+    name: 'Bambu Lab'
+  },
+  level: {
+    id: 'level-2',
+    openBadgeId: 'badge-1',
+    title: 'Autonome',
+    level: 2
+  }
+});
+
+const baseMachine = (reservations: MachineReservationSlot[] = [], badgeRequirements = [] as OpenBadgeRequirement[]) =>
   Machine.from({
     id: 'machine-1',
     name: 'Laser Cutter',
     category: 'cutting',
     status: ActivityStatus.Active,
+    badgeRequirements,
     reservations
   });
 
@@ -55,5 +73,31 @@ describe('Machine aggregate', () => {
 
     const machine = baseMachine([existing]);
     expect(Machine.resolveAvailability(machine, now, dayEnd)).toBe(MachineAvailability.Occupied);
+  });
+
+  it('rejects reservation eligibility when user badge level is below requirement', () => {
+    const machine = baseMachine([], [badgeRequirement]);
+
+    expect(() =>
+      Machine.assertReservationEligibility(
+        machine,
+        new Map([
+          ['badge-1', 1]
+        ])
+      )
+    ).toThrow('machineReservation.badgeRequired');
+  });
+
+  it('accepts reservation eligibility when user badge level meets requirement', () => {
+    const machine = baseMachine([], [badgeRequirement]);
+
+    expect(() =>
+      Machine.assertReservationEligibility(
+        machine,
+        new Map([
+          ['badge-1', 2]
+        ])
+      )
+    ).not.toThrow();
   });
 });

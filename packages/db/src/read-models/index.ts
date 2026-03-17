@@ -10,6 +10,7 @@ export type {
   OpenBadgeProgressReadModel,
   OpenBadgeAdminReadModel
 } from './open-badge';
+export type { OpenBadgeRequirementOptionReadModel } from './open-badge-requirement-option';
 export type { UserCredentialsReadModel } from './user-credentials';
 export type { UserAdminReadModel } from './user-admin';
 export type { UserPasswordResetReadModel } from './user-password-reset';

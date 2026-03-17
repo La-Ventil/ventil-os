@@ -342,6 +342,16 @@
             "description": "Short description *",
             "image": "Image"
           },
+          "badgeRequirement": {
+            "title": "Required open badge",
+            "description": "Link an open badge to the machine when reservation should be restricted to certified users.",
+            "toggle": "Require an open badge",
+            "badgeLabel": "Open badge",
+            "badgeHelper": "Search and select the required open badge.",
+            "levelLabel": "Minimum level",
+            "levelHelper": "Leave empty to accept any earned level for this badge.",
+            "anyLevel": "Any level"
+          },
           "image": {
             "placeholder": "Illustration in progress",
             "upload": "Upload",
@@ -659,7 +669,8 @@
       "nameMaxLength": "Machine name must be at most 35 characters.",
       "descriptionRequired": "Please enter a description.",
       "descriptionMaxLength": "Description must be at most 100 characters.",
-      "imageRequired": "Please add an image."
+      "imageRequired": "Please add an image.",
+      "requiredOpenBadge": "Please select the required open badge."
     },
     "openBadge": {
       "nameRequired": "Please enter an open badge name.",

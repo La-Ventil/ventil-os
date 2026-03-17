@@ -7,6 +7,7 @@ import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
 import { Machine } from '@repo/domain/machine/machine';
 import type { Command } from '../../usecase';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
+import { assertReservationEligibility } from '../reservation-eligibility';
 
 export type UpdateReservationInput = {
   reservationId: string;
@@ -45,6 +46,8 @@ export const updateReservation: Command<[UpdateReservationInput], MachineReserva
   if (!machine) {
     throw new MachineReservationError('machineReservation.machineRequired');
   }
+
+  await assertReservationEligibility(machine, reservation.creator.id);
 
   const { candidate, participantIds } = Machine.planReservation({
     creatorId: reservation.creator.id,

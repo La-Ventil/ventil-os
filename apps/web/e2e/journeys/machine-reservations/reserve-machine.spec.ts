@@ -134,4 +134,42 @@ test.describe('Machine reservation journey', () => {
     const url = new URL(page.url());
     expect(url.searchParams.get('start')).toBe(roundedNow.toISOString());
   });
+
+  test('student cannot open a reservation slot when badge level requirement is not met', async ({ page, loginAs }) => {
+    const fixedNow = new Date();
+    fixedNow.setHours(9, 0, 0, 0);
+
+    await page.addInitScript(
+      ({ nowIso }) => {
+        const fixedTime = new Date(nowIso).getTime();
+        const OriginalDate = Date;
+
+        class MockDate extends OriginalDate {
+          constructor(...args: unknown[]) {
+            if (args.length === 0) {
+              super(fixedTime);
+              return;
+            }
+
+            super(...(args as ConstructorParameters<DateConstructor>));
+          }
+
+          static now(): number {
+            return fixedTime;
+          }
+        }
+
+        globalThis.Date = MockDate as DateConstructor;
+      },
+      { nowIso: fixedNow.toISOString() }
+    );
+
+    await loginAs('student');
+    await openMachineDetails(page, /Bambu Lab X1C/i);
+    const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
+    await expect(machineDialog).toBeVisible();
+    await expect(
+      machineDialog.locator('button[aria-label="Réserver à 10:00"], button[aria-label="Reserve at 10:00"]').first()
+    ).toBeDisabled();
+  });
 });

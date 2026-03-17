@@ -1,0 +1,45 @@
+import { openBadgeRepository } from '@repo/db';
+import {
+  Machine,
+  type Machine as MachineAggregate,
+  type ReservationEligibilityLevels
+} from '@repo/domain/machine/machine';
+
+const emptyEligibilityLevels = (machine: MachineAggregate): ReservationEligibilityLevels =>
+  new Map(machine.badgeRequirements.map((requirement) => [requirement.openBadge.id, null]));
+
+export const resolveReservationEligibilityLevels = async (
+  machine: MachineAggregate,
+  userId?: string | null
+): Promise<ReservationEligibilityLevels> => {
+  if (!machine.badgeRequirements.length) {
+    return new Map();
+  }
+
+  if (!userId) {
+    return emptyEligibilityLevels(machine);
+  }
+
+  const openBadgeIds = [...new Set(machine.badgeRequirements.map((requirement) => requirement.openBadge.id))];
+  return openBadgeRepository.getUserHighestOpenBadgeLevels(userId, openBadgeIds);
+};
+
+export const assertReservationEligibility = async (
+  machine: MachineAggregate,
+  userId?: string | null
+): Promise<void> => {
+  const userLevels = await resolveReservationEligibilityLevels(machine, userId);
+  Machine.assertReservationEligibility(machine, userLevels);
+};
+
+export const checkReservationEligibilityForMachine = async (
+  machine: MachineAggregate,
+  userId?: string | null
+): Promise<boolean> => {
+  try {
+    await assertReservationEligibility(machine, userId);
+    return true;
+  } catch {
+    return false;
+  }
+};

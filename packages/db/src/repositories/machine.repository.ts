@@ -1,7 +1,9 @@
 import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
+import { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
 import { Machine, MachineReservationSlot } from '@repo/domain/machine/machine';
 import { toOpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
+import type { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
 import type { MachineAdminReadModel, MachineDetailsReadModel, MachineSummaryReadModel } from '../read-models';
 import { machineAdminSelect, machineSummarySelect } from '../selects/machine';
 import { machineReservationSlotSelect, type MachineReservationSlotPayload } from '../selects/machine-reservation';
@@ -11,6 +13,29 @@ import type { MachineDetailsPayload } from '../selects/machine-details';
 
 export class MachineRepository {
   constructor(private prisma: PrismaClient) {}
+
+  private normalizeBadgeRequirements(machine: Pick<MachineDetailsPayload, 'badgeRequirements'>) {
+    return machine.badgeRequirements.map((requirement) =>
+      OpenBadgeRequirement.from({
+        id: requirement.id,
+        rule: toOpenBadgeRequirementRule(requirement.rule),
+        openBadge: {
+          id: requirement.requiredOpenBadge.id,
+          name: requirement.requiredOpenBadge.name,
+          type: requirement.requiredOpenBadge.type ?? null,
+          imageUrl: requirement.requiredOpenBadge.coverImage ?? null
+        },
+        level: requirement.requiredOpenBadgeLevel
+          ? {
+              id: requirement.requiredOpenBadgeLevel.id,
+              openBadgeId: requirement.requiredOpenBadgeLevel.openBadgeId,
+              title: requirement.requiredOpenBadgeLevel.title ?? null,
+              level: requirement.requiredOpenBadgeLevel.level
+            }
+          : null
+      })
+    );
+  }
 
   private normalizeMachineSummary(machine: MachineSummaryPayload): MachineSummaryReadModel {
     return {
@@ -30,23 +55,7 @@ export class MachineRepository {
     return {
       ...machine,
       status: toActivityStatus(machine.status),
-      badgeRequirements: machine.badgeRequirements.map((requirement) => ({
-        id: requirement.id,
-        rule: toOpenBadgeRequirementRule(requirement.rule),
-        openBadge: {
-          id: requirement.requiredOpenBadge.id,
-          name: requirement.requiredOpenBadge.name,
-          type: requirement.requiredOpenBadge.type ?? null,
-          imageUrl: requirement.requiredOpenBadge.coverImage ?? null
-        },
-        level: requirement.requiredOpenBadgeLevel
-          ? {
-              id: requirement.requiredOpenBadgeLevel.id,
-              title: requirement.requiredOpenBadgeLevel.title ?? null,
-              level: requirement.requiredOpenBadgeLevel.level
-            }
-          : null
-      }))
+      badgeRequirements: this.normalizeBadgeRequirements(machine)
     };
   }
 
@@ -93,6 +102,11 @@ export class MachineRepository {
     imageUrl?: string | null;
     status: ActivityStatus;
     creatorId: string;
+    badgeRequirements?: {
+      requiredOpenBadgeId: string;
+      requiredOpenBadgeLevelId: string | null;
+      rule: OpenBadgeRequirementRule;
+    }[];
   }): Promise<{ id: string }> {
     const machine = await this.prisma.machine.create({
       data: {
@@ -101,7 +115,16 @@ export class MachineRepository {
         description: input.description ?? null,
         imageUrl: input.imageUrl ?? null,
         status: input.status as PrismaActivityStatus,
-        creatorId: input.creatorId
+        creatorId: input.creatorId,
+        badgeRequirements: input.badgeRequirements?.length
+          ? {
+              create: input.badgeRequirements.map((requirement) => ({
+                requiredOpenBadgeId: requirement.requiredOpenBadgeId,
+                requiredOpenBadgeLevelId: requirement.requiredOpenBadgeLevelId,
+                rule: requirement.rule
+              }))
+            }
+          : undefined
       },
       select: { id: true }
     });
@@ -115,6 +138,11 @@ export class MachineRepository {
     description?: string | null;
     imageUrl?: string | null;
     status: ActivityStatus;
+    badgeRequirements?: {
+      requiredOpenBadgeId: string;
+      requiredOpenBadgeLevelId: string | null;
+      rule: OpenBadgeRequirementRule;
+    }[];
   }): Promise<{ id: string }> {
     const machine = await this.prisma.machine.update({
       where: { id: input.id },
@@ -122,7 +150,19 @@ export class MachineRepository {
         name: input.name,
         description: input.description ?? null,
         imageUrl: input.imageUrl ?? null,
-        status: input.status as PrismaActivityStatus
+        status: input.status as PrismaActivityStatus,
+        badgeRequirements: {
+          deleteMany: {},
+          ...(input.badgeRequirements?.length
+            ? {
+                create: input.badgeRequirements.map((requirement) => ({
+                  requiredOpenBadgeId: requirement.requiredOpenBadgeId,
+                  requiredOpenBadgeLevelId: requirement.requiredOpenBadgeLevelId,
+                  rule: requirement.rule
+                }))
+              }
+            : {})
+        }
       },
       select: { id: true }
     });
@@ -130,10 +170,7 @@ export class MachineRepository {
     return { id: machine.id };
   }
 
-  async setMachineStatus(
-    id: string,
-    status: ActivityStatus
-  ): Promise<{ id: string; status: ActivityStatus }> {
+  async setMachineStatus(id: string, status: ActivityStatus): Promise<{ id: string; status: ActivityStatus }> {
     const machine = await this.prisma.machine.update({
       where: { id },
       data: { status: status as PrismaActivityStatus },
@@ -150,15 +187,12 @@ export class MachineRepository {
     });
   }
 
-  async getReservableMachine(
-    machineId: string,
-    windowStart: Date,
-    windowEnd: Date
-  ): Promise<Machine | null> {
+  async getReservableMachine(machineId: string, windowStart: Date, windowEnd: Date): Promise<Machine | null> {
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },
       select: {
         ...machineSummarySelect,
+        badgeRequirements: machineDetailsSelect.badgeRequirements,
         reservations: {
           where: {
             startsAt: {
@@ -188,6 +222,7 @@ export class MachineRepository {
       status: toActivityStatus(machine.status),
       description: machine.description ?? null,
       imageUrl: machine.imageUrl ?? null,
+      badgeRequirements: this.normalizeBadgeRequirements(machine),
       reservations
     });
   }

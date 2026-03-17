@@ -14,14 +14,25 @@ export const machineDescriptionSchema = z
   .min(1, { message: 'validation.machine.descriptionRequired' })
   .max(MACHINE_DESCRIPTION_MAX_LENGTH, { message: 'validation.machine.descriptionMaxLength' });
 
-const machineCreateFormSchema = z.object({
-  name: zfd.text(machineNameSchema),
-  description: zfd.text(machineDescriptionSchema),
-  imageFile: optionalImageFileSchema,
-  badgeRequired: zfd.checkbox(),
-  badgeQuery: zfd.text(z.string().optional()),
-  activationEnabled: zfd.checkbox()
-});
+const machineCreateFormSchema = z
+  .object({
+    name: zfd.text(machineNameSchema),
+    description: zfd.text(machineDescriptionSchema),
+    imageFile: optionalImageFileSchema,
+    badgeRequired: zfd.checkbox(),
+    requiredOpenBadgeId: zfd.text(z.string().optional()),
+    requiredOpenBadgeLevelId: zfd.text(z.string().optional()),
+    activationEnabled: zfd.checkbox()
+  })
+  .superRefine((data, context) => {
+    if (data.badgeRequired && !data.requiredOpenBadgeId) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['requiredOpenBadgeId'],
+        message: 'validation.machine.requiredOpenBadge'
+      });
+    }
+  });
 
 export const machineCreateRequestSchema = zfd.formData(machineCreateFormSchema);
 

@@ -7,18 +7,24 @@ import MachineForm from '@repo/ui/forms/machine.form';
 import { createFormState } from '@repo/form/form-state';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { useTranslations } from 'next-intl';
+import type { OpenBadgeRequirementOptionViewModel } from '@repo/view-models/open-badge-requirement-option';
 import { createMachineAction } from '../../../../../lib/actions/machines/create-machine';
 
 const machineCreateInitialState = createFormState<MachineCreateFormInput>({
   name: '',
   description: '',
   imageFile: undefined,
-  badgeRequired: true,
-  badgeQuery: '',
+  badgeRequired: false,
+  requiredOpenBadgeId: '',
+  requiredOpenBadgeLevelId: '',
   activationEnabled: true
 });
 
-export default function MachineCreateFormClient() {
+type MachineCreateFormClientProps = {
+  openBadgeOptions: OpenBadgeRequirementOptionViewModel[];
+};
+
+export default function MachineCreateFormClient({ openBadgeOptions }: MachineCreateFormClientProps) {
   const router = useRouter();
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
@@ -38,5 +44,5 @@ export default function MachineCreateFormClient() {
     }
   }, [router, state.success]);
 
-  return <MachineForm formState={formState} />;
+  return <MachineForm formState={formState} openBadgeOptions={openBadgeOptions} />;
 }

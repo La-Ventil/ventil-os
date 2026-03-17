@@ -340,6 +340,16 @@
             "description": "Description courte *",
             "image": "Image"
           },
+          "badgeRequirement": {
+            "title": "Open badge requis",
+            "description": "Associez un open badge à la machine si sa réservation doit être restreinte à des utilisateurs certifiés.",
+            "toggle": "Exiger un open badge",
+            "badgeLabel": "Open badge",
+            "badgeHelper": "Recherchez puis sélectionnez l’open badge requis.",
+            "levelLabel": "Niveau minimum",
+            "levelHelper": "Laissez vide pour accepter n’importe quel niveau obtenu sur ce badge.",
+            "anyLevel": "N’importe quel niveau"
+          },
           "image": {
             "placeholder": "Illustration en cours",
             "upload": "Télécharger",
@@ -670,7 +680,8 @@
       "nameMaxLength": "Le nom de la machine ne doit pas dépasser 35 caractères.",
       "descriptionRequired": "Veuillez renseigner une description.",
       "descriptionMaxLength": "La description ne doit pas dépasser 100 caractères.",
-      "imageRequired": "Veuillez ajouter une image."
+      "imageRequired": "Veuillez ajouter une image.",
+      "requiredOpenBadge": "Veuillez sélectionner l’open badge requis."
     }
   },
   "openBadge": {

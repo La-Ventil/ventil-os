@@ -1,6 +1,7 @@
 import { machineRepository } from '@repo/db';
 import { ActivityStatus } from '@repo/domain/activity-status';
 import type { Command } from '../../usecase';
+import { resolveMachineBadgeRequirements, type MachineBadgeRequirementInput } from '../machine-badge-requirements';
 
 export type UpdateMachineInput = {
   id: string;
@@ -8,25 +9,26 @@ export type UpdateMachineInput = {
   description: string;
   imageUrl?: string | null;
   activationEnabled: boolean;
+  badgeRequirements?: MachineBadgeRequirementInput[];
 };
 
 type UpdateMachineResult = Awaited<ReturnType<typeof machineRepository.updateMachine>>;
 
-export const updateMachine: Command<[UpdateMachineInput], UpdateMachineResult> = async (
-  input: UpdateMachineInput
-) => {
+export const updateMachine: Command<[UpdateMachineInput], UpdateMachineResult> = async (input: UpdateMachineInput) => {
   const current = await machineRepository.getMachineById(input.id);
   if (!current) {
     throw new Error('machine.update.notFound');
   }
 
-  const imageUrl = input.imageUrl !== undefined ? input.imageUrl : current.imageUrl ?? null;
+  const imageUrl = input.imageUrl !== undefined ? input.imageUrl : (current.imageUrl ?? null);
+  const badgeRequirements = await resolveMachineBadgeRequirements(input.badgeRequirements);
 
   return machineRepository.updateMachine({
     id: input.id,
     name: input.name,
     description: input.description,
     imageUrl,
-    status: input.activationEnabled ? ActivityStatus.Active : ActivityStatus.Inactive
+    status: input.activationEnabled ? ActivityStatus.Active : ActivityStatus.Inactive,
+    badgeRequirements
   });
 };

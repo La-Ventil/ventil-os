@@ -5,7 +5,7 @@ import { planReservationForMachine } from '@repo/domain/machine/machine-reservat
 import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
 import type { Command } from '../../usecase';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
-import { checkReservationEligibility } from './check-reservation-eligibility.query';
+import { assertReservationEligibility } from '../reservation-eligibility';
 
 export type ReserveMachineInput = {
   machineId: string;
@@ -18,11 +18,6 @@ export type ReserveMachineInput = {
 export const reserveMachine: Command<[ReserveMachineInput], MachineReservationViewModel> = async (
   input: ReserveMachineInput
 ) => {
-  const canReserve = await checkReservationEligibility(input.machineId, input.creatorId);
-  if (!canReserve) {
-    throw new MachineReservationError('machineReservation.badgeRequired');
-  }
-
   const reservationWindow = reservationWindowFor(input.startsAt, input.durationMinutes);
   const machine = await machineRepository.getReservableMachine(
     input.machineId,
@@ -32,6 +27,8 @@ export const reserveMachine: Command<[ReserveMachineInput], MachineReservationVi
   if (!machine) {
     throw new MachineReservationError('machineReservation.machineRequired');
   }
+
+  await assertReservationEligibility(machine, input.creatorId);
 
   const { candidate, participantIds } = planReservationForMachine(machine, input);
   const reservation = await machineReservationRepository.createMachineReservation({

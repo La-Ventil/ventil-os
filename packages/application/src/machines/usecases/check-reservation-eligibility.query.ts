@@ -1,9 +1,7 @@
-import { machineRepository, openBadgeRepository } from '@repo/db';
-import {
-  buildReservationEligibilityChecks,
-  isMachineReservationEligible
-} from '@repo/domain/machine/machine-reservation-eligibility';
+import { machineRepository } from '@repo/db';
+import { Machine } from '@repo/domain/machine/machine';
 import type { Query } from '../../usecase';
+import { checkReservationEligibilityForMachine } from '../reservation-eligibility';
 
 type CheckReservationEligibilityArgs = [machineId: string, userId?: string | null];
 
@@ -16,18 +14,16 @@ export const checkReservationEligibility: Query<CheckReservationEligibilityArgs,
     return false;
   }
 
-  if (!machine.badgeRequirements.length) {
-    return true;
-  }
-
-  if (!userId) {
-    return false;
-  }
-
-  const openBadgeIds = machine.badgeRequirements.map((requirement) => requirement.openBadge.id);
-  const userLevels = await openBadgeRepository.getUserHighestOpenBadgeLevels(userId, openBadgeIds);
-  const checks = buildReservationEligibilityChecks(machine.badgeRequirements, userLevels);
-  const rules = machine.badgeRequirements.map((requirement) => requirement.rule);
-
-  return isMachineReservationEligible(rules, checks);
+  return checkReservationEligibilityForMachine(
+    Machine.from({
+      id: machine.id,
+      name: machine.name,
+      category: machine.category,
+      status: machine.status,
+      description: machine.description,
+      imageUrl: machine.imageUrl,
+      badgeRequirements: machine.badgeRequirements
+    }),
+    userId
+  );
 };

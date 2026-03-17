@@ -1,11 +1,14 @@
 import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
+import type { OpenBadgeRequirementInput } from '@repo/domain/badge/open-badge-requirement';
+import { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
 import type {
   OpenBadgeAdminReadModel,
   OpenBadgeProgressReadModel,
   OpenBadgeReadModel
 } from '../read-models/open-badge';
+import type { OpenBadgeRequirementOptionReadModel } from '../read-models/open-badge-requirement-option';
 import type { OpenBadgeAdminPayload, OpenBadgeProgressPayload, OpenBadgePayload } from '../selects/open-badge';
 import { openBadgeProgressInclude, openBadgeInclude, openBadgeAdminSelect } from '../selects/open-badge';
 
@@ -90,6 +93,100 @@ export class OpenBadgeRepository {
     });
 
     return (badges as OpenBadgePayload[]).map((badge) => this.normalizeOpenBadge(badge));
+  }
+
+  async listOpenBadgeRequirementOptions(): Promise<OpenBadgeRequirementOptionReadModel[]> {
+    const badges = await this.prisma.openBadge.findMany({
+      where: {
+        status: 'active'
+      },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        coverImage: true,
+        levels: {
+          select: {
+            id: true,
+            level: true,
+            title: true
+          },
+          orderBy: {
+            level: 'asc'
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc'
+      }
+    });
+
+    return badges.map((badge) => ({
+      id: badge.id,
+      name: badge.name,
+      type: badge.type,
+      coverImage: badge.coverImage ?? null,
+      levels: badge.levels.map((level) => ({
+        id: level.id,
+        level: level.level,
+        title: level.title
+      }))
+    }));
+  }
+
+  async getOpenBadgeRequirementDefinition(input: {
+    openBadgeId: string;
+    openBadgeLevelId?: string | null;
+    rule?: OpenBadgeRequirementRule;
+  }): Promise<OpenBadgeRequirementInput | null> {
+    const badge = await this.prisma.openBadge.findUnique({
+      where: { id: input.openBadgeId },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        coverImage: true
+      }
+    });
+
+    if (!badge) {
+      return null;
+    }
+
+    const level = input.openBadgeLevelId
+      ? await this.prisma.openBadgeLevel.findUnique({
+          where: { id: input.openBadgeLevelId },
+          select: {
+            id: true,
+            openBadgeId: true,
+            title: true,
+            level: true
+          }
+        })
+      : null;
+
+    if (input.openBadgeLevelId && !level) {
+      return null;
+    }
+
+    return {
+      id: `${badge.id}:${level?.id ?? 'any'}`,
+      rule: input.rule ?? OpenBadgeRequirementRule.All,
+      openBadge: {
+        id: badge.id,
+        name: badge.name,
+        type: badge.type ?? null,
+        imageUrl: badge.coverImage ?? null
+      },
+      level: level
+        ? {
+            id: level.id,
+            openBadgeId: level.openBadgeId,
+            title: level.title,
+            level: level.level
+          }
+        : null
+    };
   }
 
   async getOpenBadgeById(id: string): Promise<OpenBadgeReadModel | null> {

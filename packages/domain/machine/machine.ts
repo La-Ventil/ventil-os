@@ -3,6 +3,10 @@ import { isInactive } from '../activity-status';
 import type { DateInterval } from '../date-interval';
 import type { OpenBadgeRequirement } from '../badge/open-badge-requirement';
 import {
+  buildReservationEligibilityChecks,
+  isMachineReservationEligible
+} from './machine-reservation-eligibility';
+import {
   MachineAvailability,
   resolveMachineAvailability,
   resolveMachineAvailabilityFromActivityStatus
@@ -69,6 +73,8 @@ export type ReservationCandidate = {
   status?: MachineReservationStatus | string;
   id?: string;
 };
+
+export type ReservationEligibilityLevels = Map<string, number | null>;
 
 const toInterval = (reservation: { startsAt: Date; endsAt: Date }): DateInterval => ({
   start: reservation.startsAt,
@@ -147,6 +153,18 @@ export const Machine = {
     const existing = listConfirmedIntervals(machine.reservations, options?.excludeReservationId);
     if (intervalOverlapsAny(interval, existing)) {
       throw new MachineReservationError('machineReservation.overlap');
+    }
+  },
+  assertReservationEligibility(machine: Machine, userLevels: ReservationEligibilityLevels): void {
+    if (!machine.badgeRequirements.length) {
+      return;
+    }
+
+    const checks = buildReservationEligibilityChecks(machine.badgeRequirements, userLevels);
+    const rules = machine.badgeRequirements.map((requirement) => requirement.rule);
+
+    if (!isMachineReservationEligible(rules, checks)) {
+      throw new MachineReservationError('machineReservation.badgeRequired');
     }
   },
   assertCanReserve(
