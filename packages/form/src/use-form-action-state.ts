@@ -10,6 +10,23 @@ type InferSchema<Schema extends SchemaLike> = z.infer<Schema>;
 
 type Translator = (key: string, params?: Record<string, string>) => string;
 
+type TranslatorFallbackParams = {
+  [key: string]: string;
+};
+
+const safeTranslate = (translate: Translator, key: string, fallback: string) => {
+  try {
+    return translate(key, { defaultMessage: fallback } as TranslatorFallbackParams);
+  } catch {
+    return fallback;
+  }
+};
+
+const preferNamespaceFallback = (translate: Translator, key: string, fallbackKey: string) => {
+  const fallback = safeTranslate(translate, fallbackKey, key);
+  return fallback === key ? key : fallback;
+};
+
 /**
  * Config for useFormActionState: wraps React's useActionState with client-side
  * validation + retry handling while keeping a FormState shape.
@@ -78,6 +95,18 @@ export function useFormActionState<Schema extends SchemaLike>({
       return message;
     }
   };
+  const translateFormMessage = (key: string) => {
+    const translated = safeTranslate(translate, key, key);
+    if (translated !== key) {
+      return translated;
+    }
+
+    if (!key.startsWith('errors.')) {
+      return key;
+    }
+
+    return preferNamespaceFallback(translate, key, `common.${key}`);
+  };
   const translateFieldErrors = (fieldErrors: Record<string, string[] | undefined>) =>
     Object.fromEntries(
       Object.entries(fieldErrors)
@@ -87,7 +116,7 @@ export function useFormActionState<Schema extends SchemaLike>({
   const createNetworkErrorState = (formData: FormData, fallbackValues: Values): FormState<Values> => ({
     success: false,
     valid: true,
-    message: translate('errors.network'),
+    message: translateFormMessage('errors.network'),
     fieldErrors: {},
     values: toValuesOrRedisplay(formData, fallbackValues)
   });
@@ -109,7 +138,7 @@ export function useFormActionState<Schema extends SchemaLike>({
       setClientState({
         success: false,
         valid: false,
-        message: translate('errors.invalid'),
+        message: translateFormMessage('errors.invalid'),
         fieldErrors,
         values: formDataToRedisplayValues(formData, effectiveState.values)
       });

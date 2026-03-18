@@ -25,6 +25,7 @@ export type ChangePasswordFormProps = {
 
 export default function ChangePasswordForm({ handleSubmit }: ChangePasswordFormProps) {
   const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
   const tRoot = useTranslations();
   const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
     action: handleSubmit,
@@ -34,7 +35,7 @@ export default function ChangePasswordForm({ handleSubmit }: ChangePasswordFormP
       passwordConfirmation: ''
     }),
     schema: changePasswordFormSchema,
-    translate: tRoot,
+    translate: tCommon,
     translateFieldError: tRoot
   });
 

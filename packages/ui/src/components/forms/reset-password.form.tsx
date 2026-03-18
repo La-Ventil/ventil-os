@@ -28,7 +28,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
       email: ''
     }),
     schema: resetPasswordFormSchema,
-    translate: tRoot,
+    translate: tCommon,
     translateFieldError: tRoot
   });
 

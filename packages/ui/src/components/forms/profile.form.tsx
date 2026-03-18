@@ -41,7 +41,7 @@ export default function ProfileForm({ profilePromise, handleSubmit, userId, back
       educationLevel: profile.educationLevel ?? ''
     }),
     schema: formSchema,
-    translate: tRoot,
+    translate: tCommon,
     translateFieldError: tRoot
   });
   const fieldError = createFieldError<ProfileFormInput>(state);

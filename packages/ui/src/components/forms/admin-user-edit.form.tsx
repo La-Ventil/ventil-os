@@ -29,6 +29,7 @@ export interface AdminUserEditFormProps {
 
 export default function AdminUserEditForm({ profilePromise, handleSubmit, userId, onSuccess }: AdminUserEditFormProps) {
   const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
   const tRoot = useTranslations();
   const profile = use(profilePromise);
   const formSchema = buildAdminProfileFormSchema();
@@ -42,7 +43,7 @@ export default function AdminUserEditForm({ profilePromise, handleSubmit, userId
       educationLevel: profile.educationLevel ?? ''
     }),
     schema: formSchema,
-    translate: tRoot,
+    translate: tCommon,
     translateFieldError: tRoot
   });
 

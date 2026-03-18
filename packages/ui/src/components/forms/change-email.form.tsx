@@ -35,6 +35,7 @@ export default function ChangeEmailForm({
   cancelEmailChange
 }: ChangeEmailFormProps) {
   const t = useTranslations('forms');
+  const tCommon = useTranslations('common');
   const tRoot = useTranslations();
   const [state, action, isPending, handleSubmitForm, handleRetry] = useFormActionState({
     action: handleSubmit,
@@ -44,7 +45,7 @@ export default function ChangeEmailForm({
       currentPassword: ''
     }),
     schema: changeEmailFormSchema,
-    translate: tRoot,
+    translate: tCommon,
     translateFieldError: tRoot
   });
 
