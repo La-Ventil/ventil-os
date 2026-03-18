@@ -5,8 +5,10 @@ const newPassword = 'Renewed123';
 
 test.describe('Update password journey', () => {
   test('password reset lets the user sign in with a new password', async ({ page, seedUsers, workerWebRuntime }) => {
+    const email = seedUsers.external.email;
+
     await page.goto('/forgot-password');
-    await page.locator('input[name="email"]').fill(seedUsers.student.email);
+    await page.locator('input[name="email"]').fill(email);
     await page.locator('form button[type="submit"]').click();
 
     await expect(
@@ -16,9 +18,7 @@ test.describe('Update password journey', () => {
         .first()
     ).toContainText(/mot de passe|password/i);
 
-    const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(
-      seedUsers.student.email
-    );
+    const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(email);
 
     await page.goto(`/update-password/${resetToken}`);
     await page.locator('input[name="password"]').fill(newPassword);
@@ -29,8 +29,8 @@ test.describe('Update password journey', () => {
 
     await page.context().clearCookies();
     await page.goto('/login');
-    await page.locator('input[name="email"]').fill(seedUsers.student.email);
-    await page.locator('input[name="password"]').fill(seedUsers.student.password);
+    await page.locator('input[name="email"]').fill(email);
+    await page.locator('input[name="password"]').fill(seedUsers.external.password);
     await page.locator('form button[type="submit"]').click();
 
     await expect(page).toHaveURL(/\/login/);

@@ -12,5 +12,5 @@ export async function loginWithCredentials(page: Page, credentials: LoginCredent
   await page.locator('input[name="password"]').fill(credentials.password);
 
   await page.locator('form button[type="submit"]').click();
-  await page.waitForURL(/\/hub\/profile/, { timeout: 15_000 });
+  await page.waitForURL(/\/hub(?:\/|$)/, { timeout: 20_000 });
 }

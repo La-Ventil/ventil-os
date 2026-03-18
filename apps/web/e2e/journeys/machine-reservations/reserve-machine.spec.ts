@@ -139,6 +139,8 @@ test.describe('Machine reservation journey', () => {
     const fixedNow = new Date();
     fixedNow.setHours(9, 0, 0, 0);
 
+    await loginAs('student');
+
     await page.addInitScript(
       ({ nowIso }) => {
         const fixedTime = new Date(nowIso).getTime();
@@ -164,7 +166,6 @@ test.describe('Machine reservation journey', () => {
       { nowIso: fixedNow.toISOString() }
     );
 
-    await loginAs('student');
     await openMachineDetails(page, /Bambu Lab X1C/i);
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
     await expect(machineDialog).toBeVisible();
