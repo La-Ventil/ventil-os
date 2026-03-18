@@ -3,7 +3,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import type { UserAdminViewModel } from '@repo/view-models/user-admin';
+import type { UserAdminViewModel } from '@repo/application/view-models/user-admin';
 import UserAvatar from '../user-avatar';
 import AdminTable from './admin-table';
 

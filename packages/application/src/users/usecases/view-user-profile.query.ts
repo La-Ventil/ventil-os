@@ -1,4 +1,4 @@
-import type { UserProfile } from '@repo/view-models/user-profile';
+import type { UserProfile } from '@repo/application/view-models/user-profile';
 import { userRepository } from '@repo/db';
 import { mapUserProfileToViewModel } from '../../presenters/user-profile';
 import type { Query } from '../../usecase';

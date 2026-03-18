@@ -3,9 +3,15 @@ import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { pathToFileURL } from 'url';
-import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB } from './uploads-constants';
 
-export { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB };
+export const MAX_IMAGE_MB = 5;
+export const ALLOWED_IMAGE_MIMES: Record<string, string> = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/gif': 'gif',
+  'image/webp': 'webp'
+};
 
 export type ImageValidationError = 'imageRequired' | 'imageInvalidType' | 'imageTooLarge';
 
@@ -13,13 +19,7 @@ export type ImageValidationResult =
   | { url: string }
   | {
       error: ImageValidationError;
-      /**
-       * Field key to attach the error to (defaults to "imageUrl" in callers)
-       */
       field?: string;
-      /**
-       * Extra params used for i18n interpolation (e.g. { max: "5MB" })
-       */
       params?: Record<string, string>;
     };
 
@@ -74,8 +74,7 @@ export async function validateAndStoreImage(
   }
 
   if (file.size > maxBytes) {
-    const max = `${maxMb}MB`;
-    return { error: 'imageTooLarge', field, params: { max } };
+    return { error: 'imageTooLarge', field, params: { max: `${maxMb}MB` } };
   }
 
   const extension = ALLOWED_IMAGE_MIMES[file.type];

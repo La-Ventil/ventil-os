@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: import('next').NextConfig = {
   // Allow concurrent Next dev servers for Playwright parallel processes.
   distDir: process.env.NEXT_DIST_DIR || '.next',
-  transpilePackages: ['@repo/application', '@repo/domain', '@repo/form', '@repo/ui', '@repo/view-models']
+  transpilePackages: ['@repo/application', '@repo/domain', '@repo/form', '@repo/ui']
 };
 
 export default withNextIntl(nextConfig);

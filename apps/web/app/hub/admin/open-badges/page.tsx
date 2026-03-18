@@ -10,7 +10,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import TableSection from '@repo/ui/table-section';
-import { OpenBadgeAdminStatus } from '@repo/view-models/open-badge-admin';
+import { OpenBadgeAdminStatus } from '@repo/application/view-models/open-badge-admin';
 import OpenBadgeQuickActions from './open-badge-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';

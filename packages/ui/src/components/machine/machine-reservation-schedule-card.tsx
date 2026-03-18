@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import type { CSSProperties } from 'react';
 
-import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
+import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
 import { listMachineReservationUsers } from '@repo/application';
 import { useFormatter } from 'next-intl';
 import useTimeZone from '../../hooks/use-time-zone';

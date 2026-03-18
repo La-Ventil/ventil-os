@@ -7,9 +7,9 @@ import { machineUpdateRequestSchema, type MachineUpdateRequest } from '@repo/app
 import MachineForm from '@repo/ui/forms/machine.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
-import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
-import { MachineAdminStatus } from '@repo/view-models/machine-admin';
-import type { OpenBadgeRequirementOptionViewModel } from '@repo/view-models/open-badge-requirement-option';
+import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
+import { MachineAdminStatus } from '@repo/application/view-models/machine-admin';
+import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/view-models/open-badge-requirement-option';
 import { updateMachineAction } from '../../../../../../lib/actions/machines/update-machine';
 
 type MachineEditFormClientProps = {

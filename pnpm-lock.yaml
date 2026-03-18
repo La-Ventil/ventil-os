@@ -303,12 +303,12 @@ importers:
       '@repo/form':
         specifier: workspace:*
         version: link:../../packages/form
+      '@repo/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@repo/view-models':
-        specifier: workspace:*
-        version: link:../../packages/view-models
       next:
         specifier: ^16.1.6
         version: 16.1.6(@babel/core@7.29.0)(@playwright/test@1.55.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -376,9 +376,9 @@ importers:
       '@repo/domain':
         specifier: workspace:*
         version: link:../domain
-      '@repo/view-models':
+      '@repo/storage':
         specifier: workspace:*
-        version: link:../view-models
+        version: link:../storage
       dayjs:
         specifier: ^1.11.19
         version: 1.11.19
@@ -572,6 +572,18 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
+  packages/storage:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 22.15.3
+        version: 22.15.3
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
   packages/typescript-config: {}
 
   packages/ui:
@@ -594,9 +606,6 @@ importers:
       '@repo/form':
         specifier: workspace:*
         version: link:../form
-      '@repo/view-models':
-        specifier: workspace:*
-        version: link:../view-models
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -649,12 +658,6 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
-
-  packages/view-models:
-    dependencies:
-      '@repo/domain':
-        specifier: workspace:*
-        version: link:../domain
 
 packages:
 

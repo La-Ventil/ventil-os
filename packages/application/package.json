@@ -16,13 +16,13 @@
     "./mocks": "./src/__mocks__/index.ts",
     "./forms": "./src/forms/index.ts",
     "./forms/*": "./src/forms/*.ts",
+    "./view-models/*": "./src/view-models/*.ts",
     "./machines/usecases": "./src/machines/usecases/index.ts",
     "./machines/usecases/*": "./src/machines/usecases/*.ts",
     "./open-badges/usecases": "./src/open-badges/usecases/index.ts",
     "./open-badges/usecases/*": "./src/open-badges/usecases/*.ts",
     "./users/usecases": "./src/users/usecases/index.ts",
     "./users/usecases/*": "./src/users/usecases/*.ts",
-    "./server/uploads": "./src/server/uploads.ts",
     "./time/*": "./src/time/*.ts",
     "./*": "./src/*.ts"
   },
@@ -30,7 +30,7 @@
     "@repo/crypto": "workspace:*",
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
-    "@repo/view-models": "workspace:*",
+    "@repo/storage": "workspace:*",
     "dayjs": "^1.11.19",
     "zod": "^4.1.12",
     "zod-form-data": "^3.0.1"

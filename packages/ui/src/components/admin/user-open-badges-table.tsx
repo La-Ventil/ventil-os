@@ -5,7 +5,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { OpenBadge } from '@repo/domain/badge/open-badge';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
 import ListEmptyState from '../list-empty-state';
 import AdminTable from './admin-table';
 import RowQuickActionsMenu from './row-quick-actions-menu';

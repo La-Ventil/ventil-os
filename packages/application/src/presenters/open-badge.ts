@@ -1,7 +1,7 @@
 import type { OpenBadgeProgressReadModel, OpenBadgeReadModel } from '@repo/db/read-models';
 import { OpenBadge, type OpenBadge as OpenBadgeDomain } from '@repo/domain/badge/open-badge';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
 
 const withLevelLabels = (badge: OpenBadgeDomain): OpenBadgeViewModel => ({
   ...badge,
@@ -30,12 +30,6 @@ export const mapOpenBadgeToViewModelWithActiveLevel = (
 export const mapOpenBadgeToViewModel = (badge: OpenBadgeReadModel): OpenBadgeViewModel =>
   mapOpenBadgeToViewModelWithActiveLevel(badge, 0);
 
-export const mapOpenBadgeProgressToViewModel = (
-  progress: OpenBadgeProgressReadModel
-): OpenBadgeViewModel =>
-  ({
-    ...mapOpenBadgeToViewModelWithActiveLevel(
-      progress.openBadge,
-      progress.highestLevel ? progress.highestLevel.level : 0
-    )
-  });
+export const mapOpenBadgeProgressToViewModel = (progress: OpenBadgeProgressReadModel): OpenBadgeViewModel => ({
+  ...mapOpenBadgeToViewModelWithActiveLevel(progress.openBadge, progress.highestLevel ? progress.highestLevel.level : 0)
+});

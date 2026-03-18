@@ -1,7 +1,7 @@
 import type { UserRole } from '@repo/domain/user/user-role';
 import type { AdminStatisticsOverviewGroup } from '@repo/ui/admin/admin-statistics-overview';
 import type { UserNetworkGraphProps } from '@repo/ui/admin/user-network-graph';
-import type { AdminStatisticsViewModel } from '@repo/view-models/admin-statistics';
+import type { AdminStatisticsViewModel } from '@repo/application/view-models/admin-statistics';
 import { formatShortDateTime } from '../../../../lib/format-date';
 import { buildAdminStatisticsOverviewGroups, buildRoleLabels } from './admin-statistics-overview-groups';
 

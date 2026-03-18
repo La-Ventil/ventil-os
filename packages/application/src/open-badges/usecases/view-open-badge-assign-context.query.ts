@@ -1,5 +1,5 @@
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/view-models/user-summary';
 import type { Query } from '../../usecase';
 import { mapOpenBadgeToViewModel } from '../../presenters/open-badge';
 import { buildOpenBadgeAssignableUsersByBadgeIdAndLevel } from './open-badge-assignment-options.query';

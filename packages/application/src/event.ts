@@ -1,5 +1,5 @@
 import { eventRepository } from '@repo/db';
-import type { EventViewModel } from '@repo/view-models/event';
+import type { EventViewModel } from '@repo/application/view-models/event';
 import { mapEventToViewModel } from './presenters/event';
 
 export const listEvents = async (): Promise<EventViewModel[]> => {

@@ -1,6 +1,6 @@
 import { canAdvanceOpenBadgeLevel } from '@repo/domain/badge/open-badge-level-transition-policy';
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/view-models/user-summary';
 import type { Query } from '../../usecase';
 
 export type OpenBadgeAssignableUsersByBadgeIdAndLevel = Record<string, Record<string, string[]>>;

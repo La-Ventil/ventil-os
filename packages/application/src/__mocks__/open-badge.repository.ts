@@ -1,17 +1,9 @@
 import { OpenBadgeLevel, formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
 
 const badgeLevels = [
-  OpenBadgeLevel.from(
-    1,
-    'Niveau decouverte',
-    "Decouvrez les bases de l'outil et les regles de securite essentielles."
-  ),
-  OpenBadgeLevel.from(
-    2,
-    'Niveau intermediaire',
-    'Rendez-vous autonome sur les usages courants et les bons reglages.'
-  ),
+  OpenBadgeLevel.from(1, 'Niveau decouverte', "Decouvrez les bases de l'outil et les regles de securite essentielles."),
+  OpenBadgeLevel.from(2, 'Niveau intermediaire', 'Rendez-vous autonome sur les usages courants et les bons reglages.'),
   OpenBadgeLevel.from(
     3,
     'Niveau avance',

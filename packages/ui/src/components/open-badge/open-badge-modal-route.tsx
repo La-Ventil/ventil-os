@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
 import OpenBadgeModal from './open-badge-modal';
 
 type OpenBadgeModalRouteProps = {
@@ -10,10 +10,7 @@ type OpenBadgeModalRouteProps = {
   closeHref: string;
 };
 
-export default function OpenBadgeModalRoute({
-  openBadge,
-  closeHref
-}: OpenBadgeModalRouteProps): JSX.Element | null {
+export default function OpenBadgeModalRoute({ openBadge, closeHref }: OpenBadgeModalRouteProps): JSX.Element | null {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(Boolean(openBadge));
 

@@ -19,7 +19,7 @@ import {
   canCancelReservationNow,
   type ReservationActor
 } from '@repo/domain/machine/machine-reservation-cancellation-policy';
-import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
+import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
 import MachineReservationScheduleCard from './machine-reservation-schedule-card';
 import MachineScheduleNowIndicator from './machine-schedule-now-indicator';
 import MachineReservationTimeSlot from './machine-reservation-time-slot';

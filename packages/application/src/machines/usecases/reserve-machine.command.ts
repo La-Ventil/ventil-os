@@ -1,5 +1,5 @@
 import { machineRepository, machineReservationRepository } from '@repo/db';
-import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
+import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
 import { MachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 import { planReservationForMachine } from '@repo/domain/machine/machine-reservation-plan';
 import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';

@@ -1,5 +1,5 @@
 import type { OpenBadgeAdminReadModel } from '@repo/db/read-models';
-import type { OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import type { OpenBadgeAdminViewModel } from '@repo/application/view-models/open-badge-admin';
 
 export const mapOpenBadgeAdminToViewModel = (badge: OpenBadgeAdminReadModel): OpenBadgeAdminViewModel => ({
   id: badge.id,

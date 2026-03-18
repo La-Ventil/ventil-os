@@ -1,4 +1,4 @@
-import type { EventViewModel } from '@repo/view-models/event';
+import type { EventViewModel } from '@repo/application/view-models/event';
 
 const events: EventViewModel[] = [
   {
@@ -9,8 +9,7 @@ const events: EventViewModel[] = [
     location: 'Fab Lab',
     audience: 'Ouvert a tous',
     registration: { current: 2, capacity: 6 },
-    description:
-      'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
+    description: 'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
   },
   {
     id: 'event-2',
@@ -20,8 +19,7 @@ const events: EventViewModel[] = [
     location: 'Fab Lab',
     audience: 'Ouvert a tous',
     registration: { current: 2, capacity: 6 },
-    description:
-      'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
+    description: 'Vous voulez reparer vos manettes de consoles de jeux ? Venez apprendre en reparant au repair cafe.'
   }
 ];
 

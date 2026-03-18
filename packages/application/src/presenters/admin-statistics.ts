@@ -1,6 +1,6 @@
 import { formatUserFullName } from '@repo/domain/user/user-name';
 import type { AdminStatisticsReadModel } from '@repo/db/read-models';
-import type { AdminStatisticsViewModel } from '@repo/view-models/admin-statistics';
+import type { AdminStatisticsViewModel } from '@repo/application/view-models/admin-statistics';
 
 export const mapAdminStatisticsToViewModel = (statistics: AdminStatisticsReadModel): AdminStatisticsViewModel => ({
   overview: statistics.overview,

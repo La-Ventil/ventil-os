@@ -10,5 +10,5 @@ export * from './message';
 export * from './user';
 export * from './authorization';
 export * from './utils/collection';
-export * from './infra/iso-date';
+export * from './time/iso-date';
 export * from './forms';

@@ -10,7 +10,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import TableSection from '@repo/ui/table-section';
-import { MachineAdminStatus } from '@repo/view-models/machine-admin';
+import { MachineAdminStatus } from '@repo/application/view-models/machine-admin';
 import MachineQuickActions from './machine-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';

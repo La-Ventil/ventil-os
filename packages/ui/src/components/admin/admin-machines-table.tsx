@@ -3,7 +3,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/view-models/machine-admin';
+import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/application/view-models/machine-admin';
 import AdminTable from './admin-table';
 import styles from './admin-machines-table.module.css';
 

@@ -9,8 +9,8 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useFormatter, useTranslations } from 'next-intl';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
-import type { MachineViewModel } from '@repo/view-models/machine';
-import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
+import type { MachineViewModel } from '@repo/application/view-models/machine';
+import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
 import {
   canCancelReservationNow,
@@ -83,9 +83,7 @@ export default function MachineReservationListCard({
       setFeedback(null);
       const result = await action(reservation.id);
       const nextFeedback = resolveFormFeedback(result, {
-        fallbackErrorMessage: canRelease
-          ? t('reservations.error.release')
-          : t('reservations.error.cancel'),
+        fallbackErrorMessage: canRelease ? t('reservations.error.release') : t('reservations.error.cancel'),
         fallbackSuccessMessage: successMessage
       });
       if (nextFeedback) {
@@ -110,9 +108,7 @@ export default function MachineReservationListCard({
           <Typography variant="body2" className={styles.timeRange}>
             {timeRange}
           </Typography>
-          {isActive ? (
-            <StatusIndicator tone="success" label={t('reservations.status.inProgress')} />
-          ) : null}
+          {isActive ? <StatusIndicator tone="success" label={t('reservations.status.inProgress')} /> : null}
         </div>
         <div className={styles.participantsRow}>
           <div className={styles.avatarStack}>

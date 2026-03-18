@@ -1,6 +1,6 @@
 import type { UserAdminReadModel } from '@repo/db/read-models';
 import { formatUserFullName } from '@repo/domain/user/user-name';
-import type { UserAdminViewModel } from '@repo/view-models/user-admin';
+import type { UserAdminViewModel } from '@repo/application/view-models/user-admin';
 
 export const mapUserAdminToViewModel = (user: UserAdminReadModel): UserAdminViewModel => ({
   id: user.id,

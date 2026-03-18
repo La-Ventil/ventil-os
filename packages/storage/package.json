@@ -1,0 +1,20 @@
+{
+  "name": "@repo/storage",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./uploads": "./src/uploads.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "lint:staged": "echo \"skip lint:staged (storage)\""
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.15.3",
+    "typescript": "5.9.3"
+  }
+}

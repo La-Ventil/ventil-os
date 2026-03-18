@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { signIn as signInUser } from '@repo/application/users/usecases';
 import { prismaClient } from '@repo/db';
-import type { UserProfile } from '@repo/view-models/user-profile';
+import type { UserProfile } from '@repo/application/view-models/user-profile';
 
 export const authOptions: NextAuthOptions = {
   session: {

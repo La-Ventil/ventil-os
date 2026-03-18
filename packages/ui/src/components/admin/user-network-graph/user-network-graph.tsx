@@ -16,7 +16,7 @@ import type { UserRole } from '@repo/domain/user/user-role';
 import type {
   AdminStatisticsNetworkEdgeViewModel,
   AdminStatisticsNetworkNodeViewModel
-} from '@repo/view-models/admin-statistics';
+} from '@repo/application/view-models/admin-statistics';
 import { userRoleVisualByRole } from '../../../admin/user-role-visual';
 import UserNetworkGraphEdgeLayer from './user-network-edge-layer';
 import UserNetworkGraphLegend from './user-network-legend';

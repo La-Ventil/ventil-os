@@ -1,6 +1,6 @@
 import type { UserSummaryReadModel } from '@repo/db/read-models';
 import { formatUserFullName } from '@repo/domain/user/user-name';
-import type { UserSummaryViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
 
 type UserSummarySource =
   | UserSummaryReadModel

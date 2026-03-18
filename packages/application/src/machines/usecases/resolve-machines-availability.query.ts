@@ -1,5 +1,5 @@
 import { machineReservationRepository } from '@repo/db';
-import type { MachineViewModel } from '@repo/view-models/machine';
+import type { MachineViewModel } from '@repo/application/view-models/machine';
 import type { Query } from '../../usecase';
 import { getDayInterval } from '../../time/date-time';
 import { resolveAvailabilityForMachines } from '../availability/resolve-availability-for-machines';

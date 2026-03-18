@@ -1,5 +1,5 @@
 import { userRepository } from '@repo/db';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/view-models/user-summary';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/view-models/user-summary';
 import { mapUserSummaryToViewModel } from '../../presenters/user-summary';
 import type { Query } from '../../usecase';
 

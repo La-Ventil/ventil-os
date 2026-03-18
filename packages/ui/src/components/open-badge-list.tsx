@@ -1,4 +1,4 @@
-import type { OpenBadgeViewModel } from '@repo/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
 import CardList from './card-list';
 import OpenBadgeCard from './open-badge/open-badge-card';
 import ListEmptyState from './list-empty-state';

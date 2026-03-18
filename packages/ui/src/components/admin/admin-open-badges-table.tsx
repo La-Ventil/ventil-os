@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/application/view-models/open-badge-admin';
 import Link from '../link';
 import AdminTable from './admin-table';
 import styles from './admin-open-badges-table.module.css';

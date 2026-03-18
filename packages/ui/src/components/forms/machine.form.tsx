@@ -30,7 +30,7 @@ import { fieldErrorMessage } from '@repo/form/form-errors';
 import FormAlert from './form-alert';
 import Form from './form';
 import { useFieldLiveValidation } from '@repo/form/use-field-live-validation';
-import type { OpenBadgeRequirementOptionViewModel } from '@repo/view-models/open-badge-requirement-option';
+import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/view-models/open-badge-requirement-option';
 import styles from './machine.form.module.css';
 
 type MachineFormValues = MachineCreateFormInput | MachineUpdateFormInput;

@@ -1,4 +1,4 @@
-import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/application/server/uploads';
+import { MAX_IMAGE_MB, validateAndStoreImage } from '@repo/storage/uploads';
 
 type UploadTranslator = (key: string, params?: Record<string, string>) => string;
 

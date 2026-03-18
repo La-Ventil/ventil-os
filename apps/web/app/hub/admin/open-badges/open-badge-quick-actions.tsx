@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/view-models/open-badge-admin';
+import { OpenBadgeAdminStatus, type OpenBadgeAdminViewModel } from '@repo/application/view-models/open-badge-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
 import { setOpenBadgeStatusAction } from '../../../../lib/actions/open-badges/set-open-badge-status';
 import { removeOpenBadgeAction } from '../../../../lib/actions/open-badges/remove-open-badge';

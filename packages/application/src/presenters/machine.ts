@@ -1,5 +1,5 @@
 import type { MachineSummaryReadModel } from '@repo/db/read-models';
-import type { MachineViewModel } from '@repo/view-models/machine';
+import type { MachineViewModel } from '@repo/application/view-models/machine';
 import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
 
 export const mapMachineToViewModel = (machine: MachineSummaryReadModel): MachineViewModel => ({

@@ -1,4 +1,4 @@
-import type { UserProfile } from '@repo/view-models/user-profile';
+import type { UserProfile } from '@repo/application/view-models/user-profile';
 import type { Query } from '../../usecase';
 import { validateSignIn } from './validate-sign-in.query';
 

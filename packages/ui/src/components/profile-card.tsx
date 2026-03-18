@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import { UserProfile } from '@repo/view-models/user-profile';
+import { UserProfile } from '@repo/application/view-models/user-profile';
 import UserAvatar from './user-avatar';
 import styles from './profile-card.module.css';
 

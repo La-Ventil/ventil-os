@@ -7,9 +7,9 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import type { Dayjs } from 'dayjs';
-import type { MachineDetailsViewModel } from '@repo/view-models/machine-details';
-import type { MachineAvailability } from '@repo/view-models/machine';
-import type { MachineReservationViewModel } from '@repo/view-models/machine-reservation';
+import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
+import type { MachineAvailability } from '@repo/application/view-models/machine';
+import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
 import { MachineIcon } from '../icons/machine-icon';
 import ModalLayout from '../modal-layout';
 import ModalIllustration from '../modal-illustration';
@@ -108,10 +108,7 @@ export default function MachineModal({
       {activeTab === 'info' ? (
         <Section p={2} className={styles.infoSection}>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.availabilityLabel')}</SectionSubtitle>
-          <StatusIndicator
-            tone={availabilityTone[machine.availability]}
-            label={t(`status.${machine.availability}`)}
-          />
+          <StatusIndicator tone={availabilityTone[machine.availability]} label={t(`status.${machine.availability}`)} />
 
           {badgeRequirement ? (
             <>
@@ -141,28 +138,28 @@ export default function MachineModal({
         </Section>
       ) : (
         <Section p={2} className={styles.reservationSection}>
-        <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
-        <Typography variant="body2" className={styles.reservationIntro}>
-          {t('modal.reservationIntro')}
-        </Typography>
-        <div className={styles.dateRow}>
-          <LocalizedDatePicker
-            label={t('modal.schedule.dateLabel')}
-            value={modalDate}
-            onChange={(value: Dayjs | null) => {
-              if (value && onDateChange) {
-                onDateChange(formatDayKey(value, timeZone));
-              }
-            }}
-            timezone={timeZone}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                className: styles.datePicker
-              }
-            }}
-          />
-        </div>
+          <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
+          <Typography variant="body2" className={styles.reservationIntro}>
+            {t('modal.reservationIntro')}
+          </Typography>
+          <div className={styles.dateRow}>
+            <LocalizedDatePicker
+              label={t('modal.schedule.dateLabel')}
+              value={modalDate}
+              onChange={(value: Dayjs | null) => {
+                if (value && onDateChange) {
+                  onDateChange(formatDayKey(value, timeZone));
+                }
+              }}
+              timezone={timeZone}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  className: styles.datePicker
+                }
+              }}
+            />
+          </div>
           <MachineReservationSchedule
             dayKey={dayKey}
             reservations={reservations}

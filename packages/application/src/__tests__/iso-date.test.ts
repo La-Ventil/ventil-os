@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseIsoDate, resolveIsoDateFromQuery } from '../infra/iso-date';
+import { parseIsoDate, resolveIsoDateFromQuery } from '../time/iso-date';
 
 describe('iso-date', () => {
   it('parses ISO date-times with offsets and rejects local strings', () => {
