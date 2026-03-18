@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 
 test('creates a message via /api/messages', async ({ request }) => {
   const response = await request.post('/api/messages', {

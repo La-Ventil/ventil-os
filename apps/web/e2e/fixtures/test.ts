@@ -1,5 +1,6 @@
 import { expect, test as base, type BrowserContext } from '@playwright/test';
 import { loginWithCredentials, type LoginCredentials } from '../helpers/auth';
+import { attachI18nMissingMessageGuard } from '../helpers/i18n-guard';
 import { createWorkerWebRuntime, type WorkerWebRuntime } from '../helpers/worker-web-runtime';
 
 export type SeedUserRole = 'globalAdmin' | 'pedagogicalAdmin' | 'student' | 'studentVisitor' | 'external';
@@ -38,14 +39,16 @@ export const test = base.extend<E2EFixtures, E2EWorkerFixtures>({
     },
     { scope: 'worker', auto: true }
   ],
-  context: async ({ browser, contextOptions, baseURL, workerWebRuntime }, runFixture) => {
+  context: async ({ browser, contextOptions, baseURL, workerWebRuntime }, runFixture, testInfo) => {
     const context = await browser.newContext({
       ...(contextOptions ?? {}),
       baseURL: workerWebRuntime?.baseURL ?? baseURL
     });
+    const assertNoMissingI18nMessages = attachI18nMissingMessageGuard(context, testInfo);
 
     try {
       await runFixture(context as BrowserContext);
+      await assertNoMissingI18nMessages();
     } finally {
       await context.close();
     }
