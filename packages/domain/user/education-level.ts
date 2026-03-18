@@ -1,7 +1,9 @@
+// These are stable domain codes for the French school context supported by Ventil OS.
+// They are not end-user labels and are translated at the UI layer.
 export const EducationLevel = {
   Seconde: 'seconde',
   Premiere: 'premiere',
-  Terminale: 'terminal',
+  Terminale: 'terminale',
   BTS: 'bts'
 } as const;
 

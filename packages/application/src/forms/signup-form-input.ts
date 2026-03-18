@@ -5,7 +5,7 @@ import { nameSchema } from './name';
 import { passwordConfirmationSchema, passwordSchema } from './password';
 import { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
-export { resolveProfileType } from './profile-education';
+export { resolveUserRole } from './profile-education';
 
 export const signupFormSchema = zfd
   .formData({

@@ -1,5 +1,5 @@
 import { hashSecret } from '@repo/crypto';
-import { ConsentType, isPrismaUniqueConstraintError, mapProfileTypeToProfileRecord, userRepository } from '@repo/db';
+import { ConsentType, isPrismaUniqueConstraintError, mapUserRoleStringToProfileRecord, userRepository } from '@repo/db';
 import { formatGeneratedUsername } from '@repo/domain/user/user-username';
 import { createEmailVerificationToken } from '../email-tokens';
 import { generateToken } from '../tokens';
@@ -16,14 +16,11 @@ export type SignUpInput = {
   termsAccepted: boolean;
 };
 
-export type SignUpResult =
-  | { ok: true; token: string; expires: Date }
-  | { ok: false; reason: 'email-already-used' };
+export type SignUpResult = { ok: true; token: string; expires: Date } | { ok: false; reason: 'email-already-used' };
 
 export const signUp: Command<[SignUpInput], SignUpResult> = async (input: SignUpInput) => {
-  const { profile, studentProfile, externalProfile } = mapProfileTypeToProfileRecord(input.profileType);
-  const username =
-    input.username ?? formatGeneratedUsername(input.firstName, input.lastName, generateToken(6));
+  const { profile, studentProfile, externalProfile } = mapUserRoleStringToProfileRecord(input.profileType);
+  const username = input.username ?? formatGeneratedUsername(input.firstName, input.lastName, generateToken(6));
   const { salt, hashedSecret, iterations } = await hashSecret(input.password);
 
   try {

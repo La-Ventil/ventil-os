@@ -7,7 +7,7 @@ import { UserRole, requiresEducationLevel, type UserRole as UserRoleValue } from
 
 export type ResolvedEducationLevel = EducationLevelValue | '';
 
-export const resolveProfileType = (value?: string, fallback: UserRoleValue = UserRole.Member): UserRoleValue => {
+export const resolveUserRole = (value?: string, fallback: UserRoleValue = UserRole.Member): UserRoleValue => {
   return Object.values(UserRole).includes(value as UserRoleValue) ? (value as UserRoleValue) : fallback;
 };
 

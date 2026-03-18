@@ -24,10 +24,10 @@ export const mapUserRoleToProfileRecord = (role: UserRole): UserProfileRecord =>
 
 const userRoles = new Set(Object.values(UserRole));
 
-export const mapProfileTypeToProfileRecord = (profileType: string): UserProfileRecord => {
-  if (!userRoles.has(profileType as UserRole)) {
+export const mapUserRoleStringToProfileRecord = (role: string): UserProfileRecord => {
+  if (!userRoles.has(role as UserRole)) {
     return { profile: Profile.student, studentProfile: StudentProfile.visitor, externalProfile: null };
   }
 
-  return mapUserRoleToProfileRecord(profileType as UserRole);
+  return mapUserRoleToProfileRecord(role as UserRole);
 };
