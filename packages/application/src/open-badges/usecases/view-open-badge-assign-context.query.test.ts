@@ -4,15 +4,11 @@ import { viewOpenBadgeAssignContext } from './view-open-badge-assign-context.que
 
 const mockBrowseAssignableUsersForOpenBadge = vi.fn();
 const mockBuildMap = vi.fn();
-const mockGetOpenBadgeById = vi.fn();
-const mockGetTrainerThresholdLevel = vi.fn();
-const mockGetUserHighestOpenBadgeLevel = vi.fn();
+const mockGetOpenBadgeAssignmentContext = vi.fn();
 
 vi.mock('@repo/db', () => ({
   openBadgeRepository: {
-    getOpenBadgeById: (...args: [string]) => mockGetOpenBadgeById(...args),
-    getTrainerThresholdLevel: (...args: [string]) => mockGetTrainerThresholdLevel(...args),
-    getUserHighestOpenBadgeLevel: (...args: [string, string]) => mockGetUserHighestOpenBadgeLevel(...args)
+    getOpenBadgeAssignmentContext: (...args: [string, string | undefined]) => mockGetOpenBadgeAssignmentContext(...args)
   }
 }));
 
@@ -48,9 +44,11 @@ describe('viewOpenBadgeAssignContext', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGetOpenBadgeById.mockResolvedValue(badge);
-    mockGetTrainerThresholdLevel.mockResolvedValue(null);
-    mockGetUserHighestOpenBadgeLevel.mockResolvedValue(null);
+    mockGetOpenBadgeAssignmentContext.mockResolvedValue({
+      badge,
+      trainerThreshold: null,
+      highestLevel: null
+    });
     mockBrowseAssignableUsersForOpenBadge.mockResolvedValue([userSummary]);
     mockBuildMap.mockResolvedValue({
       [badge.id]: {
@@ -64,7 +62,7 @@ describe('viewOpenBadgeAssignContext', () => {
   });
 
   it('returns null when badge does not exist', async () => {
-    mockGetOpenBadgeById.mockResolvedValue(null);
+    mockGetOpenBadgeAssignmentContext.mockResolvedValue(null);
 
     const context = await viewOpenBadgeAssignContext('missing-id', null);
 
@@ -74,9 +72,13 @@ describe('viewOpenBadgeAssignContext', () => {
   });
 
   it('returns null for inactive badges', async () => {
-    mockGetOpenBadgeById.mockResolvedValue({
-      ...badge,
-      status: ActivityStatus.Inactive
+    mockGetOpenBadgeAssignmentContext.mockResolvedValue({
+      badge: {
+        ...badge,
+        status: ActivityStatus.Inactive
+      },
+      trainerThreshold: null,
+      highestLevel: null
     });
 
     const context = await viewOpenBadgeAssignContext('badge-id', {
@@ -117,12 +119,16 @@ describe('viewOpenBadgeAssignContext', () => {
     });
     expect(mockBrowseAssignableUsersForOpenBadge).toHaveBeenCalledWith('badge-id');
     expect(mockBuildMap).toHaveBeenCalledWith([expect.objectContaining({ id: badge.id })], [userSummary]);
-    expect(mockGetOpenBadgeById).toHaveBeenCalledTimes(1);
+    expect(mockGetOpenBadgeAssignmentContext).toHaveBeenCalledTimes(1);
+    expect(mockGetOpenBadgeAssignmentContext).toHaveBeenCalledWith('badge-id', 'admin-id');
   });
 
   it('returns null when actor is not authorized to assign this badge', async () => {
-    mockGetTrainerThresholdLevel.mockResolvedValue(2);
-    mockGetUserHighestOpenBadgeLevel.mockResolvedValue(1);
+    mockGetOpenBadgeAssignmentContext.mockResolvedValue({
+      badge,
+      trainerThreshold: 2,
+      highestLevel: 1
+    });
 
     const context = await viewOpenBadgeAssignContext('badge-id', {
       id: 'student-id',
@@ -130,7 +136,7 @@ describe('viewOpenBadgeAssignContext', () => {
     });
 
     expect(context).toBeNull();
-    expect(mockGetUserHighestOpenBadgeLevel).toHaveBeenCalledWith('student-id', 'badge-id');
+    expect(mockGetOpenBadgeAssignmentContext).toHaveBeenCalledWith('badge-id', 'student-id');
     expect(mockBrowseAssignableUsersForOpenBadge).not.toHaveBeenCalled();
     expect(mockBuildMap).not.toHaveBeenCalled();
   });

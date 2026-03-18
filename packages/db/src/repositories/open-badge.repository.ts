@@ -5,6 +5,7 @@ import type { OpenBadgeRequirementInput } from '@repo/domain/badge/open-badge-re
 import { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
 import type {
   OpenBadgeAdminReadModel,
+  OpenBadgeAssignmentContextReadModel,
   OpenBadgeProgressReadModel,
   OpenBadgeReadModel
 } from '../read-models/open-badge';
@@ -196,6 +197,49 @@ export class OpenBadgeRepository {
     });
 
     return badge ? this.normalizeOpenBadge(badge as OpenBadgePayload) : null;
+  }
+
+  async getOpenBadgeAssignmentContext(
+    openBadgeId: string,
+    userId?: string
+  ): Promise<OpenBadgeAssignmentContextReadModel | null> {
+    const openBadgeProgressQuery = userId
+      ? {
+          openBadgeProgresses: {
+            where: { userId },
+            take: 1,
+            include: {
+              highestLevel: {
+                select: { level: true }
+              }
+            }
+          }
+        }
+      : {};
+
+    const badge = (await this.prisma.openBadge.findUnique({
+      where: { id: openBadgeId },
+      include: {
+        ...openBadgeInclude,
+        trainerThresholdLevel: {
+          select: { level: true }
+        },
+        ...openBadgeProgressQuery
+      }
+    })) as OpenBadgePayload & {
+      trainerThresholdLevel: { level: number | null } | null;
+      openBadgeProgresses?: Array<{ highestLevel?: { level: number | null } | null }>;
+    };
+
+    if (!badge) {
+      return null;
+    }
+
+    return {
+      badge: this.normalizeOpenBadge(badge as OpenBadgePayload),
+      trainerThreshold: badge.trainerThresholdLevel?.level ?? null,
+      highestLevel: userId ? (badge.openBadgeProgresses?.[0]?.highestLevel?.level ?? null) : null
+    };
   }
 
   async getTrainerThresholdLevel(openBadgeId: string): Promise<number | null> {

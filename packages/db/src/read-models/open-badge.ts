@@ -16,3 +16,9 @@ export type OpenBadgeProgressReadModel = Omit<OpenBadgeProgressPayload, 'openBad
 export type OpenBadgeAdminReadModel = Omit<OpenBadgeAdminPayload, 'status'> & {
   status: ActivityStatus;
 };
+
+export type OpenBadgeAssignmentContextReadModel = {
+  badge: OpenBadgeReadModel;
+  trainerThreshold: number | null;
+  highestLevel: number | null;
+};

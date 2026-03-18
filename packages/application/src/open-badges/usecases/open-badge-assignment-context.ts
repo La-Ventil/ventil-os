@@ -1,7 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
-import type { OpenBadgeReadModel } from '@repo/db/read-models';
+import type { OpenBadgeAssignmentContextReadModel } from '@repo/db/read-models';
 import { canAssignOpenBadge as canAssignOpenBadgePolicy } from '@repo/domain/badge/open-badge-assignment-policy';
-import type { ActivityStatus } from '@repo/domain/activity-status';
 
 export type OpenBadgeAssigner = {
   id?: string;
@@ -10,37 +9,18 @@ export type OpenBadgeAssigner = {
   pedagogicalAdmin?: boolean;
 } | null;
 
-type OpenBadgeAssignmentBadge = {
-  id: string;
-  status: ActivityStatus;
-};
+export type OpenBadgeAssignmentContext = OpenBadgeAssignmentContextReadModel;
 
-export type OpenBadgeAssignmentContext<TBadge extends OpenBadgeAssignmentBadge = OpenBadgeReadModel> = {
-  badge: TBadge;
-  trainerThreshold: number | null;
-  highestLevel: number | null;
-};
-
-export const loadOpenBadgeAssignmentContext = async <TBadge extends OpenBadgeAssignmentBadge = OpenBadgeReadModel>(
+export const loadOpenBadgeAssignmentContext = async (
   openBadgeId: string,
-  user?: OpenBadgeAssigner,
-  badge?: TBadge | null
-): Promise<OpenBadgeAssignmentContext<TBadge> | null> => {
-  const resolvedBadge = badge ?? ((await openBadgeRepository.getOpenBadgeById(openBadgeId)) as TBadge | null);
-  if (!resolvedBadge) {
+  user?: OpenBadgeAssigner
+): Promise<OpenBadgeAssignmentContext | null> => {
+  const context = await openBadgeRepository.getOpenBadgeAssignmentContext(openBadgeId, user?.id);
+  if (!context) {
     return null;
   }
 
-  const [trainerThreshold, highestLevel] = await Promise.all([
-    openBadgeRepository.getTrainerThresholdLevel(openBadgeId),
-    user?.id ? openBadgeRepository.getUserHighestOpenBadgeLevel(user.id, openBadgeId) : Promise.resolve(null)
-  ]);
-
-  return {
-    badge: resolvedBadge,
-    trainerThreshold,
-    highestLevel
-  };
+  return context;
 };
 
 export const canAssignOpenBadgeFromContext = (context: OpenBadgeAssignmentContext, user?: OpenBadgeAssigner): boolean =>
