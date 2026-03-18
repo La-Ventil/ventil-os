@@ -1,23 +1,18 @@
 import { expect, test } from '../../fixtures/test';
-import { getAuthTestRepository } from '../../helpers/auth-test-repository';
+import { getPasswordResetToken } from '../../helpers/auth-fixtures';
+import { expectPrivacySafeResetNotice, requestPasswordReset, submitLoginForm } from '../../helpers/auth-flows';
 
 const newPassword = 'Renewed123';
-const privacySafeResetMessage = /si votre email existe|if your email exists/i;
 
 test.describe('Update password journey', () => {
   test('password reset lets the user sign in with a new password', async ({ page, seedUsers, workerWebRuntime }) => {
     const email = seedUsers.external.email;
 
-    await page.goto('/forgot-password');
-    const emailField = page.getByRole('textbox', { name: /email/i });
-    await emailField.click();
-    await emailField.pressSequentially(email);
-    await emailField.blur();
-    await page.locator('form button[type="submit"]').click();
+    await requestPasswordReset(page, email);
 
-    await expect(page.getByRole('alert').first()).toContainText(privacySafeResetMessage);
+    await expectPrivacySafeResetNotice(page);
 
-    const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(email);
+    const resetToken = await getPasswordResetToken({ email, dbSlot: workerWebRuntime?.dbSlot });
 
     await page.goto(`/update-password/${resetToken}`);
     await page.locator('input[name="password"]').fill(newPassword);
@@ -27,10 +22,10 @@ test.describe('Update password journey', () => {
     await expect(page).toHaveURL(/\/hub\/profile/, { timeout: 15_000 });
 
     await page.context().clearCookies();
-    await page.goto('/login');
-    await page.locator('input[name="email"]').fill(email);
-    await page.locator('input[name="password"]').fill(seedUsers.external.password);
-    await page.locator('form button[type="submit"]').click();
+    await submitLoginForm(page, {
+      email,
+      password: seedUsers.external.password
+    });
 
     await expect(page).toHaveURL(/\/login/);
     await expect(
