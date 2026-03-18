@@ -40,9 +40,7 @@ export async function updatePasswordAction(
       return formError(
         previousState.values,
         {
-          message: t('pages.public.updatePassword.invalidToken', {
-            defaultMessage: "Ce lien de réinitialisation n'existe pas ou n'est plus valide."
-          })
+          message: t('pages.public.updatePassword.invalidToken')
         },
         { token: previousState.token }
       );
@@ -54,9 +52,7 @@ export async function updatePasswordAction(
         password: '',
         passwordConfirmation: ''
       },
-      t('pages.public.updatePassword.success', {
-        defaultMessage: 'Votre mot de passe a bien été changé.'
-      }),
+      t('pages.public.updatePassword.success'),
       { token: previousState.token }
     );
   } catch (err) {

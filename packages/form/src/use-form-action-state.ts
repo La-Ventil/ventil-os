@@ -10,13 +10,10 @@ type InferSchema<Schema extends SchemaLike> = z.infer<Schema>;
 
 type Translator = (key: string, params?: Record<string, string>) => string;
 
-type TranslatorFallbackParams = {
-  [key: string]: string;
-};
-
 const safeTranslate = (translate: Translator, key: string, fallback: string) => {
   try {
-    return translate(key, { defaultMessage: fallback } as TranslatorFallbackParams);
+    const translated = translate(key);
+    return translated === key ? fallback : translated;
   } catch {
     return fallback;
   }

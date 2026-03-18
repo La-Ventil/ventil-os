@@ -7,7 +7,8 @@ export function isValidationError(err: unknown): err is ZodError {
 
 const safeTranslate = (t: Translate, key: string, fallback: string) => {
   try {
-    return t(key, { defaultMessage: fallback } as Record<string, string>);
+    const translated = t(key);
+    return translated === key ? fallback : translated;
   } catch {
     return fallback;
   }

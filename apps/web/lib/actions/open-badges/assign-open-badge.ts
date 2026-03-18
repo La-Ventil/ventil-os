@@ -21,17 +21,13 @@ export async function assignOpenBadgeAction(input: AssignOpenBadgeInput): Promis
 
   if (!session || !session.user?.id) {
     return formError(input, {
-      message: t('validation.unauthorized', { defaultMessage: 'Unauthorized' })
+      message: t('validation.unauthorized')
     });
   }
 
   const parsed = assignOpenBadgeFormInputSchema.safeParse(input);
   if (!parsed.success) {
-    return formValidationError(
-      input,
-      parsed.error.flatten().fieldErrors,
-      t('validation.invalidInput', { defaultMessage: 'Invalid input' })
-    );
+    return formValidationError(input, parsed.error.flatten().fieldErrors, t('validation.invalidInput'));
   }
 
   try {
@@ -45,10 +41,7 @@ export async function assignOpenBadgeAction(input: AssignOpenBadgeInput): Promis
     revalidatePath('/hub/admin/users', 'layout');
     revalidatePath('/hub/open-badge', 'layout');
 
-    return formSuccess(
-      parsed.data,
-      t('pages.hub.admin.users.assignSuccess', { defaultMessage: 'Open badge assigned.' })
-    );
+    return formSuccess(parsed.data, t('pages.hub.admin.users.assignSuccess'));
   } catch (error) {
     return withOpenBadgeFormError(parsed.data, error, t, 'validation.genericError');
   }

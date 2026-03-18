@@ -23,17 +23,13 @@ export async function setUserOpenBadgeLevelAction(
 
   if (!session || !session.user?.id) {
     return formError(input, {
-      message: t('validation.unauthorized', { defaultMessage: 'Unauthorized' })
+      message: t('validation.unauthorized')
     });
   }
 
   const parsed = assignOpenBadgeFormInputSchema.safeParse(input);
   if (!parsed.success) {
-    return formValidationError(
-      input,
-      parsed.error.flatten().fieldErrors,
-      t('validation.invalidInput', { defaultMessage: 'Invalid input' })
-    );
+    return formValidationError(input, parsed.error.flatten().fieldErrors, t('validation.invalidInput'));
   }
 
   try {
@@ -47,12 +43,7 @@ export async function setUserOpenBadgeLevelAction(
     revalidatePath('/hub/admin/users', 'layout');
     revalidatePath('/hub/open-badge', 'layout');
 
-    return formSuccess(
-      parsed.data,
-      t('pages.hub.admin.users.badgeManagement.feedback.levelUpdated', {
-        defaultMessage: 'Open badge level updated.'
-      })
-    );
+    return formSuccess(parsed.data, t('pages.hub.admin.users.badgeManagement.feedback.levelUpdated'));
   } catch (error) {
     return withOpenBadgeFormError(parsed.data, error, t, 'validation.genericError');
   }

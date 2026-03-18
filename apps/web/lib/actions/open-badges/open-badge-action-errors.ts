@@ -2,7 +2,7 @@ import type { FormState } from '@repo/form/form-state';
 import { formError } from '@repo/form/form-state-builders';
 import { isOpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 
-type Translate = (key: string, options?: { defaultMessage?: string }) => string;
+type Translate = (key: string) => string;
 
 const resolveOpenBadgeErrorMessage = (error: unknown, t: Translate, fallbackErrorMessage: string): string =>
   isOpenBadgeError(error) ? t(error.code) : t(fallbackErrorMessage);
