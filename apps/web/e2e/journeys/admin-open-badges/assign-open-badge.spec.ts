@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/test';
+import { openAutocompleteOptions, selectFirstAutocompleteOption } from '../../helpers/autocomplete';
 import { openAdminOpenBadgeAssignModal } from '../../helpers/open-badges';
 import { clickQuickAction, openRowQuickActions } from '../../helpers/quick-actions';
 
@@ -15,10 +16,7 @@ test.describe('Admin open badges journeys', () => {
     await expect(dialog.getByRole('button', { name: /attribuer|assign/i })).toBeDisabled();
 
     const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
-    await userField.click();
-    const listbox = page.getByRole('listbox');
-    await expect(listbox).toBeVisible();
-    await listbox.getByRole('option').first().click();
+    await selectFirstAutocompleteOption({ page, field: userField });
 
     await dialog.getByRole('button', { name: /attribuer|assign/i }).click();
 
@@ -42,9 +40,7 @@ test.describe('Admin open badges journeys', () => {
     await dialog.getByRole('combobox', { name: /niveau|level/i }).click();
     await page.getByRole('option', { name: /2 - utilisateur avancé/i }).click();
 
-    await userField.click();
-    const listbox = page.getByRole('listbox');
-    await expect(listbox).toBeVisible();
+    const listbox = await openAutocompleteOptions(page, userField);
     await expect(listbox.getByRole('option', { name: /Admin Global/i })).toBeVisible();
     await expect(listbox.getByRole('option', { name: /Admin Pédagogique/i })).toBeVisible();
     await expect(listbox.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
@@ -66,10 +62,7 @@ test.describe('Admin open badges journeys', () => {
 
     const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
     const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
-    await userField.click();
-
-    const listbox = page.getByRole('listbox');
-    await expect(listbox).toBeVisible();
+    const listbox = await openAutocompleteOptions(page, userField);
     await expect(listbox.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
 
     await page.goto('/hub/admin/users');

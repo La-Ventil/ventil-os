@@ -179,7 +179,11 @@ export class MachineReservationTestRepository {
 
   async cancelLatestConfirmedReservation(input: SetLatestConfirmedReservationTimingInput): Promise<string> {
     const reservationId = await this.getLatestConfirmedReservationId(input);
+    await this.cancelReservation(reservationId);
+    return reservationId;
+  }
 
+  async cancelReservation(reservationId: string): Promise<void> {
     await this.prisma.machineReservation.update({
       where: {
         id: reservationId
@@ -188,8 +192,6 @@ export class MachineReservationTestRepository {
         status: 'cancelled'
       }
     });
-
-    return reservationId;
   }
 }
 

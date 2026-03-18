@@ -1,7 +1,12 @@
-import type { Page } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
 import { openMachineDetails } from '../../helpers/fab-lab';
 import { getMachineReservationTestRepository } from '../../helpers/machine-reservation-test-repository';
+import {
+  getUpdateReservationDialog,
+  openEditableReservation,
+  submitReservationUpdate,
+  updateReservationDuration
+} from '../../helpers/machine-reservations';
 import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-repository';
 
 const THIRTY_MINUTES_MS = 30 * 60_000;
@@ -37,15 +42,6 @@ const createEditableReservationStart = (offsetMinutes: number = 0, now: Date = n
   tomorrowMorning.setHours(10, 0, 0, 0);
   return tomorrowMorning;
 };
-
-async function openEditableReservation(args: { machineId: string; reservationId: string; page: Page }): Promise<void> {
-  const { machineId, reservationId, page } = args;
-  await page.goto(`/hub/fab-lab/${machineId}/reservation?reservationId=${reservationId}`);
-
-  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`), {
-    timeout: 15_000
-  });
-}
 
 test.describe('Machine reservation update journey', () => {
   test('changing reservation minutes in the date picker keeps a valid start date without client errors', async ({
@@ -150,9 +146,7 @@ test.describe('Machine reservation update journey', () => {
       page
     });
 
-    const reservationDialog = page.getByRole('dialog', { name: SECOND_BAMBU_MACHINE }).filter({
-      has: page.getByRole('button', { name: /mettre à jour|update/i })
-    });
+    const reservationDialog = getUpdateReservationDialog(page, SECOND_BAMBU_MACHINE);
 
     await expect(reservationDialog).toBeVisible();
 
@@ -195,16 +189,13 @@ test.describe('Machine reservation update journey', () => {
       page
     });
 
-    const reservationDialog = page.getByRole('dialog', { name: SECOND_BAMBU_MACHINE }).filter({
-      has: page.getByRole('button', { name: /mettre à jour|update/i })
-    });
+    const reservationDialog = getUpdateReservationDialog(page, SECOND_BAMBU_MACHINE);
 
     await expect(reservationDialog).toHaveCount(1);
     await expect(reservationDialog).toBeVisible();
 
-    await reservationDialog.getByRole('combobox', { name: /durée|duration/i }).click();
-    await page.getByRole('option', { name: /30 min/i }).click();
-    await reservationDialog.getByRole('button', { name: /mettre à jour|update/i }).click();
+    await updateReservationDuration({ page, machineName: SECOND_BAMBU_MACHINE, optionName: /30 min/i });
+    await submitReservationUpdate(page, SECOND_BAMBU_MACHINE);
 
     await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}$`), { timeout: 15_000 });
     await expect(reservationDialog).toHaveCount(0, { timeout: 15_000 });
@@ -239,17 +230,14 @@ test.describe('Machine reservation update journey', () => {
       page
     });
 
-    const reservationDialog = page.getByRole('dialog', { name: SECOND_BAMBU_MACHINE }).filter({
-      has: page.getByRole('button', { name: /mettre à jour|update/i })
-    });
+    const reservationDialog = getUpdateReservationDialog(page, SECOND_BAMBU_MACHINE);
 
     await expect(reservationDialog).toBeVisible();
 
     await badgeRepository.removeProgressForUserByBadgeName(seedUsers.globalAdmin.email, 'Impression 3D Bambu Lab');
 
-    await reservationDialog.getByRole('combobox', { name: /durée|duration/i }).click();
-    await page.getByRole('option', { name: /30 min/i }).click();
-    await reservationDialog.getByRole('button', { name: /mettre à jour|update/i }).click();
+    await updateReservationDuration({ page, machineName: SECOND_BAMBU_MACHINE, optionName: /30 min/i });
+    await submitReservationUpdate(page, SECOND_BAMBU_MACHINE);
 
     await expect(
       reservationDialog.getByRole('alert').filter({ hasText: /badge requis|required open badge/i })

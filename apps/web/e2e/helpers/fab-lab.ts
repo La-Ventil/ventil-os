@@ -1,5 +1,14 @@
 import { expect, type Page } from '@playwright/test';
 
+type MachineDialogArgs = {
+  machineName?: RegExp;
+  page: Page;
+};
+
+export function getMachineDialog({ machineName = /Bambu Lab X1C/i, page }: MachineDialogArgs) {
+  return page.getByRole('dialog', { name: machineName }).first();
+}
+
 export async function openMachineDetails(page: Page, machineName: RegExp = /Bambu Lab X1C/i): Promise<string> {
   await page.goto('/hub/fab-lab');
 
@@ -8,7 +17,7 @@ export async function openMachineDetails(page: Page, machineName: RegExp = /Bamb
   await machineCard.click();
 
   await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/?]+/, { timeout: 15_000 });
-  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible({ timeout: 15_000 });
+  await expect(getMachineDialog({ page, machineName })).toBeVisible({ timeout: 15_000 });
 
   const url = new URL(page.url());
   const segments = url.pathname.split('/').filter(Boolean);
@@ -26,8 +35,14 @@ export async function openMachineReservationModalFromSchedule(
   machineName: RegExp = /Bambu Lab X1C/i
 ): Promise<string> {
   const machineId = await openMachineDetails(page, machineName);
+  await openReservationComposerForMachine({ page, machineName });
 
-  const machineDialog = page.getByRole('dialog', { name: machineName });
+  return machineId;
+}
+
+export async function openReservationComposerForMachine(args: MachineDialogArgs): Promise<void> {
+  const { machineName = /Bambu Lab X1C/i, page } = args;
+  const machineDialog = getMachineDialog({ page, machineName });
 
   const slotButton = machineDialog
     .locator('button[aria-label*="Réserver à"]:not([disabled]), button[aria-label*="Reserve at"]:not([disabled])')
@@ -37,7 +52,5 @@ export async function openMachineReservationModalFromSchedule(
   await slotButton.click();
 
   await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/]+\/reservation/, { timeout: 15_000 });
-  await expect(page.getByRole('dialog', { name: machineName })).toBeVisible({ timeout: 15_000 });
-
-  return machineId;
+  await expect(getMachineDialog({ page, machineName })).toBeVisible({ timeout: 15_000 });
 }

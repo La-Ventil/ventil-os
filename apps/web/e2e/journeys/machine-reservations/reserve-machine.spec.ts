@@ -2,8 +2,10 @@ import { test, expect } from '../../fixtures/test';
 import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 import { openMachineDetails, openMachineReservationModalFromSchedule } from '../../helpers/fab-lab';
 import {
+  getCreateReservationDialog,
   getReservationCard,
   openMyReservationsTab,
+  searchReservationParticipants,
   submitReservationAndReturnToMachineDetails
 } from '../../helpers/machine-reservations';
 
@@ -23,25 +25,25 @@ test.describe('Machine reservation journey', () => {
     await loginAs('globalAdmin');
     await openMachineReservationModalFromSchedule(page, /Bambu Lab X1C/i);
 
-    const reservationDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).filter({
-      has: page.locator('input[name="machineId"]')
-    });
+    const reservationDialog = getCreateReservationDialog(page, /Bambu Lab X1C/i);
     await expect(reservationDialog).toBeVisible();
 
-    const participantsField = reservationDialog.getByRole('combobox', { name: /participants/i });
-
-    await participantsField.click();
-    await participantsField.pressSequentially('claude');
-    await participantsField.press('ArrowDown');
-    const claudeOption = page.getByRole('option', { name: /Claude Dupont/i });
+    const claudeOptions = await searchReservationParticipants({
+      page,
+      machineName: /Bambu Lab X1C/i,
+      query: 'claude'
+    });
+    const claudeOption = claudeOptions.getByRole('option', { name: /Claude Dupont/i });
     await expect(claudeOption).toBeVisible({ timeout: 15_000 });
     await expect(page.getByRole('option', { name: /Admin Global/i })).toHaveCount(0);
     await expect(page.getByRole('option', { name: /Admin Pédagogique/i })).toHaveCount(0);
 
-    await participantsField.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A');
-    await participantsField.press('Backspace');
-    await participantsField.pressSequentially('admin');
-    await expect(page.getByRole('option', { name: /Admin Pédagogique/i })).toBeVisible({ timeout: 15_000 });
+    const adminOptions = await searchReservationParticipants({
+      page,
+      machineName: /Bambu Lab X1C/i,
+      query: 'admin'
+    });
+    await expect(adminOptions.getByRole('option', { name: /Admin Pédagogique/i })).toBeVisible({ timeout: 15_000 });
     await expect(page.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
   });
 

@@ -1,13 +1,11 @@
 import { test, expect } from '../../fixtures/test';
+import { getReservationCard, openMyReservationsTab } from '../../helpers/machine-reservations';
 import {
-  cancelLatestReservation,
-  getReservationCard,
-  openMyReservationsTab,
-  setLatestReservationPast,
-  setLatestReservationActive,
-  setLatestReservationUpcoming
-} from '../../helpers/machine-reservations';
-import { getMachineReservationTestRepository } from '../../helpers/machine-reservation-test-repository';
+  givenActiveReservation,
+  givenCancelledReservation,
+  givenPastReservation,
+  givenUpcomingReservation
+} from '../../helpers/machine-reservation-fixtures';
 import { openMachineDetails } from '../../helpers/fab-lab';
 
 const reservationTimeFormatter = new Intl.DateTimeFormat('fr-FR', {
@@ -18,8 +16,6 @@ const reservationTimeFormatter = new Intl.DateTimeFormat('fr-FR', {
 
 const MACHINE_NAME = 'Bambu Lab X1C n°1';
 
-const createReservationStart = (offsetMinutes: number): Date => new Date(Date.now() + offsetMinutes * 60_000);
-
 test.describe('Machine reservation management journeys', () => {
   test('admin can cancel an upcoming reservation from the reservations list card', async ({
     page,
@@ -28,18 +24,13 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+    await givenUpcomingReservation({
       machineName: MACHINE_NAME,
       creatorEmail: seedUsers.globalAdmin.email,
-      startsAt: createReservationStart(120),
-      durationMinutes: 15
+      dbSlot: workerWebRuntime?.dbSlot
     });
 
     await openMyReservationsTab(page);
-    await expect(getReservationCard(page)).toBeVisible();
-    await setLatestReservationUpcoming({ dbSlot: workerWebRuntime?.dbSlot });
-    await page.reload();
-    await page.getByRole('tab', { name: /mes réservations|my reservations/i }).click();
 
     const reservationCard = getReservationCard(page);
     await expect(reservationCard).toBeVisible();
@@ -59,21 +50,13 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('pedagogicalAdmin');
-    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+    await givenActiveReservation({
       machineName: MACHINE_NAME,
-      creatorEmail: seedUsers.pedagogicalAdmin.email,
-      startsAt: createReservationStart(150),
-      durationMinutes: 15
-    });
-
-    await openMyReservationsTab(page);
-    await expect(getReservationCard(page)).toBeVisible();
-    await setLatestReservationActive({
       creatorEmail: seedUsers.pedagogicalAdmin.email,
       dbSlot: workerWebRuntime?.dbSlot
     });
-    await page.reload();
-    await page.getByRole('tab', { name: /mes réservations|my reservations/i }).click();
+
+    await openMyReservationsTab(page);
 
     const reservationCard = getReservationCard(page);
     await expect(reservationCard).toBeVisible();
@@ -93,14 +76,12 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+    await givenPastReservation({
       machineName: MACHINE_NAME,
       creatorEmail: seedUsers.globalAdmin.email,
-      startsAt: createReservationStart(180),
-      durationMinutes: 15
+      dbSlot: workerWebRuntime?.dbSlot
     });
 
-    await setLatestReservationPast({ dbSlot: workerWebRuntime?.dbSlot });
     await openMyReservationsTab(page);
 
     await expect(getReservationCard(page)).toHaveCount(0);
@@ -113,14 +94,12 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+    await givenCancelledReservation({
       machineName: MACHINE_NAME,
       creatorEmail: seedUsers.globalAdmin.email,
-      startsAt: createReservationStart(210),
-      durationMinutes: 15
+      dbSlot: workerWebRuntime?.dbSlot
     });
 
-    await cancelLatestReservation({ dbSlot: workerWebRuntime?.dbSlot });
     await openMyReservationsTab(page);
 
     await expect(getReservationCard(page)).toHaveCount(0);
@@ -133,25 +112,15 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    const reservations = getMachineReservationTestRepository(workerWebRuntime?.dbSlot);
-    await reservations.createConfirmedReservation({
+    const { reservationId, window } = await givenCancelledReservation({
       machineName: MACHINE_NAME,
-      creatorEmail: seedUsers.globalAdmin.email,
-      startsAt: createReservationStart(240),
-      durationMinutes: 15
-    });
-    const reservationId = await reservations.getLatestConfirmedReservationId({
-      creatorEmail: seedUsers.globalAdmin.email
-    });
-    const reservationWindow = await reservations.getReservationWindow(reservationId);
-    const reservationTimeLabel = `${reservationTimeFormatter.format(reservationWindow.start)} → ${reservationTimeFormatter.format(
-      reservationWindow.end
-    )}`;
-
-    await cancelLatestReservation({
       creatorEmail: seedUsers.globalAdmin.email,
       dbSlot: workerWebRuntime?.dbSlot
     });
+    expect(reservationId).toMatch(/\w+/);
+    const reservationTimeLabel = `${reservationTimeFormatter.format(window.start)} → ${reservationTimeFormatter.format(
+      window.end
+    )}`;
 
     await openMachineDetails(page, /Bambu Lab X1C/i);
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
