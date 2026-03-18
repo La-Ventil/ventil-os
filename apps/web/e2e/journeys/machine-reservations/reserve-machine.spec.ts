@@ -8,6 +8,7 @@ import {
   searchReservationParticipants,
   submitReservationAndReturnToMachineDetails
 } from '../../helpers/machine-reservations';
+import { freezeBrowserTime } from '../../helpers/time';
 
 test.describe('Machine reservation journey', () => {
   test('admin can reserve a machine from the reservation modal route', async ({ page, loginAs }) => {
@@ -53,77 +54,7 @@ test.describe('Machine reservation journey', () => {
   }) => {
     const fixedNow = new Date();
     fixedNow.setHours(10, 7, 30, 0);
-    const fixedNowIso = fixedNow.toISOString();
-
-    await page.addInitScript(
-      ({ nowIso }) => {
-        const fixedTime = new Date(nowIso).getTime();
-        const OriginalDate = Date;
-
-        class MockDate extends OriginalDate {
-          constructor(...args: unknown[]) {
-            if (args.length === 0) {
-              super(fixedTime);
-              return;
-            }
-
-            if (args.length === 1) {
-              super(args[0] as string | number | Date);
-              return;
-            }
-
-            if (args.length === 2) {
-              super(args[0] as number, args[1] as number);
-              return;
-            }
-
-            if (args.length === 3) {
-              super(args[0] as number, args[1] as number, args[2] as number);
-              return;
-            }
-
-            if (args.length === 4) {
-              super(args[0] as number, args[1] as number, args[2] as number, args[3] as number);
-              return;
-            }
-
-            if (args.length === 5) {
-              super(args[0] as number, args[1] as number, args[2] as number, args[3] as number, args[4] as number);
-              return;
-            }
-
-            if (args.length === 6) {
-              super(
-                args[0] as number,
-                args[1] as number,
-                args[2] as number,
-                args[3] as number,
-                args[4] as number,
-                args[5] as number
-              );
-              return;
-            }
-
-            super(
-              args[0] as number,
-              args[1] as number,
-              args[2] as number,
-              args[3] as number,
-              args[4] as number,
-              args[5] as number,
-              args[6] as number
-            );
-          }
-
-          static now(): number {
-            return fixedTime;
-          }
-        }
-
-        globalThis.Date = MockDate as DateConstructor;
-      },
-      { nowIso: fixedNowIso }
-    );
+    await freezeBrowserTime(page, fixedNow);
 
     await loginAs('globalAdmin');
     const machineId = await openMachineDetails(page, /Bambu Lab X1C/i);
@@ -154,30 +85,7 @@ test.describe('Machine reservation journey', () => {
 
     await loginAs('student');
 
-    await page.addInitScript(
-      ({ nowIso }) => {
-        const fixedTime = new Date(nowIso).getTime();
-        const OriginalDate = Date;
-
-        class MockDate extends OriginalDate {
-          constructor(...args: unknown[]) {
-            if (args.length === 0) {
-              super(fixedTime);
-              return;
-            }
-
-            super(...(args as ConstructorParameters<DateConstructor>));
-          }
-
-          static now(): number {
-            return fixedTime;
-          }
-        }
-
-        globalThis.Date = MockDate as DateConstructor;
-      },
-      { nowIso: fixedNow.toISOString() }
-    );
+    await freezeBrowserTime(page, fixedNow);
 
     await openMachineDetails(page, /Bambu Lab X1C/i);
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();

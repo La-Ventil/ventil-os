@@ -5,10 +5,21 @@ This directory is organized by user journeys and accessibility checks.
 ## Structure
 
 - `fixtures/`: shared Playwright fixtures (`test.extend`)
-- `helpers/`: reusable interaction/assertion helpers
+- `helpers/`: reusable helpers
 - `journeys/`: full end-to-end user journey tests (critical use cases)
 - `a11y/`: accessibility-focused checks for critical journeys
 - `smoke/`: lightweight smoke tests (API/routing/non-critical)
+
+## Helper boundaries
+
+Keep helpers at the right level:
+
+- widget helpers: encapsulate fragile UI components (`Autocomplete`, date picker, dialog controls)
+- journey helpers: express user intent (`openReservationComposerForMachine`, `submitReservationUpdate`)
+- fixture builders: prepare business state in DB (`givenUpcomingReservation`, `givenCancelledReservation`)
+- repositories: lowest-level Prisma access, used by fixture builders rather than directly by most specs
+
+As a rule, specs should read like user behavior plus business assertions, not like a sequence of MUI-specific locators.
 
 ## Testing philosophy
 

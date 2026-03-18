@@ -113,10 +113,35 @@ re-implementing ad hoc `first field error wins` logic in `apps/web`.
 ## Playwright suite structure (`apps/web/e2e`)
 
 - `fixtures/`: shared `test.extend(...)` fixtures (seed users, `loginAs`)
-- `helpers/`: reusable helpers (auth, keyboard, dialogs, quick actions, a11y)
+- `helpers/`: reusable helpers, split by concern whenever possible
 - `journeys/`: full end-to-end critical journeys
 - `a11y/`: accessibility-focused journey checks
 - `smoke/`: lightweight smoke checks
+
+### E2E helper conventions
+
+Prefer this layering order when adding new Playwright code:
+
+- `helpers/widgets/` style helpers
+  - encapsulate fragile UI primitives (`Autocomplete`, date picker, menu, dialog close behavior)
+  - should know how the widget works, but not why the journey uses it
+- `helpers/journeys/` style helpers
+  - encapsulate an intent such as "open reservation composer" or "submit reservation update"
+  - may compose several widget helpers
+- `helpers/fixtures/` style helpers
+  - create business-ready database state such as `givenUpcomingReservation(...)`
+  - should describe state in domain terms, not "latest row then mutate it"
+- repository helpers
+  - lowest level, Prisma-oriented setup/readback only
+  - should stay out of specs unless the spec really needs persistence-level detail
+
+Practical rules:
+
+- a `journey` spec should prefer journey helpers and fixture builders
+- an `a11y` spec should start from a prepared state and assert accessibility, not recreate a long flow unless the flow itself is the accessibility target
+- when several specs repeat `page.addInitScript(...)` time mocking, create a shared helper instead of copying `MockDate`
+- if a spec mostly manipulates widget details, move that logic into a widget helper first
+- if a spec mostly manipulates test data shape, move that logic into a fixture builder first
 
 ## Scripts
 

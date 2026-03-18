@@ -8,6 +8,7 @@ import {
   updateReservationDuration
 } from '../../helpers/machine-reservations';
 import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-repository';
+import { freezeBrowserTime } from '../../helpers/time';
 
 const THIRTY_MINUTES_MS = 30 * 60_000;
 const NINETY_MINUTES_MS = 90 * 60_000;
@@ -58,76 +59,7 @@ test.describe('Machine reservation update journey', () => {
     const startsAt = createEditableReservationStart();
     const fixedNow = new Date(startsAt);
     fixedNow.setHours(Math.max(8, startsAt.getHours() - 2), 0, 0, 0);
-
-    await page.addInitScript(
-      ({ nowIso }) => {
-        const fixedTime = new Date(nowIso).getTime();
-        const OriginalDate = Date;
-
-        class MockDate extends OriginalDate {
-          constructor(...args: unknown[]) {
-            if (args.length === 0) {
-              super(fixedTime);
-              return;
-            }
-
-            if (args.length === 1) {
-              super(args[0] as string | number | Date);
-              return;
-            }
-
-            if (args.length === 2) {
-              super(args[0] as number, args[1] as number);
-              return;
-            }
-
-            if (args.length === 3) {
-              super(args[0] as number, args[1] as number, args[2] as number);
-              return;
-            }
-
-            if (args.length === 4) {
-              super(args[0] as number, args[1] as number, args[2] as number, args[3] as number);
-              return;
-            }
-
-            if (args.length === 5) {
-              super(args[0] as number, args[1] as number, args[2] as number, args[3] as number, args[4] as number);
-              return;
-            }
-
-            if (args.length === 6) {
-              super(
-                args[0] as number,
-                args[1] as number,
-                args[2] as number,
-                args[3] as number,
-                args[4] as number,
-                args[5] as number
-              );
-              return;
-            }
-
-            super(
-              args[0] as number,
-              args[1] as number,
-              args[2] as number,
-              args[3] as number,
-              args[4] as number,
-              args[5] as number,
-              args[6] as number
-            );
-          }
-
-          static now(): number {
-            return fixedTime;
-          }
-        }
-
-        globalThis.Date = MockDate as DateConstructor;
-      },
-      { nowIso: fixedNow.toISOString() }
-    );
+    await freezeBrowserTime(page, fixedNow);
 
     await loginAs('globalAdmin');
 
