@@ -64,6 +64,9 @@ require_fast_forward origin/main origin/dev "main from origin/dev"
 git switch main
 git merge --ff-only origin/dev
 
+pnpm i18n:report
+git add docs/contributor/i18n/translation-coverage.md
+
 pnpm release
 
 git push origin main --follow-tags

@@ -9,6 +9,7 @@ It groups project-level material that is not part of end-user or admin help.
 - `docs/contributor/adr/`: architectural decision records and ADR writing rules
 - `docs/contributor/accessibility/`: RGAA-inspired accessibility audit material
 - `docs/contributor/contributing.md`: contribution workflow and quality checks
+- `docs/contributor/i18n/`: translation coverage reports
 - `docs/contributor/testing/`: testing strategy and conventions
 - `docs/contributor/product/`: product reference material (raw data, references, screenshots)
 
@@ -27,3 +28,4 @@ Use this section for:
 - Release notes: [`CHANGELOG.md`](../../CHANGELOG.md)
 - Contribution guide: [`CONTRIBUTING.md`](../../CONTRIBUTING.md)
 - Canonical contributor guide: [`docs/contributor/contributing.md`](./contributing.md)
+- Translation coverage report: [`docs/contributor/i18n/translation-coverage.md`](./i18n/translation-coverage.md)

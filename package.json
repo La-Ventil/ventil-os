@@ -7,6 +7,7 @@
     "clean": "turbo run clean",
     "commit": "cz",
     "dev": "pnpm --filter web dev",
+    "i18n:report": "node scripts/generate-i18n-report.mjs",
     "start": "pnpm --filter web start",
     "lint": "turbo run lint",
     "lint:dev": "turbo run lint:dev",
