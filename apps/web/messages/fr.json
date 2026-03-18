@@ -610,9 +610,12 @@
   "validation": {
     "imageTooLarge": "Image trop lourde (max {max}).",
     "imageInvalidType": "Format d'image invalide. Merci d'envoyer png, jpg, gif ou webp.",
+    "imageRequired": "Veuillez ajouter une image.",
     "emailRequired": "Veuillez renseigner votre adresse email.",
     "emailInvalid": "L'adresse email n'est pas valide.",
     "genericError": "Une erreur inattendue est survenue :(",
+    "invalidInput": "Les données envoyées sont invalides.",
+    "unauthorized": "Vous n'avez pas les droits pour effectuer cette action.",
     "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
     "email": {
       "confirmationMismatch": "Les adresses email ne correspondent pas."
@@ -652,6 +655,7 @@
       "lastNameRequired": "Veuillez renseigner votre nom.",
       "lastNameMaxLength": "Le nom ne doit pas dépasser 40 caractères.",
       "lastNameNoEmoji": "Le nom ne doit pas contenir d’emoji.",
+      "roleRequired": "Veuillez sélectionner un profil.",
       "profileRequired": "Veuillez sélectionner un profil.",
       "termsRequired": "Vous devez accepter la politique de confidentialité.",
       "educationLevelRequired": "Veuillez sélectionner un niveau scolaire."

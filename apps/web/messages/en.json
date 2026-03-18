@@ -614,8 +614,11 @@
     "emailAlreadyUsed": "This email address is already in use.",
     "imageTooLarge": "Image too large (max {max}).",
     "imageInvalidType": "Invalid image type. Please upload png, jpg, gif or webp.",
+    "imageRequired": "Please add an image.",
     "emailRequired": "Please enter your email address.",
     "emailInvalid": "The email address is not valid.",
+    "invalidInput": "Submitted data is invalid.",
+    "unauthorized": "You are not allowed to perform this action.",
     "email": {
       "confirmationMismatch": "Email addresses do not match."
     },
@@ -654,6 +657,7 @@
       "lastNameRequired": "Please enter your last name.",
       "lastNameMaxLength": "Last name must be at most 40 characters.",
       "lastNameNoEmoji": "Last name cannot include emojis.",
+      "roleRequired": "Please select a profile.",
       "profileRequired": "Please select a profile.",
       "termsRequired": "You must accept the privacy policy.",
       "educationLevelRequired": "Please select a school level."
