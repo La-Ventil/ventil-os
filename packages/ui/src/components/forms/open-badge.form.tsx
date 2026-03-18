@@ -142,8 +142,8 @@ export default function OpenBadgeForm({
         fieldErrorFor={nestedFieldError}
         labels={{
           add: t('levels.add'),
-          title: t('fields.levelTitle'),
-          description: t('fields.levelDescription'),
+          title: (levelNumber) => t('fields.levelTitle', { index: levelNumber }),
+          description: (levelNumber) => t('fields.levelDescription', { index: levelNumber }),
           remove: t('levels.remove'),
           chipPrefix: t('levels.chipPrefix'),
           minLevels: t('levels.min')

@@ -373,8 +373,8 @@
             "name": "Open badge name",
             "description": "Short description",
             "image": "Image",
-            "levelTitle": "Level 1: title",
-            "levelDescription": "Level 1: description"
+            "levelTitle": "Level {index}: title",
+            "levelDescription": "Level {index}: description"
           },
           "image": {
             "placeholder": "Illustration in progress",

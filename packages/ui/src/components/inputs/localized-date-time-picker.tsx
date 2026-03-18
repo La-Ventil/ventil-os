@@ -15,10 +15,11 @@ const LocalizedDateTimePicker = ({ timezone, ...props }: LocalizedDateTimePicker
   const locale = useLocale();
   const resolvedTimeZone = useTimeZone();
   const timeZone = timezone ?? resolvedTimeZone;
+  const format = 'DD/MM/YYYY HH:mm';
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
-      <DateTimePicker {...props} timezone={timeZone} />
+      <DateTimePicker {...props} format={format} timezone={timeZone} />
     </LocalizationProvider>
   );
 };

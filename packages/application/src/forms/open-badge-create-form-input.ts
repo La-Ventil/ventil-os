@@ -5,6 +5,7 @@ import { optionalImageFileSchema } from './image-upload';
 export const OPEN_BADGE_NAME_MAX_LENGTH = 35;
 export const OPEN_BADGE_DESCRIPTION_MAX_LENGTH = 100;
 export const OPEN_BADGE_LEVEL_TITLE_MAX_LENGTH = 35;
+export const OPEN_BADGE_LEVEL_DESCRIPTION_MAX_LENGTH = 100;
 
 export const openBadgeNameSchema = z
   .string()
@@ -22,7 +23,8 @@ export const openBadgeLevelTitleSchema = z
 export const openBadgeLevelDescriptionSchema = z
   .string()
   .trim()
-  .min(1, { message: 'validation.openBadge.levelDescriptionRequired' });
+  .min(1, { message: 'validation.openBadge.levelDescriptionRequired' })
+  .max(OPEN_BADGE_LEVEL_DESCRIPTION_MAX_LENGTH, { message: 'validation.openBadge.levelDescriptionMaxLength' });
 
 const levelSchema = z.object({
   title: zfd.text(openBadgeLevelTitleSchema),

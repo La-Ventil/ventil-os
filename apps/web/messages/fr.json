@@ -371,8 +371,8 @@
             "name": "Nom de l’open badge",
             "description": "Description courte",
             "image": "Image",
-            "levelTitle": "Niveau 1 : titre",
-            "levelDescription": "Niveau 1 : description"
+            "levelTitle": "Niveau {index} : titre",
+            "levelDescription": "Niveau {index} : description"
           },
           "image": {
             "placeholder": "Illustration en cours",

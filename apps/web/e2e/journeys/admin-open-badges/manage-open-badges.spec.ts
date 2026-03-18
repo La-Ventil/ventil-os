@@ -24,6 +24,12 @@ test.describe('Admin open badge journeys', () => {
     await page.locator('input[type="file"][name="imageFile"]').setInputFiles(tinyPngFile);
     await page.locator('input[name="levels[0].title"]').fill('Level 1');
     await page.locator('textarea[name="levels[0].description"]').fill('Level 1 description.');
+    await expect(
+      page
+        .locator('label')
+        .filter({ hasText: /niveau 1|level 1/i })
+        .first()
+    ).toBeVisible();
 
     await page.getByRole('button', { name: /enregistrer|save/i }).click();
 
@@ -32,12 +38,23 @@ test.describe('Admin open badge journeys', () => {
   });
 
   test('admin can edit an open badge from row quick actions', async ({ page, loginAs }) => {
-    const updatedName = `Badge ${Date.now()}`;
+    const badgeName = `Editable open badge ${Date.now()}`;
+    const updatedName = `Edited ${Date.now()}`;
 
     await loginAs('globalAdmin');
-    await page.goto('/hub/admin/open-badges');
+    await page.goto('/hub/admin/open-badges/create');
 
-    const row = page.getByRole('row', { name: /Impression 3D Bambu Lab/i });
+    await page.locator('input[name="name"]').fill(badgeName);
+    await page.locator('input[name="description"]').fill('Created by Playwright for editing.');
+    await page.locator('input[type="file"][name="imageFile"]').setInputFiles(tinyPngFile);
+    await page.locator('input[name="levels[0].title"]').fill('Level 1');
+    await page.locator('textarea[name="levels[0].description"]').fill('Level 1 description.');
+    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+
+    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
+    await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
+
+    const row = page.getByRole('row', { name: new RegExp(badgeName, 'i') });
     const menu = await openRowQuickActions(page, row, /administration|manage/i);
     await clickQuickAction(menu, /modifier|edit/i);
 
@@ -50,5 +67,17 @@ test.describe('Admin open badge journeys', () => {
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(updatedName, 'i') })).toBeVisible();
+  });
+
+  test('open badge level labels include the level index', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+    await page.goto('/hub/admin/open-badges/create');
+
+    await expect(page.getByRole('textbox', { name: /niveau 1|level 1/i }).first()).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /niveau 1|level 1/i }).nth(1)).toBeVisible();
+    await page.getByRole('button', { name: /ajouter un niveau|add level/i }).click();
+
+    await expect(page.getByRole('textbox', { name: /niveau 2|level 2/i }).first()).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /niveau 2|level 2/i }).nth(1)).toBeVisible();
   });
 });

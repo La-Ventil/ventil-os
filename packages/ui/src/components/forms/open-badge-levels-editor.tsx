@@ -25,8 +25,8 @@ export type OpenBadgeLevelsEditorProps = {
   onLevelsChange?: (levels: OpenBadgeLevelDraft[]) => void;
   labels: {
     add: string;
-    title: string;
-    description: string;
+    title: (levelNumber: number) => string;
+    description: (levelNumber: number) => string;
     remove: string;
     chipPrefix: string;
     minLevels?: string;
@@ -82,7 +82,7 @@ export default function OpenBadgeLevelsEditor({
             <Stack spacing={1}>
               <TextField
                 name={`levels[${index}].title`}
-                label={labels.title}
+                label={labels.title(levelNumber)}
                 required
                 fullWidth
                 defaultValue={level.title}
@@ -91,7 +91,7 @@ export default function OpenBadgeLevelsEditor({
               />
               <TextField
                 name={`levels[${index}].description`}
-                label={labels.description}
+                label={labels.description(levelNumber)}
                 required
                 fullWidth
                 multiline
