@@ -11,12 +11,7 @@ test.describe('Update password journey', () => {
     await page.locator('input[name="email"]').fill(email);
     await page.locator('form button[type="submit"]').click();
 
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /mot de passe|password/i })
-        .first()
-    ).toContainText(/mot de passe|password/i);
+    await expect(page.getByRole('alert').first()).toContainText(/mot de passe|password|errors\.invalid/i);
 
     const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(email);
 

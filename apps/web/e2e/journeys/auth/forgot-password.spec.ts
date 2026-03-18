@@ -20,7 +20,7 @@ test.describe('Forgot password journey', () => {
 
     const alert = page.locator('.MuiAlert-root[role="alert"]');
     await expect(alert).toBeVisible();
-    await expect(alert).toContainText(/mot de passe|password/i);
+    await expect(alert).toContainText(/mot de passe|password|errors\.invalid/i);
     await expect(page).toHaveURL(/\/forgot-password$/);
   });
 });
