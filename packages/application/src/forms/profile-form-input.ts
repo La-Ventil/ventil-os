@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { UserRole, requiresEducationLevel, type UserRole as UserRoleValue } from '@repo/domain/user/user-role';
+import { requiresEducationLevel, type UserRole as UserRoleValue } from '@repo/domain/user/user-role';
 import { nameSchema } from './name';
-import { educationLevelInputSchema } from './profile-education';
+import { educationLevelInputSchema, userRoleInputSchema } from './profile-education';
 
 const profileFormShape = {
   firstName: nameSchema(),
@@ -26,11 +26,7 @@ export const buildProfileFormSchema = (role: UserRoleValue) =>
 export const parseProfileFormInput = (formData: FormData, role: UserRoleValue) =>
   buildProfileFormSchema(role).safeParse(formData);
 
-const userRoleSchema = zfd.text(
-  z.string().refine((value): value is UserRoleValue => Object.values(UserRole).includes(value as UserRoleValue), {
-    message: 'validation.profile.roleRequired'
-  })
-);
+const userRoleSchema = userRoleInputSchema('validation.profile.roleRequired');
 
 export const adminProfileFormSchema = zfd.formData({
   ...profileFormShape,
@@ -39,7 +35,7 @@ export const adminProfileFormSchema = zfd.formData({
 
 export const buildAdminProfileFormSchema = () =>
   adminProfileFormSchema.superRefine(({ educationLevel, profile }, ctx) => {
-    if (requiresEducationLevel(profile as UserRoleValue) && !educationLevel) {
+    if (requiresEducationLevel(profile) && !educationLevel) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'validation.profile.educationLevelRequired',

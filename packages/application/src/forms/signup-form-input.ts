@@ -3,9 +3,8 @@ import { zfd } from 'zod-form-data';
 import { emailSchema } from './email';
 import { nameSchema } from './name';
 import { passwordConfirmationSchema, passwordSchema } from './password';
-import { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
-import { educationLevelInputSchema } from './profile-education';
+import { educationLevelInputSchema, userRoleInputSchema } from './profile-education';
 export { resolveUserRole } from './profile-education';
 
 export const signupFormSchema = zfd
@@ -15,7 +14,7 @@ export const signupFormSchema = zfd
     email: emailSchema,
     password: passwordSchema,
     passwordConfirmation: passwordConfirmationSchema,
-    profile: z.string().min(1, { message: 'validation.signup.profileRequired' }),
+    profile: userRoleInputSchema('validation.signup.profileRequired'),
     terms: z.string().min(1, { message: 'validation.signup.termsRequired' }),
     educationLevel: educationLevelInputSchema
   })
@@ -28,7 +27,7 @@ export const signupFormSchema = zfd
       });
     }
 
-    if (requiresEducationLevel(profile as UserRole) && !educationLevel) {
+    if (requiresEducationLevel(profile) && !educationLevel) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'validation.signup.educationLevelRequired',

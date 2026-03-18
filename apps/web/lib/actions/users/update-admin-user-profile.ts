@@ -5,7 +5,6 @@ import { getTranslations } from 'next-intl/server';
 import { canManageUsers } from '@repo/application';
 import { updateProfile, viewUserProfileById } from '@repo/application/users/usecases';
 import { parseAdminProfileFormInput, type AdminProfileFormInput } from '@repo/application/forms';
-import type { UserRole } from '@repo/domain/user/user-role';
 import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
@@ -47,7 +46,7 @@ export async function updateAdminUserProfileAction(
       firstName: data.firstName,
       lastName: data.lastName,
       educationLevel: data.educationLevel || null,
-      profile: data.profile as UserRole
+      profile: data.profile
     });
     revalidatePath('/hub/admin/users', 'layout');
 

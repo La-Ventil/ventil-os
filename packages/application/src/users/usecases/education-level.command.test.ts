@@ -6,7 +6,6 @@ import { updateProfile } from './update-profile.command';
 
 const mockCreateUser = vi.fn();
 const mockUpdateUserProfile = vi.fn();
-const mockMapUserRoleStringToProfileRecord = vi.fn();
 const mockMapUserRoleToProfileRecord = vi.fn();
 const mockHashSecret = vi.fn();
 const mockCreateEmailVerificationToken = vi.fn();
@@ -14,7 +13,6 @@ const mockCreateEmailVerificationToken = vi.fn();
 vi.mock('@repo/db', () => ({
   ConsentType: { terms: 'terms' },
   isPrismaUniqueConstraintError: () => false,
-  mapUserRoleStringToProfileRecord: (...args: [string]) => mockMapUserRoleStringToProfileRecord(...args),
   mapUserRoleToProfileRecord: (...args: [string]) => mockMapUserRoleToProfileRecord(...args),
   userRepository: {
     createUser: (...args: [Record<string, unknown>]) => mockCreateUser(...args),
@@ -33,11 +31,6 @@ vi.mock('../email-tokens', () => ({
 describe('education level command inputs', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockMapUserRoleStringToProfileRecord.mockReturnValue({
-      profile: 'student',
-      studentProfile: 'member',
-      externalProfile: null
-    });
     mockMapUserRoleToProfileRecord.mockReturnValue({
       profile: 'student',
       studentProfile: 'member',
