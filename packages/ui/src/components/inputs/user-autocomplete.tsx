@@ -91,9 +91,12 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
   return (
     <Autocomplete<UserSummaryViewModel, Multiple, false, false>
       multiple={isMultiple as Multiple}
+      disablePortal
       options={options}
       value={value}
       onChange={(_, nextValue) => onChange(nextValue)}
+      openOnFocus
+      autoHighlight
       getOptionLabel={getUserLabel}
       isOptionEqualToValue={(option, selected) => option.id === selected.id}
       filterOptions={(availableOptions, state) => filterUserOptions(availableOptions, state.inputValue)}

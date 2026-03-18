@@ -2,16 +2,20 @@ import { expect, test } from '../../fixtures/test';
 import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 
 const newPassword = 'Renewed123';
+const privacySafeResetMessage = /si votre email existe|if your email exists/i;
 
 test.describe('Update password journey', () => {
   test('password reset lets the user sign in with a new password', async ({ page, seedUsers, workerWebRuntime }) => {
     const email = seedUsers.external.email;
 
     await page.goto('/forgot-password');
-    await page.locator('input[name="email"]').fill(email);
+    const emailField = page.getByRole('textbox', { name: /email/i });
+    await emailField.click();
+    await emailField.pressSequentially(email);
+    await emailField.blur();
     await page.locator('form button[type="submit"]').click();
 
-    await expect(page.getByRole('alert').first()).toContainText(/mot de passe|password|errors\.invalid/i);
+    await expect(page.getByRole('alert').first()).toContainText(privacySafeResetMessage);
 
     const resetToken = await getAuthTestRepository(workerWebRuntime?.dbSlot).getResetTokenByEmail(email);
 

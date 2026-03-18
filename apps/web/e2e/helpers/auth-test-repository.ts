@@ -16,6 +16,13 @@ export class AuthTestRepository {
 
     return user.resetToken;
   }
+
+  async setBlockedByEmail(email: string, blocked: boolean): Promise<void> {
+    await this.prisma.user.update({
+      where: { email },
+      data: { blocked }
+    });
+  }
 }
 
 const repositoriesBySlot = new Map<string, AuthTestRepository>();

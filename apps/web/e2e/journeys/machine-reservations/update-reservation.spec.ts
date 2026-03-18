@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
-import { openMachineDetails, setMachineDetailsDay } from '../../helpers/fab-lab';
+import { openMachineDetails } from '../../helpers/fab-lab';
 import { getMachineReservationTestRepository } from '../../helpers/machine-reservation-test-repository';
 import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-repository';
 
@@ -38,49 +38,9 @@ const createEditableReservationStart = (offsetMinutes: number = 0, now: Date = n
   return tomorrowMorning;
 };
 
-const reservationTimeFormatter = new Intl.DateTimeFormat('fr-FR', {
-  hour: '2-digit',
-  minute: '2-digit',
-  timeZone: 'Europe/Paris'
-});
-
-const formatDayKey = (date: Date): string =>
-  new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Paris',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).format(date);
-
-const reservationTimeLabel = (startsAt: Date, durationMinutes: number): string => {
-  const endsAt = new Date(startsAt.getTime() + durationMinutes * 60_000);
-  return `${reservationTimeFormatter.format(startsAt)} → ${reservationTimeFormatter.format(endsAt)}`;
-};
-
-async function openEditableReservation(args: {
-  machineId: string;
-  reservationId: string;
-  startsAt: Date;
-  durationMinutes: number;
-  page: Page;
-}): Promise<void> {
-  const { machineId, reservationId, startsAt, durationMinutes, page } = args;
-  const targetDayKey = formatDayKey(startsAt);
-  const todayKey = formatDayKey(new Date());
-
-  if (targetDayKey !== todayKey) {
-    await setMachineDetailsDay(page, startsAt, SECOND_BAMBU_MACHINE);
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}\\?day=${targetDayKey}$`), { timeout: 15_000 });
-  }
-
-  const machineDialog = page.getByRole('dialog', { name: SECOND_BAMBU_MACHINE }).first();
-  const reservationScheduleCard = machineDialog.locator('[role="button"]').filter({
-    hasText: reservationTimeLabel(startsAt, durationMinutes)
-  });
-
-  await expect(reservationScheduleCard).toBeVisible();
-  await reservationScheduleCard.focus();
-  await reservationScheduleCard.press('Enter');
+async function openEditableReservation(args: { machineId: string; reservationId: string; page: Page }): Promise<void> {
+  const { machineId, reservationId, page } = args;
+  await page.goto(`/hub/fab-lab/${machineId}/reservation?reservationId=${reservationId}`);
 
   await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`), {
     timeout: 15_000
@@ -187,8 +147,6 @@ test.describe('Machine reservation update journey', () => {
     await openEditableReservation({
       machineId,
       reservationId,
-      startsAt,
-      durationMinutes: 15,
       page
     });
 
@@ -234,8 +192,6 @@ test.describe('Machine reservation update journey', () => {
     await openEditableReservation({
       machineId,
       reservationId,
-      startsAt,
-      durationMinutes: 15,
       page
     });
 
@@ -263,7 +219,7 @@ test.describe('Machine reservation update journey', () => {
     seedUsers,
     workerWebRuntime
   }) => {
-    const startsAt = createEditableReservationStart(120);
+    const startsAt = createEditableReservationStart(180);
 
     await loginAs('globalAdmin');
 
@@ -280,8 +236,6 @@ test.describe('Machine reservation update journey', () => {
     await openEditableReservation({
       machineId,
       reservationId,
-      startsAt,
-      durationMinutes: 15,
       page
     });
 

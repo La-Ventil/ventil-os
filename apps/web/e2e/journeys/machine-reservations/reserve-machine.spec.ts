@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/test';
+import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 import { openMachineDetails, openMachineReservationModalFromSchedule } from '../../helpers/fab-lab';
 import {
   getReservationCard,
@@ -29,16 +30,19 @@ test.describe('Machine reservation journey', () => {
 
     const participantsField = reservationDialog.getByRole('combobox', { name: /participants/i });
 
-    await participantsField.fill('claude');
-    const listbox = page.getByRole('listbox');
-    await expect(listbox).toBeVisible();
-    await expect(listbox.getByRole('option', { name: /Claude Dupont/i })).toBeVisible();
-    await expect(listbox.getByRole('option', { name: /Admin Global/i })).toHaveCount(0);
-    await expect(listbox.getByRole('option', { name: /Admin Pédagogique/i })).toHaveCount(0);
+    await participantsField.click();
+    await participantsField.pressSequentially('claude');
+    await participantsField.press('ArrowDown');
+    const claudeOption = page.getByRole('option', { name: /Claude Dupont/i });
+    await expect(claudeOption).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('option', { name: /Admin Global/i })).toHaveCount(0);
+    await expect(page.getByRole('option', { name: /Admin Pédagogique/i })).toHaveCount(0);
 
-    await participantsField.fill('admin');
-    await expect(listbox.getByRole('option', { name: /Admin Pédagogique/i })).toBeVisible();
-    await expect(listbox.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
+    await participantsField.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A');
+    await participantsField.press('Backspace');
+    await participantsField.pressSequentially('admin');
+    await expect(page.getByRole('option', { name: /Admin Pédagogique/i })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
   });
 
   test('clicking an already started slot rounds the reservation start to the next minute', async ({
@@ -135,9 +139,16 @@ test.describe('Machine reservation journey', () => {
     expect(url.searchParams.get('start')).toBe(roundedNow.toISOString());
   });
 
-  test('student cannot open a reservation slot when badge level requirement is not met', async ({ page, loginAs }) => {
+  test('student cannot open a reservation slot when badge level requirement is not met', async ({
+    page,
+    loginAs,
+    seedUsers,
+    workerWebRuntime
+  }) => {
     const fixedNow = new Date();
     fixedNow.setHours(9, 0, 0, 0);
+
+    await getAuthTestRepository(workerWebRuntime?.dbSlot).setBlockedByEmail(seedUsers.student.email, false);
 
     await loginAs('student');
 

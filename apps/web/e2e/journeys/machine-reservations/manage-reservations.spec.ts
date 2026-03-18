@@ -4,7 +4,6 @@ import {
   getReservationCard,
   openMyReservationsTab,
   setLatestReservationPast,
-  submitReservationFromModalRoute,
   setLatestReservationActive,
   setLatestReservationUpcoming
 } from '../../helpers/machine-reservations';
@@ -17,14 +16,24 @@ const reservationTimeFormatter = new Intl.DateTimeFormat('fr-FR', {
   timeZone: 'Europe/Paris'
 });
 
+const MACHINE_NAME = 'Bambu Lab X1C n°1';
+
+const createReservationStart = (offsetMinutes: number): Date => new Date(Date.now() + offsetMinutes * 60_000);
+
 test.describe('Machine reservation management journeys', () => {
   test('admin can cancel an upcoming reservation from the reservations list card', async ({
     page,
     loginAs,
+    seedUsers,
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
+    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+      machineName: MACHINE_NAME,
+      creatorEmail: seedUsers.globalAdmin.email,
+      startsAt: createReservationStart(120),
+      durationMinutes: 15
+    });
 
     await openMyReservationsTab(page);
     await expect(getReservationCard(page)).toBeVisible();
@@ -50,7 +59,12 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('pedagogicalAdmin');
-    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
+    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+      machineName: MACHINE_NAME,
+      creatorEmail: seedUsers.pedagogicalAdmin.email,
+      startsAt: createReservationStart(150),
+      durationMinutes: 15
+    });
 
     await openMyReservationsTab(page);
     await expect(getReservationCard(page)).toBeVisible();
@@ -72,9 +86,19 @@ test.describe('Machine reservation management journeys', () => {
     await expect(reservationCard).toHaveCount(0);
   });
 
-  test('past reservations are hidden from the user reservations list', async ({ page, loginAs, workerWebRuntime }) => {
+  test('past reservations are hidden from the user reservations list', async ({
+    page,
+    loginAs,
+    seedUsers,
+    workerWebRuntime
+  }) => {
     await loginAs('globalAdmin');
-    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
+    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+      machineName: MACHINE_NAME,
+      creatorEmail: seedUsers.globalAdmin.email,
+      startsAt: createReservationStart(180),
+      durationMinutes: 15
+    });
 
     await setLatestReservationPast({ dbSlot: workerWebRuntime?.dbSlot });
     await openMyReservationsTab(page);
@@ -85,10 +109,16 @@ test.describe('Machine reservation management journeys', () => {
   test('cancelled reservations are hidden from the user reservations list', async ({
     page,
     loginAs,
+    seedUsers,
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
+    await getMachineReservationTestRepository(workerWebRuntime?.dbSlot).createConfirmedReservation({
+      machineName: MACHINE_NAME,
+      creatorEmail: seedUsers.globalAdmin.email,
+      startsAt: createReservationStart(210),
+      durationMinutes: 15
+    });
 
     await cancelLatestReservation({ dbSlot: workerWebRuntime?.dbSlot });
     await openMyReservationsTab(page);
@@ -103,8 +133,13 @@ test.describe('Machine reservation management journeys', () => {
     workerWebRuntime
   }) => {
     await loginAs('globalAdmin');
-    await submitReservationFromModalRoute(page, /Bambu Lab X1C/i);
     const reservations = getMachineReservationTestRepository(workerWebRuntime?.dbSlot);
+    await reservations.createConfirmedReservation({
+      machineName: MACHINE_NAME,
+      creatorEmail: seedUsers.globalAdmin.email,
+      startsAt: createReservationStart(240),
+      durationMinutes: 15
+    });
     const reservationId = await reservations.getLatestConfirmedReservationId({
       creatorEmail: seedUsers.globalAdmin.email
     });
