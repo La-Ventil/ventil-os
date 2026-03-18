@@ -8,19 +8,19 @@ test.describe('Admin open badges journeys', () => {
     await loginAs('globalAdmin');
     await openAdminOpenBadgeAssignModal(page);
 
-    const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
+    const dialog = page.getByRole('dialog', { name: /assign an open badge/i });
     await expect(dialog).toBeVisible();
 
-    await expect(dialog.getByRole('combobox', { name: /niveau|level/i })).toBeVisible();
-    await expect(dialog.getByRole('combobox', { name: /utilisateur|user/i })).toBeVisible();
-    await expect(dialog.getByRole('button', { name: /attribuer|assign/i })).toBeDisabled();
+    await expect(dialog.getByRole('combobox', { name: /level/i })).toBeVisible();
+    await expect(dialog.getByRole('combobox', { name: /user/i })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /assign/i })).toBeDisabled();
 
-    const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
+    const userField = dialog.getByRole('combobox', { name: /user/i });
     await selectFirstAutocompleteOption({ page, field: userField });
 
-    await dialog.getByRole('button', { name: /attribuer|assign/i }).click();
+    await dialog.getByRole('button', { name: /assign/i }).click();
 
-    await expect(dialog.getByRole('alert')).toHaveText(/open badge attribué|open badge assigned/i, {
+    await expect(dialog.getByRole('alert')).toHaveText(/open badge assigned/i, {
       timeout: 10_000
     });
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 10_000 });
@@ -30,15 +30,15 @@ test.describe('Admin open badges journeys', () => {
     await loginAs('globalAdmin');
     await openAdminOpenBadgeAssignModal(page, /Impression 3D Bambu Lab/i);
 
-    const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
-    const assignButton = dialog.getByRole('button', { name: /attribuer|assign/i });
-    const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
+    const dialog = page.getByRole('dialog', { name: /assign an open badge/i });
+    const assignButton = dialog.getByRole('button', { name: /assign/i });
+    const userField = dialog.getByRole('combobox', { name: /user/i });
 
     await expect(assignButton).toBeDisabled();
     await expect(userField).toHaveValue('');
 
-    await dialog.getByRole('combobox', { name: /niveau|level/i }).click();
-    await page.getByRole('option', { name: /2 - utilisateur avancé/i }).click();
+    await dialog.getByRole('combobox', { name: /level/i }).click();
+    await page.getByRole('option', { name: /^2\s*-/i }).click();
 
     const listbox = await openAutocompleteOptions(page, userField);
     await expect(listbox.getByRole('option', { name: /Admin Global/i })).toBeVisible();
@@ -54,23 +54,23 @@ test.describe('Admin open badges journeys', () => {
     const studentRow = usersTable.getByRole('row').filter({ hasText: seedUsers.student.email }).first();
     await expect(studentRow).toBeVisible();
 
-    const blockMenu = await openRowQuickActions(page, studentRow, /gérer|manage/i);
-    await clickQuickAction(blockMenu, /bloquer|block/i);
-    await expect(studentRow.getByRole('cell').nth(8)).toHaveText(/bloqué|blocked/i, { timeout: 10_000 });
+    const blockMenu = await openRowQuickActions(page, studentRow, /manage/i);
+    await clickQuickAction(blockMenu, /block/i);
+    await expect(studentRow.getByRole('cell').nth(8)).toHaveText(/blocked/i, { timeout: 10_000 });
 
     await openAdminOpenBadgeAssignModal(page, /Impression 3D Bambu Lab/i);
 
-    const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
-    const userField = dialog.getByRole('combobox', { name: /utilisateur|user/i });
+    const dialog = page.getByRole('dialog', { name: /assign an open badge/i });
+    const userField = dialog.getByRole('combobox', { name: /user/i });
     const listbox = await openAutocompleteOptions(page, userField);
     await expect(listbox.getByRole('option', { name: /Claude Dupont/i })).toHaveCount(0);
 
     await page.goto('/hub/admin/users');
     const refreshedTable = page.getByRole('table');
     const blockedRow = refreshedTable.getByRole('row').filter({ hasText: seedUsers.student.email }).first();
-    const unblockMenu = await openRowQuickActions(page, blockedRow, /gérer|manage/i);
-    await clickQuickAction(unblockMenu, /débloquer|unblock/i);
-    await expect(blockedRow.getByRole('cell').nth(8)).toHaveText(/actif|active/i, { timeout: 10_000 });
+    const unblockMenu = await openRowQuickActions(page, blockedRow, /manage/i);
+    await clickQuickAction(unblockMenu, /unblock/i);
+    await expect(blockedRow.getByRole('cell').nth(8)).toHaveText(/active/i, { timeout: 10_000 });
   });
 
   test('non-admin users cannot open assign modal directly', async ({ page, loginAs }) => {

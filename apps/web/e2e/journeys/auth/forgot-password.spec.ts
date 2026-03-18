@@ -7,7 +7,7 @@ test.describe('Forgot password journey', () => {
   test('back link returns to login', async ({ page }) => {
     await page.goto('/forgot-password');
 
-    await page.getByRole('link', { name: /retour|back/i }).click();
+    await page.getByRole('link', { name: /back/i }).click();
 
     await expect(page).toHaveURL(/\/login$/);
     await expect(page.getByRole('heading', { level: 2 })).toBeVisible();

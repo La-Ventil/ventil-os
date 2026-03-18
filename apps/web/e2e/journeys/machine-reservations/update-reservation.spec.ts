@@ -90,7 +90,7 @@ test.describe('Machine reservation update journey', () => {
 
     await expect(startsAtInput).not.toHaveValue('');
 
-    await reservationDialog.getByRole('button', { name: /mettre à jour|update/i }).click();
+    await reservationDialog.getByRole('button', { name: /update/i }).click();
 
     await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}$`), { timeout: 15_000 });
     await expect(pageErrors).toEqual([]);
@@ -171,9 +171,7 @@ test.describe('Machine reservation update journey', () => {
     await updateReservationDuration({ page, machineName: SECOND_BAMBU_MACHINE, optionName: /30 min/i });
     await submitReservationUpdate(page, SECOND_BAMBU_MACHINE);
 
-    await expect(
-      reservationDialog.getByRole('alert').filter({ hasText: /badge requis|required open badge/i })
-    ).toBeVisible({
+    await expect(reservationDialog.getByRole('alert').filter({ hasText: /required open badge/i })).toBeVisible({
       timeout: 10_000
     });
     await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`));

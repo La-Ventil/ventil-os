@@ -23,9 +23,9 @@ test.describe('Signup journey', () => {
     await expect(
       page
         .getByRole('alert')
-        .filter({ hasText: /inscription réussie|signup successful|vérifiez votre email/i })
+        .filter({ hasText: /registration successful/i })
         .first()
-    ).toContainText(/inscription réussie|signup successful|vérifiez votre email/i);
+    ).toContainText(/registration successful/i);
   });
 
   test('privacy policy dialog preserves entered values when opened and closed', async ({ page }) => {
@@ -37,10 +37,10 @@ test.describe('Signup journey', () => {
     await page.locator('input[name="password"]').fill('Valid123');
     await page.locator('input[name="passwordConfirmation"]').fill('Valid123');
 
-    await page.getByRole('button', { name: /politique de confidentialité|privacy policy/i }).click();
+    await page.getByRole('button', { name: /privacy policy/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByRole('button', { name: /retour|back/i }).click();
+    await dialog.getByRole('button', { name: /back/i }).click();
     await expect(dialog).toHaveCount(0);
 
     await expect(page.locator('input[name="firstName"]')).toHaveValue('Alice');
@@ -57,7 +57,7 @@ test.describe('Signup journey', () => {
 
     const educationLevelInput = page.locator('input[name="educationLevel"]');
     await expect(educationLevelInput).toHaveValue('premiere');
-    await expect(page.getByRole('combobox', { name: /niveau scolaire/i })).toContainText(/première/i);
+    await expect(page.getByRole('combobox', { name: /school level/i })).toContainText(/11th grade/i);
   });
 
   test('first name live validation can expose both max-length and emoji errors together', async ({ page }) => {
@@ -67,9 +67,7 @@ test.describe('Signup journey', () => {
     await firstName.fill(overlongNameWithEmoji);
     await firstName.blur();
 
-    await expect(page.getByText(/prénom ou le nom ne doit pas dépasser 40 caractères/i)).toBeVisible();
-    await expect(
-      page.getByText(/prénom ou le nom ne doit pas contenir d’emoji|prénom ou le nom ne doit pas contenir d'emoji/i)
-    ).toBeVisible();
+    await expect(page.getByText(/first or last name must be at most 40 characters/i)).toBeVisible();
+    await expect(page.getByText(/first or last name cannot include emojis/i)).toBeVisible();
   });
 });

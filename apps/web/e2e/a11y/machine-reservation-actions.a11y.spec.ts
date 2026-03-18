@@ -22,7 +22,7 @@ test.describe('Machine reservation list card accessibility', () => {
 
     const reservationCard = getReservationCard(page);
     await expect(reservationCard).toBeVisible();
-    await expect(reservationCard.getByRole('button', { name: /annuler|cancel/i })).toBeVisible();
+    await expect(reservationCard.getByRole('button', { name: /cancel/i })).toBeVisible();
 
     await reservationCard.evaluate((node, args) => node.setAttribute(args.attr, args.value), {
       attr: CARD_SCOPE_ATTR,
@@ -40,10 +40,10 @@ test.describe('Machine reservation list card accessibility', () => {
     });
     await openMyReservationsTab(page);
 
-    const activeReservationCard = getReservationCard(page).filter({ hasText: /en cours|in progress/i });
+    const activeReservationCard = getReservationCard(page).filter({ hasText: /in progress/i });
     await expect(activeReservationCard).toBeVisible();
-    await expect(activeReservationCard).toContainText(/en cours|in progress/i);
-    await expect(activeReservationCard.getByRole('button', { name: /libérer|release/i })).toBeVisible();
+    await expect(activeReservationCard).toContainText(/in progress/i);
+    await expect(activeReservationCard.getByRole('button', { name: /release/i })).toBeVisible();
 
     await activeReservationCard.evaluate((node, args) => node.setAttribute(args.attr, args.value), {
       attr: CARD_SCOPE_ATTR,

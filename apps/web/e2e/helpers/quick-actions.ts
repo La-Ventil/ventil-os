@@ -1,10 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
-export async function openRowQuickActions(
-  page: Page,
-  row: Locator,
-  buttonLabel = /administration|actions|options/i
-): Promise<Locator> {
+export async function openRowQuickActions(page: Page, row: Locator, buttonLabel = /administration/i): Promise<Locator> {
   const button = row.getByRole('button', { name: buttonLabel });
   await expect(button).toBeVisible();
 

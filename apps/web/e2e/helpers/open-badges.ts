@@ -12,7 +12,7 @@ export async function openAdminOpenBadgeAssignModal(
   const row = table.getByRole('row').filter({ hasText: badgeName }).first();
   await expect(row).toBeVisible();
 
-  await row.getByRole('button', { name: /attribuer|assign/i }).click();
-  const dialog = page.getByRole('dialog', { name: /attribution d.?un open badge|assign an open badge/i });
+  await row.getByRole('button', { name: /assign/i }).click();
+  const dialog = page.getByRole('dialog', { name: /assign an open badge/i });
   await expect(dialog).toBeVisible();
 }

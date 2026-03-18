@@ -12,7 +12,7 @@ export const getCreateReservationDialog = (page: Page, machineName: RegExp = /Ba
 
 export const getUpdateReservationDialog = (page: Page, machineName: RegExp): Locator =>
   getMachineDialogs(page, machineName).filter({
-    has: page.getByRole('button', { name: /mettre à jour|update/i })
+    has: page.getByRole('button', { name: /update/i })
   });
 
 export async function submitReservationFromModalRoute(
@@ -24,7 +24,7 @@ export async function submitReservationFromModalRoute(
   const reservationDialog = getCreateReservationDialog(page, machineName);
   await expect(reservationDialog).toHaveCount(1);
   await expect(reservationDialog).toBeVisible();
-  await reservationDialog.getByRole('button', { name: /réserver|reserve/i }).click();
+  await reservationDialog.getByRole('button', { name: /reserve/i }).click();
 
   await expect
     .poll(
@@ -61,7 +61,7 @@ export async function submitReservationAndReturnToMachineDetails(
 
 export async function openMyReservationsTab(page: Page): Promise<void> {
   await page.goto('/hub/fab-lab');
-  await page.getByRole('tab', { name: /mes réservations|my reservations/i }).click();
+  await page.getByRole('tab', { name: /my reservations/i }).click();
 }
 
 export async function openEditableReservation(args: {
@@ -85,14 +85,14 @@ export async function updateReservationDuration(args: {
   const { machineName, optionName, page } = args;
   const reservationDialog = getUpdateReservationDialog(page, machineName);
   await expect(reservationDialog).toBeVisible();
-  await reservationDialog.getByRole('combobox', { name: /durée|duration/i }).click();
+  await reservationDialog.getByRole('combobox', { name: /duration/i }).click();
   await page.getByRole('option', { name: optionName }).click();
 }
 
 export async function submitReservationUpdate(page: Page, machineName: RegExp): Promise<void> {
   const reservationDialog = getUpdateReservationDialog(page, machineName);
   await expect(reservationDialog).toBeVisible();
-  await reservationDialog.getByRole('button', { name: /mettre à jour|update/i }).click();
+  await reservationDialog.getByRole('button', { name: /update/i }).click();
 }
 
 export async function searchReservationParticipants(args: {

@@ -27,11 +27,11 @@ test.describe('Admin open badge journeys', () => {
     await expect(
       page
         .locator('label')
-        .filter({ hasText: /niveau 1|level 1/i })
+        .filter({ hasText: /level 1/i })
         .first()
     ).toBeVisible();
 
-    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+    await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
@@ -49,21 +49,21 @@ test.describe('Admin open badge journeys', () => {
     await page.locator('input[type="file"][name="imageFile"]').setInputFiles(tinyPngFile);
     await page.locator('input[name="levels[0].title"]').fill('Level 1');
     await page.locator('textarea[name="levels[0].description"]').fill('Level 1 description.');
-    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+    await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
 
     const row = page.getByRole('row', { name: new RegExp(badgeName, 'i') });
-    const menu = await openRowQuickActions(page, row, /administration|manage/i);
-    await clickQuickAction(menu, /modifier|edit/i);
+    const menu = await openRowQuickActions(page, row, /administration/i);
+    await clickQuickAction(menu, /edit/i);
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges\/[^/]+\/edit$/);
 
     await page.locator('input[name="name"]').fill(updatedName);
     await page.locator('input[name="description"]').fill('Updated by Playwright for end-to-end coverage.');
 
-    await page.getByRole('button', { name: /enregistrer|save/i }).click();
+    await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
     await expect(page.getByRole('row', { name: new RegExp(updatedName, 'i') })).toBeVisible();
@@ -73,11 +73,11 @@ test.describe('Admin open badge journeys', () => {
     await loginAs('globalAdmin');
     await page.goto('/hub/admin/open-badges/create');
 
-    await expect(page.getByRole('textbox', { name: /niveau 1|level 1/i }).first()).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /niveau 1|level 1/i }).nth(1)).toBeVisible();
-    await page.getByRole('button', { name: /ajouter un niveau|add level/i }).click();
+    await expect(page.getByRole('textbox', { name: /level 1/i }).first()).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /level 1/i }).nth(1)).toBeVisible();
+    await page.getByRole('button', { name: /add a level/i }).click();
 
-    await expect(page.getByRole('textbox', { name: /niveau 2|level 2/i }).first()).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /niveau 2|level 2/i }).nth(1)).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /level 2/i }).first()).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /level 2/i }).nth(1)).toBeVisible();
   });
 });

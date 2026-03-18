@@ -8,14 +8,14 @@ test.describe('Admin open badge assign modal accessibility', () => {
     await loginAs('globalAdmin');
     await openAdminOpenBadgeAssignModal(page);
 
-    const dialog = await expectDialog(page, /attribution d.?un open badge|assign an open badge/i);
+    const dialog = await expectDialog(page, /assign an open badge/i);
     await expect(dialog).toHaveAttribute('aria-labelledby', /.+/);
     await expect(dialog).toHaveAttribute('aria-describedby', /.+/);
 
-    await expect(dialog.getByRole('combobox', { name: /niveau|level/i })).toBeVisible();
-    await expect(dialog.getByRole('combobox', { name: /utilisateur|user/i })).toBeVisible();
-    await expect(dialog.getByRole('button', { name: /retour|back/i }).last()).toBeVisible();
-    await expect(dialog.getByRole('button', { name: /attribuer|assign/i })).toBeVisible();
+    await expect(dialog.getByRole('combobox', { name: /level/i })).toBeVisible();
+    await expect(dialog.getByRole('combobox', { name: /user/i })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /back/i }).last()).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /assign/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, {
       include: ['[role="dialog"]'],
@@ -23,7 +23,7 @@ test.describe('Admin open badge assign modal accessibility', () => {
       ignoreViolationIds: ['color-contrast']
     });
 
-    await closeDialogWithEscape(page, /attribution d.?un open badge|assign an open badge/i);
+    await closeDialogWithEscape(page, /assign an open badge/i);
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/);
   });
 });

@@ -8,7 +8,7 @@ test.describe('Auth journey', () => {
 
     await expect(page).toHaveURL(/\/hub\/profile/);
     await expect(page.getByRole('heading', { name: /student/i })).toBeVisible();
-    await expect(page.getByText(/open badges (obtenus|earned)/i)).toBeVisible();
+    await expect(page.getByText(/open badges earned/i)).toBeVisible();
   });
 
   test('blocked user sees a specific sign-in error message', async ({ page, seedUsers, workerWebRuntime }) => {
@@ -20,9 +20,9 @@ test.describe('Auth journey', () => {
     await submitLoginForm(page, seedUsers.student);
 
     await expect(page).toHaveURL(/\/login/);
-    await expect(
-      page.getByRole('alert').filter({ hasText: /compte a été bloqué|account has been blocked/i })
-    ).toHaveText(/compte a été bloqué|account has been blocked/i);
+    await expect(page.getByRole('alert').filter({ hasText: /account has been blocked/i })).toHaveText(
+      /account has been blocked/i
+    );
 
     await givenActiveUser({
       email: seedUsers.student.email,

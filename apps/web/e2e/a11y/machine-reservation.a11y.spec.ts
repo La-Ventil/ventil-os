@@ -15,10 +15,10 @@ test.describe('Machine reservation accessibility', () => {
     await expect(dialog).toHaveAttribute('aria-labelledby', /.+/);
     await expect(dialog).toHaveAttribute('aria-describedby', /.+/);
 
-    await expect(dialog.getByRole('group', { name: /date de début|start time/i })).toBeVisible();
-    await expect(dialog.getByRole('combobox', { name: /durée|duration/i })).toBeVisible();
+    await expect(dialog.getByRole('group', { name: /start time/i })).toBeVisible();
+    await expect(dialog.getByRole('combobox', { name: /duration/i })).toBeVisible();
     await expect(dialog.getByRole('combobox', { name: /participants/i })).toBeVisible();
-    await expect(dialog.getByRole('button', { name: /réserver|reserve/i })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /reserve/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, {
       include: ['[role="dialog"]'],

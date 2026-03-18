@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import type { LoginCredentials } from './auth';
 
-export const privacySafeResetMessage = /si votre email existe|if your email exists/i;
+export const privacySafeResetMessage = /if your email exists/i;
 
 export async function openLoginPage(page: Page): Promise<void> {
   await page.goto('/login');

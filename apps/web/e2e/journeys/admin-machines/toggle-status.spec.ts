@@ -14,11 +14,11 @@ test.describe('Admin machines journeys', () => {
     const row = table.getByRole('row').filter({ hasText: machineName }).first();
     const statusCell = row.getByRole('cell').nth(6);
     await expect(row).toBeVisible();
-    await expect(statusCell).toHaveText(/oui|yes/i);
+    await expect(statusCell).toHaveText(/yes/i);
 
-    const menu = await openRowQuickActions(page, row, /administration|manage/i);
-    await clickQuickAction(menu, /désactiver|deactivate/i);
-    await expect(statusCell).toHaveText(/non|no/i, { timeout: 10_000 });
+    const menu = await openRowQuickActions(page, row, /administration/i);
+    await clickQuickAction(menu, /deactivate/i);
+    await expect(statusCell).toHaveText(/no/i, { timeout: 10_000 });
 
     await page.goto('/hub/fab-lab');
     await expect(page.getByRole('button', { name: new RegExp(machineName, 'i') })).toHaveCount(0);
@@ -26,9 +26,9 @@ test.describe('Admin machines journeys', () => {
     await page.goto('/hub/admin/machines');
     const refreshedTable = page.getByRole('table');
     const rowAfterDeactivate = refreshedTable.getByRole('row').filter({ hasText: machineName }).first();
-    const menuAfterDeactivate = await openRowQuickActions(page, rowAfterDeactivate, /administration|manage/i);
-    await clickQuickAction(menuAfterDeactivate, /activer|activate/i);
-    await expect(rowAfterDeactivate.getByRole('cell').nth(6)).toHaveText(/oui|yes/i, { timeout: 10_000 });
+    const menuAfterDeactivate = await openRowQuickActions(page, rowAfterDeactivate, /administration/i);
+    await clickQuickAction(menuAfterDeactivate, /activate/i);
+    await expect(rowAfterDeactivate.getByRole('cell').nth(6)).toHaveText(/yes/i, { timeout: 10_000 });
 
     await page.goto('/hub/fab-lab');
     await expect(page.getByRole('button', { name: new RegExp(machineName, 'i') }).first()).toBeVisible();

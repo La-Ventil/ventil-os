@@ -8,8 +8,8 @@ test.describe('Auth accessibility', () => {
 
     await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /email/i })).toBeVisible();
-    await expect(page.getByLabel(/mot de passe|password/i)).toBeVisible();
-    await expect(page.getByRole('button', { name: /se connecter|sign in/i })).toBeVisible();
+    await expect(page.getByLabel(/password/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /sign in/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, { contextLabel: 'Login page' });
   });
@@ -19,8 +19,8 @@ test.describe('Auth accessibility', () => {
 
     await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /email/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /envoyer|reset/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /retour|back/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /send reset link/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /back/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, { contextLabel: 'Forgot password page' });
   });
@@ -28,9 +28,9 @@ test.describe('Auth accessibility', () => {
   test('signup privacy policy dialog is keyboard-dismissible and labelled', async ({ page }) => {
     await page.goto('/signup');
 
-    await page.getByRole('button', { name: /politique de confidentialité|privacy policy/i }).click();
+    await page.getByRole('button', { name: /privacy policy/i }).click();
 
-    const dialog = await expectDialog(page, /politique de confidentialité|privacy policy/i);
+    const dialog = await expectDialog(page, /privacy policy/i);
     await expect(dialog).toHaveAttribute('aria-labelledby', /.+/);
     await expect(dialog).toHaveAttribute('aria-describedby', /.+/);
 
@@ -38,6 +38,6 @@ test.describe('Auth accessibility', () => {
       include: ['[role="dialog"]'],
       contextLabel: 'Signup privacy policy dialog'
     });
-    await closeDialogWithEscape(page, /politique de confidentialité|privacy policy/i);
+    await closeDialogWithEscape(page, /privacy policy/i);
   });
 });

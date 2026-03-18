@@ -35,7 +35,7 @@ test.describe('Machine reservation management journeys', () => {
     const reservationCard = getReservationCard(page);
     await expect(reservationCard).toBeVisible();
 
-    const cancelButton = reservationCard.getByRole('button', { name: /annuler|cancel/i });
+    const cancelButton = reservationCard.getByRole('button', { name: /cancel/i });
     await expect(cancelButton).toBeVisible();
 
     await cancelButton.click();
@@ -60,9 +60,9 @@ test.describe('Machine reservation management journeys', () => {
 
     const reservationCard = getReservationCard(page);
     await expect(reservationCard).toBeVisible();
-    await expect(reservationCard).toContainText(/en cours|in progress/i);
+    await expect(reservationCard).toContainText(/in progress/i);
 
-    const releaseButton = reservationCard.getByRole('button', { name: /libérer|release/i });
+    const releaseButton = reservationCard.getByRole('button', { name: /release/i });
     await expect(releaseButton).toBeVisible();
     await releaseButton.click();
 

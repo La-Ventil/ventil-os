@@ -31,9 +31,9 @@ test.describe('Update password journey', () => {
     await expect(
       page
         .getByRole('alert')
-        .filter({ hasText: /identifiants|mot de passe|password/i })
+        .filter({ hasText: /sign-in failed/i })
         .first()
-    ).toContainText(/identifiants|mot de passe|password/i);
+    ).toContainText(/sign-in failed/i);
 
     await page.locator('input[name="password"]').fill(newPassword);
     await page.locator('form button[type="submit"]').click();
@@ -43,7 +43,7 @@ test.describe('Update password journey', () => {
   test('back button from update password returns to login', async ({ page }) => {
     await page.goto('/update-password/fake-token');
 
-    await page.getByRole('link', { name: /retour|back/i }).click();
+    await page.getByRole('link', { name: /back/i }).click();
 
     await expect(page).toHaveURL(/\/login$/);
   });

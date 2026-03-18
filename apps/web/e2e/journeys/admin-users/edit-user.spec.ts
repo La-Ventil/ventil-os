@@ -30,11 +30,11 @@ test.describe('Admin users journeys', () => {
     try {
       await openAdminUserEditPage(page, USER_EMAIL);
 
-      const firstNameInput = page.getByRole('textbox', { name: /^(prénom|first name)$/i });
-      const lastNameInput = page.getByRole('textbox', { name: /^(nom|last name)$/i });
+      const firstNameInput = page.getByRole('textbox', { name: /^first name$/i });
+      const lastNameInput = page.getByRole('textbox', { name: /^last name$/i });
       const currentProfileInput = page.locator(`input[name="profile"][value="${ORIGINAL_PROFILE}"]`);
       const updatedProfileInput = page.locator(`input[name="profile"][value="${UPDATED_PROFILE}"]`);
-      const educationLevelInput = page.getByRole('combobox', { name: /niveau scolaire|education level/i });
+      const educationLevelInput = page.getByRole('combobox', { name: /school level/i });
 
       await expect(firstNameInput).toBeVisible();
       await expect(lastNameInput).toBeVisible();
@@ -50,34 +50,34 @@ test.describe('Admin users journeys', () => {
       await firstNameInput.fill(updatedFirstName);
       await lastNameInput.fill(updatedLastName);
       await updatedProfileInput.check();
-      await page.getByRole('button', { name: /modifier|update/i }).click();
+      await page.getByRole('button', { name: /update/i }).click();
 
       await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
 
       shouldRestore = true;
 
       await openAdminUserEditPage(page, USER_EMAIL);
-      const reopenedFirstNameInput = page.getByRole('textbox', { name: /^(prénom|first name)$/i });
-      const reopenedLastNameInput = page.getByRole('textbox', { name: /^(nom|last name)$/i });
+      const reopenedFirstNameInput = page.getByRole('textbox', { name: /^first name$/i });
+      const reopenedLastNameInput = page.getByRole('textbox', { name: /^last name$/i });
 
       await expect(reopenedFirstNameInput).toHaveValue(updatedFirstName);
       await expect(reopenedLastNameInput).toHaveValue(updatedLastName);
       await expect(page.locator(`input[name="profile"][value="${UPDATED_PROFILE}"]`)).toBeChecked();
-      await expect(page.getByRole('combobox', { name: /niveau scolaire|education level/i })).toHaveCount(0);
+      await expect(page.getByRole('combobox', { name: /school level/i })).toHaveCount(0);
     } finally {
       if (shouldRestore) {
         await openAdminUserEditPage(page, USER_EMAIL);
-        const firstNameInput = page.getByRole('textbox', { name: /^(prénom|first name)$/i });
-        const lastNameInput = page.getByRole('textbox', { name: /^(nom|last name)$/i });
+        const firstNameInput = page.getByRole('textbox', { name: /^first name$/i });
+        const lastNameInput = page.getByRole('textbox', { name: /^last name$/i });
         const originalProfileInput = page.locator(`input[name="profile"][value="${ORIGINAL_PROFILE}"]`);
-        const educationLevelInput = page.getByRole('combobox', { name: /niveau scolaire|education level/i });
+        const educationLevelInput = page.getByRole('combobox', { name: /school level/i });
 
         await firstNameInput.fill(originalFirstName);
         await lastNameInput.fill(originalLastName);
         await originalProfileInput.check();
         await educationLevelInput.click();
         await page.getByRole('option', { name: ORIGINAL_EDUCATION_LEVEL_LABEL }).click();
-        await page.getByRole('button', { name: /modifier|update/i }).click();
+        await page.getByRole('button', { name: /update/i }).click();
         await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
       }
     }

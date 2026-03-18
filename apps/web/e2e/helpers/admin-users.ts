@@ -13,8 +13,8 @@ export async function openAdminUserEditPage(page: Page, email: string): Promise<
   const row = getAdminUsersRowByEmail(page, email);
   await expect(row).toBeVisible();
 
-  const menu = await openRowQuickActions(page, row, /gérer|manage/i);
-  await clickQuickAction(menu, /modifier|edit/i);
+  const menu = await openRowQuickActions(page, row, /manage/i);
+  await clickQuickAction(menu, /edit/i);
 
   await page.waitForURL(/\/hub\/admin\/users\/[^/]+\/edit$/);
   await expect(page.locator('form')).toBeVisible();
@@ -29,7 +29,7 @@ export async function openAdminUserOpenBadgesPage(page: Page, email: string): Pr
   const row = getAdminUsersRowByEmail(page, email);
   await expect(row).toBeVisible();
 
-  const menu = await openRowQuickActions(page, row, /gérer|manage/i);
+  const menu = await openRowQuickActions(page, row, /manage/i);
   await clickQuickAction(menu, /open badges?/i);
 
   await page.waitForURL(/\/hub\/admin\/users\/[^/]+\/open-badges$/);
