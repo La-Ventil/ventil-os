@@ -15,6 +15,7 @@ const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
 const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
 const headedMode = process.env.PLAYWRIGHT_HEADED === '1';
 const sharedDbSlot = process.env.PLAYWRIGHT_DB_SLOT?.trim() || 'default';
+const appLocale = process.env.PLAYWRIGHT_APP_LOCALE?.trim() || 'en';
 const sharedDbSchema = `e2e_${sharedDbSlot.replace(/[^a-zA-Z0-9_]/g, '_')}`;
 const sharedDistDir = process.env.NEXT_DIST_DIR || `.next-e2e-${sharedDbSlot}`;
 const webServerDatabaseUrl = (() => {
@@ -101,7 +102,8 @@ export default defineConfig({
           ...(webServerDatabaseUrl ? { DATABASE_URL: webServerDatabaseUrl } : {}),
           NEXT_DIST_DIR: sharedDistDir,
           NEXTAUTH_URL: baseURL,
-          PLAYWRIGHT_DB_SLOT: sharedDbSlot
+          PLAYWRIGHT_DB_SLOT: sharedDbSlot,
+          APP_LOCALE: appLocale
         }
       },
 

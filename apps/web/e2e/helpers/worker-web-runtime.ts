@@ -11,6 +11,7 @@ const webAppDir = path.resolve(__dirname, '../..');
 
 const HOST = '127.0.0.1';
 const DEFAULT_BASE_PORT = 3300;
+const DEFAULT_APP_LOCALE = 'en';
 
 export type WorkerWebRuntime = {
   baseURL: string;
@@ -22,7 +23,11 @@ export type WorkerWebRuntime = {
 
 const isWorkerParallelMode = (): boolean => process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
 
-const slugify = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slugify = (value: string): string =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const projectPortOffset = (projectName: string): number => {
   if (projectName.includes('journeys')) return 0;
@@ -91,10 +96,7 @@ const stopChild = async (child: ChildProcess, label: string): Promise<void> => {
 
   if (!exited) {
     child.kill('SIGKILL');
-    await Promise.race([
-      new Promise<void>((resolve) => child.once('exit', () => resolve())),
-      delay(2_000)
-    ]);
+    await Promise.race([new Promise<void>((resolve) => child.once('exit', () => resolve())), delay(2_000)]);
   }
 
   if (child.exitCode && child.exitCode !== 0) {
@@ -123,7 +125,8 @@ export const createWorkerWebRuntime = async (workerInfo: WorkerInfo): Promise<Wo
     NEXT_DIST_DIR: nextDistDir,
     NEXTAUTH_URL: baseURL,
     PLAYWRIGHT_DB_SLOT: slot,
-    DATABASE_URL: dbTarget.url
+    DATABASE_URL: dbTarget.url,
+    APP_LOCALE: process.env.PLAYWRIGHT_APP_LOCALE?.trim() || DEFAULT_APP_LOCALE
   };
 
   console.log(

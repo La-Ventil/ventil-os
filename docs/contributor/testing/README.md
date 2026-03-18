@@ -118,6 +118,14 @@ re-implementing ad hoc `first field error wins` logic in `apps/web`.
 - `a11y/`: accessibility-focused journey checks
 - `smoke/`: lightweight smoke checks
 
+### Canonical locale
+
+- E2E journeys use `en` as the canonical locale.
+- This aligns Playwright with the runtime fallback locale and the translation coverage source of truth.
+- New journey specs should prefer English locators and assertions.
+- French coverage should remain via targeted smoke checks or dedicated locale runs, not via bilingual regex everywhere.
+- Override locally only when needed with `PLAYWRIGHT_APP_LOCALE=<locale>`.
+
 ### E2E helper conventions
 
 Prefer this layering order when adding new Playwright code:

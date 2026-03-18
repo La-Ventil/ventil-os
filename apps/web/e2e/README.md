@@ -26,3 +26,10 @@ As a rule, specs should read like user behavior plus business assertions, not li
 - Journey specs validate user-visible behavior end-to-end (`UI + app + DB`).
 - Accessibility specs validate keyboard, dialog/menu behavior, and ARIA semantics.
 - Domain/application rules still belong to unit/integration tests (`Vitest` / `Jest`).
+
+## Canonical locale
+
+- The canonical E2E locale is `en`.
+- Playwright starts the app with `APP_LOCALE=en` by default.
+- Prefer English locators in new journey specs.
+- Use `PLAYWRIGHT_APP_LOCALE=<locale>` only for explicit alternate-locale runs.
