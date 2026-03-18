@@ -1,7 +1,7 @@
 import type { Query } from '../../usecase';
 import {
-  canAssignOpenBadgeFromContext,
-  loadOpenBadgeAssignmentContext,
+  canAssignOpenBadgeFromPolicyContext,
+  loadOpenBadgeAssignmentPolicyContext,
   type OpenBadgeAssigner
 } from './open-badge-assignment-context';
 
@@ -11,10 +11,10 @@ export const canAssignOpenBadge: Query<[string, OpenBadgeAssigner?], boolean> = 
   openBadgeId: string,
   user?: OpenBadgeAssigner
 ) => {
-  const context = await loadOpenBadgeAssignmentContext(openBadgeId, user);
+  const context = await loadOpenBadgeAssignmentPolicyContext(openBadgeId, user);
   if (!context) {
     return false;
   }
 
-  return canAssignOpenBadgeFromContext(context, user);
+  return canAssignOpenBadgeFromPolicyContext(context, user);
 };

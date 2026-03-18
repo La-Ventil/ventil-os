@@ -9,9 +9,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Link from '@repo/ui/link';
+import PasswordField from '@repo/ui/forms/password-field';
 import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../lib/actions/auth/update-password';
 import { signInAndRedirect } from '../../../../lib/auth';
 
@@ -62,23 +62,27 @@ export default function Page(): JSX.Element {
       >
         <input type="hidden" name="email" defaultValue={formState.values.email} />
         <Stack spacing={2}>
-          <TextField
+          <PasswordField
             name="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
             label={tForms('fields.password')}
             placeholder={tForms('placeholders.password')}
             required
-            type="password"
+            autoComplete="new-password"
+            showPasswordLabel={tForms('actions.showPassword')}
+            hidePasswordLabel={tForms('actions.hidePassword')}
           />
-          <TextField
+          <PasswordField
             name="passwordConfirmation"
             value={passwordConfirmation}
             onChange={(event) => setPasswordConfirmation(event.currentTarget.value)}
             label={tForms('fields.passwordConfirmation')}
             placeholder={tForms('placeholders.passwordConfirmation')}
             required
-            type="password"
+            autoComplete="new-password"
+            showPasswordLabel={tForms('actions.showPassword')}
+            hidePasswordLabel={tForms('actions.hidePassword')}
           />
         </Stack>
         <Grid container spacing={2}>

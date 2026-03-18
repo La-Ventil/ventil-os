@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import PasswordField from './password-field';
 import {
   ChangePasswordFormInput,
   changePasswordFormSchema,
@@ -62,31 +62,34 @@ export default function ChangePasswordForm({ handleSubmit }: ChangePasswordFormP
     <Form action={action} onSubmit={handleSubmitForm}>
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
       <Stack spacing={2}>
-        <TextField
+        <PasswordField
           name="currentPassword"
-          type="password"
           label={t('fields.currentPassword')}
           placeholder={t('placeholders.currentPassword')}
           required
           autoComplete="current-password"
+          showPasswordLabel={t('actions.showPassword')}
+          hidePasswordLabel={t('actions.hidePassword')}
           {...currentPassword.fieldProps()}
         />
-        <TextField
+        <PasswordField
           name="password"
-          type="password"
           label={t('fields.newPassword')}
           placeholder={t('placeholders.newPassword')}
           required
           autoComplete="new-password"
+          showPasswordLabel={t('actions.showPassword')}
+          hidePasswordLabel={t('actions.hidePassword')}
           {...password.fieldProps()}
         />
-        <TextField
+        <PasswordField
           name="passwordConfirmation"
-          type="password"
           label={t('fields.newPasswordConfirmation')}
           placeholder={t('placeholders.newPasswordConfirmation')}
           required
           autoComplete="new-password"
+          showPasswordLabel={t('actions.showPassword')}
+          hidePasswordLabel={t('actions.hidePassword')}
           {...passwordConfirmation.fieldProps()}
         />
       </Stack>

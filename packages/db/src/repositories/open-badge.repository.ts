@@ -6,6 +6,7 @@ import { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirem
 import type {
   OpenBadgeAdminReadModel,
   OpenBadgeAssignmentContextReadModel,
+  OpenBadgeAssignmentPolicyContextReadModel,
   OpenBadgeProgressReadModel,
   OpenBadgeReadModel
 } from '../read-models/open-badge';
@@ -242,6 +243,57 @@ export class OpenBadgeRepository {
     };
   }
 
+  async getOpenBadgeAssignmentPolicyContext(
+    openBadgeId: string,
+    userId?: string
+  ): Promise<OpenBadgeAssignmentPolicyContextReadModel | null> {
+    const badge = await this.prisma.openBadge.findUnique({
+      where: { id: openBadgeId },
+      select: {
+        status: true,
+        trainerThresholdLevel: {
+          select: { level: true }
+        }
+      }
+    });
+
+    if (!badge) {
+      return null;
+    }
+
+    if (!userId) {
+      return {
+        status: toActivityStatus(badge.status),
+        trainerThreshold: badge.trainerThresholdLevel?.level ?? null,
+        highestLevel: null
+      };
+    }
+
+    const progress = await this.prisma.openBadgeProgress.findUnique({
+      where: {
+        userId_openBadgeId: {
+          userId,
+          openBadgeId
+        }
+      },
+      select: {
+        highestLevel: {
+          select: { level: true }
+        }
+      }
+    });
+
+    return {
+      status: toActivityStatus(badge.status),
+      trainerThreshold: badge.trainerThresholdLevel?.level ?? null,
+      highestLevel: progress?.highestLevel?.level ?? null
+    };
+  }
+
+  /**
+   * Domain-oriented accessor for assignment policy checks.
+   * Kept for use cases that need trainer threshold independently.
+   */
   async getTrainerThresholdLevel(openBadgeId: string): Promise<number | null> {
     const badge = await this.prisma.openBadge.findUnique({
       where: { id: openBadgeId },

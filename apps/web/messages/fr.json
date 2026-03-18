@@ -782,6 +782,8 @@
       "newPasswordConfirmation": "confirmer le nouveau mot de passe"
     },
     "actions": {
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe",
       "submitResetPassword": "Envoyer le lien de réinitialisation.",
       "submitUpdatePassword": "Changer mon mot de passe",
       "resendEmailVerification": "Renvoyer le lien",

@@ -1,5 +1,8 @@
 import { openBadgeRepository } from '@repo/db';
-import type { OpenBadgeAssignmentContextReadModel } from '@repo/db/read-models';
+import type {
+  OpenBadgeAssignmentContextReadModel,
+  OpenBadgeAssignmentPolicyContextReadModel
+} from '@repo/db/read-models';
 import { canAssignOpenBadge as canAssignOpenBadgePolicy } from '@repo/domain/badge/open-badge-assignment-policy';
 
 export type OpenBadgeAssigner = {
@@ -23,9 +26,27 @@ export const loadOpenBadgeAssignmentContext = async (
   return context;
 };
 
+export const loadOpenBadgeAssignmentPolicyContext = async (
+  openBadgeId: string,
+  user?: OpenBadgeAssigner
+): Promise<OpenBadgeAssignmentPolicyContextReadModel | null> =>
+  openBadgeRepository.getOpenBadgeAssignmentPolicyContext(openBadgeId, user?.id);
+
 export const canAssignOpenBadgeFromContext = (context: OpenBadgeAssignmentContext, user?: OpenBadgeAssigner): boolean =>
   canAssignOpenBadgePolicy({
     badgeStatus: context.badge.status,
+    userId: user?.id,
+    admin: user ?? null,
+    trainerThreshold: context.trainerThreshold,
+    highestLevel: context.highestLevel
+  });
+
+export const canAssignOpenBadgeFromPolicyContext = (
+  context: OpenBadgeAssignmentPolicyContextReadModel,
+  user?: OpenBadgeAssigner
+): boolean =>
+  canAssignOpenBadgePolicy({
+    badgeStatus: context.status,
     userId: user?.id,
     admin: user ?? null,
     trainerThreshold: context.trainerThreshold,

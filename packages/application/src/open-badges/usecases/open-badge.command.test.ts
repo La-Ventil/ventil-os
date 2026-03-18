@@ -10,7 +10,7 @@ const mockSetOpenBadgeLevel = vi.fn();
 const mockGetOpenBadgeAdminById = vi.fn();
 const mockGetOpenBadgeAssignmentContext = vi.fn();
 const mockSetOpenBadgeStatus = vi.fn();
-const mockTrainerThreshold = vi.fn();
+const mockGetOpenBadgeAssignmentPolicyContext = vi.fn();
 const mockUserRepositoryExists = vi.fn();
 
 vi.mock('@repo/db', () => ({
@@ -20,8 +20,10 @@ vi.mock('@repo/db', () => ({
     setUserOpenBadgeLevel: (...args: [Record<string, unknown>]) => mockSetOpenBadgeLevel(...args),
     getOpenBadgeAdminById: (...args: [string]) => mockGetOpenBadgeAdminById(...args),
     setOpenBadgeStatus: (...args: [string, string]) => mockSetOpenBadgeStatus(...args),
-    getTrainerThresholdLevel: (...args: [string]) => mockTrainerThreshold(...args),
-    getOpenBadgeAssignmentContext: (...args: [string, string | undefined]) => mockGetOpenBadgeAssignmentContext(...args)
+    getOpenBadgeAssignmentContext: (...args: [string, string | undefined]) =>
+      mockGetOpenBadgeAssignmentContext(...args),
+    getOpenBadgeAssignmentPolicyContext: (...args: [string, string | undefined]) =>
+      mockGetOpenBadgeAssignmentPolicyContext(...args)
   },
   userRepository: {
     exists: (...args: [string]) => mockUserRepositoryExists(...args)
@@ -35,13 +37,17 @@ describe('open-badge command invariants', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockOpenBadgeHighest.mockResolvedValue(null);
-    mockTrainerThreshold.mockResolvedValue(1);
     mockAwardOpenBadgeLevel.mockResolvedValue(null);
     mockSetOpenBadgeLevel.mockResolvedValue(null);
     mockSetOpenBadgeStatus.mockResolvedValue({ id: 'badge-id', status: 'inactive' });
     mockGetOpenBadgeAdminById.mockResolvedValue({ status: ActivityStatus.Active, _count: { machines: 0 } });
     mockGetOpenBadgeAssignmentContext.mockResolvedValue({
       badge: { id: 'badge-id', status: ActivityStatus.Active, levels: [] },
+      trainerThreshold: 1,
+      highestLevel: 1
+    });
+    mockGetOpenBadgeAssignmentPolicyContext.mockResolvedValue({
+      status: ActivityStatus.Active,
       trainerThreshold: 1,
       highestLevel: 1
     });
@@ -76,6 +82,11 @@ describe('open-badge command invariants', () => {
   it('prevents assigning on an inactive badge', async () => {
     mockGetOpenBadgeAssignmentContext.mockResolvedValue({
       badge: { id: 'badge-id', status: ActivityStatus.Inactive, levels: [] },
+      trainerThreshold: null,
+      highestLevel: null
+    });
+    mockGetOpenBadgeAssignmentPolicyContext.mockResolvedValue({
+      status: ActivityStatus.Inactive,
       trainerThreshold: null,
       highestLevel: null
     });

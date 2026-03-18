@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Link from '../link';
+import PasswordField from './password-field';
 
 export type LoginFormProps = {
   initialEmail?: string;
@@ -72,14 +73,15 @@ export default function LoginForm({ initialEmail = '', noticeMessage, resolveFai
           placeholder={t('placeholders.email')}
           required
         />
-        <TextField
+        <PasswordField
           name="password"
           label={t('fields.password')}
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           placeholder={t('placeholders.password')}
-          type="password"
           autoComplete="current-password"
+          showPasswordLabel={t('actions.showPassword')}
+          hidePasswordLabel={t('actions.hidePassword')}
           required
         />
       </Stack>

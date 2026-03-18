@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import PasswordField from './password-field';
 import { ChangeEmailFormInput, changeEmailFormSchema } from '@repo/application/forms';
 import type { FormAction, FormActionState } from '@repo/form/form-action-state';
 import type { FormState } from '@repo/form/form-state';
@@ -128,13 +129,14 @@ export default function ChangeEmailForm({
             required
             {...newEmailConfirmation.fieldProps()}
           />
-          <TextField
+          <PasswordField
             name="currentPassword"
-            type="password"
             label={t('fields.currentPassword')}
             placeholder={t('placeholders.currentPassword')}
             required
             autoComplete="current-password"
+            showPasswordLabel={t('actions.showPassword')}
+            hidePasswordLabel={t('actions.hidePassword')}
             {...currentPassword.fieldProps()}
           />
         </Stack>

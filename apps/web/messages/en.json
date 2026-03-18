@@ -784,6 +784,8 @@
       "newPasswordConfirmation": "confirm new password"
     },
     "actions": {
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "submitResetPassword": "Send reset link",
       "submitUpdatePassword": "Change my password",
       "resendEmailVerification": "Resend link",

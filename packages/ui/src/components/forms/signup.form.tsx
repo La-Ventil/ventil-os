@@ -15,6 +15,7 @@ import Link from '../link';
 import ModalLayout from '../modal-layout';
 import PrivacyPolicyContent from '../privacy-policy-content';
 import TextField from '@mui/material/TextField';
+import PasswordField from './password-field';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';
@@ -107,21 +108,23 @@ export default function SignupForm({ formState }: SignupFormProps) {
             required
             {...email.fieldProps()}
           />
-          <TextField
+          <PasswordField
             name="password"
-            type="password"
             label={t('fields.password')}
             placeholder={t('placeholders.password')}
             required
+            showPasswordLabel={t('actions.showPassword')}
+            hidePasswordLabel={t('actions.hidePassword')}
             {...password.fieldProps()}
           />
-          <TextField
+          <PasswordField
             name="passwordConfirmation"
-            type="password"
             {...passwordConfirmation.fieldProps()}
             label={t('fields.passwordConfirmation')}
             placeholder={t('placeholders.passwordConfirmation')}
             required
+            showPasswordLabel={t('actions.showPassword')}
+            hidePasswordLabel={t('actions.hidePassword')}
           />
 
           <ProfileRadioGroup

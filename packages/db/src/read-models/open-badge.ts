@@ -22,3 +22,9 @@ export type OpenBadgeAssignmentContextReadModel = {
   trainerThreshold: number | null;
   highestLevel: number | null;
 };
+
+export type OpenBadgeAssignmentPolicyContextReadModel = {
+  status: ActivityStatus;
+  trainerThreshold: number | null;
+  highestLevel: number | null;
+};

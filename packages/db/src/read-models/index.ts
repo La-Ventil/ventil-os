@@ -9,7 +9,8 @@ export type {
   OpenBadgeLevelReadModel,
   OpenBadgeProgressReadModel,
   OpenBadgeAdminReadModel,
-  OpenBadgeAssignmentContextReadModel
+  OpenBadgeAssignmentContextReadModel,
+  OpenBadgeAssignmentPolicyContextReadModel
 } from './open-badge';
 export type { OpenBadgeRequirementOptionReadModel } from './open-badge-requirement-option';
 export type { UserCredentialsReadModel } from './user-credentials';
