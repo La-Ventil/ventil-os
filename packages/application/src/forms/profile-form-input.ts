@@ -2,11 +2,12 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { UserRole, requiresEducationLevel, type UserRole as UserRoleValue } from '@repo/domain/user/user-role';
 import { nameSchema } from './name';
+import { educationLevelInputSchema } from './profile-education';
 
 const profileFormShape = {
   firstName: nameSchema(),
   lastName: nameSchema(),
-  educationLevel: zfd.text(z.string().optional())
+  educationLevel: educationLevelInputSchema
 };
 
 export const profileFormSchema = zfd.formData(profileFormShape);

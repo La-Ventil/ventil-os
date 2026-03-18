@@ -616,6 +616,9 @@
     "emailInvalid": "The email address is not valid.",
     "invalidInput": "Submitted data is invalid.",
     "unauthorized": "You are not allowed to perform this action.",
+    "educationLevel": {
+      "invalid": "The selected school level is invalid."
+    },
     "email": {
       "confirmationMismatch": "Email addresses do not match."
     },

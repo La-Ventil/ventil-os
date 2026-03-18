@@ -5,6 +5,7 @@ import { nameSchema } from './name';
 import { passwordConfirmationSchema, passwordSchema } from './password';
 import { UserRole } from '@repo/domain/user/user-role';
 import { requiresEducationLevel } from '@repo/domain/user/user-role';
+import { educationLevelInputSchema } from './profile-education';
 export { resolveUserRole } from './profile-education';
 
 export const signupFormSchema = zfd
@@ -16,7 +17,7 @@ export const signupFormSchema = zfd
     passwordConfirmation: passwordConfirmationSchema,
     profile: z.string().min(1, { message: 'validation.signup.profileRequired' }),
     terms: z.string().min(1, { message: 'validation.signup.termsRequired' }),
-    educationLevel: zfd.text(z.string().optional())
+    educationLevel: educationLevelInputSchema
   })
   .superRefine(({ password, passwordConfirmation, profile, educationLevel }, ctx) => {
     if (password !== passwordConfirmation) {

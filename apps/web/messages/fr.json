@@ -616,6 +616,9 @@
     "invalidInput": "Les données envoyées sont invalides.",
     "unauthorized": "Vous n'avez pas les droits pour effectuer cette action.",
     "emailAlreadyUsed": "Cette adresse email est déjà utilisée.",
+    "educationLevel": {
+      "invalid": "Le niveau scolaire sélectionné est invalide."
+    },
     "email": {
       "confirmationMismatch": "Les adresses email ne correspondent pas."
     },

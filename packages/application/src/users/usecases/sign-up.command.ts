@@ -1,5 +1,6 @@
 import { hashSecret } from '@repo/crypto';
 import { ConsentType, isPrismaUniqueConstraintError, mapUserRoleStringToProfileRecord, userRepository } from '@repo/db';
+import type { EducationLevel } from '@repo/domain/user/education-level';
 import { formatGeneratedUsername } from '@repo/domain/user/user-username';
 import { createEmailVerificationToken } from '../email-tokens';
 import { generateToken } from '../tokens';
@@ -10,7 +11,7 @@ export type SignUpInput = {
   username?: string;
   firstName: string;
   lastName: string;
-  educationLevel?: string | null;
+  educationLevel?: EducationLevel | null;
   profileType: string;
   password: string;
   termsAccepted: boolean;

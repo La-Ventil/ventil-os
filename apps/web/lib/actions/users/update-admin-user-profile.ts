@@ -46,7 +46,7 @@ export async function updateAdminUserProfileAction(
     await updateProfile(userId, {
       firstName: data.firstName,
       lastName: data.lastName,
-      educationLevel: data.educationLevel,
+      educationLevel: data.educationLevel || null,
       profile: data.profile as UserRole
     });
     revalidatePath('/hub/admin/users', 'layout');

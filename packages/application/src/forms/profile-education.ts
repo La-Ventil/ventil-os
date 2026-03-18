@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 import {
   EducationLevel,
   parseEducationLevel,
@@ -7,9 +9,57 @@ import { UserRole, requiresEducationLevel, type UserRole as UserRoleValue } from
 
 export type ResolvedEducationLevel = EducationLevelValue | '';
 
+export class InvalidEducationLevelError extends Error {
+  constructor(value: string) {
+    super(`Invalid education level: ${value}`);
+    this.name = 'InvalidEducationLevelError';
+  }
+}
+
 export const resolveUserRole = (value?: string, fallback: UserRoleValue = UserRole.Member): UserRoleValue => {
   return Object.values(UserRole).includes(value as UserRoleValue) ? (value as UserRoleValue) : fallback;
 };
+
+export const normalizeEducationLevelInput = (
+  educationLevel?: string | null
+): EducationLevelValue | null | undefined => {
+  if (educationLevel === undefined) {
+    return undefined;
+  }
+
+  if (educationLevel === null || educationLevel === '') {
+    return null;
+  }
+
+  const parsedEducationLevel = parseEducationLevel(educationLevel);
+  if (!parsedEducationLevel) {
+    throw new InvalidEducationLevelError(educationLevel);
+  }
+
+  return parsedEducationLevel;
+};
+
+export const educationLevelInputSchema = zfd.text(
+  z
+    .string()
+    .optional()
+    .transform((value, ctx): EducationLevelValue | '' | undefined => {
+      if (value === undefined || value === '') {
+        return '';
+      }
+
+      const parsedEducationLevel = parseEducationLevel(value);
+      if (!parsedEducationLevel) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'validation.educationLevel.invalid'
+        });
+        return z.NEVER;
+      }
+
+      return parsedEducationLevel;
+    })
+);
 
 export const resolveEducationLevelForRole = (
   role: UserRoleValue,

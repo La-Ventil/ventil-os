@@ -45,7 +45,7 @@ export async function updateUserProfileAction(
     await updateProfile(userId, {
       firstName: profileFormData.firstName,
       lastName: profileFormData.lastName,
-      educationLevel: profileFormData.educationLevel
+      educationLevel: profileFormData.educationLevel || null
     });
 
     return formSuccess(values, t('user.update.success'));

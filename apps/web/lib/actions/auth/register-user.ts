@@ -28,7 +28,7 @@ export async function registerUserAction(
       email: signupFormData.email,
       firstName: signupFormData.firstName,
       lastName: signupFormData.lastName,
-      educationLevel: signupFormData.educationLevel,
+      educationLevel: signupFormData.educationLevel || null,
       profileType: signupFormData.profile,
       password: signupFormData.password,
       termsAccepted: signupFormData.terms === 'on'
