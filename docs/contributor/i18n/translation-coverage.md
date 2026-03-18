@@ -7,11 +7,11 @@ This report compares each locale catalog against the reference locale without ru
 | Locale | Coverage | Missing keys | Extra keys |
 | --- | ---: | ---: | ---: |
 | `en` | 100.0% | 0 | 0 |
-| `fr` | 99.8% | 1 | 3 |
+| `fr` | 100.0% | 0 | 0 |
 
 ## en
 
-Coverage: 100.0% (558/558)
+Coverage: 100.0% (557/557)
 
 ### Missing keys
 
@@ -23,14 +23,12 @@ Coverage: 100.0% (558/558)
 
 ## fr
 
-Coverage: 99.8% (557/558)
+Coverage: 100.0% (557/557)
 
 ### Missing keys
 
-- `HomePage.title`
+- None
 
 ### Extra keys
 
-- `forms.errors.invalid`
-- `forms.errors.network`
-- `pages.public.home.messageAccountCreation`
+- None
