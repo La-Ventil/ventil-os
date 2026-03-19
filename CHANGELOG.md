@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.26](https://github.com/La-Ventil/ventil-os/compare/v0.0.25...v0.0.26) (2026-03-19)
+
+
+### Features
+
+* **i18n:** generate translation coverage report ([e89308c](https://github.com/La-Ventil/ventil-os/commit/e89308c22738e30aaeaaebeb28e60cdc968068d0))
+* **machine:** restore badge requirements and reservation eligibility ([32b5212](https://github.com/La-Ventil/ventil-os/commit/32b5212bcd98e31c4f718196714afa956946af7c))
+* **open-badge:** add repository assignment context query ([71717a0](https://github.com/La-Ventil/ventil-os/commit/71717a0850ac90c2a4046aa1a62c928e0512bff7))
+
+
+### Bug Fixes
+
+* **admin:** harden user network graph interaction ([6336d73](https://github.com/La-Ventil/ventil-os/commit/6336d73b3bb671a00e3cd53620fc934cf47017cb))
+* **application:** enforce canonical education level values at app boundaries ([68c471d](https://github.com/La-Ventil/ventil-os/commit/68c471d983ddba7eb3b68360124475682d86b0aa))
+* **application:** share badge assignment context ([d6a8a29](https://github.com/La-Ventil/ventil-os/commit/d6a8a29b0fba2f8719aefc42ab023b0e7ab0d5b8))
+* **e2e:** stabilize auth and reservation journeys ([de3affb](https://github.com/La-Ventil/ventil-os/commit/de3affbab53f4ea31f4df5816f6c0446cd44854d))
+* **form:** avoid untranslated common form error fallbacks ([83b74ec](https://github.com/La-Ventil/ventil-os/commit/83b74ec79cc8a8d84f2025343697f5cf20ec912f))
+* **i18n:** add missing validation message keys ([45ac1e9](https://github.com/La-Ventil/ventil-os/commit/45ac1e9c31f53b35f0a62b5161c08300cef0f3a2))
+* **i18n:** align fr and en message catalogs ([46383f7](https://github.com/La-Ventil/ventil-os/commit/46383f737bd5203140d760d0906f7f31918dab58))
+* **open-badge:** validate and label levels, update date formats ([45c13e4](https://github.com/La-Ventil/ventil-os/commit/45c13e422a21a6d5170528dd8bf4a69b20008adb))
+* **release:** harden production release script ([40996fd](https://github.com/La-Ventil/ventil-os/commit/40996fd2f94e323ffdb3643e2905ae2d2f13c0ec))
+* **storage:** split browser-safe image upload helpers ([1567693](https://github.com/La-Ventil/ventil-os/commit/156769370b4b209584575657c0393b069fa873c1))
+
 ### [0.0.25](https://github.com/La-Ventil/ventil-os/compare/v0.0.24...v0.0.25) (2026-03-12)
 
 
