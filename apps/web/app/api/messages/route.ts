@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { type NextRequest } from 'next/server';
-import { createMessage } from '@repo/application';
+import { createMessage } from '@repo/application/messages/usecases';
 
 export async function POST(request: NextRequest) {
   const headersList = await headers();

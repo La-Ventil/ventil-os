@@ -1,5 +1,5 @@
 import type { OpenBadgeRequirementOptionReadModel } from '@repo/db/read-models';
-import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/view-models/open-badge-requirement-option';
+import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/open-badges/models/open-badge-requirement-option';
 
 export const mapOpenBadgeRequirementOptionToViewModel = (
   badge: OpenBadgeRequirementOptionReadModel

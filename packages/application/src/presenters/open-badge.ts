@@ -1,7 +1,7 @@
 import type { OpenBadgeProgressReadModel, OpenBadgeReadModel } from '@repo/db/read-models';
 import { OpenBadge, type OpenBadge as OpenBadgeDomain } from '@repo/domain/badge/open-badge';
 import { formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
-import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
 
 const withLevelLabels = (badge: OpenBadgeDomain): OpenBadgeViewModel => ({
   ...badge,

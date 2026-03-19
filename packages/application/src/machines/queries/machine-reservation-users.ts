@@ -1,5 +1,5 @@
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { resolveReservationParticipants } from '@repo/domain/machine/machine-reservation-participants';
 
 export const listMachineReservationUsers = (reservation: MachineReservationViewModel): UserSummaryViewModel[] => {

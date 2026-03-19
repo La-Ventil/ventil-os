@@ -1,5 +1,5 @@
 import type { MachineReservation, MachineReservationParticipant } from '@repo/domain/machine/machine-reservation';
-import type { UserSummaryViewModel } from './user-summary';
+import type { UserSummaryViewModel } from '../../users/models/user-summary';
 export { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
 
 export type MachineReservationParticipantViewModel = Omit<MachineReservationParticipant, 'user'> & {

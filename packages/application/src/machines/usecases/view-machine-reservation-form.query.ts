@@ -3,9 +3,9 @@ import {
   canViewReservation,
   type ReservationActor
 } from '@repo/domain/machine/machine-reservation-cancellation-policy';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { resolveIsoDateFromQuery } from '../../time/iso-date';
 import type { Query } from '../../usecase';
 import { browseUsersForReservation } from '../../users/usecases/browse-users-for-reservation.query';

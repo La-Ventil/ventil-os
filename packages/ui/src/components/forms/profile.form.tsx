@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { ProfileFormInput, buildProfileFormSchema } from '@repo/application/forms';
-import { UserProfile } from '@repo/application/view-models/user-profile';
+import { UserProfile } from '@repo/application/users/models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
 import { createFormState } from '@repo/form/form-state';
 import { createFormFieldLiveValidation } from '@repo/form/use-form-field-live-validation';

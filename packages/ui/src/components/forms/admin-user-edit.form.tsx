@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { AdminProfileFormInput, buildAdminProfileFormSchema } from '@repo/application/forms';
-import { UserProfile } from '@repo/application/view-models/user-profile';
+import { UserProfile } from '@repo/application/users/models/user-profile';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import type { FormAction } from '@repo/form/form-action-state';

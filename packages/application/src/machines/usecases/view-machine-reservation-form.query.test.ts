@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ActivityStatus } from '@repo/domain/activity-status';
 import { MachineAvailability } from '@repo/domain/machine/machine-availability';
 import { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { viewMachineReservationForm } from './view-machine-reservation-form.query';
 
 const mockViewMachineDetails = vi.fn();

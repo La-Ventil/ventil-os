@@ -1,6 +1,6 @@
 import type { UserProfileReadModel } from '@repo/db/read-models';
 import { formatUserFullName } from '@repo/domain/user/user-name';
-import type { UserProfile } from '@repo/application/view-models/user-profile';
+import type { UserProfile } from '@repo/application/users/models/user-profile';
 
 export const mapUserProfileToViewModel = (user: UserProfileReadModel): UserProfile => ({
   id: user.id,

@@ -2,8 +2,8 @@
 
 import type { JSX } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import MachineModal from '@repo/ui/machine/machine-modal';
 import type { DayKey } from '@repo/application';
 

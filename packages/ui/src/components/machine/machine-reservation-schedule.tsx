@@ -3,8 +3,8 @@
 import { useMemo } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import useTimeZone from '../../hooks/use-time-zone';
-import { createScheduleIntervalForDayKey } from '@repo/application';
 import type { DayKey } from '@repo/application';
+import { createScheduleIntervalForDayKey } from '@repo/application/machines/queries';
 import {
   createReservationTimeSlotsForInterval,
   getNowIndicatorPosition,
@@ -19,7 +19,7 @@ import {
   canCancelReservationNow,
   type ReservationActor
 } from '@repo/domain/machine/machine-reservation-cancellation-policy';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import MachineReservationScheduleCard from './machine-reservation-schedule-card';
 import MachineScheduleNowIndicator from './machine-schedule-now-indicator';
 import MachineReservationTimeSlot from './machine-reservation-time-slot';

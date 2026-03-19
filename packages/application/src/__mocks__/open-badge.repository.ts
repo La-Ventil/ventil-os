@@ -1,5 +1,5 @@
 import { OpenBadgeLevel, formatOpenBadgeLevelLabel } from '@repo/domain/badge/open-badge-level';
-import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
 
 const badgeLevels = [
   OpenBadgeLevel.from(1, 'Niveau decouverte', "Decouvrez les bases de l'outil et les regles de securite essentielles."),

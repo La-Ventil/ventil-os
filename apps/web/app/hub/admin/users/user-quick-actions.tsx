@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import type { UserAdminViewModel } from '@repo/application/view-models/user-admin';
+import type { UserAdminViewModel } from '@repo/application/users/models/user-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
 import { setUserBlockedAction } from '../../../../lib/actions/users/set-user-blocked';
 

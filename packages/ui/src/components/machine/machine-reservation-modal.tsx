@@ -3,8 +3,8 @@
 import { useId } from 'react';
 import type { JSX } from 'react';
 import { useTranslations } from 'next-intl';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { MachineIcon } from '../icons/machine-icon';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { AdminProfileFormInput } from '@repo/application/forms';
 import type { FormAction } from '@repo/form/form-action-state';
-import type { UserProfile } from '@repo/application/view-models/user-profile';
+import type { UserProfile } from '@repo/application/users/models/user-profile';
 import AdminUserEditForm from '@repo/ui/forms/admin-user-edit.form';
 import ModalLayout from '@repo/ui/modal-layout';
 import Section from '@repo/ui/section';

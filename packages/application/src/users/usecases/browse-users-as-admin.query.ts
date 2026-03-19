@@ -1,5 +1,5 @@
 import { userRepository } from '@repo/db';
-import type { UserAdminViewModel } from '@repo/application/view-models/user-admin';
+import type { UserAdminViewModel } from '@repo/application/users/models/user-admin';
 import { mapUserAdminToViewModel } from '../../presenters/user-admin';
 import type { Query } from '../../usecase';
 

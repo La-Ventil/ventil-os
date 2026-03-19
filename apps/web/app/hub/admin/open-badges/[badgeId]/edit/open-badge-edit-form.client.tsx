@@ -7,7 +7,7 @@ import { openBadgeUpdateRequestSchema, type OpenBadgeUpdateRequest } from '@repo
 import OpenBadgeForm from '@repo/ui/forms/open-badge.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
-import type { OpenBadgeEditViewModel } from '@repo/application/view-models/open-badge-edit';
+import type { OpenBadgeEditViewModel } from '@repo/application/open-badges/models/open-badge-edit';
 import { updateOpenBadgeAction } from '../../../../../../lib/actions/open-badges/update-open-badge';
 
 type OpenBadgeEditFormClientProps = {

@@ -1,5 +1,5 @@
 import { machineRepository } from '@repo/db';
-import type { MachineAdminViewModel } from '@repo/application/view-models/machine-admin';
+import type { MachineAdminViewModel } from '@repo/application/machines/models/machine-admin';
 import { mapMachineAdminToViewModel } from '../../presenters/machine-admin';
 import type { Query } from '../../usecase';
 

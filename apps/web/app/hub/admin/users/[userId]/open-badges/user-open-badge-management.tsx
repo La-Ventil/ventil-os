@@ -12,9 +12,9 @@ import Section from '@repo/ui/section';
 import { assignOpenBadgeAction } from '../../../../../../lib/actions/open-badges/assign-open-badge';
 import { removeUserOpenBadgeAction } from '../../../../../../lib/actions/users/remove-user-open-badge';
 import { setUserOpenBadgeLevelAction } from '../../../../../../lib/actions/users/set-user-open-badge-level';
-import type { UserAdminViewModel } from '@repo/application/view-models/user-admin';
-import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/view-models/user-summary';
+import type { UserAdminViewModel } from '@repo/application/users/models/user-admin';
+import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/users/models/user-summary';
 import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import styles from './user-open-badge-management.module.css';
 

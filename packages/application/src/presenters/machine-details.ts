@@ -1,6 +1,6 @@
 import type { MachineDetailsReadModel } from '@repo/db/read-models';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
-import type { MachineAvailability } from '@repo/application/view-models/machine';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
+import type { MachineAvailability } from '@repo/application/machines/models/machine';
 
 export const mapMachineDetailsToViewModel = (
   machine: MachineDetailsReadModel,

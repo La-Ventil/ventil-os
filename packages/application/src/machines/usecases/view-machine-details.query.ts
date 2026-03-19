@@ -1,5 +1,5 @@
 import { machineRepository } from '@repo/db';
-import type { MachineDetailsViewModel } from '@repo/application/view-models/machine-details';
+import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
 import { mapMachineDetailsToViewModel } from '../../presenters/machine-details';
 import type { Query } from '../../usecase';

@@ -9,15 +9,15 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useFormatter, useTranslations } from 'next-intl';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
-import type { MachineViewModel } from '@repo/application/view-models/machine';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
+import type { MachineViewModel } from '@repo/application/machines/models/machine';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
 import {
   canCancelReservationNow,
   canReleaseReservationNow,
   type ReservationActor
 } from '@repo/domain/machine/machine-reservation-cancellation-policy';
-import { listMachineReservationUsers } from '@repo/application';
+import { listMachineReservationUsers } from '@repo/application/machines/queries';
 import { useRouter } from 'next/navigation';
 import StatusIndicator from '../status-indicator';
 import useTimeZone from '../../hooks/use-time-zone';

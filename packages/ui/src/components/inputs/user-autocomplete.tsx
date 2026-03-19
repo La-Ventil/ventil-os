@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import UserAvatar from '../user-avatar';
 import styles from './user-autocomplete.module.css';
 

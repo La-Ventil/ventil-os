@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import type { Dayjs } from 'dayjs';
 import { excludeBy, parseIsoDate } from '@repo/application';
 import type { MachineReservationFormInput } from '@repo/application/forms';
-import type { UserSummaryViewModel } from '@repo/application/view-models/user-summary';
+import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
 import { fieldErrorMessage } from '@repo/form/form-errors';

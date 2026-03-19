@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { type MachineViewModel, type MachineAvailability } from '@repo/application/view-models/machine';
+import { type MachineViewModel, type MachineAvailability } from '@repo/application/machines/models/machine';
 import CardHeader from './card-header';
 import { MachineIcon } from './icons/machine-icon';
 import StatusIndicator, { type StatusTone } from './status-indicator';

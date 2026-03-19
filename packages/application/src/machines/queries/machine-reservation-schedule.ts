@@ -1,5 +1,5 @@
-import type { DayKey } from '../time/date-time';
-import { addMinutesToDate, parseDayKey } from '../time/date-time';
+import type { DayKey } from '../../time/date-time';
+import { addMinutesToDate, parseDayKey } from '../../time/date-time';
 import { SCHEDULE_END_HOUR, SCHEDULE_START_HOUR } from '@repo/domain/machine/reservation-schedule';
 import type { DateInterval } from '@repo/domain/date-interval';
 

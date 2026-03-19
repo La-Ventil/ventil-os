@@ -1,6 +1,6 @@
 import { machineRepository } from '@repo/db';
 import { isActive } from '@repo/domain/activity-status';
-import type { MachineViewModel } from '@repo/application/view-models/machine';
+import type { MachineViewModel } from '@repo/application/machines/models/machine';
 import { mapMachineToViewModel } from '../../presenters/machine';
 import type { Query } from '../../usecase';
 import { resolveMachinesAvailability } from './resolve-machines-availability.query';

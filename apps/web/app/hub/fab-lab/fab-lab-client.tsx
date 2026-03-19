@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import type { MachineViewModel } from '@repo/application/view-models/machine';
+import type { MachineViewModel } from '@repo/application/machines/models/machine';
 import CardList from '@repo/ui/card-list';
 import MachineCard from '@repo/ui/machine-card';
 import Section from '@repo/ui/section';

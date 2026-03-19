@@ -1,5 +1,5 @@
 import { openBadgeRepository } from '@repo/db';
-import type { OpenBadgeAdminViewModel } from '@repo/application/view-models/open-badge-admin';
+import type { OpenBadgeAdminViewModel } from '@repo/application/open-badges/models/open-badge-admin';
 import { mapOpenBadgeAdminToViewModel } from '../../presenters/open-badge-admin';
 import type { Query } from '../../usecase';
 

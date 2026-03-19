@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransition } from 'react';
-import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/application/view-models/machine-admin';
+import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/application/machines/models/machine-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
 import { setMachineStatusAction } from '../../../../lib/actions/machines/set-machine-status';
 

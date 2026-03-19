@@ -1,7 +1,7 @@
 import type { DayKey } from '../../time/date-time';
 import { getDayIntervalForDayKey } from '../../time/date-time';
 import { machineReservationRepository } from '@repo/db';
-import type { MachineReservationViewModel } from '@repo/application/view-models/machine-reservation';
+import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
 import type { Query } from '../../usecase';
 

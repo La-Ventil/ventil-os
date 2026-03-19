@@ -1,6 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
 import { isActive } from '@repo/domain/activity-status';
-import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
+import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
 import { mapOpenBadgeProgressToViewModel } from '../../presenters/open-badge';
 import type { Query } from '../../usecase';
 

@@ -1,5 +1,5 @@
 import { userRepository } from '@repo/db';
-import type { AdminStatisticsViewModel } from '@repo/application/view-models/admin-statistics';
+import type { AdminStatisticsViewModel } from '@repo/application/admin/models/admin-statistics';
 import { mapAdminStatisticsToViewModel } from '../../presenters/admin-statistics';
 import type { Query } from '../../usecase';
 

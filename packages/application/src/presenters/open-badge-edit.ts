@@ -1,6 +1,6 @@
 import type { OpenBadgeReadModel } from '@repo/db/read-models';
 import { ActivityStatus } from '@repo/domain/activity-status';
-import type { OpenBadgeEditViewModel } from '@repo/application/view-models/open-badge-edit';
+import type { OpenBadgeEditViewModel } from '@repo/application/open-badges/models/open-badge-edit';
 
 export const mapOpenBadgeToEditViewModel = (badge: OpenBadgeReadModel): OpenBadgeEditViewModel => ({
   id: badge.id,

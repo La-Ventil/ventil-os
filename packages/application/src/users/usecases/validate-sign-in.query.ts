@@ -1,6 +1,6 @@
 import { verifySecret } from '@repo/crypto';
 import { userRepository } from '@repo/db';
-import type { UserProfile } from '@repo/application/view-models/user-profile';
+import type { UserProfile } from '@repo/application/users/models/user-profile';
 import type { Query } from '../../usecase';
 import { viewUserProfile } from './view-user-profile.query';
 

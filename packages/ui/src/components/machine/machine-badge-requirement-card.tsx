@@ -1,6 +1,6 @@
 'use client';
 
-import type { MachineOpenBadgeRequirementViewModel } from '@repo/application/view-models/machine-details';
+import type { MachineOpenBadgeRequirementViewModel } from '@repo/application/machines/models/machine-details';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';

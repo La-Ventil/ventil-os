@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import type {
   OpenBadgeViewModel,
   OpenBadgeLevelViewModel as DomainOpenBadgeLevel
-} from '@repo/application/view-models/open-badge';
+} from '@repo/application/open-badges/models/open-badge';
 import Link from 'next/link';
 import CardHeader from '../card-header';
 import { OpenBadgeIcon } from '../icons/open-badge-icon';

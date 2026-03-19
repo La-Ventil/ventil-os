@@ -1,4 +1,4 @@
-import type { AdminStatisticsViewModel } from '@repo/application/view-models/admin-statistics';
+import type { AdminStatisticsViewModel } from '@repo/application/admin/models/admin-statistics';
 import type { AdminStatisticsOverviewGroup } from '@repo/ui/admin/admin-statistics-overview';
 import { userRoleToneByRole } from '@repo/ui/admin/user-role-visual';
 import { ThemeSection } from '@repo/ui/theme';

@@ -5,8 +5,8 @@ import type { FormFeedback } from '@repo/form/form-feedback';
 import AssignOpenBadgeForm from '../forms/assign-open-badge.form';
 import ModalLayout from '../modal-layout';
 import { useTranslations } from 'next-intl';
-import type { OpenBadgeViewModel } from '@repo/application/view-models/open-badge';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/view-models/user-summary';
+import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
+import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/users/models/user-summary';
 import { ThemeSection } from '../../theme';
 
 type UserIdsByOpenBadgeIdAndLevel = Record<string, Record<string, string[]>>;
