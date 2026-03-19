@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Alert from '@mui/material/Alert';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminButton from '@repo/ui/admin/admin-button';
-import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import UserOpenBadgesTable from '@repo/ui/admin/user-open-badges-table';
 import Section from '@repo/ui/section';
 import { assignOpenBadgeAction } from '../../../../../../lib/actions/open-badges/assign-open-badge';
@@ -14,15 +14,12 @@ import { removeUserOpenBadgeAction } from '../../../../../../lib/actions/users/r
 import { setUserOpenBadgeLevelAction } from '../../../../../../lib/actions/users/set-user-open-badge-level';
 import type { UserAdminViewModel } from '@repo/application/users/models/user-admin';
 import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
-import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/users/models/user-summary';
-import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import styles from './user-open-badge-management.module.css';
 
 type UserOpenBadgeManagementProps = {
   user: UserAdminViewModel;
   badges: OpenBadgeViewModel[];
   assignableBadges: OpenBadgeViewModel[];
-  userIdsByOpenBadgeIdAndLevel: OpenBadgeAssignableUsersByBadgeIdAndLevel;
   labels: {
     actions: {
       assign: string;
@@ -51,33 +48,11 @@ export default function UserOpenBadgeManagement({
   user,
   badges,
   assignableBadges,
-  userIdsByOpenBadgeIdAndLevel,
   labels
 }: UserOpenBadgeManagementProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isAssignOpen, setIsAssignOpen] = useState(false);
   const [pageFeedback, setPageFeedback] = useState<FormFeedback | null>(null);
-  const [modalFeedback, setModalFeedback] = useState<FormFeedback | null>(null);
-
-  const selectedUser = useMemo<UserSummaryWithOpenBadgeLevelViewModel>(
-    () => ({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      image: user.image,
-      email: user.email,
-      fullName: user.fullName,
-      currentOpenBadgeLevel: null
-    }),
-    [user]
-  );
-
-  const closeAssignModal = () => {
-    setModalFeedback(null);
-    setIsAssignOpen(false);
-  };
 
   const resolvePageFeedback = <TValues,>(state: {
     success: boolean;
@@ -88,23 +63,6 @@ export default function UserOpenBadgeManagement({
       fallbackErrorMessage: labels.feedback.genericError,
       errorStrategy: 'join-fields'
     });
-
-  const handleAssign = (payload: { userId: string; openBadgeId: string; level: number }) => {
-    startTransition(async () => {
-      setModalFeedback(null);
-      const result = await assignOpenBadgeAction(payload);
-      const nextFeedback = resolvePageFeedback(result);
-
-      if (!result.success) {
-        setModalFeedback(nextFeedback);
-        return;
-      }
-
-      closeAssignModal();
-      setPageFeedback(nextFeedback);
-      router.refresh();
-    });
-  };
 
   const handleUpgrade = (badge: OpenBadgeViewModel, nextLevel: number) => {
     startTransition(async () => {
@@ -153,7 +111,11 @@ export default function UserOpenBadgeManagement({
   return (
     <>
       <AdminActionsSection>
-        <AdminButton onClick={() => setIsAssignOpen(true)} disabled={!assignableBadges.length || isPending}>
+        <AdminButton
+          component={Link}
+          href={`/hub/admin/users/${user.id}/open-badges/assign`}
+          disabled={!assignableBadges.length || isPending}
+        >
           {labels.actions.assign}
         </AdminButton>
       </AdminActionsSection>
@@ -176,20 +138,6 @@ export default function UserOpenBadgeManagement({
           onRemove={handleRemove}
         />
       </Section>
-
-      <AssignOpenBadgeModal
-        open={isAssignOpen}
-        onClose={closeAssignModal}
-        user={selectedUser}
-        users={[selectedUser]}
-        openBadges={assignableBadges}
-        userIdsByOpenBadgeIdAndLevel={userIdsByOpenBadgeIdAndLevel}
-        translationNamespace="pages.hub.admin.users.badgeManagement.assignDialog"
-        isSubmitting={isPending}
-        userSelectionDisabled
-        onConfirm={handleAssign}
-        feedback={modalFeedback}
-      />
     </>
   );
 }

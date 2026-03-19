@@ -1,11 +1,12 @@
 'use client';
 
 import type { JSX } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import MachineModal from '@repo/ui/machine/machine-modal';
 import type { DayKey } from '@repo/application';
+import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 
 type MachineModalRouteClientProps = {
   machine: MachineDetailsViewModel | null;
@@ -27,13 +28,16 @@ export default function MachineModalRouteClient({
   canManageReservations
 }: MachineModalRouteClientProps): JSX.Element | null {
   const router = useRouter();
-  const pathname = usePathname();
 
   if (!machine) {
     return null;
   }
 
-  const isOpen = pathname === `/hub/fab-lab/${machine.id}`;
+  const modalPath = `/hub/fab-lab/${machine.id}`;
+  const { open, handleClose } = useRouteModal({
+    modalPath,
+    closeHref
+  });
 
   return (
     <MachineModal
@@ -43,10 +47,8 @@ export default function MachineModalRouteClient({
       canReserve={canReserve}
       currentUserId={currentUserId}
       canManageReservations={canManageReservations}
-      open={isOpen}
-      onClose={() => {
-        router.push(closeHref);
-      }}
+      open={open}
+      onClose={handleClose}
       onOpenReservation={
         canReserve
           ? (slot) => {

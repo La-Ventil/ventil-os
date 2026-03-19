@@ -2,7 +2,6 @@
 
 import type { JSX } from 'react';
 import { useEffect, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
@@ -11,6 +10,7 @@ import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/applicatio
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { assignOpenBadgeAction } from '../../../../lib/actions/open-badges/assign-open-badge';
 import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
+import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 
 type AssignOpenBadgeModalRouteProps = {
   openBadge: OpenBadgeViewModel | null;
@@ -27,23 +27,22 @@ export default function AssignOpenBadgeModalRoute({
   translationNamespace = 'pages.hub.admin.openBadges.assignModal',
   closeHref
 }: AssignOpenBadgeModalRouteProps): JSX.Element | null {
-  const router = useRouter();
   const t = useTranslations(translationNamespace);
-  const [isOpen, setIsOpen] = useState(Boolean(openBadge));
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<FormFeedback | null>(null);
   const { schedule, cancel } = useDelayedAction();
   const openBadgeId = openBadge?.id ?? null;
-
-  const handleClose = () => {
-    cancel();
-    setFeedback(null);
-    setIsOpen(false);
-    router.push(closeHref);
-  };
+  const assignModalPath = openBadgeId ? `/hub/admin/open-badges/${openBadgeId}` : null;
+  const { open, handleClose } = useRouteModal({
+    modalPath: assignModalPath,
+    closeHref,
+    onCloseStart: () => {
+      cancel();
+      setFeedback(null);
+    }
+  });
 
   useEffect(() => {
-    setIsOpen(Boolean(openBadgeId));
     if (openBadgeId) {
       cancel();
       setFeedback(null);
@@ -51,11 +50,11 @@ export default function AssignOpenBadgeModalRoute({
   }, [openBadgeId, cancel]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (open) {
       cancel();
       setFeedback(null);
     }
-  }, [isOpen, cancel]);
+  }, [open, cancel]);
 
   if (!openBadge) {
     return null;
@@ -63,7 +62,7 @@ export default function AssignOpenBadgeModalRoute({
 
   return (
     <AssignOpenBadgeModal
-      open={isOpen}
+      open={open}
       onClose={handleClose}
       onConfirm={(payload) => {
         startTransition(async () => {

@@ -1,7 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import type { AdminProfileFormInput } from '@repo/application/forms';
 import type { FormAction } from '@repo/form/form-action-state';
@@ -13,6 +12,7 @@ import SectionSubtitle from '@repo/ui/section-subtitle';
 import SectionTitle from '@repo/ui/section-title';
 import { ThemeSection } from '@repo/ui/theme';
 import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
+import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 
 type EditUserModalRouteProps = {
   profile: UserProfile;
@@ -22,19 +22,17 @@ type EditUserModalRouteProps = {
 };
 
 export default function EditUserModalRoute({ profile, userId, closeHref, handleSubmit }: EditUserModalRouteProps) {
-  const router = useRouter();
   const t = useTranslations('pages.hub.admin.usersEdit');
   const tCommon = useTranslations('common');
-  const [isOpen, setIsOpen] = useState(true);
   const profilePromise = useMemo(() => Promise.resolve(profile), [profile]);
   const { schedule, cancel } = useDelayedAction();
-
-  const handleClose = useCallback(() => {
-    cancel();
-    setIsOpen(false);
-    router.push(closeHref);
-    router.refresh();
-  }, [cancel, closeHref, router]);
+  const modalPath = `/hub/admin/users/${userId}/edit`;
+  const { open, handleClose } = useRouteModal({
+    modalPath,
+    closeHref,
+    refreshOnClose: true,
+    onCloseStart: cancel
+  });
 
   const handleSuccess = useCallback(() => {
     schedule(handleClose);
@@ -42,7 +40,7 @@ export default function EditUserModalRoute({ profile, userId, closeHref, handleS
 
   return (
     <ModalLayout
-      open={isOpen}
+      open={open}
       onClose={handleClose}
       closeLabel={tCommon('actions.back')}
       fullWidth

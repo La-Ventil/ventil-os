@@ -2,6 +2,7 @@ import type { Locator } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
 import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 import { openMachineDetails, openMachineReservationModalFromSchedule } from '../../helpers/fab-lab';
+import { pressEscape } from '../../helpers/keyboard';
 import {
   getCreateReservationDialog,
   getReservationCard,
@@ -15,6 +16,17 @@ const getScheduleSlotButton = (machineDialog: Locator, timeLabel: RegExp): Locat
   machineDialog.getByText(timeLabel).locator('..').getByRole('button');
 
 test.describe('Machine reservation journey', () => {
+  test('user can close and reopen the same machine details modal', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+
+    await openMachineDetails(page, /Bambu Lab X1C/i);
+    await pressEscape(page);
+    await expect(page).toHaveURL(/\/hub\/fab-lab$/);
+
+    await openMachineDetails(page, /Bambu Lab X1C/i);
+    await expect(page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first()).toBeVisible();
+  });
+
   test('admin can reserve a machine from the reservation modal route', async ({ page, loginAs }) => {
     await loginAs('globalAdmin');
     const machineId = await submitReservationAndReturnToMachineDetails(page, /Bambu Lab X1C/i);

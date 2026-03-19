@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import { SignupFormInput, passwordConfirmationMatchSchema, signupFormSchema } from '@repo/application/forms';
 import { UserRole } from '@repo/domain/user/user-role';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import EducationLevelSelect from '../inputs/education-level-select';
 import ProfileRadioGroup from '../inputs/profile-radio-group';
 import TextButtonLink from '../text-button-link';
@@ -28,6 +28,7 @@ import { createFieldError } from '@repo/form/form-errors';
 import { useFormFieldCrossValidation } from '@repo/form/use-form-field-cross-validation';
 import { useFieldState } from '@repo/form/use-field-state';
 import { useProfileEducation } from '../../hooks/use-profile-education';
+import { useLocalModal } from '../../hooks/use-local-modal';
 
 export interface SignupFormProps {
   formState: FormActionStateTuple<SignupFormInput>;
@@ -73,7 +74,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
     t: (key: string) => tValidation(key),
     serverError: fieldError('passwordConfirmation')
   });
-  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const privacyModal = useLocalModal();
   const privacyTitleId = useId();
   const privacyIntroId = useId();
 
@@ -153,7 +154,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
                 />
               }
               label={t.rich('fields.terms', {
-                link: (chunks) => <TextButtonLink onClick={() => setIsPrivacyOpen(true)}>{chunks}</TextButtonLink>
+                link: (chunks) => <TextButtonLink onClick={privacyModal.openModal}>{chunks}</TextButtonLink>
               })}
             />
             {fieldError('terms') ? <FormHelperText>{fieldError('terms')}</FormHelperText> : null}
@@ -169,8 +170,8 @@ export default function SignupForm({ formState }: SignupFormProps) {
         </FormActions>
       </Form>
       <ModalLayout
-        open={isPrivacyOpen}
-        onClose={() => setIsPrivacyOpen(false)}
+        open={privacyModal.open}
+        onClose={privacyModal.closeModal}
         closeLabel={tCommon('actions.back')}
         maxWidth="md"
         fullWidth

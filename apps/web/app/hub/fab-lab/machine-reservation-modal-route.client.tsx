@@ -1,8 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
@@ -12,6 +11,7 @@ import { resolveFormFeedback } from '@repo/form/form-feedback';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import MachineReservationModal from '@repo/ui/machine/machine-reservation-modal';
 import { createMachineReservationInitialState } from '@repo/ui/machine/machine-reservation-form';
+import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
 import { reserveMachineAction } from '../../../lib/actions/machines/reserve-machine';
 import {
@@ -38,12 +38,16 @@ export default function MachineReservationModalRouteClient({
   currentUserId,
   canManageReservations
 }: MachineReservationModalRouteClientProps): JSX.Element | null {
-  const router = useRouter();
   const t = useTranslations('pages.hub.fabLab');
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
-  const [isOpen, setIsOpen] = useState(Boolean(machine));
   const machineId = machine?.id ?? '';
+  const reservationModalPath = machineId ? `/hub/fab-lab/${machineId}/reservation` : null;
+  const { open, handleClose: closeReservationModal } = useRouteModal({
+    modalPath: reservationModalPath,
+    closeHref,
+    refreshOnClose: true
+  });
   const initialState = useMemo(() => {
     if (!reservation) {
       return createMachineReservationInitialState(machineId, startAt);
@@ -73,14 +77,7 @@ export default function MachineReservationModalRouteClient({
     const canAct = isOwner || Boolean(canManageReservations);
     return canAct && MachineReservation.isUpcoming(reservation, new Date());
   }, [canManageReservations, currentUserId, reservation]);
-  const closeReservationModal = useCallback(() => {
-    setIsOpen(false);
-    router.push(closeHref);
-  }, [closeHref, router]);
-  const closeReservationFlow = useCallback(() => {
-    closeReservationModal();
-    router.refresh();
-  }, [closeReservationModal, router]);
+  const closeReservationFlow = closeReservationModal;
   const normalizeReservationActionResult = useCallback(
     (result: ReservationActionResult): ReservationActionResult => {
       const feedback = resolveFormFeedback(result, {
@@ -108,10 +105,6 @@ export default function MachineReservationModalRouteClient({
   }, [closeReservationFlow, normalizeReservationActionResult, reservation]);
 
   useEffect(() => {
-    setIsOpen(Boolean(machine));
-  }, [machine]);
-
-  useEffect(() => {
     if (!state.success) return;
     closeReservationFlow();
   }, [closeReservationFlow, state.success]);
@@ -129,7 +122,7 @@ export default function MachineReservationModalRouteClient({
       startAt={reservation?.startsAt ?? startAt}
       formState={formState}
       currentUserId={currentUserId}
-      open={isOpen}
+      open={open}
       onClose={closeReservationModal}
       onCancelReservation={reservation && canCancelReservation ? handleCancelReservation : undefined}
     />

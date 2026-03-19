@@ -2,6 +2,7 @@ import { test, expect } from '../../fixtures/test';
 import { openAutocompleteOptions, selectFirstAutocompleteOption } from '../../helpers/autocomplete';
 import { openAdminOpenBadgeAssignModal } from '../../helpers/open-badges';
 import { clickQuickAction, openRowQuickActions } from '../../helpers/quick-actions';
+import { closeDialogWithEscape } from '../../helpers/dialogs';
 
 test.describe('Admin open badges journeys', () => {
   test('admin can assign an open badge from the assign modal', async ({ page, loginAs }) => {
@@ -77,5 +78,16 @@ test.describe('Admin open badges journeys', () => {
     await loginAs('student');
     await page.goto('/hub/admin/open-badges/@modal/does-not-exist');
     await expect(page).toHaveURL('/hub/profile');
+  });
+
+  test('admin can close and reopen the same assign modal', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+
+    await openAdminOpenBadgeAssignModal(page, /Impression 3D Bambu Lab/i);
+    await closeDialogWithEscape(page, /assign an open badge/i);
+    await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/);
+
+    await openAdminOpenBadgeAssignModal(page, /Impression 3D Bambu Lab/i);
+    await expect(page.getByRole('dialog', { name: /assign an open badge/i })).toBeVisible();
   });
 });

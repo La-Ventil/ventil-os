@@ -1,8 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { useEffect, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
 import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/open-badge';
@@ -12,6 +11,8 @@ import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import OpenBadgeModal from '@repo/ui/open-badge/open-badge-modal';
 import { assignOpenBadgeAction } from '../../../lib/actions/open-badges/assign-open-badge';
 import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
+import { useLocalModal } from '@repo/ui/hooks/use-local-modal';
+import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 
 type OpenBadgeModalRouteClientProps = {
   openBadge: OpenBadgeViewModel | null;
@@ -28,31 +29,35 @@ export default function OpenBadgeModalRouteClient({
   users,
   userIdsByOpenBadgeIdAndLevel
 }: OpenBadgeModalRouteClientProps): JSX.Element | null {
-  const router = useRouter();
   const t = useTranslations('pages.hub.openBadges.assignModal');
-  const [isOpen, setIsOpen] = useState(Boolean(openBadge));
-  const [isAssignOpen, setIsAssignOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
-  const { schedule, cancel } = useDelayedAction();
-
-  const handleAssignClose = () => {
-    cancel();
-    setIsAssignOpen(false);
-    setFeedback(null);
-    router.push(closeHref);
-  };
-
-  useEffect(() => {
-    setIsOpen(Boolean(openBadge));
-  }, [openBadge]);
-
-  useEffect(() => {
-    if (isAssignOpen) {
+  const assignModal = useLocalModal({
+    onOpen: () => {
+      setFeedback(null);
+      cancel();
+    },
+    onClose: () => {
       cancel();
       setFeedback(null);
     }
-  }, [isAssignOpen, cancel]);
+  });
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
+  const { schedule, cancel } = useDelayedAction();
+  const openBadgeId = openBadge?.id ?? null;
+  const badgeModalPath = openBadgeId ? `${closeHref}/${openBadgeId}` : null;
+  const { open, handleClose } = useRouteModal({
+    modalPath: assignModal.open ? null : badgeModalPath,
+    closeHref,
+    onCloseStart: () => {
+      setFeedback(null);
+      cancel();
+    }
+  });
+
+  const handleAssignClose = () => {
+    assignModal.closeModal();
+    handleClose();
+  };
 
   if (!openBadge) {
     return null;
@@ -64,25 +69,19 @@ export default function OpenBadgeModalRouteClient({
     <>
       <OpenBadgeModal
         openBadge={openBadge}
-        open={isOpen}
+        open={open}
         onAssign={
           allowAssign
             ? () => {
-                setIsAssignOpen(true);
-                setIsOpen(false);
-                setFeedback(null);
-                cancel();
+                assignModal.openModal();
               }
             : undefined
         }
-        onClose={() => {
-          setIsOpen(false);
-          router.push(closeHref);
-        }}
+        onClose={handleClose}
       />
       {allowAssign ? (
         <AssignOpenBadgeModal
-          open={isAssignOpen}
+          open={assignModal.open}
           onClose={handleAssignClose}
           user={null}
           users={users}

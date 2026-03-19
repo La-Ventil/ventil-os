@@ -18,6 +18,17 @@ const mutateName = (value: string, fallback: string): string => {
 };
 
 test.describe('Admin users journeys', () => {
+  test('admin can close and reopen the same user edit modal', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+
+    await openAdminUserEditPage(page, USER_EMAIL);
+    await page.getByRole('button', { name: /back/i }).last().click();
+    await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
+
+    await openAdminUserEditPage(page, USER_EMAIL);
+    await expect(page.getByRole('textbox', { name: /^first name$/i })).toBeVisible();
+  });
+
   test('admin can edit a user profile from row quick actions', async ({ page, loginAs }) => {
     await loginAs('globalAdmin');
 
