@@ -4,7 +4,7 @@ import { getE2EPrismaClient } from './e2e-prisma';
 export class OpenBadgeTestRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async setStatusByName(name: string, status: PrismaActivityStatus): Promise<void> {
+  async findIdByName(name: string): Promise<string> {
     const badge = await this.prisma.openBadge.findFirst({
       where: { name },
       select: { id: true }
@@ -14,8 +14,14 @@ export class OpenBadgeTestRepository {
       throw new Error(`Open badge not found for name ${name}`);
     }
 
+    return badge.id;
+  }
+
+  async setStatusByName(name: string, status: PrismaActivityStatus): Promise<void> {
+    const id = await this.findIdByName(name);
+
     await this.prisma.openBadge.update({
-      where: { id: badge.id },
+      where: { id },
       data: { status }
     });
   }
@@ -45,6 +51,77 @@ export class OpenBadgeTestRepository {
         userId: user.id,
         openBadgeId: badge.id
       }
+    });
+  }
+
+  async awardBadgeToUserByName(userEmail: string, badgeName: string, level: number = 1): Promise<void> {
+    const [user, badge] = await Promise.all([
+      this.prisma.user.findUnique({
+        where: { email: userEmail },
+        select: { id: true }
+      }),
+      this.prisma.openBadge.findFirst({
+        where: { name: badgeName },
+        select: { id: true }
+      })
+    ]);
+
+    if (!user) {
+      throw new Error(`User not found for email ${userEmail}`);
+    }
+
+    if (!badge) {
+      throw new Error(`Open badge not found for name ${badgeName}`);
+    }
+
+    const openBadgeLevel = await this.prisma.openBadgeLevel.findUnique({
+      where: {
+        openBadgeId_level: {
+          openBadgeId: badge.id,
+          level
+        }
+      },
+      select: { id: true }
+    });
+
+    if (!openBadgeLevel) {
+      throw new Error(`Open badge level not found for ${badgeName} (${level})`);
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      const progress = await tx.openBadgeProgress.upsert({
+        where: {
+          userId_openBadgeId: {
+            userId: user.id,
+            openBadgeId: badge.id
+          }
+        },
+        create: {
+          userId: user.id,
+          openBadgeId: badge.id
+        },
+        update: {}
+      });
+
+      await tx.openBadgeLevelProgress.upsert({
+        where: {
+          progressId_openBadgeLevelId: {
+            progressId: progress.id,
+            openBadgeLevelId: openBadgeLevel.id
+          }
+        },
+        create: {
+          progressId: progress.id,
+          openBadgeLevelId: openBadgeLevel.id,
+          awardedById: user.id
+        },
+        update: {}
+      });
+
+      await tx.openBadgeProgress.update({
+        where: { id: progress.id },
+        data: { highestLevelId: openBadgeLevel.id }
+      });
     });
   }
 }

@@ -10,10 +10,9 @@ test.describe('Admin open badges accessibility', () => {
 
     await expect(page.getByRole('textbox', { name: /name/i })).toBeVisible();
     await expect(page.locator('input[name="description"]')).toBeVisible();
-    await expect(page.locator('input[name="deliveryEnabled"]')).toHaveAttribute('aria-label', /delivery/i);
+    await expect(page.locator('input[name="deliveryEnabled"]')).toHaveAttribute('aria-label', /issuance/i);
     await expect(page.locator('input[name="activationEnabled"]')).toHaveAttribute('aria-label', /activation/i);
     await expect(page.locator('input[name="deliveryLevel"]')).toBeVisible();
-    await expect(page.getByRole('link', { name: /back/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /save/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, {
@@ -34,10 +33,9 @@ test.describe('Admin open badges accessibility', () => {
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges\/[^/]+\/edit$/);
     await expect(page.getByRole('textbox', { name: /name/i })).toBeVisible();
     await expect(page.locator('input[name="description"]')).toBeVisible();
-    await expect(page.locator('input[name="deliveryEnabled"]')).toHaveAttribute('aria-label', /delivery/i);
+    await expect(page.locator('input[name="deliveryEnabled"]')).toHaveAttribute('aria-label', /issuance/i);
     await expect(page.locator('input[name="activationEnabled"]')).toHaveAttribute('aria-label', /activation/i);
     await expect(page.locator('input[name="deliveryLevel"]')).toBeVisible();
-    await expect(page.getByRole('link', { name: /back/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /save/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, {

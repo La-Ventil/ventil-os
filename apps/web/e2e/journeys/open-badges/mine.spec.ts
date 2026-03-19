@@ -5,8 +5,17 @@ import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-reposi
 const awardedBadgeName = 'Impression 3D Bambu Lab';
 
 test.describe('User open badges journeys', () => {
-  test('inactive open badges disappear from the earned badges tab', async ({ page, loginAs, workerWebRuntime }) => {
+  test('inactive open badges disappear from the earned badges tab', async ({
+    page,
+    loginAs,
+    seedUsers,
+    workerWebRuntime
+  }) => {
     await loginAs('globalAdmin');
+    await getOpenBadgeTestRepository(workerWebRuntime?.dbSlot).awardBadgeToUserByName(
+      seedUsers.globalAdmin.email,
+      awardedBadgeName
+    );
     await page.goto('/hub/open-badge/mine');
 
     await expect(page.getByText(awardedBadgeName, { exact: true })).toBeVisible();

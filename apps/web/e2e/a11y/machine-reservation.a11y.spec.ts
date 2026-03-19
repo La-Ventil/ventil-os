@@ -2,12 +2,17 @@ import { test, expect } from '../fixtures/test';
 import { expectNoSeriousA11yViolations } from '../helpers/a11y';
 import { openMachineReservationModalFromSchedule } from '../helpers/fab-lab';
 import { closeDialogWithEscape, expectDialog } from '../helpers/dialogs';
+import { freezeBrowserTime } from '../helpers/time';
 
 test.describe('Machine reservation accessibility', () => {
   test('reservation modal is labelled, form fields are named, and dialog closes with Escape', async ({
     page,
     loginAs
   }) => {
+    const fixedNow = new Date();
+    fixedNow.setHours(9, 0, 0, 0);
+    await freezeBrowserTime(page, fixedNow);
+
     await loginAs('globalAdmin');
     const machineId = await openMachineReservationModalFromSchedule(page);
 

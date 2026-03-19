@@ -1,14 +1,25 @@
+import { ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { test, expect } from '../fixtures/test';
 import { expectNoSeriousA11yViolations } from '../helpers/a11y';
 import { closeDialogWithEscape, expectDialog } from '../helpers/dialogs';
-import { openAdminOpenBadgeAssignModal } from '../helpers/open-badges';
+import { openAdminOpenBadgeAssignModalById } from '../helpers/open-badges';
+import { getOpenBadgeTestRepository } from '../helpers/open-badge-test-repository';
 
 test.describe('Admin open badge assign modal accessibility', () => {
-  test('assign modal is labelled, fields are named, and closes with Escape', async ({ page, loginAs }) => {
+  test('assign modal is labelled, fields are named, and closes with Escape', async ({
+    page,
+    loginAs,
+    seedUsers,
+    workerWebRuntime
+  }) => {
     await loginAs('globalAdmin');
-    await openAdminOpenBadgeAssignModal(page);
+    const repository = getOpenBadgeTestRepository(workerWebRuntime?.dbSlot);
+    const badgeId = await repository.findIdByName('Impression 3D Bambu Lab');
+    await repository.setStatusByName('Impression 3D Bambu Lab', PrismaActivityStatus.active);
+    await repository.removeProgressForUserByBadgeName(seedUsers.student.email, 'Impression 3D Bambu Lab');
+    await openAdminOpenBadgeAssignModalById(page, badgeId);
 
-    const dialog = await expectDialog(page, /assign an open badge/i);
+    const dialog = await expectDialog(page, /assign (an|the) open badge/i);
     await expect(dialog).toHaveAttribute('aria-labelledby', /.+/);
     await expect(dialog).toHaveAttribute('aria-describedby', /.+/);
 
@@ -23,7 +34,7 @@ test.describe('Admin open badge assign modal accessibility', () => {
       ignoreViolationIds: ['color-contrast']
     });
 
-    await closeDialogWithEscape(page, /assign an open badge/i);
+    await closeDialogWithEscape(page, /assign (an|the) open badge/i);
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/);
   });
 });

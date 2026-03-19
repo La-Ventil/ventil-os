@@ -1,5 +1,14 @@
 import { expect, type Page } from '@playwright/test';
 
+export async function openAdminOpenBadgeAssignModalById(page: Page, badgeId: string): Promise<void> {
+  const href = `/hub/admin/open-badges/${badgeId}`;
+  await page.goto(href);
+  await expect(page).toHaveURL(new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), {
+    timeout: 30_000
+  });
+  await expect(page.getByRole('dialog').last()).toBeVisible({ timeout: 30_000 });
+}
+
 export async function openAdminOpenBadgeAssignModal(
   page: Page,
   badgeName: RegExp = /Impression 3D Bambu Lab/i
@@ -12,7 +21,15 @@ export async function openAdminOpenBadgeAssignModal(
   const row = table.getByRole('row').filter({ hasText: badgeName }).first();
   await expect(row).toBeVisible();
 
-  await row.getByRole('button', { name: /assign/i }).click();
-  const dialog = page.getByRole('dialog', { name: /assign an open badge/i });
-  await expect(dialog).toBeVisible();
+  const assignLink = row.getByRole('link', { name: /assign/i });
+  const href = await assignLink.getAttribute('href');
+  if (!href) {
+    throw new Error('Assign link href is missing for open badge row.');
+  }
+
+  await page.goto(href);
+  await expect(page).toHaveURL(new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), {
+    timeout: 30_000
+  });
+  await expect(page.getByRole('dialog').last()).toBeVisible({ timeout: 30_000 });
 }

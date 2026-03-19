@@ -8,7 +8,7 @@ test.describe('Auth accessibility', () => {
 
     await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /email/i })).toBeVisible();
-    await expect(page.getByLabel(/password/i)).toBeVisible();
+    await expect(page.getByRole('textbox', { name: /^password$/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /sign in/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, { contextLabel: 'Login page' });

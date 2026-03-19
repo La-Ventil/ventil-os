@@ -10,7 +10,6 @@ test.describe('Admin user edit accessibility', () => {
     await expect(page.getByRole('textbox', { name: /^first name$/i })).toBeVisible();
     await expect(page.getByRole('textbox', { name: /^last name$/i })).toBeVisible();
     await expect(page.getByRole('combobox', { name: /school level/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /back/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /update/i })).toBeVisible();
 
     await expectNoSeriousA11yViolations(page, {

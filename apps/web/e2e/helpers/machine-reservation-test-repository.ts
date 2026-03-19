@@ -69,6 +69,15 @@ export class MachineReservationTestRepository {
     );
     const window = reservationWindowFor(input.startsAt, input.durationMinutes);
 
+    // Reservation journeys reuse the seeded DB across specs. Clear prior reservations
+    // on the target machine so fixture setup stays deterministic and avoids overlap
+    // with seeded or previously-created reservations.
+    await this.prisma.machineReservation.deleteMany({
+      where: {
+        machineId
+      }
+    });
+
     const reservation = await this.prisma.machineReservation.create({
       data: {
         machineId,

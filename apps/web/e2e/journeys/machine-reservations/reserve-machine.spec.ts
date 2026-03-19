@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
 import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 import { openMachineDetails, openMachineReservationModalFromSchedule } from '../../helpers/fab-lab';
@@ -9,6 +10,9 @@ import {
   submitReservationAndReturnToMachineDetails
 } from '../../helpers/machine-reservations';
 import { freezeBrowserTime } from '../../helpers/time';
+
+const getScheduleSlotButton = (machineDialog: Locator, timeLabel: RegExp): Locator =>
+  machineDialog.getByText(timeLabel).locator('..').getByRole('button');
 
 test.describe('Machine reservation journey', () => {
   test('admin can reserve a machine from the reservation modal route', async ({ page, loginAs }) => {
@@ -60,7 +64,7 @@ test.describe('Machine reservation journey', () => {
     const machineId = await openMachineDetails(page, /Bambu Lab X1C/i);
 
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
-    await machineDialog.locator('button[aria-label="Réserver à 10:00"], button[aria-label="Reserve at 10:00"]').click();
+    await getScheduleSlotButton(machineDialog, /^10:00 AM$/).click();
 
     await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?start=`), { timeout: 15_000 });
 
@@ -90,8 +94,6 @@ test.describe('Machine reservation journey', () => {
     await openMachineDetails(page, /Bambu Lab X1C/i);
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
     await expect(machineDialog).toBeVisible();
-    await expect(
-      machineDialog.locator('button[aria-label="Réserver à 10:00"], button[aria-label="Reserve at 10:00"]').first()
-    ).toBeDisabled();
+    await expect(getScheduleSlotButton(machineDialog, /^10:00 AM$/)).toBeDisabled();
   });
 });
