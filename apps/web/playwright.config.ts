@@ -26,6 +26,7 @@ const webServerDatabaseUrl = (() => {
 
   const url = new URL(databaseUrl);
   url.searchParams.set('schema', sharedDbSchema);
+  url.searchParams.set('statement_cache_size', '0');
   return url.toString();
 })();
 

@@ -3,25 +3,7 @@ import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { pathToFileURL } from 'url';
-
-export const MAX_IMAGE_MB = 5;
-export const ALLOWED_IMAGE_MIMES: Record<string, string> = {
-  'image/png': 'png',
-  'image/jpeg': 'jpg',
-  'image/jpg': 'jpg',
-  'image/gif': 'gif',
-  'image/webp': 'webp'
-};
-
-export type ImageValidationError = 'imageRequired' | 'imageInvalidType' | 'imageTooLarge';
-
-export type ImageValidationResult =
-  | { url: string }
-  | {
-      error: ImageValidationError;
-      field?: string;
-      params?: Record<string, string>;
-    };
+import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB, type ImageValidationResult } from './image-upload';
 
 function resolveUploadRoot({ uploadRoot, cwd }: { uploadRoot: string; cwd: string }) {
   if (path.isAbsolute(uploadRoot)) {

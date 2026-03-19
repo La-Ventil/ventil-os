@@ -17,6 +17,7 @@ export const resolveE2EDatabaseTarget = (slotInput?: string): E2EDatabaseTarget 
   const schema = `e2e_${slot.replace(/[^a-zA-Z0-9_]/g, '_')}`;
   const url = new URL(databaseUrl);
   url.searchParams.set('schema', schema);
+  url.searchParams.set('statement_cache_size', '0');
 
   return { slot, schema, url: url.toString() };
 };

@@ -5,6 +5,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./image-upload": "./src/image-upload.ts",
     "./uploads": "./src/uploads.ts",
     "./*": "./src/*.ts"
   },
