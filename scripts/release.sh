@@ -67,7 +67,7 @@ git merge --ff-only origin/dev
 pnpm i18n:report
 git add docs/contributor/i18n/translation-coverage.md
 
-pnpm release
+pnpm release -- --commit-all
 
 git push origin main --follow-tags
 
