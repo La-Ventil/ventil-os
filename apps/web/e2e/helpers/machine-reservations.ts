@@ -30,7 +30,23 @@ export async function submitReservationFromModalRoute(
   let submissionState = 'pending';
 
   while (Date.now() < deadline) {
+    const url = new URL(page.url());
+    if (
+      url.pathname === `/hub/fab-lab/${machineId}` &&
+      !url.searchParams.get('start') &&
+      !url.searchParams.get('reservationId')
+    ) {
+      submissionState = 'returned-to-machine';
+      break;
+    }
+
     if ((await reservationDialog.count()) === 0) {
+      const machineDialog = page.getByRole('dialog', { name: machineName }).first();
+      if (await machineDialog.isVisible().catch(() => false)) {
+        submissionState = 'returned-to-machine';
+        break;
+      }
+
       submissionState = 'closed';
       break;
     }
@@ -54,16 +70,6 @@ export async function submitReservationFromModalRoute(
         submissionState = `invalid:${message ?? ''}`;
         break;
       }
-    }
-
-    const url = new URL(page.url());
-    if (
-      url.pathname === `/hub/fab-lab/${machineId}` &&
-      !url.searchParams.get('start') &&
-      !url.searchParams.get('reservationId')
-    ) {
-      submissionState = 'returned-to-machine';
-      break;
     }
 
     await page.waitForTimeout(250);

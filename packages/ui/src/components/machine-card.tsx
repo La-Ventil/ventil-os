@@ -29,17 +29,18 @@ const availabilityTone: Record<MachineAvailability, StatusTone> = {
 };
 
 export default function MachineCard({ machine, href, onClick, t }: MachineCardProps) {
+  const useLink = Boolean(href && !onClick);
   const isInteractive = Boolean(onClick || href);
   return (
     <Card
       className={clsx(styles.card, isInteractive && styles.cardInteractive)}
-      component={href ? Link : 'div'}
-      href={href}
-      onClick={href ? undefined : onClick}
-      role={isInteractive ? 'button' : undefined}
-      tabIndex={href ? undefined : isInteractive ? 0 : undefined}
+      component={useLink ? Link : 'div'}
+      href={useLink ? href : undefined}
+      onClick={onClick}
+      role={!useLink && isInteractive ? 'button' : undefined}
+      tabIndex={!useLink && isInteractive ? 0 : undefined}
       onKeyDown={(event: KeyboardEvent) => {
-        if (!isInteractive || href) {
+        if (!isInteractive || useLink) {
           return;
         }
 

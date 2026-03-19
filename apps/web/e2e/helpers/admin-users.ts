@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { openRouteModalFromTrigger } from './dialogs';
 import { clickQuickAction, openRowQuickActions } from './quick-actions';
 
 export const getAdminUsersRowByEmail = (page: Page, email: string): Locator =>
@@ -34,4 +35,19 @@ export async function openAdminUserOpenBadgesPage(page: Page, email: string): Pr
 
   await page.waitForURL(/\/hub\/admin\/users\/[^/]+\/open-badges$/);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+}
+
+export async function openAdminUserBadgeAssignModal(page: Page): Promise<void> {
+  const trigger = page.getByRole('link', { name: /assign an open badge/i });
+  const href = await trigger.getAttribute('href');
+  if (!href) {
+    throw new Error('Assign open badge link href is missing on the user open badges page.');
+  }
+
+  await openRouteModalFromTrigger({
+    page,
+    trigger,
+    expectedUrl: new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+    dialogName: /assign an open badge/i
+  });
 }

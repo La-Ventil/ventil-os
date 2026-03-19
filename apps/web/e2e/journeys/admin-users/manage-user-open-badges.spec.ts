@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test';
-import { openAdminUserOpenBadgesPage } from '../../helpers/admin-users';
+import { openAdminUserBadgeAssignModal, openAdminUserOpenBadgesPage } from '../../helpers/admin-users';
 import { closeDialogWithEscape } from '../../helpers/dialogs';
 import { openRowQuickActions } from '../../helpers/quick-actions';
 
@@ -28,13 +28,11 @@ test.describe('Admin user open badge journeys', () => {
     await loginAs('globalAdmin');
     await openAdminUserOpenBadgesPage(page, USER_EMAIL);
 
-    await page.getByRole('link', { name: /assign an open badge/i }).click();
-    await expect(page.getByRole('dialog', { name: /assign an open badge/i })).toBeVisible();
+    await openAdminUserBadgeAssignModal(page);
 
     await closeDialogWithEscape(page, /assign an open badge/i);
     await expect(page).toHaveURL(/\/hub\/admin\/users\/[^/]+\/open-badges$/);
 
-    await page.getByRole('link', { name: /assign an open badge/i }).click();
-    await expect(page.getByRole('dialog', { name: /assign an open badge/i })).toBeVisible();
+    await openAdminUserBadgeAssignModal(page);
   });
 });

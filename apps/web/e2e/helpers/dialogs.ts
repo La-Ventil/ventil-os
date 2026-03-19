@@ -17,7 +17,27 @@ export async function expectDialog(page: Page, name?: string | RegExp): Promise<
   return dialog;
 }
 
-export async function closeDialogWithEscape(page: Page, name?: string | RegExp): Promise<void> {
+type OpenRouteModalArgs = {
+  page: Page;
+  trigger: Locator;
+  dialogName?: string | RegExp;
+  expectedUrl: RegExp;
+};
+
+export async function openRouteModalFromTrigger({
+  page,
+  trigger,
+  dialogName,
+  expectedUrl
+}: OpenRouteModalArgs): Promise<Locator> {
+  await expect(trigger).toBeVisible();
+  await trigger.click();
+  await expect(page).toHaveURL(expectedUrl, { timeout: 15_000 });
+  return expectDialog(page, dialogName);
+}
+
+export async function closeDialogWithEscape(page: Page, _name?: string | RegExp): Promise<void> {
+  void _name;
   const initialVisibleDialogCount = await getVisibleDialogCount(page);
   if (initialVisibleDialogCount === 0) {
     throw new Error('No visible dialog found before attempting Escape.');
@@ -26,13 +46,12 @@ export async function closeDialogWithEscape(page: Page, name?: string | RegExp):
   const expectedVisibleDialogCount = initialVisibleDialogCount - 1;
 
   for (let attempt = 1; attempt <= DIALOG_CLOSE_ATTEMPTS; attempt += 1) {
-    await expectDialog(page, name);
     await pressEscape(page);
 
     try {
-      await expect.poll(() => getVisibleDialogCount(page), { timeout: DIALOG_CLOSE_TIMEOUT_MS }).toBe(
-        expectedVisibleDialogCount
-      );
+      await expect
+        .poll(() => getVisibleDialogCount(page), { timeout: DIALOG_CLOSE_TIMEOUT_MS })
+        .toBe(expectedVisibleDialogCount);
       return;
     } catch (error) {
       const currentVisibleDialogCount = await getVisibleDialogCount(page);

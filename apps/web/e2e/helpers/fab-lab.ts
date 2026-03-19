@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { openRouteModalFromTrigger } from './dialogs';
 
 type MachineDialogArgs = {
   machineName?: RegExp;
@@ -12,17 +13,23 @@ export function getMachineDialog({ machineName = /Bambu Lab X1C/i, page }: Machi
 export async function openMachineDetails(page: Page, machineName: RegExp = /Bambu Lab X1C/i): Promise<string> {
   await page.goto('/hub/fab-lab', { waitUntil: 'domcontentloaded' });
 
-  const machineCard = page.locator('a[href^="/hub/fab-lab/"]').filter({ hasText: machineName }).first();
+  const machineCard = page
+    .locator('a[href^="/hub/fab-lab/"], [role="button"]')
+    .filter({ hasText: machineName })
+    .first();
   await expect(machineCard).toBeVisible();
   const href = await machineCard.getAttribute('href');
-  if (!href) {
-    throw new Error(`Unable to resolve machine href for ${machineName}`);
-  }
 
-  await page.goto(href, { waitUntil: 'domcontentloaded' });
-  await expect(getMachineDialog({ page, machineName })).toBeVisible({ timeout: 15_000 });
+  await openRouteModalFromTrigger({
+    page,
+    trigger: machineCard,
+    dialogName: machineName,
+    expectedUrl: href
+      ? new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
+      : /\/hub\/fab-lab\/[^/?]+(\?.*)?$/
+  });
 
-  const url = new URL(href, page.url());
+  const url = new URL(page.url());
   const segments = url.pathname.split('/').filter(Boolean);
   const machineId = segments.at(-1);
 
@@ -38,48 +45,31 @@ export async function openMachineReservationModalFromSchedule(
   machineName: RegExp = /Bambu Lab X1C/i
 ): Promise<string> {
   const machineId = await openMachineDetails(page, machineName);
-  await openReservationComposerForMachine({ page, machineName });
+  await openReservationComposerForMachine({ page, machineName, machineId });
 
   return machineId;
 }
 
-export async function openReservationComposerForMachine(args: MachineDialogArgs): Promise<void> {
+export async function openReservationComposerForMachine(
+  args: MachineDialogArgs & { machineId?: string }
+): Promise<void> {
   const { machineName = /Bambu Lab X1C/i, page } = args;
-  const machineDialog = getMachineDialog({ page, machineName });
-  const targetSlotLabel = getDeterministicFutureSlotLabel();
-  const slotButtonByLabel = machineDialog
-    .getByText(new RegExp(`^${escapeRegExp(targetSlotLabel)}$`))
-    .locator('..')
-    .getByRole('button')
-    .first();
-  const slotButton = (await slotButtonByLabel.count())
-    ? slotButtonByLabel.first()
-    : machineDialog
-        .locator('button[aria-label*="Réserver à"]:not([disabled]), button[aria-label*="Reserve at"]:not([disabled])')
-        .first();
+  const machineId = args.machineId ?? (await openMachineDetails(page, machineName));
+  const start = getFutureReservationStart();
+  const dayKey = start.toISOString().slice(0, 10);
 
-  await expect(slotButton).toBeVisible();
-  await slotButton.click();
-
-  await expect(page).toHaveURL(/\/hub\/fab-lab\/[^/?]+\?(.+&)?tab=reservations(&.+)?/, { timeout: 15_000 });
+  await page.goto(
+    `/hub/fab-lab/${machineId}?day=${dayKey}&tab=reservations&start=${encodeURIComponent(start.toISOString())}`
+  );
+  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}\\?(.+&)?tab=reservations(&.+)?`), {
+    timeout: 15_000
+  });
   await expect(getMachineDialog({ page, machineName })).toBeVisible({ timeout: 15_000 });
 }
 
-const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-const getDeterministicFutureSlotLabel = (): string => {
-  const slot = new Date();
-  slot.setSeconds(0, 0);
-  slot.setMinutes(slot.getMinutes() + 60);
-  const minutes = slot.getMinutes();
-  slot.setMinutes(minutes <= 30 ? 30 : 60, 0, 0);
-
-  if (slot.getHours() >= 20) {
-    slot.setHours(19, 30, 0, 0);
-  }
-
-  return new Intl.DateTimeFormat('en-US', {
-    timeStyle: 'short',
-    timeZone: 'Europe/Paris'
-  }).format(slot);
+const getFutureReservationStart = (): Date => {
+  const start = new Date();
+  start.setDate(start.getDate() + 1);
+  start.setHours(10, 0, 0, 0);
+  return start;
 };

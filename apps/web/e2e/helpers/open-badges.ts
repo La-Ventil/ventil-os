@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { openRouteModalFromTrigger } from './dialogs';
 
 export async function openAdminOpenBadgeAssignModalById(page: Page, badgeId: string): Promise<void> {
   const href = `/hub/admin/open-badges/${badgeId}`;
@@ -27,9 +28,10 @@ export async function openAdminOpenBadgeAssignModal(
     throw new Error('Assign link href is missing for open badge row.');
   }
 
-  await page.goto(href);
-  await expect(page).toHaveURL(new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), {
-    timeout: 30_000
+  await openRouteModalFromTrigger({
+    page,
+    trigger: assignLink,
+    expectedUrl: new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+    dialogName: /assign an open badge/i
   });
-  await expect(page.getByRole('dialog').last()).toBeVisible({ timeout: 30_000 });
 }

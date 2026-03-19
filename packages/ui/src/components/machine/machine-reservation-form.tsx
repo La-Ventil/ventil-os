@@ -31,6 +31,7 @@ export type MachineReservationFormProps = {
   machineId: string;
   startAt: Date;
   reservationId?: string;
+  descriptionId?: string;
   initialParticipants?: UserSummaryViewModel[];
   participantOptions?: UserSummaryViewModel[];
   currentUserId?: string;
@@ -61,6 +62,7 @@ export default function MachineReservationForm({
   machineId,
   startAt,
   reservationId,
+  descriptionId,
   initialParticipants,
   participantOptions,
   currentUserId,
@@ -123,7 +125,7 @@ export default function MachineReservationForm({
       ))}
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
 
-      <Typography variant="body2" className={styles.description}>
+      <Typography id={descriptionId} variant="body2" className={styles.description}>
         {t('modal.reservationForm.description')}
       </Typography>
 

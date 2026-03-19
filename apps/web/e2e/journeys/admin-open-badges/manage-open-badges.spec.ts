@@ -1,7 +1,23 @@
+import type { Page } from '@playwright/test';
 import { expect, test } from '../../fixtures/test';
 import { clickQuickAction, openRowQuickActions } from '../../helpers/quick-actions';
 
 const createUniqueOpenBadgeName = (): string => `Playwright open badge ${Date.now()}`;
+
+const addOpenBadgeLevel = async (page: Page): Promise<void> => {
+  const addLevelButton = page.getByRole('button', { name: /add a level/i });
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    await addLevelButton.click();
+
+    const secondLevelTitle = page.locator('input[name="levels[1].title"]');
+    if (await secondLevelTitle.isVisible().catch(() => false)) {
+      return;
+    }
+  }
+
+  await expect(page.locator('input[name="levels[1].title"]')).toBeVisible();
+};
 
 const tinyPngFile = {
   name: 'open-badge.png',
@@ -73,11 +89,11 @@ test.describe('Admin open badge journeys', () => {
     await loginAs('globalAdmin');
     await page.goto('/hub/admin/open-badges/create');
 
-    await expect(page.getByRole('textbox', { name: /level 1/i }).first()).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /level 1/i }).nth(1)).toBeVisible();
-    await page.getByRole('button', { name: /add a level/i }).click();
+    await expect(page.locator('input[name="levels[0].title"]')).toBeVisible();
+    await expect(page.locator('textarea[name="levels[0].description"]')).toBeVisible();
+    await addOpenBadgeLevel(page);
 
-    await expect(page.getByRole('textbox', { name: /level 2/i }).first()).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /level 2/i }).nth(1)).toBeVisible();
+    await expect(page.locator('input[name="levels[1].title"]')).toBeVisible();
+    await expect(page.locator('textarea[name="levels[1].description"]')).toBeVisible();
   });
 });

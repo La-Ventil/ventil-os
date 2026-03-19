@@ -54,12 +54,8 @@ export default function MachineModalRouteClient({
   const tCommon = useTranslations('common');
   const tRoot = useTranslations();
   const timeZone = useTimeZone();
-
-  if (!machine) {
-    return null;
-  }
-
-  const modalPath = `/hub/fab-lab/${machine.id}`;
+  const machineId = machine?.id ?? '';
+  const modalPath = machine ? `/hub/fab-lab/${machineId}` : closeHref;
   const { open, handleClose } = useRouteModal({
     modalPath,
     closeHref
@@ -93,26 +89,25 @@ export default function MachineModalRouteClient({
     },
     [dayKey, modalPath]
   );
-  const isReservationFormOpen = Boolean(reservationStartAt);
   const initialReservationState = useMemo(() => {
     if (!reservationStartAt) {
-      return createMachineReservationInitialState(machine.id, new Date());
+      return createMachineReservationInitialState(machineId, new Date());
     }
 
     if (!reservation) {
-      return createMachineReservationInitialState(machine.id, reservationStartAt);
+      return createMachineReservationInitialState(machineId, reservationStartAt);
     }
 
     const durationMinutes = MachineReservation.durationMinutes(reservation);
     const participantIds = reservation.participants.map((participant) => participant.user.id);
     return createMachineReservationInitialState(
-      machine.id,
+      machineId,
       reservation.startsAt,
       durationMinutes,
       participantIds,
       reservation.id
     );
-  }, [machine.id, reservation, reservationStartAt]);
+  }, [machineId, reservation, reservationStartAt]);
   const formState = useFormActionState({
     action: reserveMachineAction,
     initialState: initialReservationState,
@@ -170,14 +165,12 @@ export default function MachineModalRouteClient({
 
     const nextDayKey = formatDayKey(new Date(state.values.startsAt), timeZone);
     const nextUrl = buildMachineHref({ day: nextDayKey, tab: 'reservations' });
-    window.history.replaceState(window.history.state, '', nextUrl);
-
-    const timer = window.setTimeout(() => {
-      router.refresh();
-    }, 0);
-
-    return () => window.clearTimeout(timer);
+    router.replace(nextUrl);
   }, [buildMachineHref, router, state.success, state.values.startsAt, timeZone]);
+
+  if (!machine) {
+    return null;
+  }
 
   return (
     <>

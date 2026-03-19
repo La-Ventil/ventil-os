@@ -90,11 +90,8 @@ export default function MachineModal({
   const timeZone = useTimeZone();
   const modalDate = useMemo(() => toZonedDayjs(`${dayKey}T00:00:00`, timeZone), [dayKey, timeZone]);
   const titleId = useId();
+  const descriptionId = useId();
   const isReservationFormOpen = Boolean(reservationStartAt && formState);
-
-  if (!machine) {
-    return null;
-  }
 
   useEffect(() => {
     setActiveTab(initialTab);
@@ -105,6 +102,10 @@ export default function MachineModal({
       setActiveTab('reservations');
     }
   }, [isReservationFormOpen]);
+
+  if (!machine) {
+    return null;
+  }
 
   const badgeRequirement = machine.badgeRequirements[0];
   const showBadgeLock = Boolean(badgeRequirement && !canReserve);
@@ -118,6 +119,7 @@ export default function MachineModal({
       fullWidth
       themeSection={ThemeSection.FabLab}
       ariaLabelledBy={titleId}
+      ariaDescribedBy={descriptionId}
     >
       <SectionTitle id={titleId} icon={<MachineIcon color="secondary" />}>
         {machine.name}
@@ -167,7 +169,9 @@ export default function MachineModal({
           {machine.description ? (
             <>
               <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.descriptionLabel')}</SectionSubtitle>
-              <Typography variant="body2">{machine.description}</Typography>
+              <Typography id={descriptionId} variant="body2">
+                {machine.description}
+              </Typography>
             </>
           ) : null}
 
@@ -186,6 +190,7 @@ export default function MachineModal({
               machineId={machine.id}
               startAt={reservationStartAt}
               reservationId={reservationId}
+              descriptionId={descriptionId}
               initialParticipants={initialParticipants}
               participantOptions={participantOptions}
               currentUserId={currentUserId}
@@ -195,7 +200,7 @@ export default function MachineModal({
             />
           ) : (
             <>
-              <Typography variant="body2" className={styles.reservationIntro}>
+              <Typography id={descriptionId} variant="body2" className={styles.reservationIntro}>
                 {t('modal.reservationIntro')}
               </Typography>
               <div className={styles.dateRow}>
