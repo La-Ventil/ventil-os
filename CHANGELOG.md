@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.27](https://github.com/La-Ventil/ventil-os/compare/v0.0.26...v0.0.27) (2026-03-19)
+
+
+### Bug Fixes
+
+* **fab-lab:** stabilize machine modal flows ([152dd3a](https://github.com/La-Ventil/ventil-os/commit/152dd3a9ef009a5c6a1055779bfa3f16e873a911))
+
 ### [0.0.26](https://github.com/La-Ventil/ventil-os/compare/v0.0.25...v0.0.26) (2026-03-19)
 
 
