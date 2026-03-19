@@ -22,7 +22,13 @@ export const resolveUserRole = (value?: string, fallback: UserRoleValue = UserRo
 
 const userRoleValues = Object.values(UserRole) as [UserRoleValue, ...UserRoleValue[]];
 
-export const userRoleInputSchema = (_message: string) => zfd.text(z.enum(userRoleValues));
+export const userRoleInputSchema = (message: string) =>
+  zfd.text(
+    z
+      .string()
+      .refine((value): value is UserRoleValue => userRoleValues.includes(value as UserRoleValue), { message })
+      .transform((value) => value as UserRoleValue)
+  );
 
 export const normalizeEducationLevelInput = (
   educationLevel?: string | null
