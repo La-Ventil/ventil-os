@@ -27,7 +27,11 @@ test.describe('Machine reservation journey', () => {
     await expect(page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first()).toBeVisible();
   });
 
-  test('admin can reserve a machine from the reservation modal route', async ({ page, loginAs }) => {
+  test('admin can reserve a machine from the machine modal reservation tab', async ({ page, loginAs }) => {
+    const fixedNow = new Date();
+    fixedNow.setHours(9, 0, 0, 0);
+    await freezeBrowserTime(page, fixedNow);
+
     await loginAs('globalAdmin');
     const machineId = await submitReservationAndReturnToMachineDetails(page, /Bambu Lab X1C/i);
 
@@ -39,6 +43,10 @@ test.describe('Machine reservation journey', () => {
   });
 
   test('participant search narrows matches in the reservation modal', async ({ page, loginAs }) => {
+    const fixedNow = new Date();
+    fixedNow.setHours(9, 0, 0, 0);
+    await freezeBrowserTime(page, fixedNow);
+
     await loginAs('globalAdmin');
     await openMachineReservationModalFromSchedule(page, /Bambu Lab X1C/i);
 
@@ -78,7 +86,9 @@ test.describe('Machine reservation journey', () => {
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
     await getScheduleSlotButton(machineDialog, /^10:00 AM$/).click();
 
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?start=`), { timeout: 15_000 });
+    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}\\?.*tab=reservations.*start=`), {
+      timeout: 15_000
+    });
 
     const roundedNow = new Date(fixedNow);
     roundedNow.setSeconds(0, 0);

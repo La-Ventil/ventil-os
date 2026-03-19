@@ -54,15 +54,7 @@ export async function reserveMachineAction(
       });
     }
     revalidatePath('/hub/fab-lab', 'layout');
-
-    return formSuccess(
-      data,
-      t(
-        data.reservationId
-          ? 'pages.hub.fabLab.modal.reservationForm.updateSuccess'
-          : 'pages.hub.fabLab.modal.reservationForm.success'
-      )
-    );
+    return formSuccess(data);
   } catch (err) {
     if (isMachineReservationError(err)) {
       return formError(data, { message: t(err.code) });

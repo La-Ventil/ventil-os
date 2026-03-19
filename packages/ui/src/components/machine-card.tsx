@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import type { KeyboardEvent } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -15,6 +17,7 @@ export type MachineCardData = MachineViewModel;
 
 export type MachineCardProps = {
   machine: MachineCardData;
+  href?: string;
   onClick?: () => void;
   t: (key: string) => string;
 };
@@ -25,17 +28,18 @@ const availabilityTone: Record<MachineAvailability, StatusTone> = {
   occupied: 'error'
 };
 
-export default function MachineCard({ machine, onClick, t }: MachineCardProps) {
-  const isInteractive = Boolean(onClick);
-
+export default function MachineCard({ machine, href, onClick, t }: MachineCardProps) {
+  const isInteractive = Boolean(onClick || href);
   return (
     <Card
       className={clsx(styles.card, isInteractive && styles.cardInteractive)}
-      onClick={onClick}
+      component={href ? Link : 'div'}
+      href={href}
+      onClick={href ? undefined : onClick}
       role={isInteractive ? 'button' : undefined}
-      tabIndex={isInteractive ? 0 : undefined}
-      onKeyDown={(event) => {
-        if (!isInteractive) {
+      tabIndex={href ? undefined : isInteractive ? 0 : undefined}
+      onKeyDown={(event: KeyboardEvent) => {
+        if (!isInteractive || href) {
           return;
         }
 

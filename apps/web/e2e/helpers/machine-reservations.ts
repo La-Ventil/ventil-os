@@ -26,23 +26,56 @@ export async function submitReservationFromModalRoute(
   await expect(reservationDialog).toBeVisible();
   await reservationDialog.getByRole('button', { name: /reserve/i }).click();
 
-  await expect
-    .poll(
-      async () => {
-        if ((await reservationDialog.count()) === 0) {
-          return 'closed';
-        }
+  const deadline = Date.now() + 30_000;
+  let submissionState = 'pending';
 
-        const pathname = new URL(page.url()).pathname;
-        if (pathname === `/hub/fab-lab/${machineId}`) {
-          return 'returned-to-machine';
-        }
+  while (Date.now() < deadline) {
+    if ((await reservationDialog.count()) === 0) {
+      submissionState = 'closed';
+      break;
+    }
 
-        return 'pending';
-      },
-      { timeout: 30_000 }
-    )
-    .not.toBe('pending');
+    const alert = reservationDialog.getByRole('alert').last();
+    if (await alert.isVisible().catch(() => false)) {
+      submissionState = `alert:${(await alert.textContent())?.trim() ?? ''}`;
+      break;
+    }
+
+    const debugState = page.getByTestId('machine-reservation-state');
+    if ((await debugState.count()) > 0) {
+      const success = await debugState.getAttribute('data-success');
+      const valid = await debugState.getAttribute('data-valid');
+      const message = await debugState.getAttribute('data-message');
+      if (success === 'true') {
+        submissionState = `success:${message ?? ''}`;
+        break;
+      }
+      if (valid === 'false') {
+        submissionState = `invalid:${message ?? ''}`;
+        break;
+      }
+    }
+
+    const url = new URL(page.url());
+    if (
+      url.pathname === `/hub/fab-lab/${machineId}` &&
+      !url.searchParams.get('start') &&
+      !url.searchParams.get('reservationId')
+    ) {
+      submissionState = 'returned-to-machine';
+      break;
+    }
+
+    await page.waitForTimeout(250);
+  }
+
+  if (submissionState === 'pending') {
+    throw new Error('Reservation submission timed out');
+  }
+
+  if (submissionState.startsWith('alert:') || submissionState.startsWith('invalid:') || submissionState === 'closed') {
+    throw new Error(`Reservation submission failed: ${submissionState}`);
+  }
 
   return machineId;
 }
@@ -53,7 +86,23 @@ export async function submitReservationAndReturnToMachineDetails(
 ): Promise<string> {
   const machineId = await submitReservationFromModalRoute(page, machineName);
 
-  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}$`), { timeout: 15_000 });
+  await expect
+    .poll(
+      () => {
+        const url = new URL(page.url());
+        return {
+          pathname: url.pathname,
+          tab: url.searchParams.get('tab'),
+          reservationId: url.searchParams.get('reservationId')
+        };
+      },
+      { timeout: 15_000 }
+    )
+    .toEqual({
+      pathname: `/hub/fab-lab/${machineId}`,
+      tab: 'reservations',
+      reservationId: null
+    });
   await expect(page.getByRole('dialog', { name: machineName })).toBeVisible();
 
   return machineId;
@@ -70,11 +119,14 @@ export async function openEditableReservation(args: {
   page: Page;
 }): Promise<void> {
   const { machineId, reservationId, page } = args;
-  await page.goto(`/hub/fab-lab/${machineId}/reservation?reservationId=${reservationId}`);
+  await page.goto(`/hub/fab-lab/${machineId}?tab=reservations&reservationId=${reservationId}`);
 
-  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`), {
-    timeout: 15_000
-  });
+  await expect(page).toHaveURL(
+    new RegExp(`/hub/fab-lab/${machineId}\\?tab=reservations&reservationId=${reservationId}$`),
+    {
+      timeout: 15_000
+    }
+  );
 }
 
 export async function updateReservationDuration(args: {

@@ -96,7 +96,7 @@ test.describe('Machine reservation update journey', () => {
     await expect(pageErrors).toEqual([]);
   });
 
-  test('admin can update an existing reservation from the reservation modal route', async ({
+  test('admin can update an existing reservation from the machine modal reservation tab', async ({
     page,
     loginAs,
     seedUsers,
@@ -174,6 +174,8 @@ test.describe('Machine reservation update journey', () => {
     await expect(reservationDialog.getByRole('alert').filter({ hasText: /required open badge/i })).toBeVisible({
       timeout: 10_000
     });
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}/reservation\\?reservationId=${reservationId}$`));
+    await expect(page).toHaveURL(
+      new RegExp(`/hub/fab-lab/${machineId}\\?tab=reservations&reservationId=${reservationId}$`)
+    );
   });
 });

@@ -3,7 +3,6 @@
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import type { MachineViewModel } from '@repo/application/machines/models/machine';
@@ -33,14 +32,7 @@ export default function MachineTabs({
   onReleaseReservation
 }: MachineTabsProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
-  const router = useRouter();
   const [tabValue, setTabValue] = useState(0);
-  const handleMachineClick = (machineId: string) =>
-    machineHrefBase
-      ? () => {
-          router.push(`${machineHrefBase}/${machineId}`);
-        }
-      : undefined;
 
   const machineById = useMemo(() => new Map(machines.map((machine) => [machine.id, machine])), [machines]);
 
@@ -60,7 +52,12 @@ export default function MachineTabs({
         <CardList component="section">
           {machines.length ? (
             machines.map((machine) => (
-              <MachineCard key={machine.id} machine={machine} t={t} onClick={handleMachineClick(machine.id)} />
+              <MachineCard
+                key={machine.id}
+                machine={machine}
+                t={t}
+                href={machineHrefBase ? `${machineHrefBase}/${machine.id}` : undefined}
+              />
             ))
           ) : (
             <ListEmptyState title={t('machines.empty')} />

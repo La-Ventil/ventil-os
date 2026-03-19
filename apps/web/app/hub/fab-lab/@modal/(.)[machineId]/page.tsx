@@ -9,6 +9,7 @@ import {
 import {
   checkReservationEligibility,
   viewMachineDetails,
+  viewMachineReservationForm,
   viewMachineReservationsForDayKey
 } from '@repo/application/machines/usecases';
 import { getTimeZone } from 'next-intl/server';
@@ -17,7 +18,7 @@ import { getServerSession } from '../../../../../lib/auth';
 
 type MachineModalPageProps = {
   params: Promise<{ machineId: string }>;
-  searchParams?: Promise<{ day?: string }>;
+  searchParams?: Promise<{ day?: string; start?: string; reservationId?: string; tab?: 'info' | 'reservations' }>;
 };
 
 export default async function MachineModalPage({
@@ -26,11 +27,12 @@ export default async function MachineModalPage({
 }: MachineModalPageProps): Promise<JSX.Element | null> {
   const [{ machineId }, resolvedSearchParams, timeZone, session] = await Promise.all([
     params,
-    searchParams ?? Promise.resolve<{ day?: string }>({}),
+    searchParams ??
+      Promise.resolve<{ day?: string; start?: string; reservationId?: string; tab?: 'info' | 'reservations' }>({}),
     getTimeZone(),
     getServerSession()
   ]);
-  const { day } = resolvedSearchParams;
+  const { day, start, reservationId, tab } = resolvedSearchParams;
   const now = new Date();
   const currentUserId = session?.user?.id;
   const machinePromise = viewMachineDetails(machineId);
@@ -39,12 +41,24 @@ export default async function MachineModalPage({
   const selectedDateKey = resolveDayKeyFromString(day) ?? todayKey;
   const reservationsPromise = viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
   const reservationsTodayPromise =
-    selectedDateKey === todayKey ? reservationsPromise : viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
-  const [machine, reservations, reservationsToday, canReserve] = await Promise.all([
+    selectedDateKey === todayKey
+      ? reservationsPromise
+      : viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
+  const reservationFormPromise =
+    start || reservationId
+      ? viewMachineReservationForm({
+          machineId,
+          reservationId,
+          start,
+          actor: session?.user
+        })
+      : Promise.resolve(null);
+  const [machine, reservations, reservationsToday, canReserve, reservationForm] = await Promise.all([
     machinePromise,
     reservationsPromise,
     reservationsTodayPromise,
-    canReservePromise
+    canReservePromise,
+    reservationFormPromise
   ]);
 
   if (!machine) {
@@ -64,6 +78,10 @@ export default async function MachineModalPage({
       canReserve={canReserve}
       currentUserId={currentUserId}
       canManageReservations={canManage}
+      reservationStartAt={reservationForm?.startAt}
+      reservation={reservationForm?.reservation}
+      participantOptions={reservationForm?.participantOptions}
+      initialTab={tab === 'info' ? 'info' : 'reservations'}
       closeHref="/hub/fab-lab"
     />
   );
