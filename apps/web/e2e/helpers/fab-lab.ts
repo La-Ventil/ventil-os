@@ -11,10 +11,10 @@ export function getMachineDialog({ machineName = /Bambu Lab X1C/i, page }: Machi
 }
 
 export async function openMachineDetails(page: Page, machineName: RegExp = /Bambu Lab X1C/i): Promise<string> {
-  await page.goto('/hub/fab-lab', { waitUntil: 'domcontentloaded' });
+  await page.goto('/hub/fab-lab/machines', { waitUntil: 'domcontentloaded' });
 
   const machineCard = page
-    .locator('a[href^="/hub/fab-lab/"], [role="button"]')
+    .locator('a[href^="/hub/fab-lab/machines/"], [role="button"]')
     .filter({ hasText: machineName })
     .first();
   await expect(machineCard).toBeVisible();
@@ -26,7 +26,7 @@ export async function openMachineDetails(page: Page, machineName: RegExp = /Bamb
     dialogName: machineName,
     expectedUrl: href
       ? new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`)
-      : /\/hub\/fab-lab\/[^/?]+(\?.*)?$/
+      : /\/hub\/fab-lab\/machines\/[^/?]+(\?.*)?$/
   });
 
   const url = new URL(page.url());
@@ -56,12 +56,11 @@ export async function openReservationComposerForMachine(
   const { machineName = /Bambu Lab X1C/i, page } = args;
   const machineId = args.machineId ?? (await openMachineDetails(page, machineName));
   const start = getFutureReservationStart();
-  const dayKey = start.toISOString().slice(0, 10);
 
   await page.goto(
-    `/hub/fab-lab/${machineId}?day=${dayKey}&tab=reservations&start=${encodeURIComponent(start.toISOString())}`
+    `/hub/fab-lab/machines/${machineId}?tab=reservations&step=create&at=${encodeURIComponent(start.toISOString())}`
   );
-  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}\\?(.+&)?tab=reservations(&.+)?`), {
+  await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/machines/${machineId}\\?(.+&)?tab=reservations(&.+)?`), {
     timeout: 15_000
   });
   await expect(getMachineDialog({ page, machineName })).toBeVisible({ timeout: 15_000 });

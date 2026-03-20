@@ -32,8 +32,8 @@ export async function submitReservationFromModalRoute(
   while (Date.now() < deadline) {
     const url = new URL(page.url());
     if (
-      url.pathname === `/hub/fab-lab/${machineId}` &&
-      !url.searchParams.get('start') &&
+      url.pathname === `/hub/fab-lab/machines/${machineId}` &&
+      url.searchParams.get('step') === 'schedule' &&
       !url.searchParams.get('reservationId')
     ) {
       submissionState = 'returned-to-machine';
@@ -99,14 +99,16 @@ export async function submitReservationAndReturnToMachineDetails(
         return {
           pathname: url.pathname,
           tab: url.searchParams.get('tab'),
+          step: url.searchParams.get('step'),
           reservationId: url.searchParams.get('reservationId')
         };
       },
       { timeout: 15_000 }
     )
     .toEqual({
-      pathname: `/hub/fab-lab/${machineId}`,
+      pathname: `/hub/fab-lab/machines/${machineId}`,
       tab: 'reservations',
+      step: 'schedule',
       reservationId: null
     });
   await expect(page.getByRole('dialog', { name: machineName })).toBeVisible();
@@ -115,7 +117,7 @@ export async function submitReservationAndReturnToMachineDetails(
 }
 
 export async function openMyReservationsTab(page: Page): Promise<void> {
-  await page.goto('/hub/fab-lab');
+  await page.goto('/hub/fab-lab/machines');
   await page.getByRole('tab', { name: /my reservations/i }).click();
 }
 
@@ -125,10 +127,10 @@ export async function openEditableReservation(args: {
   page: Page;
 }): Promise<void> {
   const { machineId, reservationId, page } = args;
-  await page.goto(`/hub/fab-lab/${machineId}?tab=reservations&reservationId=${reservationId}`);
+  await page.goto(`/hub/fab-lab/machines/${machineId}?tab=reservations&step=edit&reservationId=${reservationId}`);
 
   await expect(page).toHaveURL(
-    new RegExp(`/hub/fab-lab/${machineId}\\?tab=reservations&reservationId=${reservationId}$`),
+    new RegExp(`/hub/fab-lab/machines/${machineId}\\?tab=reservations&step=edit&reservationId=${reservationId}$`),
     {
       timeout: 15_000
     }

@@ -8,7 +8,6 @@ import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../../auth';
-import { revalidatePath } from 'next/cache';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 
@@ -53,7 +52,6 @@ export async function reserveMachineAction(
         participantIds
       });
     }
-    revalidatePath('/hub/fab-lab', 'layout');
     return formSuccess(data);
   } catch (err) {
     if (isMachineReservationError(err)) {

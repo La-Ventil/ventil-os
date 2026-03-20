@@ -33,7 +33,7 @@ export const buildQuickActionsMenuItems = ({
   {
     labelKey: 'fabLab',
     value: 'fab-lab',
-    href: '/hub/fab-lab',
+    href: '/hub/fab-lab/machines',
     icon: <MachineIcon />
   },
   {

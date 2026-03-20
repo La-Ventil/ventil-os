@@ -1,8 +1,7 @@
 'use client';
 
-import type { JSX } from 'react';
-import { useId, useMemo, useState } from 'react';
-import { useEffect } from 'react';
+import type { JSX, ReactNode } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -26,33 +25,26 @@ import MachineReservationSchedule from './machine-reservation-schedule';
 import LocalizedDatePicker from '../inputs/localized-date-picker';
 import StatusIndicator, { type StatusTone } from '../status-indicator';
 import MachineBadgeRequirementCard from './machine-badge-requirement-card';
-import MachineReservationForm from './machine-reservation-form';
-import type { MachineReservationFormInput } from '@repo/application/forms';
-import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
-import type { FormActionStateTuple } from '@repo/form/use-form-action-state';
 import styles from './machine-modal.module.css';
 
 export type MachineModalProps = {
-  machine: MachineDetailsViewModel | null;
+  machine: MachineDetailsViewModel;
   reservations: MachineReservationViewModel[];
-  dayKey: DayKey;
+  scheduleDayKey: DayKey;
   initialTab?: MachineModalTab;
   open: boolean;
   canReserve?: boolean;
-  currentUserId?: string;
-  canManageReservations?: boolean;
-  reservationStartAt?: Date | null;
-  reservationId?: string;
-  initialParticipants?: UserSummaryViewModel[];
-  participantOptions?: UserSummaryViewModel[];
-  formState?: FormActionStateTuple<MachineReservationFormInput>;
+  viewer?: {
+    userId?: string;
+    canManageReservations: boolean;
+  };
+  reservationForm?: ReactNode;
+  isScheduleLoading?: boolean;
   onClose: () => void;
-  onCloseReservationForm?: () => void;
-  onCancelReservation?: () => Promise<{ success: boolean; message: string }>;
   onTabChange?: (tab: MachineModalTab) => void;
   onOpenReservation?: (slot: Date) => void;
   onReservationClick?: (reservation: MachineReservationViewModel) => void;
-  onDateChange?: (dayKey: DayKey) => void;
+  onScheduleDayChange?: (dayKey: DayKey) => void;
 };
 
 type MachineModalTab = 'info' | 'reservations';
@@ -66,32 +58,26 @@ const availabilityTone: Record<MachineAvailability, StatusTone> = {
 export default function MachineModal({
   machine,
   reservations,
-  dayKey,
+  scheduleDayKey,
   initialTab = 'reservations',
   open,
   canReserve = true,
-  currentUserId,
-  canManageReservations,
-  reservationStartAt = null,
-  reservationId,
-  initialParticipants,
-  participantOptions,
-  formState,
+  viewer,
+  reservationForm,
+  isScheduleLoading = false,
   onClose,
-  onCloseReservationForm,
-  onCancelReservation,
   onTabChange,
   onOpenReservation,
   onReservationClick,
-  onDateChange
+  onScheduleDayChange
 }: MachineModalProps): JSX.Element | null {
   const t = useTranslations('pages.hub.fabLab');
   const [activeTab, setActiveTab] = useState<MachineModalTab>(initialTab);
   const timeZone = useTimeZone();
-  const modalDate = useMemo(() => toZonedDayjs(`${dayKey}T00:00:00`, timeZone), [dayKey, timeZone]);
+  const modalDate = useMemo(() => toZonedDayjs(`${scheduleDayKey}T00:00:00`, timeZone), [scheduleDayKey, timeZone]);
   const titleId = useId();
   const descriptionId = useId();
-  const isReservationFormOpen = Boolean(reservationStartAt && formState);
+  const isReservationFormOpen = Boolean(reservationForm);
 
   useEffect(() => {
     setActiveTab(initialTab);
@@ -102,10 +88,6 @@ export default function MachineModal({
       setActiveTab('reservations');
     }
   }, [isReservationFormOpen]);
-
-  if (!machine) {
-    return null;
-  }
 
   const badgeRequirement = machine.badgeRequirements[0];
   const showBadgeLock = Boolean(badgeRequirement && !canReserve);
@@ -185,19 +167,8 @@ export default function MachineModal({
       ) : (
         <Section p={2} className={styles.reservationSection}>
           <SectionSubtitle className={styles.sectionSubtitle}>{t('modal.reservationTitle')}</SectionSubtitle>
-          {isReservationFormOpen && reservationStartAt && formState ? (
-            <MachineReservationForm
-              machineId={machine.id}
-              startAt={reservationStartAt}
-              reservationId={reservationId}
-              descriptionId={descriptionId}
-              initialParticipants={initialParticipants}
-              participantOptions={participantOptions}
-              currentUserId={currentUserId}
-              onCancel={onCloseReservationForm ?? onClose}
-              onCancelReservation={onCancelReservation}
-              formState={formState}
-            />
+          {isReservationFormOpen ? (
+            reservationForm
           ) : (
             <>
               <Typography id={descriptionId} variant="body2" className={styles.reservationIntro}>
@@ -208,8 +179,8 @@ export default function MachineModal({
                   label={t('modal.schedule.dateLabel')}
                   value={modalDate}
                   onChange={(value: Dayjs | null) => {
-                    if (value && onDateChange) {
-                      onDateChange(formatDayKey(value, timeZone));
+                    if (value && onScheduleDayChange) {
+                      onScheduleDayChange?.(formatDayKey(value, timeZone));
                     }
                   }}
                   timezone={timeZone}
@@ -222,10 +193,11 @@ export default function MachineModal({
                 />
               </div>
               <MachineReservationSchedule
-                dayKey={dayKey}
+                dayKey={scheduleDayKey}
                 reservations={reservations}
-                currentUserId={currentUserId}
-                canManageReservations={canManageReservations}
+                currentUserId={viewer?.userId}
+                canManageReservations={viewer?.canManageReservations}
+                isLoading={isScheduleLoading}
                 onSlotClick={onOpenReservation}
                 onReservationClick={onReservationClick}
               />

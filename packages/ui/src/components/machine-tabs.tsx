@@ -2,7 +2,6 @@
 
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -33,7 +32,6 @@ export default function MachineTabs({
   onReleaseReservation
 }: MachineTabsProps): JSX.Element {
   const t = useTranslations('pages.hub.fabLab');
-  const router = useRouter();
   const [tabValue, setTabValue] = useState(0);
 
   const machineById = useMemo(() => new Map(machines.map((machine) => [machine.id, machine])), [machines]);
@@ -59,7 +57,6 @@ export default function MachineTabs({
                 machine={machine}
                 t={t}
                 href={machineHrefBase ? `${machineHrefBase}/${machine.id}` : undefined}
-                onClick={machineHrefBase ? () => router.push(`${machineHrefBase}/${machine.id}`) : undefined}
               />
             ))
           ) : (

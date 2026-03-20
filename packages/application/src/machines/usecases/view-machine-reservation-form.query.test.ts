@@ -131,14 +131,14 @@ describe('viewMachineReservationForm', () => {
     });
   });
 
-  it('falls back to query start date, then now when no reservation is loaded', async () => {
+  it('falls back to query at date, then now when no reservation is loaded', async () => {
     const now = new Date('2026-03-05T08:00:00.000Z');
     mockViewMachineReservation.mockResolvedValue(null);
 
     const withQueryStart = await viewMachineReservationForm({
       machineId: 'machine-id',
       reservationId: 'missing-id',
-      start: '2026-03-05T09:30:00.000Z',
+      at: '2026-03-05T09:30:00.000Z',
       actor: { id: 'admin-id', globalAdmin: true },
       now
     });

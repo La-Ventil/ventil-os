@@ -20,10 +20,37 @@ test.describe('Machine reservation journey', () => {
     await loginAs('globalAdmin');
 
     await openMachineDetails(page, /Bambu Lab X1C/i);
+    await expect(
+      page
+        .locator('a[href^="/hub/fab-lab/machines/"], [role="button"]')
+        .filter({ hasText: /Bambu Lab X1C/i })
+        .first()
+    ).toBeVisible();
     await pressEscape(page);
-    await expect(page).toHaveURL(/\/hub\/fab-lab$/);
+    await expect(page).toHaveURL(/\/hub\/fab-lab\/machines$/);
 
     await openMachineDetails(page, /Bambu Lab X1C/i);
+    await expect(page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first()).toBeVisible();
+  });
+
+  test('machine modal keeps the fab lab list visible behind the intercepted route', async ({ page, loginAs }) => {
+    await loginAs('globalAdmin');
+
+    await openMachineDetails(page, /Bambu Lab X1C/i);
+
+    await expect(page).toHaveURL(/\/hub\/fab-lab\/machines\/[^/?]+$/);
+    await expect(
+      page
+        .locator('a[href^="/hub/fab-lab/machines/"], [role="button"]')
+        .filter({ hasText: /Bambu Lab X1C/i })
+        .first()
+    ).toBeVisible();
+    await expect(
+      page
+        .locator('a[href^="/hub/fab-lab/machines/"], [role="button"]')
+        .filter({ hasText: /Bambu Lab X1C/i })
+        .first()
+    ).toBeVisible();
     await expect(page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first()).toBeVisible();
   });
 
@@ -36,9 +63,9 @@ test.describe('Machine reservation journey', () => {
     const machineId = await submitReservationAndReturnToMachineDetails(page, /Bambu Lab X1C/i);
 
     await openMyReservationsTab(page);
-    await expect(page).toHaveURL(/\/hub\/fab-lab$/);
+    await expect(page).toHaveURL(/\/hub\/fab-lab\/machines$/);
     await expect(getReservationCard(page)).toBeVisible();
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab$`));
+    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/machines$`));
     expect(machineId).toMatch(/\w+/);
   });
 
@@ -85,17 +112,25 @@ test.describe('Machine reservation journey', () => {
 
     const machineDialog = page.getByRole('dialog', { name: /Bambu Lab X1C/i }).first();
     await getScheduleSlotButton(machineDialog, /^10:00 AM$/).click();
+    const reservationDialog = getCreateReservationDialog(page, /Bambu Lab X1C/i);
 
-    await expect(page).toHaveURL(new RegExp(`/hub/fab-lab/${machineId}\\?.*tab=reservations.*start=`), {
-      timeout: 15_000
-    });
+    await expect(page).toHaveURL(
+      new RegExp(`/hub/fab-lab/machines/${machineId}\\?.*tab=reservations.*step=create.*at=`),
+      {
+        timeout: 15_000
+      }
+    );
 
     const roundedNow = new Date(fixedNow);
     roundedNow.setSeconds(0, 0);
     roundedNow.setMinutes(roundedNow.getMinutes() + 1);
 
     const url = new URL(page.url());
-    expect(url.searchParams.get('start')).toBe(roundedNow.toISOString());
+    expect(url.searchParams.get('at')).toBe(roundedNow.toISOString());
+    await expect(reservationDialog).toBeVisible();
+    await expect(reservationDialog.getByRole('group', { name: /start/i }).locator('input').first()).toHaveValue(
+      /10:08/
+    );
   });
 
   test('student cannot open a reservation slot when badge level requirement is not met', async ({

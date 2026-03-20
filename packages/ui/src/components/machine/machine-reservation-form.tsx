@@ -90,6 +90,12 @@ export default function MachineReservationForm({
   const serializedStartAt = startDate.toDate().toISOString();
 
   useEffect(() => {
+    const zonedStartDate = toZonedDayjs(startAt, timeZone);
+    setStartDate(zonedStartDate);
+    setPickerStartDate(zonedStartDate);
+  }, [startAt, timeZone]);
+
+  useEffect(() => {
     const parsed = parseIsoDate(state.values.startsAt);
     if (parsed) {
       const zonedStartDate = toZonedDayjs(parsed, timeZone);

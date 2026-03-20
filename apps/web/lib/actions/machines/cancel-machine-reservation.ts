@@ -21,7 +21,7 @@ export async function cancelMachineReservationAction(reservationId: string): Pro
 
   try {
     await cancelReservation(reservationId, session.user);
-    revalidatePath('/hub/fab-lab', 'layout');
+    revalidatePath('/hub/fab-lab/machines', 'layout');
     return { success: true, message: t('pages.hub.fabLab.reservations.success.cancel') };
   } catch (error) {
     if (isMachineReservationError(error)) {

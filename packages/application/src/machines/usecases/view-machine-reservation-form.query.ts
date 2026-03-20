@@ -15,7 +15,7 @@ import { viewMachineReservation } from './view-machine-reservation.query';
 export type ViewMachineReservationFormInput = {
   machineId: string;
   reservationId?: string | null;
-  start?: string | null;
+  at?: string | null;
   actor?: ReservationActor | null;
   now?: Date;
 };
@@ -52,7 +52,7 @@ export const viewMachineReservationForm: Query<
   }
 
   const now = input.now ?? new Date();
-  const startAt = reservation?.startsAt ?? resolveIsoDateFromQuery(input.start) ?? now;
+  const startAt = reservation?.startsAt ?? resolveIsoDateFromQuery(input.at) ?? now;
 
   return {
     machine,

@@ -31,6 +31,7 @@ export type MachineReservationScheduleProps = {
   reservations: MachineReservationViewModel[];
   currentUserId?: string;
   canManageReservations?: boolean;
+  isLoading?: boolean;
   onSlotClick?: (slot: Date) => void;
   onReservationClick?: (reservation: MachineReservationViewModel) => void;
 };
@@ -40,6 +41,7 @@ export default function MachineReservationSchedule({
   reservations,
   currentUserId,
   canManageReservations,
+  isLoading = false,
   onSlotClick,
   onReservationClick
 }: MachineReservationScheduleProps) {
@@ -65,7 +67,7 @@ export default function MachineReservationSchedule({
   );
 
   return (
-    <div className={styles.schedule} aria-label={t('modal.schedule.ariaLabel')}>
+    <div className={styles.schedule} aria-label={t('modal.schedule.ariaLabel')} aria-busy={isLoading}>
       <div className={styles.slotList}>
         {slots.map((slot) => {
           const label = format.dateTime(slot, { timeStyle: 'short', timeZone });

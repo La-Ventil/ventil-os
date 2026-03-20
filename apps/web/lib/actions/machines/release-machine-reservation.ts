@@ -21,7 +21,7 @@ export async function releaseMachineReservationAction(reservationId: string): Pr
 
   try {
     await releaseReservation(reservationId, session.user);
-    revalidatePath('/hub/fab-lab', 'layout');
+    revalidatePath('/hub/fab-lab/machines', 'layout');
     return { success: true, message: t('pages.hub.fabLab.reservations.success.release') };
   } catch (error) {
     if (isMachineReservationError(error)) {

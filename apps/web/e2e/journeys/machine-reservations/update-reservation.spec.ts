@@ -99,14 +99,16 @@ test.describe('Machine reservation update journey', () => {
           return {
             pathname: url.pathname,
             tab: url.searchParams.get('tab'),
+            step: url.searchParams.get('step'),
             reservationId: url.searchParams.get('reservationId')
           };
         },
         { timeout: 15_000 }
       )
       .toEqual({
-        pathname: `/hub/fab-lab/${machineId}`,
+        pathname: `/hub/fab-lab/machines/${machineId}`,
         tab: 'reservations',
+        step: 'schedule',
         reservationId: null
       });
     await expect(pageErrors).toEqual([]);
@@ -152,14 +154,16 @@ test.describe('Machine reservation update journey', () => {
           return {
             pathname: url.pathname,
             tab: url.searchParams.get('tab'),
+            step: url.searchParams.get('step'),
             reservationId: url.searchParams.get('reservationId')
           };
         },
         { timeout: 15_000 }
       )
       .toEqual({
-        pathname: `/hub/fab-lab/${machineId}`,
+        pathname: `/hub/fab-lab/machines/${machineId}`,
         tab: 'reservations',
+        step: 'schedule',
         reservationId: null
       });
     await expect(reservationDialog).toHaveCount(0, { timeout: 15_000 });
@@ -207,7 +211,7 @@ test.describe('Machine reservation update journey', () => {
       timeout: 10_000
     });
     await expect(page).toHaveURL(
-      new RegExp(`/hub/fab-lab/${machineId}\\?tab=reservations&reservationId=${reservationId}$`)
+      new RegExp(`/hub/fab-lab/machines/${machineId}\\?tab=reservations&step=edit&reservationId=${reservationId}$`)
     );
   });
 });

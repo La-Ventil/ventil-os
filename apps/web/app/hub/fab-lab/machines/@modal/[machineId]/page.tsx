@@ -4,7 +4,7 @@ import {
   formatDayKey,
   getDayIntervalForDayKey,
   resolveMachineAvailability,
-  resolveDayKeyFromString
+  resolveIsoDateFromQuery
 } from '@repo/application';
 import {
   checkReservationEligibility,
@@ -13,12 +13,17 @@ import {
   viewMachineReservationsForDayKey
 } from '@repo/application/machines/usecases';
 import { getTimeZone } from 'next-intl/server';
-import MachineModalRouteClient from '../../machine-modal-route.client';
-import { getServerSession } from '../../../../../lib/auth';
+import MachineModalRouteClient from '../../../_machine-modal/machine-modal-route.client';
+import { getServerSession } from '../../../../../../lib/auth';
 
 type MachineModalPageProps = {
   params: Promise<{ machineId: string }>;
-  searchParams?: Promise<{ day?: string; start?: string; reservationId?: string; tab?: 'info' | 'reservations' }>;
+  searchParams?: Promise<{
+    at?: string;
+    reservationId?: string;
+    step?: 'schedule' | 'create' | 'edit';
+    tab?: 'info' | 'reservations';
+  }>;
 };
 
 export default async function MachineModalPage({
@@ -28,31 +33,41 @@ export default async function MachineModalPage({
   const [{ machineId }, resolvedSearchParams, timeZone, session] = await Promise.all([
     params,
     searchParams ??
-      Promise.resolve<{ day?: string; start?: string; reservationId?: string; tab?: 'info' | 'reservations' }>({}),
+      Promise.resolve<{
+        at?: string;
+        reservationId?: string;
+        step?: 'schedule' | 'create' | 'edit';
+        tab?: 'info' | 'reservations';
+      }>({}),
     getTimeZone(),
     getServerSession()
   ]);
-  const { day, start, reservationId, tab } = resolvedSearchParams;
+  // Invariant: this route must stay under `machines/@modal/[machineId]`.
+  // The parent list context is `/hub/fab-lab/machines`; if the modal route stops
+  // mirroring that subtree, the standalone machine page replaces the list instead
+  // of rendering on top of it.
+  // The server page only hydrates the initial modal context; reservation tab transitions
+  // must remain client-side in `_machine-modal/use-machine-modal-flow.tsx`.
+  const { at, reservationId, step, tab } = resolvedSearchParams;
   const now = new Date();
   const currentUserId = session?.user?.id;
+  const focusedAt = resolveIsoDateFromQuery(at) ?? now;
   const machinePromise = viewMachineDetails(machineId);
   const canReservePromise = checkReservationEligibility(machineId, currentUserId);
   const todayKey = formatDayKey(now, timeZone);
-  const selectedDateKey = resolveDayKeyFromString(day) ?? todayKey;
+  const selectedDateKey = formatDayKey(focusedAt, timeZone);
   const reservationsPromise = viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
   const reservationsTodayPromise =
     selectedDateKey === todayKey
       ? reservationsPromise
       : viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
-  const reservationFormPromise =
-    start || reservationId
-      ? viewMachineReservationForm({
-          machineId,
-          reservationId,
-          start,
-          actor: session?.user
-        })
-      : Promise.resolve(null);
+  const normalizedStep = reservationId ? 'edit' : step === 'create' ? 'create' : 'schedule';
+  const reservationFormPromise = viewMachineReservationForm({
+    machineId,
+    reservationId: normalizedStep === 'edit' ? reservationId : null,
+    at,
+    actor: session?.user
+  });
   const [machine, reservations, reservationsToday, canReserve, reservationForm] = await Promise.all([
     machinePromise,
     reservationsPromise,
@@ -69,20 +84,29 @@ export default async function MachineModalPage({
   const availability = resolveMachineAvailability(machine.availability, reservationsToday, now, end);
   const machineWithAvailability = { ...machine, availability };
   const canManage = canManageReservations(session?.user);
-
   return (
     <MachineModalRouteClient
       machine={machineWithAvailability}
       reservations={reservations}
-      dayKey={selectedDateKey}
+      focusedAt={reservationForm?.startAt ?? focusedAt}
       canReserve={canReserve}
-      currentUserId={currentUserId}
-      canManageReservations={canManage}
-      reservationStartAt={reservationForm?.startAt}
-      reservation={reservationForm?.reservation}
-      participantOptions={reservationForm?.participantOptions}
+      initialReservationState={
+        normalizedStep === 'schedule'
+          ? undefined
+          : {
+              at: reservationForm?.startAt ?? focusedAt,
+              reservation: normalizedStep === 'edit' ? (reservationForm?.reservation ?? null) : null
+            }
+      }
+      reservationFormOptions={{
+        participantOptions: reservationForm?.participantOptions ?? []
+      }}
+      viewer={{
+        userId: currentUserId,
+        canManageReservations: canManage
+      }}
       initialTab={tab === 'info' ? 'info' : 'reservations'}
-      closeHref="/hub/fab-lab"
+      closeHref="/hub/fab-lab/machines"
     />
   );
 }

@@ -85,7 +85,7 @@ export default function DrawerMenu({
         <MenuListItem
           icon={<MachineIcon />}
           label={tDrawer('links.machines')}
-          href="/hub/fab-lab"
+          href="/hub/fab-lab/machines"
           linkComponent={Link}
           className={getThemeSectionClassName(ThemeSection.FabLab)}
           onClick={onClose}
