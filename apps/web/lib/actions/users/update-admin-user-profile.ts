@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { canManageUsers } from '@repo/application';
 import { updateProfile, viewUserProfileById } from '@repo/application/users/usecases';
@@ -48,7 +47,6 @@ export async function updateAdminUserProfileAction(
       educationLevel: data.educationLevel || null,
       profile: data.profile
     });
-    revalidatePath('/hub/admin/users', 'layout');
 
     return formSuccess(values, t('user.update.success'));
   } catch (e) {

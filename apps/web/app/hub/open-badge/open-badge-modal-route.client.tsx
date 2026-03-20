@@ -56,7 +56,6 @@ export default function OpenBadgeModalRouteClient({
 
   const handleAssignClose = () => {
     assignModal.closeModal();
-    handleClose();
   };
 
   if (!openBadge) {

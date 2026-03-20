@@ -20,8 +20,10 @@ test.describe('Admin machines journeys', () => {
     await clickQuickAction(menu, /deactivate/i);
     await expect(statusCell).toHaveText(/no/i, { timeout: 10_000 });
 
-    await page.goto('/hub/fab-lab');
-    await expect(page.getByRole('button', { name: new RegExp(machineName, 'i') })).toHaveCount(0);
+    await page.goto('/hub/fab-lab/machines');
+    await expect(
+      page.locator('a[href^="/hub/fab-lab/machines/"]').filter({ hasText: new RegExp(machineName, 'i') })
+    ).toHaveCount(0);
 
     await page.goto('/hub/admin/machines');
     const refreshedTable = page.getByRole('table');
@@ -30,7 +32,12 @@ test.describe('Admin machines journeys', () => {
     await clickQuickAction(menuAfterDeactivate, /activate/i);
     await expect(rowAfterDeactivate.getByRole('cell').nth(6)).toHaveText(/yes/i, { timeout: 10_000 });
 
-    await page.goto('/hub/fab-lab');
-    await expect(page.getByRole('button', { name: new RegExp(machineName, 'i') }).first()).toBeVisible();
+    await page.goto('/hub/fab-lab/machines');
+    await expect(
+      page
+        .locator('a[href^="/hub/fab-lab/machines/"]')
+        .filter({ hasText: new RegExp(machineName, 'i') })
+        .first()
+    ).toBeVisible();
   });
 });
