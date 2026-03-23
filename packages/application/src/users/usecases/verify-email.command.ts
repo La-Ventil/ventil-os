@@ -1,3 +1,4 @@
+import { hashToken } from '@repo/crypto';
 import { Email } from '@repo/domain/user/email';
 import { User } from '@repo/domain/user/user';
 import { userRepository, verificationTokenRepository } from '@repo/db';
@@ -8,18 +9,16 @@ export type EmailVerificationResult =
   | { ok: true; email: string }
   | { ok: false; reason: 'invalid' | 'expired' | 'not-found' };
 
-export const verifyEmail: Command<[string, string], EmailVerificationResult> = async (
-  email: string,
-  token: string
-) => {
-  const record = await verificationTokenRepository.findByIdentifierAndToken(email, token);
+export const verifyEmail: Command<[string, string], EmailVerificationResult> = async (email: string, token: string) => {
+  const tokenHash = hashToken(token);
+  const record = await verificationTokenRepository.findByIdentifierAndToken(email, tokenHash);
 
   if (!record) {
     return { ok: false, reason: 'invalid' };
   }
 
   if (record.expires < new Date()) {
-    await verificationTokenRepository.deleteByIdentifierAndToken(email, token);
+    await verificationTokenRepository.deleteByIdentifierAndToken(email, tokenHash);
     return { ok: false, reason: 'expired' };
   }
 
@@ -33,7 +32,7 @@ export const verifyEmail: Command<[string, string], EmailVerificationResult> = a
   try {
     updatedUser = User.confirmEmail(toDomainUser(user), Email.from(email));
   } catch {
-    await verificationTokenRepository.deleteByIdentifierAndToken(email, token);
+    await verificationTokenRepository.deleteByIdentifierAndToken(email, tokenHash);
     return { ok: false, reason: 'invalid' };
   }
 
@@ -43,7 +42,7 @@ export const verifyEmail: Command<[string, string], EmailVerificationResult> = a
     emailVerifiedAt: updatedUser.emailVerifiedAt ?? new Date()
   });
 
-  await verificationTokenRepository.deleteByIdentifierAndToken(email, token);
+  await verificationTokenRepository.deleteByIdentifierAndToken(email, tokenHash);
 
   return { ok: true, email };
 };

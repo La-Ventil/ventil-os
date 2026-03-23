@@ -1,3 +1,4 @@
+import { hashToken } from '@repo/crypto';
 import { verificationTokenRepository } from '@repo/db';
 import { generateToken } from './tokens';
 
@@ -7,7 +8,7 @@ export const createEmailVerificationToken = async (email: string) => {
   const token = generateToken(24);
   const expires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_TTL_MS);
 
-  await verificationTokenRepository.replaceToken(email, token, expires);
+  await verificationTokenRepository.replaceToken(email, hashToken(token), expires);
 
   return { token, expires };
 };

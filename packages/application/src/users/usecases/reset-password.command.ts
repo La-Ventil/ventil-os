@@ -1,3 +1,4 @@
+import { hashToken } from '@repo/crypto';
 import { userRepository } from '@repo/db';
 import type { Command } from '../../usecase';
 import { setNewPassword } from '../passwords';
@@ -8,7 +9,7 @@ export const resetPassword: Command<[string, string], ResetPasswordResult> = asy
   token: string,
   newPassword: string
 ) => {
-  const user = await userRepository.findUserByValidResetToken(token);
+  const user = await userRepository.findUserByValidResetToken(hashToken(token));
 
   if (!user) {
     return { ok: false, reason: 'invalid-token' };
