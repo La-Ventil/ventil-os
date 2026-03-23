@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.29](https://github.com/La-Ventil/ventil-os/compare/v0.0.28...v0.0.29) (2026-03-23)
+
+
+### Bug Fixes
+
+* **reservations:** deduplicate participant autocomplete users ([52ccf84](https://github.com/La-Ventil/ventil-os/commit/52ccf84aef4e243b7eeb4e2022bb8919aad0bc3b))
+
 ### [0.0.28](https://github.com/La-Ventil/ventil-os/compare/v0.0.27...v0.0.28) (2026-03-20)
 
 ### [0.0.27](https://github.com/La-Ventil/ventil-os/compare/v0.0.26...v0.0.27) (2026-03-19)
