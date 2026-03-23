@@ -1,6 +1,7 @@
 'use client';
 
 import type { JSX, Key } from 'react';
+import { useMemo } from 'react';
 import type { HTMLAttributes } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -87,16 +88,24 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
   helperText
 }: UserAutocompleteProps<Multiple>): JSX.Element {
   const isMultiple = multiple ?? true;
+  const uniqueOptions = useMemo(() => {
+    const usersById = new Map<string, UserSummaryViewModel>();
+    options.forEach((user) => {
+      usersById.set(user.id, user);
+    });
+    return Array.from(usersById.values());
+  }, [options]);
 
   return (
     <Autocomplete<UserSummaryViewModel, Multiple, false, false>
       multiple={isMultiple as Multiple}
       disablePortal
-      options={options}
+      options={uniqueOptions}
       value={value}
       onChange={(_, nextValue) => onChange(nextValue)}
       openOnFocus
       autoHighlight
+      getOptionKey={(option) => option.id}
       getOptionLabel={getUserLabel}
       isOptionEqualToValue={(option, selected) => option.id === selected.id}
       filterOptions={(availableOptions, state) => filterUserOptions(availableOptions, state.inputValue)}

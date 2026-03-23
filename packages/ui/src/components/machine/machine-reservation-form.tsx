@@ -11,7 +11,7 @@ import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
 import type { Dayjs } from 'dayjs';
-import { excludeBy, parseIsoDate } from '@repo/application';
+import { excludeBy, parseIsoDate, uniqueBy } from '@repo/application';
 import type { MachineReservationFormInput } from '@repo/application/forms';
 import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { FormActionStateTuple } from '@repo/form/use-form-action-state';
@@ -74,7 +74,9 @@ export default function MachineReservationForm({
   const format = useFormatter();
   const timeZone = useTimeZone();
   const fieldError = (field: keyof MachineReservationFormInput) => fieldErrorMessage(state, field);
-  const [participants, setParticipants] = useState<UserSummaryViewModel[]>(() => initialParticipants ?? []);
+  const [participants, setParticipants] = useState<UserSummaryViewModel[]>(() =>
+    uniqueBy(initialParticipants ?? [], (user) => user.id)
+  );
   const [startDate, setStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const [pickerStartDate, setPickerStartDate] = useState<Dayjs>(() => toZonedDayjs(startAt, timeZone));
   const filteredParticipants = useMemo(
@@ -105,7 +107,7 @@ export default function MachineReservationForm({
   }, [state.values.startsAt, timeZone]);
 
   useEffect(() => {
-    setParticipants(initialParticipants ?? []);
+    setParticipants(uniqueBy(initialParticipants ?? [], (user) => user.id));
   }, [initialParticipants]);
 
   const formattedStart = useMemo(
@@ -118,7 +120,12 @@ export default function MachineReservationForm({
   const confirmLabel = reservationId ? t('modal.reservationForm.update') : t('modal.reservationForm.confirm');
 
   const handleParticipantsChange = (nextParticipants: UserSummaryViewModel[]) => {
-    setParticipants(excludeBy(nextParticipants, (user) => user.id, currentUserId));
+    setParticipants(
+      uniqueBy(
+        excludeBy(nextParticipants, (user) => user.id, currentUserId),
+        (user) => user.id
+      )
+    );
   };
 
   return (

@@ -1,9 +1,10 @@
 import { userRepository } from '@repo/db';
 import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
 import { mapUserSummaryToViewModel } from '../../presenters/user-summary';
+import { uniqueBy } from '../../utils/collection';
 import type { Query } from '../../usecase';
 
 export const browseUsersForReservation: Query<[], UserSummaryViewModel[]> = async () => {
   const users = await userRepository.listUserSummaries();
-  return users.map(mapUserSummaryToViewModel);
+  return uniqueBy(users.map(mapUserSummaryToViewModel), (user) => user.id);
 };
