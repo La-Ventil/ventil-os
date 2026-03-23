@@ -12,7 +12,7 @@ export async function hashSecret(secret: string) {
 
   const pepperedKey = `${process.env.SECRET_PEPPER}${secret}`;
   const salt = generateSalt();
-  const iterations = 10000;
+  const iterations = 600000;
   const keylen = 128;
   const digest = 'sha256';
 
