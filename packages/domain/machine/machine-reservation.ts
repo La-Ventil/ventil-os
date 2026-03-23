@@ -1,4 +1,5 @@
 import type { UserSummary } from '../user/user-summary';
+import { MachineReservationError } from './machine-reservation-errors';
 import { isReservationConfirmed, MachineReservationStatus } from './machine-reservation-status';
 
 export type MachineReservationParticipant = {
@@ -47,6 +48,17 @@ export const MachineReservation = {
   },
   durationMinutes(reservation: Pick<MachineReservation, 'startsAt' | 'endsAt'>): number {
     return Math.max(1, Math.round((reservation.endsAt.getTime() - reservation.startsAt.getTime()) / 60000));
+  },
+  assertCanRelease(reservation: ReservationTimeRef, now: Date = new Date()): void {
+    if (MachineReservation.isCancelled(reservation)) {
+      throw new MachineReservationError('machineReservation.cancelled');
+    }
+    if (!MachineReservation.isActive(reservation, now)) {
+      if (!MachineReservation.hasStarted(reservation, now)) {
+        throw new MachineReservationError('machineReservation.notStarted');
+      }
+      throw new MachineReservationError('machineReservation.alreadyEnded');
+    }
   },
   cancel(reservation: MachineReservation): MachineReservation {
     if (MachineReservation.isCancelled(reservation)) {

@@ -24,18 +24,8 @@ export const releaseReservation: Command<ReleaseReservationArgs, MachineReservat
     throw new MachineReservationError('machineReservation.unauthorized');
   }
 
-  if (MachineReservation.isCancelled(reservation)) {
-    throw new MachineReservationError('machineReservation.cancelled');
-  }
-
   const now = new Date();
-  if (!MachineReservation.isActive(reservation, now)) {
-    if (!MachineReservation.hasStarted(reservation, now)) {
-      throw new MachineReservationError('machineReservation.notStarted');
-    }
-
-    throw new MachineReservationError('machineReservation.alreadyEnded');
-  }
+  MachineReservation.assertCanRelease(reservation, now);
 
   const updated = await machineReservationRepository.releaseReservation(reservationId, now);
   return mapMachineReservationToViewModel(updated);
