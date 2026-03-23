@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <g>
+    <path d="M125,116c0,2.21-1.81,4-4.03,4s-4.03-1.79-4.03-4"/>
+    <path d="M83,116c0,2.21-1.81,4-4.03,4s-4.03-1.79-4.03-4"/>
+  </g>
+  <rect x="73" y="114" width="12" height="2" rx="1" ry="1"/>
+  <rect x="115" y="114" width="12" height="2" rx="1" ry="1"/>
+</svg>

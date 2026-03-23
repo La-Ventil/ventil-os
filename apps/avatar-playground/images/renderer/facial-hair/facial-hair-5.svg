@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.79px;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M100.82,125.39c-.71,2.53,10.95,2.43,10.95,2.43,0,0-10.21-5.06-10.95-2.43Z"/>
+  <path class="cls-1" d="M100.46,125.39c.59,2.53-10.95,2.43-10.95,2.43,0,0,10.33-5.09,10.95-2.43Z"/>
+  <polygon class="cls-1" points="89.51 127.82 111.77 127.82 100.46 125.39 89.51 127.82"/>
+</svg>

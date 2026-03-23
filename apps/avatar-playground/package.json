@@ -1,0 +1,17 @@
+{
+  "name": "avatar-playground",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "pnpm run start",
+    "start": "serve -l 4173 --no-port-switching .",
+    "build": "echo \"skip build (avatar-playground)\"",
+    "lint": "echo \"skip lint (avatar-playground)\"",
+    "lint:dev": "echo \"skip lint:dev (avatar-playground)\"",
+    "check-types": "echo \"skip check-types (avatar-playground)\"",
+    "lint:staged": "echo \"skip lint:staged (avatar-playground)\""
+  },
+  "devDependencies": {
+    "serve": "^14.2.5"
+  }
+}

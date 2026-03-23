@@ -3,10 +3,10 @@
   "version": "0.0.29",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter web build",
+    "build": "turbo run build",
     "clean": "turbo run clean",
     "commit": "cz",
-    "dev": "pnpm --filter web dev",
+    "dev": "turbo run dev --filter=web --filter=@repo/avatar-system",
     "i18n:report": "node scripts/generate-i18n-report.mjs",
     "start": "pnpm --filter web start",
     "lint": "turbo run lint",
@@ -28,7 +28,8 @@
     "test:e2e:a11y": "pnpm --filter web test:e2e:a11y",
     "test:e2e:parallel": "pnpm --filter web test:e2e:parallel",
     "test:e2e:workers": "pnpm --filter web test:e2e:workers",
-    "prettier": "pnpm format"
+    "prettier": "pnpm format",
+    "dev:avatar-playground": "turbo run dev --filter=avatar-playground --filter=@repo/avatar-system"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.1",

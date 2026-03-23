@@ -1,0 +1,1452 @@
+:root {
+  --skin-color-1: #f4df1e;
+  --skin-color-2: #f5eada;
+  --skin-color-3: #ffecce;
+  --skin-color-4: #efd4a2;
+  --skin-color-5: #cfb178;
+  --skin-color-6: #9a8153;
+  --skin-color-7: #6d4d10;
+  --skin-color-8: #f5e1d0;
+  --skin-color-9: #d8c7b1;
+  --skin-color-10: #b5a187;
+  --skin-color-11: #aa895e;
+  --skin-color-12: #8d693b;
+  --skin-color-13: #784b14;
+  --skin-color-14: #e7d3c5;
+  --skin-color-15: #c68981;
+  --skin-color-16: #9e5c4f;
+  --skin-color-17: #93423e;
+  --skin-color-18: #8b443b;
+  --skin-color-19: #7a3b33;
+  --hair-color-10: #dfdfdc;
+  --hair-color-11: #b0b0ac;
+  --hair-color-12: #7d7d7a;
+  --hair-color-13: #454543;
+  --hair-color-14: #151515;
+  --hair-color-20: #fdedb7;
+  --hair-color-21: #f3ca4c;
+  --hair-color-22: #e7af06;
+  --hair-color-23: #ae7803;
+  --hair-color-24: #4a2c04;
+  --hair-color-30: #edc58d;
+  --hair-color-31: #ff9a52;
+  --hair-color-32: #f06706;
+  --hair-color-33: #c5590e;
+  --hair-color-34: #7d4a06;
+  --hair-color-40: #ffb7ac;
+  --hair-color-41: #ff7661;
+  --hair-color-42: #e83e23;
+  --hair-color-43: #b71c04;
+  --hair-color-44: #6f1304;
+  --hair-color-50: #ddefb8;
+  --hair-color-51: #c9f968;
+  --hair-color-52: #a6ed17;
+  --hair-color-53: #618c0a;
+  --hair-color-54: #273707;
+  --hair-color-60: #a9e8c4;
+  --hair-color-61: #2eda78;
+  --hair-color-62: #0eaf54;
+  --hair-color-63: #2a6f48;
+  --hair-color-64: #07371c;
+  --hair-color-70: #c1b6eb;
+  --hair-color-71: #9476ff;
+  --hair-color-72: #5027e4;
+  --hair-color-73: #270a8f;
+  --hair-color-74: #090221;
+  --glasses-color-1: #000000;
+  --glasses-color-2: #8b4c09;
+  --glasses-color-3: #085105;
+  --glasses-color-4: #ffffff;
+  --glasses-color-5: #ff4545;
+  --glasses-tiles-color-1: transparent;
+  --glasses-tiles-color-2: #000000;
+  --glasses-tiles-color-3: #ffd63149;
+  --cheeks-color-1: #775609;
+  --cheeks-color-2: #e51e05;
+  --cheeks-color-3: #8909df;
+  --cheeks-color-4: #fff7d9;
+  --earrings-color-1: #afaa9c;
+  --earrings-color-2: #a98152;
+  --earrings-color-3: #d39b22;
+  --earrings-color-4: #f1c30a;
+}
+.avatar {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border-radius: 30px;
+  margin-bottom: 5px;
+  box-shadow: 0 3px 20px #82aec420;
+  overflow: hidden;
+  &.no-body {
+    .body,
+    .clothes {
+      display: none !important;
+    }
+  }
+  &#s1 {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+  &#s2 {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+  &#s3 {
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+  }
+  div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+  .back-hair {
+    z-index: 15;
+    mask-size: cover;
+    display: none;
+  }
+  .ears {
+    z-index: 16;
+    mask-size: cover;
+    mask-image: url(images/renderer/ears/ears-1.svg);
+  }
+  .earrings {
+    z-index: 17;
+    mask-size: cover;
+    display: none;
+  }
+  .body {
+    z-index: 20;
+    mask-image: url(images/renderer/face/body.svg);
+  }
+  .clothes {
+    z-index: 21;
+    background-image: url(images/renderer/clothes/clothes-1.svg);
+  }
+  .face {
+    z-index: 30;
+    mask-size: cover;
+  }
+  .emo-effect {
+    z-index: 31;
+  }
+  .emo-face {
+    z-index: 32;
+  }
+  .eyes {
+    z-index: 50;
+  }
+  .eyebrows {
+    z-index: 50;
+    mask-size: cover;
+  }
+  .glasses-tiles {
+    mask-size: cover;
+    z-index: 59;
+    display: none;
+  }
+  .glasses {
+    mask-size: cover;
+    z-index: 60;
+    display: none;
+  }
+  .facial-hair {
+    z-index: 81;
+    mask-size: cover;
+    display: none;
+  }
+  .mouth {
+    z-index: 80;
+  }
+  .nose {
+    z-index: 58;
+  }
+  .face-details {
+    background-size: cover;
+    z-index: 90;
+  }
+  .cheeks {
+    z-index: 91;
+    mask-size: cover;
+    display: none;
+    opacity: 0.6;
+  }
+  .front-hair {
+    z-index: 100;
+    mask-size: cover;
+    display: none;
+  }
+  .emo-acc {
+    z-index: 101;
+  }
+  .emo-hands {
+    z-index: 99;
+    display: none;
+  }
+  &.face-shape-1 .face {
+    mask-image: url(images/renderer/face/face-1.svg);
+  }
+  &.face-shape-2 .face {
+    mask-image: url(images/renderer/face/face-2.svg);
+  }
+  &.face-shape-5 .face {
+    mask-image: url(images/renderer/face/face-5.svg);
+  }
+  &.face-shape-6 .face {
+    mask-image: url(images/renderer/face/face-6.svg);
+  }
+  &.skin-color-1 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-1);
+    }
+  }
+  &.skin-color-2 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-2);
+    }
+  }
+  &.skin-color-3 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-3);
+    }
+  }
+  &.skin-color-4 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-4);
+    }
+  }
+  &.skin-color-5 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-5);
+    }
+  }
+  &.skin-color-6 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-6);
+    }
+  }
+  &.skin-color-7 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-7);
+    }
+  }
+  &.skin-color-8 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-8);
+    }
+  }
+  &.skin-color-9 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-9);
+    }
+  }
+  &.skin-color-10 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-10);
+    }
+  }
+  &.skin-color-11 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-11);
+    }
+  }
+  &.skin-color-12 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-12);
+    }
+  }
+  &.skin-color-13 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-13);
+    }
+  }
+  &.skin-color-14 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-14);
+    }
+  }
+  &.skin-color-15 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-15);
+    }
+  }
+  &.skin-color-16 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-16);
+    }
+  }
+  &.skin-color-17 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-17);
+    }
+  }
+  &.skin-color-18 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-18);
+    }
+  }
+  &.skin-color-19 {
+    .ears,
+    .body,
+    .face,
+    .emo-hands {
+      background-color: var(--skin-color-19);
+    }
+  }
+  &.cheeks-color-1 {
+    .cheeks {
+      background-color: var(--cheeks-color-1);
+    }
+  }
+  &.cheeks-color-2 {
+    .cheeks {
+      background-color: var(--cheeks-color-2);
+    }
+  }
+  &.cheeks-color-3 {
+    .cheeks {
+      background-color: var(--cheeks-color-3);
+    }
+  }
+  &.cheeks-color-4 {
+    .cheeks {
+      background-color: var(--cheeks-color-4);
+    }
+  }
+  &.earrings-color-1 {
+    .earrings {
+      background-color: var(--earrings-color-1);
+    }
+  }
+  &.earrings-color-2 {
+    .earrings {
+      background-color: var(--earrings-color-2);
+    }
+  }
+  &.earrings-color-3 {
+    .earrings {
+      background-color: var(--earrings-color-3);
+    }
+  }
+  &.earrings-color-4 {
+    .earrings {
+      background-color: var(--earrings-color-4);
+    }
+  }
+  &.cheeks-1 .cheeks {
+    mask-image: url(images/renderer/cheeks/cheeks-1.svg);
+    display: block;
+  }
+  &.cheeks-2 .cheeks {
+    mask-image: url(images/renderer/cheeks/cheeks-2.svg);
+    display: block;
+  }
+  &.face-details-1 .face-details {
+    background-image: url(images/renderer/face-details/face-details-1.svg);
+  }
+  &.face-details-2 .face-details {
+    background-image: url(images/renderer/face-details/face-details-2.svg);
+  }
+  &.face-details-3 .face-details {
+    background-image: url(images/renderer/face-details/face-details-3.svg);
+  }
+  &.earrings-1 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-1.svg);
+      display: block;
+    }
+  }
+  &.earrings-2 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-2.svg);
+      display: block;
+    }
+  }
+  &.earrings-3 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-3.svg);
+      display: block;
+    }
+  }
+  &.earrings-4 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-4.svg);
+      display: block;
+    }
+  }
+  &.earrings-5 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-5.svg);
+      display: block;
+    }
+  }
+  &.earrings-6 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-6.svg);
+      display: block;
+    }
+  }
+  &.earrings-7 {
+    .earrings {
+      mask-image: url(images/renderer/earrings/earring-7.svg);
+      display: block;
+    }
+  }
+  &.hair-100 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-100.svg);
+    }
+  }
+  &.hair-101 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-101.svg);
+    }
+  }
+  &.hair-102 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-102.svg);
+    }
+  }
+  &.hair-103 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-103.svg);
+    }
+  }
+  &.hair-104 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-104.svg);
+    }
+  }
+  &.hair-105 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-105.svg);
+    }
+  }
+  &.hair-106 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-106.svg);
+    }
+  }
+  &.hair-107 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-107.svg);
+    }
+  }
+  &.hair-108 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-108.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-108b.svg);
+    }
+  }
+  &.hair-109 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-109.svg);
+    }
+  }
+  &.hair-110 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-110.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-110b.svg);
+    }
+  }
+  &.hair-111 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-111.svg);
+    }
+  }
+  &.hair-200 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-200.svg);
+    }
+  }
+  &.hair-201 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-201.svg);
+    }
+  }
+  &.hair-202 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-202.svg);
+    }
+  }
+  &.hair-203 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-203.svg);
+    }
+  }
+  &.hair-204 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-204.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-204b.svg);
+    }
+  }
+  &.hair-205 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-205.svg);
+    }
+  }
+  &.hair-206 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-206.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-206b.svg);
+    }
+  }
+  &.hair-207 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-207.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-207b.svg);
+    }
+  }
+  &.hair-208 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-208.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-208b.svg);
+    }
+  }
+  &.hair-209 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-209.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-209b.svg);
+    }
+  }
+  &.hair-210 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-210.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-210b.svg);
+    }
+  }
+  &.hair-211 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-211.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-211b.svg);
+    }
+  }
+  &.hair-212 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-212.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-212b.svg);
+    }
+  }
+  &.hair-213 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-213.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-213b.svg);
+    }
+  }
+  &.hair-214 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-214.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-214b.svg);
+    }
+  }
+  &.hair-215 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-215.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-215b.svg);
+    }
+  }
+  &.hair-216 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-216.svg);
+    }
+  }
+  &.hair-217 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-217.svg);
+    }
+  }
+  &.hair-218 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-218.svg);
+    }
+  }
+  &.hair-300 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-300.svg);
+    }
+  }
+  &.hair-301 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-301.svg);
+    }
+  }
+  &.hair-302 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-302.svg);
+    }
+  }
+  &.hair-303 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-303.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-303b.svg);
+    }
+  }
+  &.hair-304 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-304.svg);
+    }
+    .back-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-304b.svg);
+    }
+  }
+  &.hair-400 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-400.svg);
+    }
+  }
+  &.hair-401 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-401.svg);
+    }
+  }
+  &.hair-402 {
+    .front-hair {
+      display: block;
+      mask-image: url(images/renderer/hair/hair-402.svg);
+    }
+  }
+  &.hair-color-10 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-10);
+    }
+  }
+  &.hair-color-11 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-11);
+    }
+  }
+  &.hair-color-12 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-12);
+    }
+  }
+  &.hair-color-13 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-13);
+    }
+  }
+  &.hair-color-14 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-14);
+    }
+  }
+  &.hair-color-20 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-20);
+    }
+  }
+  &.hair-color-21 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-21);
+    }
+  }
+  &.hair-color-22 {
+    .back-hair,
+    .eyebrows,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-22);
+    }
+  }
+  &.hair-color-23 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-23);
+    }
+  }
+  &.hair-color-24 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-24);
+    }
+  }
+  &.hair-color-30 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-30);
+    }
+  }
+  &.hair-color-31 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-31);
+    }
+  }
+  &.hair-color-32 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-32);
+    }
+  }
+  &.hair-color-33 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-33);
+    }
+  }
+  &.hair-color-34 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-34);
+    }
+  }
+  &.hair-color-40 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-40);
+    }
+  }
+  &.hair-color-41 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-41);
+    }
+  }
+  &.hair-color-42 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-42);
+    }
+  }
+  &.hair-color-43 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-43);
+    }
+  }
+  &.hair-color-44 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-44);
+    }
+  }
+  &.hair-color-50 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-50);
+    }
+  }
+  &.hair-color-51 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-51);
+    }
+  }
+  &.hair-color-52 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-52);
+    }
+  }
+  &.hair-color-53 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-53);
+    }
+  }
+  &.hair-color-54 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-54);
+    }
+  }
+  &.hair-color-60 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-60);
+    }
+  }
+  &.hair-color-61 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-61);
+    }
+  }
+  &.hair-color-62 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-62);
+    }
+  }
+  &.hair-color-63 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-63);
+    }
+  }
+  &.hair-color-64 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-64);
+    }
+  }
+  &.hair-color-70 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-70);
+    }
+  }
+  &.hair-color-71 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-71);
+    }
+  }
+  &.hair-color-72 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-72);
+    }
+  }
+  &.hair-color-73 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-73);
+    }
+  }
+  &.hair-color-74 {
+    .eyebrows,
+    .back-hair,
+    .facial-hair,
+    .front-hair {
+      background-color: var(--hair-color-74);
+    }
+  }
+  &.glasses-color-1 .glasses {
+    background-color: var(--glasses-color-1);
+  }
+  &.glasses-color-2 .glasses {
+    background-color: var(--glasses-color-2);
+  }
+  &.glasses-color-3 .glasses {
+    background-color: var(--glasses-color-3);
+  }
+  &.glasses-color-4 .glasses {
+    background-color: var(--glasses-color-4);
+  }
+  &.glasses-color-5 .glasses {
+    background-color: var(--glasses-color-5);
+  }
+
+  &.glasses-tiles-color-1 .glasses-tiles {
+    background-color: var(--glasses-tiles-color-1);
+  }
+  &.glasses-tiles-color-2 .glasses-tiles {
+    background-color: var(--glasses-tiles-color-2);
+  }
+  &.glasses-tiles-color-3 .glasses-tiles {
+    background-color: var(--glasses-tiles-color-3);
+  }
+
+  &.facial-hair-1 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-1.svg);
+  }
+  &.facial-hair-2 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-2.svg);
+  }
+  &.facial-hair-3 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-3.svg);
+  }
+  &.facial-hair-4 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-4.svg);
+  }
+  &.facial-hair-5 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-5.svg);
+  }
+  &.facial-hair-6 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-6.svg);
+  }
+  &.facial-hair-7 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-7.svg);
+  }
+  &.facial-hair-8 .facial-hair {
+    display: block;
+    z-index: 32;
+    mask-image: url(images/renderer/facial-hair/facial-hair-8.svg);
+  }
+  &.facial-hair-9 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-9.svg);
+  }
+  &.facial-hair-10 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-10.svg);
+  }
+  &.facial-hair-11 .facial-hair {
+    display: block;
+    mask-image: url(images/renderer/facial-hair/facial-hair-11.svg);
+  }
+  &.eyebrows-1 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-1.svg);
+  }
+  &.eyebrows-2 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-2.svg);
+  }
+  &.eyebrows-3 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-3.svg);
+  }
+  &.eyebrows-4 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-4.svg);
+  }
+  &.eyebrows-5 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-5.svg);
+  }
+  &.eyebrows-6 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-6.svg);
+  }
+  &.eyebrows-7 .eyebrows {
+    mask-image: url(images/renderer/eyebrows/eyebrows-7.svg);
+  }
+  &.eyes-1 .eyes {
+    background-image: url(images/renderer/eyes/eyes-1.svg);
+  }
+  &.eyes-2 .eyes {
+    background-image: url(images/renderer/eyes/eyes-2.svg);
+  }
+  &.eyes-3 .eyes {
+    background-image: url(images/renderer/eyes/eyes-3.svg);
+  }
+  &.eyes-4 .eyes {
+    background-image: url(images/renderer/eyes/eyes-4.svg);
+  }
+  &.eyes-5 .eyes {
+    background-image: url(images/renderer/eyes/eyes-5.svg);
+  }
+  &.eyes-6 .eyes {
+    background-image: url(images/renderer/eyes/eyes-6.svg);
+  }
+  &.eyes-7 .eyes {
+    background-image: url(images/renderer/eyes/eyes-7.svg);
+  }
+  &.eyes-8 .eyes {
+    background-image: url(images/renderer/eyes/eyes-8.svg);
+  }
+  &.eyes-9 .eyes {
+    background-image: url(images/renderer/eyes/eyes-9.svg);
+  }
+  &.eyes-10 .eyes {
+    background-image: url(images/renderer/eyes/eyes-10.svg);
+  }
+  &.eyes-11 .eyes {
+    background-image: url(images/renderer/eyes/eyes-11.svg);
+  }
+  &.eyes-12 .eyes {
+    background-image: url(images/renderer/eyes/eyes-12.svg);
+  }
+  &.eyes-13 .eyes {
+    background-image: url(images/renderer/eyes/eyes-13.svg);
+  }
+  &.eyes-14 .eyes {
+    background-image: url(images/renderer/eyes/eyes-14.svg);
+  }
+  &.eyes-16 .eyes {
+    background-image: url(images/renderer/eyes/eyes-16.svg);
+  }
+  &.eyes-17 .eyes {
+    background-image: url(images/renderer/eyes/eyes-17.svg);
+  }
+  &.eyes-18 .eyes {
+    background-image: url(images/renderer/eyes/eyes-18.svg);
+  }
+  &.glasses-1 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-1.svg);
+  }
+  &.glasses-1 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-1-g.svg);
+  }
+  &.glasses-2 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-2.svg);
+  }
+  &.glasses-2 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-2-g.svg);
+  }
+  &.glasses-3 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-3.svg);
+  }
+  &.glasses-3 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-3-g.svg);
+  }
+  &.glasses-4 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-4.svg);
+  }
+  &.glasses-4 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-4-g.svg);
+  }
+  &.glasses-5 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-5.svg);
+  }
+  &.glasses-5 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-5-g.svg);
+  }
+  &.glasses-6 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-6.svg);
+  }
+  &.glasses-6 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-6-g.svg);
+  }
+  &.glasses-7 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-7.svg);
+  }
+  &.glasses-7 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-7-g.svg);
+  }
+  &.glasses-8 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-8.svg);
+  }
+  &.glasses-8 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-8-g.svg);
+  }
+  &.glasses-9 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-9.svg);
+  }
+  &.glasses-9 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-9-g.svg);
+  }
+  &.glasses-10 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-10.svg);
+  }
+  &.glasses-10 .glasses-tiles {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-10-g.svg);
+  }
+  &.glasses-11 .glasses {
+    display: block;
+    mask-image: url(images/renderer/glasses/glasses-11.svg);
+  }
+  &.nose-1 .nose {
+    background-image: url(images/renderer/nose/nose-1.svg);
+  }
+  &.nose-2 .nose {
+    background-image: url(images/renderer/nose/nose-2.svg);
+  }
+  &.nose-3 .nose {
+    background-image: url(images/renderer/nose/nose-3.svg);
+  }
+  &.nose-4 .nose {
+    background-image: url(images/renderer/nose/nose-4.svg);
+  }
+  &.nose-5 .nose {
+    background-image: url(images/renderer/nose/nose-5.svg);
+  }
+  &.nose-6 .nose {
+    background-image: url(images/renderer/nose/nose-6.svg);
+  }
+  &.nose-7 .nose {
+    background-image: url(images/renderer/nose/nose-7.svg);
+  }
+  &.nose-8 .nose {
+    background-image: url(images/renderer/nose/nose-8.svg);
+  }
+  &.nose-9 .nose {
+    background-image: url(images/renderer/nose/nose-9.svg);
+  }
+  &.mouth-1 .mouth {
+    background-image: url(images/renderer/mouth/mouth-1.svg);
+  }
+  &.mouth-2 .mouth {
+    background-image: url(images/renderer/mouth/mouth-2.svg);
+  }
+  &.mouth-3 .mouth {
+    background-image: url(images/renderer/mouth/mouth-3.svg);
+  }
+  &.mouth-4 .mouth {
+    background-image: url(images/renderer/mouth/mouth-4.svg);
+  }
+  &.mouth-5 .mouth {
+    background-image: url(images/renderer/mouth/mouth-5.svg);
+  }
+  &.mouth-6 .mouth {
+    background-image: url(images/renderer/mouth/mouth-6.svg);
+  }
+  &.mouth-7 .mouth {
+    background-image: url(images/renderer/mouth/mouth-7.svg);
+  }
+  &.mouth-8 .mouth {
+    background-image: url(images/renderer/mouth/mouth-8.svg);
+  }
+  &.mouth-9 .mouth {
+    background-image: url(images/renderer/mouth/mouth-9.svg);
+  }
+  &.mouth-10 .mouth {
+    background-image: url(images/renderer/mouth/mouth-10.svg);
+  }
+  &.mouth-11 .mouth {
+    background-image: url(images/renderer/mouth/mouth-11.svg);
+  }
+  &.mouth-12 .mouth {
+    background-image: url(images/renderer/mouth/mouth-12.svg);
+  }
+  &.mouth-13 .mouth {
+    background-image: url(images/renderer/mouth/mouth-13.svg);
+  }
+  &.mouth-14 .mouth {
+    background-image: url(images/renderer/mouth/mouth-14.svg);
+  }
+  &.mouth-15 .mouth {
+    background-image: url(images/renderer/mouth/mouth-15.svg);
+  }
+}
+.ex1 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .emo-effect {
+    background-image: url(images/renderer/emotion/emo-t1-faceemo.svg);
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t1-face.svg);
+  }
+  .emo-acc {
+    background-image: url(images/renderer/emotion/emo-t1-acc.svg);
+  }
+}
+.ex2 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .cheeks {
+    display: none !important;
+  }
+  .emo-effect {
+    background-image: url(images/renderer/emotion/emo-t2-faceemo.svg);
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t2-face.svg);
+  }
+  .emo-acc {
+    background-image: url(images/renderer/emotion/emo-t2-acc.svg);
+  }
+}
+.ex3 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .emo-effect {
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t3-face.svg);
+  }
+  .emo-acc {
+    background-image: url(images/renderer/emotion/emo-t3-acc.svg);
+  }
+}
+.ex4 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .glasses {
+    transform: translateY(1%);
+  }
+  .emo-effect {
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t4-face.svg);
+  }
+  .emo-acc {
+    background-image: url(images/renderer/emotion/emo-t4-acc.svg);
+  }
+}
+.ex5 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .emo-effect {
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t5-face.svg);
+  }
+  .emo-acc {
+    background-image: url(images/renderer/emotion/emo-t5-acc.svg);
+  }
+}
+
+.ex6 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .l26 {
+    display: none !important;
+  }
+  .emo-effect {
+    background-image: url(images/renderer/emotion/emo-t6-faceemo.svg);
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t6-face.svg);
+  }
+  .emo-hands {
+    mask-image: url(images/renderer/emotion/emo-t6-acc-skin.svg);
+    display: block;
+  }
+}
+
+.ex7 {
+  .mouth {
+    display: none !important;
+  }
+  .eyes {
+    display: none !important;
+  }
+  .emo-effect {
+    background-image: url(images/renderer/emotion/emo-t7-faceemo.svg);
+  }
+  .emo-face {
+    background-image: url(images/renderer/emotion/emo-t7-face.svg);
+  }
+}

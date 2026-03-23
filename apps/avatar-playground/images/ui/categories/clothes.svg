@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #191711;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #191711;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="M28,34h-4c0,1.1-.9,2-2,2h-3c-1.1,0-2-.9-2-2h-4c-5,0-6,3.52-6,6v1h27v-1c0-2.48-1-6-6-6Z"/>
+  <g id="Groupe_116" data-name="Groupe 116">
+    <rect id="Rectangle_47" data-name="Rectangle 47" class="cls-1" x="10" y="10" width="21" height="21" rx="9.06" ry="9.06"/>
+  </g>
+</svg>

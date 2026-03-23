@@ -1,0 +1,35 @@
+{
+  "name": "@repo/avatar-system",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/avatar-config.ts",
+    "./styles.css": "./dist/avatar.css",
+    "./avatar.json": "./dist/avatar.json",
+    "./images/*": "./dist/images/*"
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run build:styles && node scripts/build.mjs",
+    "build:styles": "mkdir -p dist && lessc src/avatar.less dist/avatar.css",
+    "clean": "rm -rf dist",
+    "lint": "eslint . --max-warnings 0",
+    "lint:dev": "eslint .",
+    "check-types": "tsc --noEmit",
+    "lint:staged": "echo \"skip lint:staged (avatar-system)\"",
+    "dev": "pnpm run dev:styles",
+    "dev:styles": "less-watch-compiler src dist avatar.less"
+  },
+  "dependencies": {
+    "react": "^19.2.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "19.2.5",
+    "eslint": "^9.36.0",
+    "less": "^4.4.2",
+    "typescript": "5.9.3",
+    "less-watch-compiler": "^1.16.3"
+  }
+}
