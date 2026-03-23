@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import { buildAvatarClassName } from './avatar-classname';
+import { avatarLayerClassNames } from './avatar-markup';
 import type { AvatarSelection } from './avatar.types';
 
 type AvatarProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
@@ -13,26 +14,9 @@ export function Avatar({ selection, noBody = false, className, ...props }: Avata
       {...props}
       className={buildAvatarClassName(selection, { noBody, extraClassName: className })}
     >
-      <div className="emo-hands" />
-      <div className="emo-acc" />
-      <div className="front-hair" />
-      <div className="cheeks" />
-      <div className="face-details" />
-      <div className="nose" />
-      <div className="mouth" />
-      <div className="facial-hair" />
-      <div className="glasses" />
-      <div className="eyebrows" />
-      <div className="glasses-tiles" />
-      <div className="eyes" />
-      <div className="emo-face" />
-      <div className="emo-effect" />
-      <div className="face" />
-      <div className="clothes" />
-      <div className="body" />
-      <div className="earrings" />
-      <div className="ears" />
-      <div className="back-hair" />
+      {avatarLayerClassNames.map((layerClassName) => (
+        <div key={layerClassName} className={layerClassName} />
+      ))}
     </div>
   );
 }

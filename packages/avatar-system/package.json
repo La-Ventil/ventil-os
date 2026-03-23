@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
+    "./react": "./src/react.ts",
     "./config": "./src/avatar-config.ts",
     "./styles.css": "./dist/avatar.css",
     "./avatar.json": "./dist/avatar.json",
