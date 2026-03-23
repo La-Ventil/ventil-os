@@ -5,3 +5,9 @@ export const assertCanDeactivateBadge = (attachedMachineCount: number): void => 
     throw new OpenBadgeError('openBadge.status.attachedToMachines');
   }
 };
+
+export const assertCanDeleteBadge = (assignedProgressCount: number): void => {
+  if (assignedProgressCount > 0) {
+    throw new OpenBadgeError('openBadge.delete.alreadyAssigned');
+  }
+};

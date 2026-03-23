@@ -82,4 +82,38 @@ describe('education level command inputs', () => {
       })
     );
   });
+
+  it('nullifies education level for roles that do not use it on sign up', async () => {
+    await signUp({
+      email: 'user@example.test',
+      firstName: 'Test',
+      lastName: 'User',
+      educationLevel: EducationLevel.Terminale,
+      profileType: UserRole.Teacher,
+      password: 'ChangeMe123!',
+      termsAccepted: true
+    });
+
+    expect(mockCreateUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        educationLevel: null
+      })
+    );
+  });
+
+  it('nullifies education level for roles that do not use it on profile update', async () => {
+    await updateProfile('user-id', {
+      firstName: 'Test',
+      lastName: 'User',
+      educationLevel: EducationLevel.Premiere,
+      profile: UserRole.Teacher
+    });
+
+    expect(mockUpdateUserProfile).toHaveBeenCalledWith(
+      'user-id',
+      expect.objectContaining({
+        educationLevel: null
+      })
+    );
+  });
 });

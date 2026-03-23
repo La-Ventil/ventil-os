@@ -76,6 +76,12 @@ export type ReservationCandidate = {
 
 export type ReservationEligibilityLevels = Map<string, number | null>;
 
+export type UpdateReservationOptions = {
+  userLevels: ReservationEligibilityLevels;
+  now?: Date;
+  excludeReservationId: string;
+};
+
 const toInterval = (reservation: { startsAt: Date; endsAt: Date }): DateInterval => ({
   start: reservation.startsAt,
   end: reservation.endsAt
@@ -177,6 +183,17 @@ export const Machine = {
     Machine.assertReservationInterval(candidate, 'reserve');
     Machine.assertReservationNotInPast(candidate, now);
     Machine.assertNoOverlap(machine, candidate, options);
+  },
+  assertCanUpdateReservation(
+    machine: Machine,
+    candidate: ReservationCandidate,
+    options: UpdateReservationOptions
+  ): void {
+    Machine.assertReservationEligibility(machine, options.userLevels);
+    Machine.assertReservable(machine);
+    Machine.assertReservationInterval(candidate, 'update');
+    Machine.assertReservationNotInPast(candidate, options.now);
+    Machine.assertNoOverlap(machine, candidate, { excludeReservationId: options.excludeReservationId });
   },
   canReserve(
     machine: Machine,

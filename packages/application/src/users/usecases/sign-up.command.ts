@@ -1,6 +1,7 @@
 import { hashSecret } from '@repo/crypto';
 import { ConsentType, isPrismaUniqueConstraintError, mapUserRoleToProfileRecord, userRepository } from '@repo/db';
 import type { EducationLevel } from '@repo/domain/user/education-level';
+import { resolvePersistedEducationLevel } from '@repo/domain/user/user-profile';
 import type { UserRole } from '@repo/domain/user/user-role';
 import { formatGeneratedUsername } from '@repo/domain/user/user-username';
 import { createEmailVerificationToken } from '../email-tokens';
@@ -32,7 +33,7 @@ export const signUp: Command<[SignUpInput], SignUpResult> = async (input: SignUp
       username,
       firstName: input.firstName,
       lastName: input.lastName,
-      educationLevel: input.educationLevel ?? null,
+      educationLevel: resolvePersistedEducationLevel(input.profileType, input.educationLevel) ?? null,
       password: hashedSecret,
       salt,
       iterations,

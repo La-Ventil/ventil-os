@@ -1,4 +1,5 @@
 import { openBadgeRepository } from '@repo/db';
+import { assertCanDeleteBadge } from '@repo/domain/badge/open-badge-deactivation-policy';
 import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import type { Command } from '../../usecase';
 
@@ -15,9 +16,7 @@ export const removeOpenBadge: Command<[RemoveOpenBadgeInput], RemoveOpenBadgeRes
   if (!badge) {
     throw new OpenBadgeError('openBadge.delete.notFound');
   }
-  if (badge._count.openBadgeProgresses > 0) {
-    throw new OpenBadgeError('openBadge.delete.alreadyAssigned');
-  }
+  assertCanDeleteBadge(badge._count.openBadgeProgresses);
 
   return openBadgeRepository.deleteOpenBadge(input.id);
 };

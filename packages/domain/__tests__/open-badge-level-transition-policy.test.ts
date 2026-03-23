@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  canTransitionOpenBadgeLevel,
   canAdvanceOpenBadgeLevel,
   canDowngradeOpenBadgeLevel
 } from '../badge/open-badge-level-transition-policy';
@@ -23,5 +24,12 @@ describe('open badge level transition policy', () => {
     expect(canDowngradeOpenBadgeLevel(1, 0)).toBe(false);
     expect(canDowngradeOpenBadgeLevel(3, 1)).toBe(false);
     expect(canDowngradeOpenBadgeLevel(3, 3)).toBe(false);
+  });
+
+  it('supports a single transition helper for both directions', () => {
+    expect(canTransitionOpenBadgeLevel(1, 2, 'advance')).toBe(true);
+    expect(canTransitionOpenBadgeLevel(3, 2, 'downgrade')).toBe(true);
+    expect(canTransitionOpenBadgeLevel(1, 3, 'advance')).toBe(false);
+    expect(canTransitionOpenBadgeLevel(1, 0, 'downgrade')).toBe(false);
   });
 });

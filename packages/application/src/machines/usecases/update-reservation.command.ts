@@ -7,7 +7,7 @@ import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
 import { Machine } from '@repo/domain/machine/machine';
 import type { Command } from '../../usecase';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
-import { assertReservationEligibility } from '../reservation-eligibility';
+import { openBadgeRepository } from '@repo/db';
 
 export type UpdateReservationInput = {
   reservationId: string;
@@ -47,7 +47,10 @@ export const updateReservation: Command<[UpdateReservationInput], MachineReserva
     throw new MachineReservationError('machineReservation.machineRequired');
   }
 
-  await assertReservationEligibility(machine, reservation.creator.id);
+  const highestLevels = await openBadgeRepository.getUserHighestOpenBadgeLevels(
+    reservation.creator.id,
+    machine.badgeRequirements.map((requirement) => requirement.openBadge.id)
+  );
 
   const { candidate, participantIds } = Machine.planReservation({
     creatorId: reservation.creator.id,
@@ -56,10 +59,11 @@ export const updateReservation: Command<[UpdateReservationInput], MachineReserva
     participantIds: input.participantIds
   });
 
-  Machine.assertReservable(machine);
-  Machine.assertReservationInterval(candidate, 'update');
-  Machine.assertReservationNotInPast(candidate, new Date());
-  Machine.assertNoOverlap(machine, candidate, { excludeReservationId: reservation.id });
+  Machine.assertCanUpdateReservation(machine, candidate, {
+    userLevels: highestLevels,
+    now: new Date(),
+    excludeReservationId: reservation.id
+  });
 
   const updated = await machineReservationRepository.updateReservation({
     reservationId: reservation.id,

@@ -1,10 +1,17 @@
+export type OpenBadgeLevelTransition = 'advance' | 'downgrade';
+
 const normalizeHighestLevel = (highestLevel: number | null): number => highestLevel ?? 0;
 
-export const canAdvanceOpenBadgeLevel = (highestLevel: number | null, targetLevel: number): boolean =>
-  targetLevel === normalizeHighestLevel(highestLevel) + 1;
-
-export const canDowngradeOpenBadgeLevel = (highestLevel: number | null, targetLevel: number): boolean => {
+export const canTransitionOpenBadgeLevel = (
+  highestLevel: number | null,
+  targetLevel: number,
+  transition: OpenBadgeLevelTransition
+): boolean => {
   const currentLevel = normalizeHighestLevel(highestLevel);
+
+  if (transition === 'advance') {
+    return targetLevel === currentLevel + 1;
+  }
 
   if (currentLevel <= 1) {
     return false;
@@ -12,3 +19,9 @@ export const canDowngradeOpenBadgeLevel = (highestLevel: number | null, targetLe
 
   return targetLevel === currentLevel - 1;
 };
+
+export const canAdvanceOpenBadgeLevel = (highestLevel: number | null, targetLevel: number): boolean =>
+  canTransitionOpenBadgeLevel(highestLevel, targetLevel, 'advance');
+
+export const canDowngradeOpenBadgeLevel = (highestLevel: number | null, targetLevel: number): boolean =>
+  canTransitionOpenBadgeLevel(highestLevel, targetLevel, 'downgrade');
