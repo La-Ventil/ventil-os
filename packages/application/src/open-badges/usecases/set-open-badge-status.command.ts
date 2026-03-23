@@ -1,5 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
 import { type ActivityStatus } from '@repo/domain/activity-status';
+import { assertCanDeactivateBadge } from '@repo/domain/badge/open-badge-deactivation-policy';
 import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import type { Command } from '../../usecase';
 
@@ -18,8 +19,8 @@ export const setOpenBadgeStatus: Command<[SetOpenBadgeStatusInput], SetOpenBadge
     throw new OpenBadgeError('openBadge.status.notFound');
   }
 
-  if (input.status === 'inactive' && badge._count.machines > 0) {
-    throw new OpenBadgeError('openBadge.status.attachedToMachines');
+  if (input.status === 'inactive') {
+    assertCanDeactivateBadge(badge._count.machines);
   }
 
   return openBadgeRepository.setOpenBadgeStatus(input.id, input.status);

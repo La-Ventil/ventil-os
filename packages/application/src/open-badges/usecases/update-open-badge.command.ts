@@ -1,5 +1,6 @@
 import { openBadgeRepository } from '@repo/db';
 import { ActivityStatus } from '@repo/domain/activity-status';
+import { assertCanDeactivateBadge } from '@repo/domain/badge/open-badge-deactivation-policy';
 import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import type { Command } from '../../usecase';
 
@@ -26,11 +27,11 @@ export const updateOpenBadge: Command<[UpdateOpenBadgeInput], UpdateOpenBadgeRes
     throw new OpenBadgeError('openBadge.update.notFound');
   }
 
-  if (!input.activationEnabled && admin._count.machines > 0) {
-    throw new OpenBadgeError('openBadge.status.attachedToMachines');
+  if (!input.activationEnabled) {
+    assertCanDeactivateBadge(admin._count.machines);
   }
 
-  const coverImage = input.imageUrl !== undefined ? input.imageUrl : current.coverImage ?? null;
+  const coverImage = input.imageUrl !== undefined ? input.imageUrl : (current.coverImage ?? null);
 
   return openBadgeRepository.updateOpenBadge({
     id: input.id,
