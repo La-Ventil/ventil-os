@@ -16,6 +16,7 @@ export type User = {
   firstName: string;
   globalAdmin: boolean;
   pedagogicalAdmin: boolean;
+  blocked: boolean;
 };
 
 const assertPendingEmail = (email: Email, pendingEmail?: Email | null): void => {
@@ -86,7 +87,13 @@ export const User = {
     };
   },
   canLogin(user: User): boolean {
-    return Boolean(user.emailVerifiedAt);
+    return Boolean(user.emailVerifiedAt) && !user.blocked;
+  },
+  block(user: User): User {
+    return { ...user, blocked: true };
+  },
+  unblock(user: User): User {
+    return { ...user, blocked: false };
   },
   toAdminFlags(user: User): AdminFlags {
     return {

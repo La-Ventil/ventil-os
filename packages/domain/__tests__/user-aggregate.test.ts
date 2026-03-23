@@ -16,7 +16,8 @@ const baseUser = () =>
     lastName: 'Doe',
     firstName: 'Jane',
     globalAdmin: false,
-    pedagogicalAdmin: false
+    pedagogicalAdmin: false,
+    blocked: false
   });
 
 describe('User aggregate', () => {
@@ -42,5 +43,34 @@ describe('User aggregate', () => {
 
     expect(confirmed.email).toBe('user@example.com');
     expect(confirmed.emailVerifiedAt).not.toBeNull();
+  });
+
+  describe('canLogin', () => {
+    it('returns false when email is not verified', () => {
+      const user = baseUser();
+      expect(User.canLogin(user)).toBe(false);
+    });
+
+    it('returns true when email is verified and not blocked', () => {
+      const user = User.markEmailVerified(baseUser());
+      expect(User.canLogin(user)).toBe(true);
+    });
+
+    it('returns false when verified but blocked', () => {
+      const user = User.block(User.markEmailVerified(baseUser()));
+      expect(User.canLogin(user)).toBe(false);
+    });
+  });
+
+  describe('block / unblock', () => {
+    it('blocks a user', () => {
+      const user = baseUser();
+      expect(User.block(user).blocked).toBe(true);
+    });
+
+    it('unblocks a user', () => {
+      const user = User.block(baseUser());
+      expect(User.unblock(user).blocked).toBe(false);
+    });
   });
 });

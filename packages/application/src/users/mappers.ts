@@ -14,5 +14,6 @@ export const toDomainUser = (user: UserProfileReadModel): User =>
     lastName: user.lastName,
     firstName: user.firstName,
     globalAdmin: user.globalAdmin,
-    pedagogicalAdmin: user.pedagogicalAdmin
+    pedagogicalAdmin: user.pedagogicalAdmin,
+    blocked: user.blocked
   });

@@ -13,6 +13,7 @@ export const userProfileSelect = {
   educationLevel: true,
   pedagogicalAdmin: true,
   globalAdmin: true,
+  blocked: true,
   lastName: true,
   firstName: true
 } as const;
