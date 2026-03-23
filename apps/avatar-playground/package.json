@@ -2,16 +2,24 @@
   "name": "avatar-playground",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "pnpm run start",
-    "start": "serve -l 4173 --no-port-switching .",
-    "build": "echo \"skip build (avatar-playground)\"",
+    "dev": "vite --port 4173",
+    "start": "vite --port 4173",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
     "lint": "echo \"skip lint (avatar-playground)\"",
     "lint:dev": "echo \"skip lint:dev (avatar-playground)\"",
-    "check-types": "echo \"skip check-types (avatar-playground)\"",
+    "check-types": "tsc --noEmit",
     "lint:staged": "echo \"skip lint:staged (avatar-playground)\""
   },
+  "dependencies": {
+    "@repo/avatar-system": "workspace:*"
+  },
   "devDependencies": {
-    "serve": "^14.2.5"
+    "@repo/typescript-config": "workspace:*",
+    "less": "^4.4.2",
+    "typescript": "5.9.3",
+    "vite": "^7.1.9"
   }
 }

@@ -18,7 +18,7 @@
     "lint:dev": "eslint .",
     "check-types": "tsc --noEmit",
     "lint:staged": "echo \"skip lint:staged (avatar-system)\"",
-    "dev": "pnpm run dev:styles",
+    "dev": "pnpm run build && pnpm run dev:styles",
     "dev:styles": "less-watch-compiler src dist avatar.less"
   },
   "dependencies": {
