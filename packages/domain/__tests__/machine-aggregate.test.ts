@@ -101,6 +101,49 @@ describe('Machine aggregate', () => {
     ).not.toThrow();
   });
 
+  it('checks reservation creation through a single aggregate guard', () => {
+    const machine = baseMachine([], [badgeRequirement]);
+    const candidate = {
+      startsAt: new Date('2026-02-17T11:30:00.000Z'),
+      endsAt: new Date('2026-02-17T12:00:00.000Z')
+    };
+
+    expect(() =>
+      Machine.assertCanCreateReservation(machine, candidate, {
+        userLevels: new Map([['badge-1', 2]]),
+        now: new Date('2026-02-17T09:00:00.000Z')
+      })
+    ).not.toThrow();
+
+    expect(() =>
+      Machine.assertCanCreateReservation(machine, candidate, {
+        userLevels: new Map([['badge-1', 1]]),
+        now: new Date('2026-02-17T09:00:00.000Z')
+      })
+    ).toThrow('machineReservation.badgeRequired');
+  });
+
+  it('rejects overlapping reservation creation through the aggregate guard', () => {
+    const existing = MachineReservationSlot.from({
+      id: 'res-1',
+      startsAt: new Date('2026-02-17T10:00:00.000Z'),
+      endsAt: new Date('2026-02-17T11:00:00.000Z'),
+      status: MachineReservationStatus.Confirmed
+    });
+    const machine = baseMachine([existing], [badgeRequirement]);
+    const candidate = {
+      startsAt: new Date('2026-02-17T10:30:00.000Z'),
+      endsAt: new Date('2026-02-17T11:30:00.000Z')
+    };
+
+    expect(() =>
+      Machine.assertCanCreateReservation(machine, candidate, {
+        userLevels: new Map([['badge-1', 2]]),
+        now: new Date('2026-02-17T09:00:00.000Z')
+      })
+    ).toThrow('machineReservation.overlap');
+  });
+
   it('checks reservation updates through a single aggregate guard', () => {
     const existing = MachineReservationSlot.from({
       id: 'res-1',

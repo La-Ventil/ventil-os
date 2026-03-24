@@ -76,10 +76,22 @@ export type ReservationCandidate = {
 
 export type ReservationEligibilityLevels = Map<string, number | null>;
 
+export type CreateReservationOptions = {
+  userLevels: ReservationEligibilityLevels;
+  now?: Date;
+};
+
 export type UpdateReservationOptions = {
   userLevels: ReservationEligibilityLevels;
   now?: Date;
   excludeReservationId: string;
+};
+
+type ScheduleReservationOptions = {
+  userLevels: ReservationEligibilityLevels;
+  now?: Date;
+  excludeReservationId?: string;
+  context: 'create' | 'update';
 };
 
 const toInterval = (reservation: { startsAt: Date; endsAt: Date }): DateInterval => ({
@@ -98,6 +110,18 @@ const listConfirmedIntervals = (
     .filter((reservation) => (excludeId ? reservation.id !== excludeId : true))
     .filter((reservation) => isReservationConfirmed(reservation.status))
     .map((reservation) => toInterval(reservation));
+
+const assertCanScheduleReservation = (
+  machine: Machine,
+  candidate: ReservationCandidate,
+  options: ScheduleReservationOptions
+): void => {
+  Machine.assertReservationEligibility(machine, options.userLevels);
+  Machine.assertReservable(machine);
+  Machine.assertReservationInterval(candidate, options.context);
+  Machine.assertReservationNotInPast(candidate, options.now);
+  Machine.assertNoOverlap(machine, candidate, { excludeReservationId: options.excludeReservationId });
+};
 
 export const Machine = {
   from(input: Omit<Machine, 'badgeRequirements' | 'reservations'> & {
@@ -184,16 +208,28 @@ export const Machine = {
     Machine.assertReservationNotInPast(candidate, now);
     Machine.assertNoOverlap(machine, candidate, options);
   },
+  assertCanCreateReservation(
+    machine: Machine,
+    candidate: ReservationCandidate,
+    options: CreateReservationOptions
+  ): void {
+    assertCanScheduleReservation(machine, candidate, {
+      userLevels: options.userLevels,
+      now: options.now,
+      context: 'create'
+    });
+  },
   assertCanUpdateReservation(
     machine: Machine,
     candidate: ReservationCandidate,
     options: UpdateReservationOptions
   ): void {
-    Machine.assertReservationEligibility(machine, options.userLevels);
-    Machine.assertReservable(machine);
-    Machine.assertReservationInterval(candidate, 'update');
-    Machine.assertReservationNotInPast(candidate, options.now);
-    Machine.assertNoOverlap(machine, candidate, { excludeReservationId: options.excludeReservationId });
+    assertCanScheduleReservation(machine, candidate, {
+      userLevels: options.userLevels,
+      now: options.now,
+      excludeReservationId: options.excludeReservationId,
+      context: 'update'
+    });
   },
   canReserve(
     machine: Machine,

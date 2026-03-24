@@ -24,20 +24,13 @@ export const resolveReservationEligibilityLevels = async (
   return openBadgeRepository.getUserHighestOpenBadgeLevels(userId, openBadgeIds);
 };
 
-export const assertReservationEligibility = async (
-  machine: MachineAggregate,
-  userId?: string | null
-): Promise<void> => {
-  const userLevels = await resolveReservationEligibilityLevels(machine, userId);
-  Machine.assertReservationEligibility(machine, userLevels);
-};
-
 export const checkReservationEligibilityForMachine = async (
   machine: MachineAggregate,
   userId?: string | null
 ): Promise<boolean> => {
+  const userLevels = await resolveReservationEligibilityLevels(machine, userId);
   try {
-    await assertReservationEligibility(machine, userId);
+    Machine.assertReservationEligibility(machine, userLevels);
     return true;
   } catch {
     return false;
