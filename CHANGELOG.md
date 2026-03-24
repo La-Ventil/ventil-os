@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.30](https://github.com/La-Ventil/ventil-os/compare/v0.0.29...v0.0.30) (2026-03-24)
+
+
+### Features
+
+* **hub:** add draft avatar editor ([8bc6ab0](https://github.com/La-Ventil/ventil-os/commit/8bc6ab0d75802bff940a365567162081b3d3abae))
+
+
+### Bug Fixes
+
+* **security:** hash reset and email verification tokens before storing in DB ([c71e5d3](https://github.com/La-Ventil/ventil-os/commit/c71e5d339a8c8819ad2ec9b29f5fd34e24ab5387))
+* **security:** increase PBKDF2 iterations to 600k (OWASP 2024 recommendation) ([5754a79](https://github.com/La-Ventil/ventil-os/commit/5754a790b491d7b0ea5b78d16718fe665a39b759))
+
+
+### Docs
+
+* add CLAUDE.md project context for AI agents ([5a65250](https://github.com/La-Ventil/ventil-os/commit/5a65250a9e7391f9e61b015d1a4d3244ead1d0bd))
+
 ### [0.0.29](https://github.com/La-Ventil/ventil-os/compare/v0.0.28...v0.0.29) (2026-03-23)
 
 
