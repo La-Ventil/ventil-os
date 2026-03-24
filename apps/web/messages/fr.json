@@ -590,6 +590,72 @@
             "device": "notez le modèle de mobile et le navigateur que vous utilisez pour consulter Ventil O.S."
           }
         }
+      },
+      "avatarSettings": {
+        "title": "Changer son avatar",
+        "subtitle": "Personnalisation",
+        "intro": "Cette première version permet de tester l’éditeur directement dans le hub. Les modifications restent locales pour le moment.",
+        "editor": {
+          "title": "Changer son avatar",
+          "helper": "Prévisualisation locale uniquement, sans sauvegarde pour le moment.",
+          "categoryNavLabel": "Choix des catégories de personnalisation",
+          "back": "Retour",
+          "save": "Sauvegarder",
+          "savePending": "La sauvegarde sera branchée dans une prochaine étape.",
+          "noneOption": "Aucune option",
+          "selectColor": "Sélectionner la couleur {color}",
+          "selectOption": "Sélectionner {option} pour {category}",
+          "categories": {
+            "face": {
+              "label": "Visage",
+              "colors": "Couleur de peau",
+              "options": "Forme du visage"
+            },
+            "hair": {
+              "label": "Cheveux",
+              "colors": "Couleur de cheveux",
+              "options": "Coupe de cheveux"
+            },
+            "nose": {
+              "label": "Nez",
+              "options": "Nez"
+            },
+            "mouth": {
+              "label": "Bouche",
+              "options": "Bouche"
+            },
+            "eyes": {
+              "label": "Yeux",
+              "options": "Yeux"
+            },
+            "eyebrows": {
+              "label": "Sourcils",
+              "options": "Sourcils"
+            },
+            "glasses": {
+              "label": "Lunettes",
+              "colors": "Couleur des lunettes",
+              "options": "Lunettes"
+            },
+            "facial-hair": {
+              "label": "Moustache et barbe",
+              "options": "Moustache et barbe"
+            },
+            "face-details": {
+              "label": "Détail facial",
+              "options": "Détail facial"
+            },
+            "cheeks": {
+              "label": "Joues",
+              "colors": "Couleur",
+              "options": "Type de joues"
+            },
+            "clothes": {
+              "label": "Vêtements",
+              "options": "Vêtements"
+            }
+          }
+        }
       }
     }
   },

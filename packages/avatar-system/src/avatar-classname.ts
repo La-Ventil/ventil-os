@@ -18,6 +18,7 @@ export function buildAvatarClassName(
     selection.faceDetails,
     selection.cheeks,
     selection.hair,
+    selection.clothes,
     selection.skinColor,
     selection.hairColor,
     selection.glassesColor,

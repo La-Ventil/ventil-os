@@ -5,6 +5,7 @@ export type AvatarSelection = {
   mouth: string;
   nose: string;
   hair: string;
+  clothes: string;
   skinColor: string;
   hairColor: string;
   earrings?: string;

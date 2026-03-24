@@ -9,6 +9,7 @@ type PlaygroundSelection = {
   mouth: string;
   nose: string;
   hair: string;
+  clothes: string;
   skinColor: string;
   hairColor: string;
   glassesColor: string;
@@ -29,6 +30,7 @@ const selection: PlaygroundSelection = {
   mouth: 'mouth-5',
   nose: 'nose-1',
   hair: 'hair-100',
+  clothes: 'clothes-1',
   skinColor: 'skin-color-4',
   hairColor: 'hair-color-13',
   glassesColor: 'glasses-color-1',

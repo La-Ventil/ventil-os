@@ -280,6 +280,9 @@ importers:
       '@repo/application':
         specifier: workspace:*
         version: link:../../packages/application
+      '@repo/avatar-system':
+        specifier: workspace:*
+        version: link:../../packages/avatar-system
       '@repo/crypto':
         specifier: workspace:*
         version: link:../../packages/crypto

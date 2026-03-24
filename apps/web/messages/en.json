@@ -590,6 +590,72 @@
             "device": "include your phone model and the browser you used to access Ventil O.S."
           }
         }
+      },
+      "avatarSettings": {
+        "title": "Change avatar",
+        "subtitle": "Customization",
+        "intro": "This first version lets you try the avatar editor directly in the hub. Changes stay local for now.",
+        "editor": {
+          "title": "Change avatar",
+          "helper": "Local preview only for now, without persistence.",
+          "categoryNavLabel": "Avatar customization categories",
+          "back": "Back",
+          "save": "Save",
+          "savePending": "Saving will be wired in a later step.",
+          "noneOption": "No option",
+          "selectColor": "Select color {color}",
+          "selectOption": "Select {option} for {category}",
+          "categories": {
+            "face": {
+              "label": "Face",
+              "colors": "Skin color",
+              "options": "Face shape"
+            },
+            "hair": {
+              "label": "Hair",
+              "colors": "Hair color",
+              "options": "Hair style"
+            },
+            "nose": {
+              "label": "Nose",
+              "options": "Nose"
+            },
+            "mouth": {
+              "label": "Mouth",
+              "options": "Mouth"
+            },
+            "eyes": {
+              "label": "Eyes",
+              "options": "Eyes"
+            },
+            "eyebrows": {
+              "label": "Eyebrows",
+              "options": "Eyebrows"
+            },
+            "glasses": {
+              "label": "Glasses",
+              "colors": "Glasses color",
+              "options": "Glasses"
+            },
+            "facial-hair": {
+              "label": "Mustache and beard",
+              "options": "Mustache and beard"
+            },
+            "face-details": {
+              "label": "Face detail",
+              "options": "Face detail"
+            },
+            "cheeks": {
+              "label": "Cheeks",
+              "colors": "Color",
+              "options": "Cheek style"
+            },
+            "clothes": {
+              "label": "Clothes",
+              "options": "Clothes"
+            }
+          }
+        }
       }
     }
   },
