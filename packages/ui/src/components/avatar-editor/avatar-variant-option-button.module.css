@@ -1,0 +1,31 @@
+.optionButton {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0.125rem;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.optionButton[data-active='true'] {
+  border-color: #1f2436;
+  box-shadow: inset 0 0 0 1px #1f2436;
+}
+
+.optionPreview {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.optionPreview :global(.avatar) {
+  margin-bottom: 0;
+  box-shadow: none;
+  background-color: transparent;
+}

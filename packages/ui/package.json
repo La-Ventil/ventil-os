@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     "./theme": "./src/theme.ts",
+    "./avatar-editor": "./src/components/avatar-editor/index.tsx",
     "./fonts": "./src/fonts.tsx",
     "./*": "./src/components/*.tsx",
     "./tabs": "./src/components/tabs/index.tsx",
@@ -38,6 +39,7 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "@mui/x-date-pickers": "^8.0.0",
+    "@repo/avatar-system": "workspace:*",
     "@repo/application": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/form": "workspace:*",

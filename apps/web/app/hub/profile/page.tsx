@@ -36,7 +36,7 @@ export default async function Page(): Promise<JSX.Element> {
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>
-      <ProfileCard profile={userProfile} />
+      <ProfileCard profile={userProfile} avatarHref="/hub/profile/avatar" avatarLinkLabel={t('actions.editAvatar')} />
       <Section>
         <StatsList stats={stats} />
       </Section>

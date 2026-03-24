@@ -620,6 +620,9 @@ importers:
       '@repo/application':
         specifier: workspace:*
         version: link:../application
+      '@repo/avatar-system':
+        specifier: workspace:*
+        version: link:../avatar-system
       '@repo/domain':
         specifier: workspace:*
         version: link:../domain

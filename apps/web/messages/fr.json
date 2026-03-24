@@ -411,6 +411,9 @@
           "openBadge": "Open badges obtenus",
           "openBadgeAssigned": "Open badges attribués",
           "machine": "Machine utilisée"
+        },
+        "actions": {
+          "editAvatar": "Modifier son avatar"
         }
       },
       "profileSettings": {
@@ -635,7 +638,11 @@
             "glasses": {
               "label": "Lunettes",
               "colors": "Couleur des lunettes",
-              "options": "Lunettes"
+              "options": "Lunettes",
+              "colorGroups": {
+                "frame": "Couleur de monture",
+                "tiles": "Couleur des verres"
+              }
             },
             "facial-hair": {
               "label": "Moustache et barbe",
