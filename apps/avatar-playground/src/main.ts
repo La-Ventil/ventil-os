@@ -1,29 +1,9 @@
 import '@repo/avatar-system/styles.css';
+import type { AvatarSelection } from '@repo/avatar-system';
 import { avatarConfig, buildAvatarClassName, createAvatarElement } from '@repo/avatar-system';
 import '../style.less';
 
-type PlaygroundSelection = {
-  face: string;
-  eyes: string;
-  eyebrows: string;
-  mouth: string;
-  nose: string;
-  hair: string;
-  clothes: string;
-  skinColor: string;
-  hairColor: string;
-  glassesColor: string;
-  glassesTilesColor: string;
-  cheeksColor: string;
-  earringsColor: string;
-  earrings?: string;
-  glasses?: string;
-  facialHair?: string;
-  faceDetails?: string;
-  cheeks?: string;
-};
-
-const selection: PlaygroundSelection = {
+const selection: AvatarSelection = {
   face: 'face-shape-1',
   eyes: 'eyes-1',
   eyebrows: 'eyebrows-1',
@@ -31,12 +11,12 @@ const selection: PlaygroundSelection = {
   nose: 'nose-1',
   hair: 'hair-100',
   clothes: 'clothes-1',
-  skinColor: 'skin-color-4',
-  hairColor: 'hair-color-13',
-  glassesColor: 'glasses-color-1',
-  glassesTilesColor: 'glasses-tiles-color-1',
-  cheeksColor: 'cheeks-color-1',
-  earringsColor: 'earrings-color-1',
+  'face-color': 'skin-color-4',
+  'hair-color': 'hair-color-13',
+  'glasses-color': 'glasses-color-1',
+  'glasses-tiles-color': 'glasses-tiles-color-1',
+  'cheeks-color': 'cheeks-color-1',
+  'earrings-color': 'earrings-color-1'
 };
 
 const avatarNodes = Array.from(document.querySelectorAll<HTMLDivElement>('.avatar')).map((legacyNode) => {
@@ -63,22 +43,22 @@ function updateGroupActiveState(groupId: string, activeValue: string | undefined
 
 function syncButtonStates() {
   updateGroupActiveState('face', selection.face);
-  updateGroupActiveState('skin', selection.skinColor);
+  updateGroupActiveState('skin', selection['face-color']);
   updateGroupActiveState('hair', selection.hair);
-  updateGroupActiveState('hair-color', selection.hairColor);
+  updateGroupActiveState('hair-color', selection['hair-color']);
   updateGroupActiveState('mouth', selection.mouth);
   updateGroupActiveState('nose', selection.nose);
   updateGroupActiveState('eyes', selection.eyes);
   updateGroupActiveState('eyebrows', selection.eyebrows);
   updateGroupActiveState('glasses', selection.glasses);
-  updateGroupActiveState('glasses-color', selection.glassesColor);
-  updateGroupActiveState('glasses-tiles-color', selection.glassesTilesColor);
-  updateGroupActiveState('facial-hair', selection.facialHair);
-  updateGroupActiveState('face-details', selection.faceDetails);
+  updateGroupActiveState('glasses-color', selection['glasses-color']);
+  updateGroupActiveState('glasses-tiles-color', selection['glasses-tiles-color']);
+  updateGroupActiveState('facial-hair', selection['facial-hair']);
+  updateGroupActiveState('face-details', selection['face-details']);
   updateGroupActiveState('cheeks', selection.cheeks);
-  updateGroupActiveState('cheeks-color', selection.cheeksColor);
+  updateGroupActiveState('cheeks-color', selection['cheeks-color']);
   updateGroupActiveState('earrings', selection.earrings);
-  updateGroupActiveState('earrings-color', selection.earringsColor);
+  updateGroupActiveState('earrings-color', selection['earrings-color']);
 }
 
 function render() {
@@ -116,7 +96,7 @@ function applyOptionSelection(type: string, value: string) {
       selection.face = value;
       break;
     case 'face-details':
-      selection.faceDetails = value || undefined;
+      selection['face-details'] = value || undefined;
       break;
     case 'cheeks':
       selection.cheeks = value || undefined;
@@ -143,7 +123,7 @@ function applyOptionSelection(type: string, value: string) {
       selection.hair = value;
       break;
     case 'facial-hair':
-      selection.facialHair = value || undefined;
+      selection['facial-hair'] = value || undefined;
       break;
     default:
       return;
@@ -155,22 +135,22 @@ function applyOptionSelection(type: string, value: string) {
 function applyColorSelection(groupId: string, value: string) {
   switch (groupId) {
     case 'skin':
-      selection.skinColor = value;
+      selection['face-color'] = value;
       break;
     case 'hair-color':
-      selection.hairColor = value;
+      selection['hair-color'] = value;
       break;
     case 'glasses-color':
-      selection.glassesColor = value;
+      selection['glasses-color'] = value;
       break;
     case 'glasses-tiles-color':
-      selection.glassesTilesColor = value;
+      selection['glasses-tiles-color'] = value;
       break;
     case 'cheeks-color':
-      selection.cheeksColor = value;
+      selection['cheeks-color'] = value;
       break;
     case 'earrings-color':
-      selection.earringsColor = value;
+      selection['earrings-color'] = value;
       break;
     default:
       return;
@@ -181,16 +161,7 @@ function applyColorSelection(groupId: string, value: string) {
 
 const randomButton = document.getElementById('random');
 randomButton?.addEventListener('click', () => {
-  const randomGroups = [
-    'face',
-    'skin',
-    'hair',
-    'hair-color',
-    'mouth',
-    'nose',
-    'eyes',
-    'eyebrows',
-  ];
+  const randomGroups = ['face', 'skin', 'hair', 'hair-color', 'mouth', 'nose', 'eyes', 'eyebrows'];
 
   for (const groupId of randomGroups) {
     const button = pickRandomButton(groupId);
@@ -213,21 +184,11 @@ for (const button of document.querySelectorAll<HTMLButtonElement>('.option-butto
       return;
     }
 
-    applyOptionSelection(
-      currentButton.dataset.type ?? '',
-      currentButton.dataset.value ?? currentButton.id,
-    );
+    applyOptionSelection(currentButton.dataset.type ?? '', currentButton.dataset.value ?? currentButton.id);
   });
 }
 
-for (const groupId of [
-  'skin',
-  'hair-color',
-  'glasses-color',
-  'glasses-tiles-color',
-  'cheeks-color',
-  'earrings-color',
-]) {
+for (const groupId of ['skin', 'hair-color', 'glasses-color', 'glasses-tiles-color', 'cheeks-color', 'earrings-color']) {
   const group = document.getElementById(groupId);
   if (!group) {
     continue;

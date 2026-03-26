@@ -660,6 +660,11 @@
             "clothes": {
               "label": "Clothes",
               "options": "Clothes"
+            },
+            "earrings": {
+              "label": "Earrings",
+              "colors": "Earrings color",
+              "options": "Earrings"
             }
           }
         }

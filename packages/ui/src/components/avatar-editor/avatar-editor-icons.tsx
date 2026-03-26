@@ -60,6 +60,19 @@ function CheeksIcon(props: SvgIconProps) {
   );
 }
 
+function EarringsIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon {...props} viewBox="0 0 40 40">
+      <circle fill="currentColor" cx="14" cy="16" r="2.5" />
+      <circle fill="currentColor" cx="26" cy="16" r="2.5" />
+      <path
+        fill="currentColor"
+        d="M14 18.5a1 1 0 0 1 1 1V23a2 2 0 1 1-2 0v-3.5a1 1 0 0 1 1-1Zm12 0a1 1 0 0 1 1 1V23a2 2 0 1 1-2 0v-3.5a1 1 0 0 1 1-1Z"
+      />
+    </SvgIcon>
+  );
+}
+
 export function getCategoryIcon(categoryId: CategoryId): (props: SvgIconProps) => React.JSX.Element {
   switch (categoryId) {
     case 'face':
@@ -84,5 +97,7 @@ export function getCategoryIcon(categoryId: CategoryId): (props: SvgIconProps) =
       return CheeksIcon;
     case 'clothes':
       return avatarShirtIcon;
+    case 'earrings':
+      return EarringsIcon;
   }
 }

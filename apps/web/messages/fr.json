@@ -660,6 +660,11 @@
             "clothes": {
               "label": "Vêtements",
               "options": "Vêtements"
+            },
+            "earrings": {
+              "label": "Boucles d’oreilles",
+              "colors": "Couleur des boucles d’oreilles",
+              "options": "Boucles d’oreilles"
             }
           }
         }

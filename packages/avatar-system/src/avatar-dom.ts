@@ -21,7 +21,7 @@ export function createAvatarElement(
 
   element.className = buildAvatarClassName(selection, {
     noBody: options?.noBody,
-    extraClassName: options?.className,
+    className: options?.className,
   });
 
   return element;

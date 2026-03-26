@@ -12,7 +12,7 @@ export function Avatar({ selection, noBody = false, className, ...props }: Avata
   return (
     <div
       {...props}
-      className={buildAvatarClassName(selection, { noBody, extraClassName: className })}
+      className={buildAvatarClassName(selection, { noBody, className })}
     >
       {avatarLayerClassNames.map((layerClassName) => (
         <div key={layerClassName} className={layerClassName} />

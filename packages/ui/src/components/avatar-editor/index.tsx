@@ -6,7 +6,12 @@ import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { avatarConfig } from '@repo/avatar-system';
+import {
+  createInitialAvatarSelection,
+  getAvatarCategory,
+  getAvatarColorSelectionKey,
+  getAvatarEditorCategories
+} from '@repo/avatar-system';
 import { Avatar } from '@repo/avatar-system/react';
 import type { AvatarSelection } from '@repo/avatar-system';
 import { useTranslations } from 'next-intl';
@@ -16,28 +21,10 @@ import AvatarColorOptionButton from './avatar-color-option-button';
 import { getCategoryIcon } from './avatar-editor-icons';
 import styles from './avatar-editor.module.css';
 import type { AvatarColorSection, AvatarOption, CategoryId } from './avatar-editor.types';
-import {
-  COLOR_GROUPS_BY_CATEGORY,
-  DISPLAYED_CATEGORY_IDS,
-  INITIAL_SELECTION,
-  OPTIONAL_CATEGORY_IDS,
-  SELECTION_KEY_BY_CATEGORY
-} from './avatar-editor.types';
 import AvatarVariantOptionButton from './avatar-variant-option-button';
 
-function getConfigElements(categoryId: CategoryId) {
-  return Object.keys(avatarConfig.choices[categoryId].elements);
-}
-
-function getConfigColors(categoryId: CategoryId, groupId: string): string[] {
-  const choice = avatarConfig.choices[categoryId];
-  if (!('colors' in choice) || !choice.colors) {
-    return [];
-  }
-
-  const colorGroup = choice.colors[groupId as keyof typeof choice.colors];
-  return colorGroup ? Object.keys(colorGroup) : [];
-}
+const EDITOR_CATEGORIES = getAvatarEditorCategories();
+const INITIAL_CATEGORY_ID = (EDITOR_CATEGORIES[0]?.id ?? 'face') as CategoryId;
 
 type AvatarEditorProps = {
   onBack?: () => void;
@@ -45,55 +32,59 @@ type AvatarEditorProps = {
 
 export default function AvatarEditor({ onBack }: AvatarEditorProps) {
   const t = useTranslations('pages.hub.avatarSettings.editor');
-  const [selection, setSelection] = useState<AvatarSelection>(INITIAL_SELECTION);
-  const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>('face');
+  const [selection, setSelection] = useState<AvatarSelection>(() => createInitialAvatarSelection());
+  const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>(INITIAL_CATEGORY_ID);
+
+  const activeCategory = useMemo(() => getAvatarCategory(activeCategoryId), [activeCategoryId]);
 
   const options = useMemo<AvatarOption[]>(() => {
-    const selectionKey = SELECTION_KEY_BY_CATEGORY[activeCategoryId];
-    const configOptionIds = getConfigElements(activeCategoryId);
-    const nextOptions = configOptionIds.map((optionId) => ({
-      id: optionId,
-      selected: selection[selectionKey] === optionId,
-      previewSelection: { ...selection, [selectionKey]: optionId }
+    const nextOptions = activeCategory.elements.map((option) => ({
+      id: option.id,
+      selected: selection[activeCategoryId] === option.id,
+      previewSelection: { ...selection, [activeCategoryId]: option.id }
     }));
 
-    if (!OPTIONAL_CATEGORY_IDS.has(activeCategoryId)) {
+    if (!activeCategory.optional) {
       return nextOptions;
     }
 
     return [
       {
         id: 'none',
-        selected: !selection[selectionKey],
-        previewSelection: { ...selection, [selectionKey]: undefined }
+        selected: !selection[activeCategoryId],
+        previewSelection: { ...selection, [activeCategoryId]: undefined }
       },
       ...nextOptions
     ];
-  }, [activeCategoryId, selection]);
+  }, [activeCategory, activeCategoryId, selection]);
 
   const colorSections = useMemo<AvatarColorSection[]>(() => {
-    const colorGroups = COLOR_GROUPS_BY_CATEGORY[activeCategoryId] ?? [];
-
-    return colorGroups
-      .map((group) => {
-        const options = getConfigColors(activeCategoryId, group.groupId).map((colorId) => ({
-          id: colorId,
-          selected: selection[group.selectionKey] === colorId
+    return (activeCategory.colorGroups ?? [])
+      .map((group, index) => {
+        const selectionKey = getAvatarColorSelectionKey(activeCategory.id, group.id, index);
+        const options = group.colors.map((color) => ({
+          id: color.id,
+          selected: selection[selectionKey] === color.id
         }));
 
         if (options.length === 0) {
           return null;
         }
 
+        const title =
+          activeCategory.colorGroups && activeCategory.colorGroups.length > 1
+            ? t(`categories.${activeCategoryId}.colorGroups.${group.id}`)
+            : t(`categories.${activeCategoryId}.colors`);
+
         return {
-          groupId: group.groupId,
-          selectionKey: group.selectionKey,
-          title: group.titleKey ? t(group.titleKey) : t(`categories.${activeCategoryId}.colors`),
+          groupId: group.id,
+          selectionKey,
+          title,
           options
         } satisfies AvatarColorSection;
       })
       .filter((section): section is AvatarColorSection => section !== null);
-  }, [activeCategoryId, selection, t]);
+  }, [activeCategory, activeCategoryId, selection, t]);
 
   const optionSectionTitle = t(`categories.${activeCategoryId}.options`);
 
@@ -118,14 +109,14 @@ export default function AvatarEditor({ onBack }: AvatarEditorProps) {
             }
           }}
         >
-          {DISPLAYED_CATEGORY_IDS.map((categoryId) => {
-            const Icon = getCategoryIcon(categoryId);
+          {EDITOR_CATEGORIES.map((category) => {
+            const Icon = getCategoryIcon(category.id);
 
             return (
               <Tab
-                key={categoryId}
-                value={categoryId}
-                aria-label={t(`categories.${categoryId}.label`)}
+                key={category.id}
+                value={category.id}
+                aria-label={t(`categories.${category.id}.label`)}
                 icon={<Icon fontSize="small" />}
                 className={styles.categoryTab}
               />
@@ -175,10 +166,9 @@ export default function AvatarEditor({ onBack }: AvatarEditorProps) {
                     : t('selectOption', { category: t(`categories.${activeCategoryId}.label`), option: option.id })
                 }
                 onClick={() => {
-                  const selectionKey = SELECTION_KEY_BY_CATEGORY[activeCategoryId];
                   setSelection((currentSelection) => ({
                     ...currentSelection,
-                    [selectionKey]: option.id === 'none' ? undefined : option.id
+                    [activeCategoryId]: option.id === 'none' ? undefined : option.id
                   }));
                 }}
               />

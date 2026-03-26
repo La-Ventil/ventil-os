@@ -26,7 +26,7 @@ export default function AvatarVariantOptionButton({
       onClick={onClick}
     >
       <span className={styles.optionPreview}>
-        <Avatar selection={previewSelection} id="s2" />
+        <Avatar selection={previewSelection} className="s2" />
       </span>
     </button>
   );

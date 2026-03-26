@@ -21,10 +21,8 @@ export const avatarLayerClassNames = [
   'back-hair',
 ] as const;
 
-export function getAvatarMarkup() {
-  const layers = avatarLayerClassNames
-    .map((className) => `<div class="${className}"></div>`)
-    .join('');
+const avatarMarkup = `<div class="avatar">${avatarLayerClassNames.map((className) => `<div class="${className}"></div>`).join('')}</div>`;
 
-  return `<div class="avatar">${layers}</div>`;
+export function getAvatarMarkup() {
+  return avatarMarkup;
 }

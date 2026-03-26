@@ -1,797 +1,967 @@
 {
-  "category": {
-    "face": {
-      "order": 1,
+  "categories": [
+    {
+      "id": "face",
       "name": "face",
-      "color": true
-    },
-    "hair": {
-      "order": 2,
-      "name": "hair",
-      "color": true
-    },
-    "nose": {
-      "order": 3,
-      "name": "nose",
-      "color": false
-    },
-    "mouth": {
-      "order": 4,
-      "name": "mouth",
-      "color": true
-    },
-    "eyes": {
-      "order": 5,
-      "name": "eyes",
-      "color": false
-    },
-    "eyebrows": {
-      "order": 6,
-      "name": "eyebrows",
-      "color": false
-    },
-    "glasses": {
-      "order": 7,
-      "name": "glasses",
-      "color": true
-    },
-    "facial-hair": {
-      "order": 8,
-      "name": "facial hair",
-      "color": false
-    },
-    "cheeks": {
-      "order": 10,
-      "name": "cheeks",
-      "color": true
-    },
-    "clothes": {
-      "order": 11,
-      "name": "clothes",
-      "color": false
-    },
-    "face-details": {
-      "order": 9,
-      "name": "face details",
-      "color": false
-    },
-    "earrings": {
-      "order": 12,
-      "name": "earrings",
-      "color": true
-    }
-  },
-  "choices": {
-    "face": {
-      "elements": {
-        "face-shape-1": {
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "face-shape-1",
           "name": "face shape 01"
         },
-        "face-shape-2": {
+        {
+          "id": "face-shape-2",
           "name": "face shape 02"
         },
-        "face-shape-5": {
+        {
+          "id": "face-shape-5",
           "name": "face shape 05"
         },
-        "face-shape-6": {
+        {
+          "id": "face-shape-6",
           "name": "face shape 06"
         }
-      },
-      "colors": {
-        "skin": {
-          "skin-color-1": {
-            "key": "skin-color-1",
-            "group": 4
-          },
-          "skin-color-2": {
-            "key": "skin-color-2",
-            "group": 1
-          },
-          "skin-color-3": {
-            "key": "skin-color-3",
-            "group": 1
-          },
-          "skin-color-4": {
-            "key": "skin-color-4",
-            "group": 1
-          },
-          "skin-color-5": {
-            "key": "skin-color-5",
-            "group": 1
-          },
-          "skin-color-6": {
-            "key": "skin-color-6",
-            "group": 1
-          },
-          "skin-color-7": {
-            "key": "skin-color-7",
-            "group": 1
-          },
-          "skin-color-8": {
-            "key": "skin-color-8",
-            "group": 2
-          },
-          "skin-color-9": {
-            "key": "skin-color-9",
-            "group": 2
-          },
-          "skin-color-10": {
-            "key": "skin-color-10",
-            "group": 2
-          },
-          "skin-color-11": {
-            "key": "skin-color-11",
-            "group": 2
-          },
-          "skin-color-12": {
-            "key": "skin-color-12",
-            "group": 2
-          },
-          "skin-color-13": {
-            "key": "skin-color-13",
-            "group": 2
-          },
-          "skin-color-14": {
-            "key": "skin-color-14",
-            "group": 3
-          },
-          "skin-color-15": {
-            "key": "skin-color-15",
-            "group": 3
-          },
-          "skin-color-16": {
-            "key": "skin-color-16",
-            "group": 3
-          },
-          "skin-color-17": {
-            "key": "skin-color-17",
-            "group": 3
-          },
-          "skin-color-18": {
-            "key": "skin-color-18",
-            "group": 3
-          },
-          "skin-color-19": {
-            "key": "skin-color-19",
-            "group": 3
-          }
+      ],
+      "colorGroups": [
+        {
+          "id": "skin",
+          "colors": [
+            {
+              "id": "skin-color-1",
+              "group": 4
+            },
+            {
+              "id": "skin-color-2",
+              "group": 1
+            },
+            {
+              "id": "skin-color-3",
+              "group": 1
+            },
+            {
+              "id": "skin-color-4",
+              "group": 1
+            },
+            {
+              "id": "skin-color-5",
+              "group": 1
+            },
+            {
+              "id": "skin-color-6",
+              "group": 1
+            },
+            {
+              "id": "skin-color-7",
+              "group": 1
+            },
+            {
+              "id": "skin-color-8",
+              "group": 2
+            },
+            {
+              "id": "skin-color-9",
+              "group": 2
+            },
+            {
+              "id": "skin-color-10",
+              "group": 2
+            },
+            {
+              "id": "skin-color-11",
+              "group": 2
+            },
+            {
+              "id": "skin-color-12",
+              "group": 2
+            },
+            {
+              "id": "skin-color-13",
+              "group": 2
+            },
+            {
+              "id": "skin-color-14",
+              "group": 3
+            },
+            {
+              "id": "skin-color-15",
+              "group": 3
+            },
+            {
+              "id": "skin-color-16",
+              "group": 3
+            },
+            {
+              "id": "skin-color-17",
+              "group": 3
+            },
+            {
+              "id": "skin-color-18",
+              "group": 3
+            },
+            {
+              "id": "skin-color-19",
+              "group": 3
+            }
+          ]
         }
-      }
+      ]
     },
-    "hair": {
-      "elements": {
-        "hair-100": {
+    {
+      "id": "hair",
+      "name": "hair",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "hair-100",
           "name": "hair 100",
           "group": 1
         },
-        "hair-101": {
+        {
+          "id": "hair-101",
           "name": "hair 101",
           "group": 1
         },
-        "hair-103": {
+        {
+          "id": "hair-102",
+          "name": "hair 102",
+          "group": 1
+        },
+        {
+          "id": "hair-103",
           "name": "hair 103",
           "group": 1
         },
-        "hair-104": {
+        {
+          "id": "hair-104",
           "name": "hair 104",
           "group": 1
         },
-        "hair-105": {
+        {
+          "id": "hair-105",
           "name": "hair 105",
           "group": 1
         },
-        "hair-106": {
+        {
+          "id": "hair-106",
           "name": "hair 106",
           "group": 1
         },
-        "hair-107": {
+        {
+          "id": "hair-107",
           "name": "hair 107",
           "group": 1
         },
-        "hair-108": {
+        {
+          "id": "hair-108",
           "name": "hair 108",
           "group": 1
         },
-        "hair-109": {
+        {
+          "id": "hair-109",
           "name": "hair 109",
           "group": 1
         },
-        "hair-110": {
-          "name": "hair 11O",
+        {
+          "id": "hair-110",
+          "name": "hair 110",
           "group": 1
         },
-        "hair-111": {
+        {
+          "id": "hair-111",
           "name": "hair 111",
           "group": 1
         },
-        "hair-200": {
+        {
+          "id": "hair-200",
           "name": "hair 200",
           "group": 2
         },
-        "hair-201": {
+        {
+          "id": "hair-201",
           "name": "hair 201",
           "group": 2
         },
-        "hair-203": {
+        {
+          "id": "hair-202",
+          "name": "hair 202",
+          "group": 2
+        },
+        {
+          "id": "hair-203",
           "name": "hair 203",
           "group": 2
         },
-        "hair-204": {
+        {
+          "id": "hair-204",
           "name": "hair 204",
           "group": 2
         },
-        "hair-205": {
+        {
+          "id": "hair-205",
           "name": "hair 205",
           "group": 2
         },
-        "hair-206": {
+        {
+          "id": "hair-206",
           "name": "hair 206",
           "group": 2
         },
-        "hair-207": {
+        {
+          "id": "hair-207",
           "name": "hair 207",
           "group": 2
         },
-        "hair-208": {
+        {
+          "id": "hair-208",
           "name": "hair 208",
           "group": 2
         },
-        "hair-209": {
+        {
+          "id": "hair-209",
           "name": "hair 209",
           "group": 2
         },
-        "hair-211": {
+        {
+          "id": "hair-211",
           "name": "hair 211",
           "group": 2
         },
-        "hair-212": {
+        {
+          "id": "hair-212",
           "name": "hair 212",
           "group": 2
         },
-        "hair-213": {
+        {
+          "id": "hair-213",
           "name": "hair 213",
           "group": 2
         },
-        "hair-214": {
+        {
+          "id": "hair-214",
           "name": "hair 214",
           "group": 2
         },
-        "hair-215": {
+        {
+          "id": "hair-215",
           "name": "hair 215",
           "group": 2
         },
-        "hair-216": {
+        {
+          "id": "hair-216",
           "name": "hair 216",
           "group": 2
         },
-        "hair-217": {
+        {
+          "id": "hair-217",
           "name": "hair 217",
           "group": 2
         },
-        "hair-300": {
+        {
+          "id": "hair-300",
           "name": "hair 300",
           "group": 3
         },
-        "hair-301": {
+        {
+          "id": "hair-301",
           "name": "hair 301",
           "group": 3
         },
-        "hair-302": {
+        {
+          "id": "hair-302",
           "name": "hair 302",
           "group": 3
         },
-        "hair-303": {
+        {
+          "id": "hair-303",
           "name": "hair 303",
           "group": 3
         },
-        "hair-304": {
+        {
+          "id": "hair-304",
           "name": "hair 304",
           "group": 3
         },
-        "hair-400": {
+        {
+          "id": "hair-400",
           "name": "hair 400",
           "group": 4
         },
-        "hair-401": {
+        {
+          "id": "hair-401",
           "name": "hair 401",
           "group": 4
         },
-        "hair-402": {
+        {
+          "id": "hair-402",
           "name": "hair 402",
           "group": 4
         },
-        "hair-210": {
+        {
+          "id": "hair-210",
           "name": "hair 210",
           "group": 2
         },
-        "hair-218": {
+        {
+          "id": "hair-218",
           "name": "hair 218",
           "group": 2
-        },
-        "hair-403": {
-          "name": "hair 403",
-          "group": 4
         }
-      },
-      "colors": {
-        "hair": {
-          "hair-color-10": {
-            "group": 1
-          },
-          "hair-color-11": {
-            "group": 1
-          },
-          "hair-color-12": {
-            "group": 1
-          },
-          "hair-color-13": {
-            "group": 1
-          },
-          "hair-color-14": {
-            "group": 1
-          },
-          "hair-color-20": {
-            "group": 2
-          },
-          "hair-color-21": {
-            "group": 2
-          },
-          "hair-color-22": {
-            "group": 2
-          },
-          "hair-color-23": {
-            "group": 2
-          },
-          "hair-color-24": {
-            "group": 2
-          },
-          "hair-color-30": {
-            "group": 3
-          },
-          "hair-color-31": {
-            "group": 3
-          },
-          "hair-color-32": {
-            "group": 3
-          },
-          "hair-color-33": {
-            "group": 3
-          },
-          "hair-color-34": {
-            "group": 3
-          },
-          "hair-color-40": {
-            "group": 4
-          },
-          "hair-color-41": {
-            "group": 4
-          },
-          "hair-color-42": {
-            "group": 4
-          },
-          "hair-color-43": {
-            "group": 4
-          },
-          "hair-color-44": {
-            "group": 4
-          },
-          "hair-color-50": {
-            "group": 5
-          },
-          "hair-color-51": {
-            "group": 5
-          },
-          "hair-color-52": {
-            "group": 5
-          },
-          "hair-color-53": {
-            "group": 5
-          },
-          "hair-color-54": {
-            "group": 5
-          },
-          "hair-color-60": {
-            "group": 6
-          },
-          "hair-color-61": {
-            "group": 6
-          },
-          "hair-color-62": {
-            "group": 6
-          },
-          "hair-color-63": {
-            "group": 6
-          },
-          "hair-color-64": {
-            "group": 6
-          },
-          "hair-color-70": {
-            "group": 7
-          },
-          "hair-color-71": {
-            "group": 7
-          },
-          "hair-color-72": {
-            "group": 7
-          },
-          "hair-color-73": {
-            "group": 7
-          },
-          "hair-color-74": {
-            "group": 7
-          }
+      ],
+      "colorGroups": [
+        {
+          "id": "hair",
+          "colors": [
+            {
+              "id": "hair-color-10",
+              "group": 1
+            },
+            {
+              "id": "hair-color-11",
+              "group": 1
+            },
+            {
+              "id": "hair-color-12",
+              "group": 1
+            },
+            {
+              "id": "hair-color-13",
+              "group": 1
+            },
+            {
+              "id": "hair-color-14",
+              "group": 1
+            },
+            {
+              "id": "hair-color-20",
+              "group": 2
+            },
+            {
+              "id": "hair-color-21",
+              "group": 2
+            },
+            {
+              "id": "hair-color-22",
+              "group": 2
+            },
+            {
+              "id": "hair-color-23",
+              "group": 2
+            },
+            {
+              "id": "hair-color-24",
+              "group": 2
+            },
+            {
+              "id": "hair-color-30",
+              "group": 3
+            },
+            {
+              "id": "hair-color-31",
+              "group": 3
+            },
+            {
+              "id": "hair-color-32",
+              "group": 3
+            },
+            {
+              "id": "hair-color-33",
+              "group": 3
+            },
+            {
+              "id": "hair-color-34",
+              "group": 3
+            },
+            {
+              "id": "hair-color-40",
+              "group": 4
+            },
+            {
+              "id": "hair-color-41",
+              "group": 4
+            },
+            {
+              "id": "hair-color-42",
+              "group": 4
+            },
+            {
+              "id": "hair-color-43",
+              "group": 4
+            },
+            {
+              "id": "hair-color-44",
+              "group": 4
+            },
+            {
+              "id": "hair-color-50",
+              "group": 5
+            },
+            {
+              "id": "hair-color-51",
+              "group": 5
+            },
+            {
+              "id": "hair-color-52",
+              "group": 5
+            },
+            {
+              "id": "hair-color-53",
+              "group": 5
+            },
+            {
+              "id": "hair-color-54",
+              "group": 5
+            },
+            {
+              "id": "hair-color-60",
+              "group": 6
+            },
+            {
+              "id": "hair-color-61",
+              "group": 6
+            },
+            {
+              "id": "hair-color-62",
+              "group": 6
+            },
+            {
+              "id": "hair-color-63",
+              "group": 6
+            },
+            {
+              "id": "hair-color-64",
+              "group": 6
+            },
+            {
+              "id": "hair-color-70",
+              "group": 7
+            },
+            {
+              "id": "hair-color-71",
+              "group": 7
+            },
+            {
+              "id": "hair-color-72",
+              "group": 7
+            },
+            {
+              "id": "hair-color-73",
+              "group": 7
+            },
+            {
+              "id": "hair-color-74",
+              "group": 7
+            }
+          ]
         }
-      }
+      ]
     },
-    "nose": {
-      "elements": {
-        "nose-1": {
+    {
+      "id": "nose",
+      "name": "nose",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "nose-1",
           "name": "nose 1"
         },
-        "nose-2": {
+        {
+          "id": "nose-2",
           "name": "nose 2"
         },
-        "nose-3": {
+        {
+          "id": "nose-3",
           "name": "nose 3"
         },
-        "nose-4": {
+        {
+          "id": "nose-4",
           "name": "nose 4"
         },
-        "nose-5": {
+        {
+          "id": "nose-5",
           "name": "nose 5"
         },
-        "nose-6": {
+        {
+          "id": "nose-6",
           "name": "nose 6"
         },
-        "nose-7": {
+        {
+          "id": "nose-7",
           "name": "nose 7"
         },
-        "nose-8": {
+        {
+          "id": "nose-8",
           "name": "nose 8"
         },
-        "nose-9": {
+        {
+          "id": "nose-9",
           "name": "nose 9"
         }
-      }
+      ]
     },
-    "mouth": {
-      "elements": {
-        "mouth-1": {
+    {
+      "id": "mouth",
+      "name": "mouth",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "mouth-1",
           "name": "mouth 1"
         },
-        "mouth-2": {
+        {
+          "id": "mouth-2",
           "name": "mouth 2"
         },
-        "mouth-3": {
+        {
+          "id": "mouth-3",
           "name": "mouth 3"
         },
-        "mouth-4": {
+        {
+          "id": "mouth-4",
           "name": "mouth 4"
         },
-        "mouth-5": {
+        {
+          "id": "mouth-5",
           "name": "mouth 5"
         },
-        "mouth-6": {
+        {
+          "id": "mouth-6",
           "name": "mouth 6"
         },
-        "mouth-7": {
+        {
+          "id": "mouth-7",
           "name": "mouth 7"
         },
-        "mouth-8": {
+        {
+          "id": "mouth-8",
           "name": "mouth 8"
         },
-        "mouth-9": {
+        {
+          "id": "mouth-9",
           "name": "mouth 9"
         },
-        "mouth-10": {
+        {
+          "id": "mouth-10",
           "name": "mouth 10"
         },
-        "mouth-11": {
+        {
+          "id": "mouth-11",
           "name": "mouth 11"
         },
-        "mouth-12": {
+        {
+          "id": "mouth-12",
           "name": "mouth 12"
         },
-        "mouth-13": {
+        {
+          "id": "mouth-13",
           "name": "mouth 13"
         },
-        "mouth-14": {
+        {
+          "id": "mouth-14",
           "name": "mouth 14"
         },
-        "mouth-15": {
+        {
+          "id": "mouth-15",
           "name": "mouth 15"
         }
-      },
-      "colors": {
-        "lipstick": {}
-      }
+      ]
     },
-    "eyes": {
-      "elements": {
-        "eyes-1": {
+    {
+      "id": "eyes",
+      "name": "eyes",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "eyes-1",
           "name": "eyes 1"
         },
-        "eyes-2": {
+        {
+          "id": "eyes-2",
           "name": "eyes 2"
         },
-        "eyes-3": {
+        {
+          "id": "eyes-3",
           "name": "eyes 3"
         },
-        "eyes-4": {
+        {
+          "id": "eyes-4",
           "name": "eyes 4"
         },
-        "eyes-5": {
+        {
+          "id": "eyes-5",
           "name": "eyes 5"
         },
-        "eyes-6": {
+        {
+          "id": "eyes-6",
           "name": "eyes 6"
         },
-        "eyes-7": {
+        {
+          "id": "eyes-7",
           "name": "eyes 7"
         },
-        "eyes-8": {
+        {
+          "id": "eyes-8",
           "name": "eyes 8"
         },
-        "eyes-9": {
+        {
+          "id": "eyes-9",
           "name": "eyes 9"
         },
-        "eyes-10": {
+        {
+          "id": "eyes-10",
           "name": "eyes 10"
         },
-        "eyes-11": {
+        {
+          "id": "eyes-11",
           "name": "eyes 11"
         },
-        "eyes-12": {
+        {
+          "id": "eyes-12",
           "name": "eyes 12"
         },
-        "eyes-13": {
+        {
+          "id": "eyes-13",
           "name": "eyes 13"
         },
-        "eyes-14": {
+        {
+          "id": "eyes-14",
           "name": "eyes 14"
         },
-        "eyes-16": {
+        {
+          "id": "eyes-16",
           "name": "eyes 16"
         },
-        "eyes-17": {
+        {
+          "id": "eyes-17",
           "name": "eyes 17"
         },
-        "eyes-18": {
+        {
+          "id": "eyes-18",
           "name": "eyes 18"
         }
-      }
+      ]
     },
-    "eyebrows": {
-      "elements": {
-        "eyebrows-1": {
+    {
+      "id": "eyebrows",
+      "name": "eyebrows",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "eyebrows-1",
           "name": "eyebrows 1"
         },
-        "eyebrows-2": {
+        {
+          "id": "eyebrows-2",
           "name": "eyebrows 2"
         },
-        "eyebrows-3": {
+        {
+          "id": "eyebrows-3",
           "name": "eyebrows 3"
         },
-        "eyebrows-4": {
+        {
+          "id": "eyebrows-4",
           "name": "eyebrows 4"
         },
-        "eyebrows-5": {
+        {
+          "id": "eyebrows-5",
           "name": "eyebrows 5"
         },
-        "eyebrows-6": {
+        {
+          "id": "eyebrows-6",
           "name": "eyebrows 6"
         },
-        "eyebrows-7": {
+        {
+          "id": "eyebrows-7",
           "name": "eyebrows 7"
         }
-      }
+      ]
     },
-    "glasses": {
-      "elements": {
-        "glasses-1": {
+    {
+      "id": "glasses",
+      "name": "glasses",
+      "optional": true,
+      "visible": true,
+      "elements": [
+        {
+          "id": "glasses-1",
           "name": "glasses 1"
         },
-        "glasses-2": {
+        {
+          "id": "glasses-2",
           "name": "glasses 2"
         },
-        "glasses-3": {
+        {
+          "id": "glasses-3",
           "name": "glasses 3"
         },
-        "glasses-4": {
+        {
+          "id": "glasses-4",
           "name": "glasses 4"
         },
-        "glasses-5": {
+        {
+          "id": "glasses-5",
           "name": "glasses 5"
         },
-        "glasses-6": {
+        {
+          "id": "glasses-6",
           "name": "glasses 6"
         },
-        "glasses-7": {
+        {
+          "id": "glasses-7",
           "name": "glasses 7"
         },
-        "glasses-8": {
+        {
+          "id": "glasses-8",
           "name": "glasses 8"
         },
-        "glasses-9": {
+        {
+          "id": "glasses-9",
           "name": "glasses 9"
         },
-        "glasses-10": {
+        {
+          "id": "glasses-10",
           "name": "glasses 10"
         },
-        "glasses-11": {
+        {
+          "id": "glasses-11",
           "name": "glasses 11"
         }
-      },
-      "colors": {
-        "frame": {
-          "glasses-color-1": {
-            "group": 1
-          },
-          "glasses-color-2": {
-            "group": 1
-          },
-          "glasses-color-3": {
-            "group": 1
-          },
-          "glasses-color-4": {
-            "group": 1
-          },
-          "glasses-color-5": {
-            "group": 1
-          }
+      ],
+      "colorGroups": [
+        {
+          "id": "frame",
+          "colors": [
+            {
+              "id": "glasses-color-1",
+              "group": 1
+            },
+            {
+              "id": "glasses-color-2",
+              "group": 1
+            },
+            {
+              "id": "glasses-color-3",
+              "group": 1
+            },
+            {
+              "id": "glasses-color-4",
+              "group": 1
+            },
+            {
+              "id": "glasses-color-5",
+              "group": 1
+            }
+          ]
         },
-        "tiles": {
-          "glasses-tiles-color-1": {
-            "group": 1
-          },
-          "glasses-tiles-color-2": {
-            "group": 1
-          },
-          "glasses-tiles-color-3": {
-            "group": 1
-          }
+        {
+          "id": "tiles",
+          "colors": [
+            {
+              "id": "glasses-tiles-color-1",
+              "group": 1
+            },
+            {
+              "id": "glasses-tiles-color-2",
+              "group": 1
+            },
+            {
+              "id": "glasses-tiles-color-3",
+              "group": 1
+            }
+          ]
         }
-      }
+      ]
     },
-    "facial-hair": {
-      "elements": {
-        "facial-hair-1": {
+    {
+      "id": "facial-hair",
+      "name": "facial hair",
+      "optional": true,
+      "visible": true,
+      "elements": [
+        {
+          "id": "facial-hair-1",
           "name": "facial hair 1"
         },
-        "facial-hair-2": {
+        {
+          "id": "facial-hair-2",
           "name": "facial hair 2"
         },
-        "facial-hair-3": {
+        {
+          "id": "facial-hair-3",
           "name": "facial hair 3"
         },
-        "facial-hair-4": {
+        {
+          "id": "facial-hair-4",
           "name": "facial hair 4"
         },
-        "facial-hair-5": {
+        {
+          "id": "facial-hair-5",
           "name": "facial hair 5"
         },
-        "facial-hair-6": {
+        {
+          "id": "facial-hair-6",
           "name": "facial hair 6"
         },
-        "facial-hair-7": {
+        {
+          "id": "facial-hair-7",
           "name": "facial hair 7"
         },
-        "facial-hair-8": {
+        {
+          "id": "facial-hair-8",
           "name": "facial hair 8"
         },
-        "facial-hair-9": {
+        {
+          "id": "facial-hair-9",
           "name": "facial hair 9"
         },
-        "facial-hair-10": {
+        {
+          "id": "facial-hair-10",
           "name": "facial hair 10"
         },
-        "facial-hair-11": {
+        {
+          "id": "facial-hair-11",
           "name": "facial hair 11"
         }
-      }
+      ]
     },
-    "cheeks": {
-      "elements": {
-        "cheeks-1": {
-          "name": "cheeks"
-        },
-        "cheeks-2": {
-          "name": "freckle"
-        }
-      },
-      "colors": {
-        "cheeks": {
-          "cheeks-color-1": {
-            "group": 1
-          },
-          "cheeks-color-2": {
-            "group": 1
-          },
-          "cheeks-color-3": {
-            "group": 1
-          },
-          "cheeks-color-4": {
-            "group": 1
-          }
-        }
-      }
-    },
-    "clothes": {
-      "elements": {}
-    },
-    "face-details": {
-      "elements": {
-        "face-details-1": {
+    {
+      "id": "face-details",
+      "name": "face details",
+      "optional": true,
+      "visible": true,
+      "elements": [
+        {
+          "id": "face-details-1",
           "name": "face details 01"
         },
-        "face-details-2": {
+        {
+          "id": "face-details-2",
           "name": "face details 02"
         },
-        "face-details-3": {
+        {
+          "id": "face-details-3",
           "name": "face details 03"
         }
-      }
+      ]
     },
-    "earrings": {
-      "elements": {
-        "earrings-1": {
+    {
+      "id": "cheeks",
+      "name": "cheeks",
+      "optional": true,
+      "visible": true,
+      "elements": [
+        {
+          "id": "cheeks-1",
+          "name": "cheeks"
+        },
+        {
+          "id": "cheeks-2",
+          "name": "freckle"
+        }
+      ],
+      "colorGroups": [
+        {
+          "id": "cheeks",
+          "colors": [
+            {
+              "id": "cheeks-color-1",
+              "group": 1
+            },
+            {
+              "id": "cheeks-color-2",
+              "group": 1
+            },
+            {
+              "id": "cheeks-color-3",
+              "group": 1
+            },
+            {
+              "id": "cheeks-color-4",
+              "group": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clothes",
+      "name": "clothes",
+      "optional": false,
+      "visible": true,
+      "elements": [
+        {
+          "id": "clothes-1",
+          "name": "clothes 1"
+        },
+        {
+          "id": "clothes-2",
+          "name": "clothes 2"
+        }
+      ]
+    },
+    {
+      "id": "earrings",
+      "name": "earrings",
+      "optional": true,
+      "visible": true,
+      "elements": [
+        {
+          "id": "earrings-1",
           "name": "earrings 1"
         },
-        "earrings-2": {
+        {
+          "id": "earrings-2",
           "name": "earrings 2"
         },
-        "earrings-3": {
+        {
+          "id": "earrings-3",
           "name": "earrings 3"
         },
-        "earrings-4": {
+        {
+          "id": "earrings-4",
           "name": "earrings 4"
         },
-        "earrings-5": {
+        {
+          "id": "earrings-5",
           "name": "earrings 5"
         },
-        "earrings-6": {
+        {
+          "id": "earrings-6",
           "name": "earrings 6"
         },
-        "earrings-7": {
+        {
+          "id": "earrings-7",
           "name": "earrings 7"
         }
-      },
-      "colors": {
-        "earrings": {
-          "earrings-color-1": {
-            "group": 1
-          },
-          "earrings-color-2": {
-            "group": 1
-          },
-          "earrings-color-3": {
-            "group": 1
-          },
-          "earrings-color-4": {
-            "group": 1
-          }
+      ],
+      "colorGroups": [
+        {
+          "id": "earrings",
+          "colors": [
+            {
+              "id": "earrings-color-1",
+              "group": 1
+            },
+            {
+              "id": "earrings-color-2",
+              "group": 1
+            },
+            {
+              "id": "earrings-color-3",
+              "group": 1
+            },
+            {
+              "id": "earrings-color-4",
+              "group": 1
+            }
+          ]
         }
-      }
+      ]
     }
-  },
-  "expression": {
-    "ex1": {
-      "name": "shocked"
-    },
-    "ex2": {
-      "name": "angry"
-    },
-    "ex3": {
-      "name": "stressed"
-    },
-    "ex4": {
-      "name": "sleep"
-    },
-    "ex5": {
-      "name": "happy"
-    },
-    "ex6": {
-      "name": "shy"
-    }
-  }
+  ]
 }
