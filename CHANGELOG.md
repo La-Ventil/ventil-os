@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.31](https://github.com/La-Ventil/ventil-os/compare/v0.0.30...v0.0.31) (2026-03-26)
+
+
+### Features
+
+* **avatar:** persist user avatar and reuse it across hub ([b57fa61](https://github.com/La-Ventil/ventil-os/commit/b57fa61c34353055d7e754d6fb1e0fd021c3a520))
+
+
+### Docs
+
+* **i18n:** update translation coverage report ([31c69e8](https://github.com/La-Ventil/ventil-os/commit/31c69e80925980010201f3e7786c3c6a8d87c89e))
+
 ### [0.0.30](https://github.com/La-Ventil/ventil-os/compare/v0.0.29...v0.0.30) (2026-03-24)
 
 
