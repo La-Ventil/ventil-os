@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.32](https://github.com/La-Ventil/ventil-os/compare/v0.0.31...v0.0.32) (2026-03-26)
+
+
+### Bug Fixes
+
+* **ci:** build web through turbo dependency graph ([b9f2fec](https://github.com/La-Ventil/ventil-os/commit/b9f2fecbfa7f89e626af5c2839e7e851c85b38ae))
+* **web:** build avatar-system styles before next build ([8fefb7b](https://github.com/La-Ventil/ventil-os/commit/8fefb7b7c72a3b14ac9ba667eac8ed6763126a75))
+
+
+### Docs
+
+* **i18n:** update translation coverage report ([b55956c](https://github.com/La-Ventil/ventil-os/commit/b55956c9f336dc98b86046598cc97826b048e9bc))
+
 ### [0.0.31](https://github.com/La-Ventil/ventil-os/compare/v0.0.30...v0.0.31) (2026-03-26)
 
 
