@@ -25,6 +25,7 @@ model User {
   pendingEmail  String?         @unique
   emailVerified DateTime? @db.Timestamptz
   image         String?
+  avatar        Json?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support

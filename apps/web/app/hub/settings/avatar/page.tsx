@@ -1,15 +1,5 @@
-import type { JSX } from 'react';
-import { getTranslations } from 'next-intl/server';
-import SectionTitle from '@repo/ui/section-title';
-import AvatarEditor from '@repo/ui/avatar-editor';
+import AvatarEditorPage from '../../_avatar-editor/avatar-editor-page';
 
-export default async function Page(): Promise<JSX.Element> {
-  const t = await getTranslations('pages.hub.avatarSettings');
-
-  return (
-    <>
-      <SectionTitle>{t('title')}</SectionTitle>
-      <AvatarEditor />
-    </>
-  );
+export default function Page() {
+  return <AvatarEditorPage />;
 }

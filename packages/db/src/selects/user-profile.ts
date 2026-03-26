@@ -6,6 +6,7 @@ export const userProfileSelect = {
   pendingEmail: true,
   emailVerified: true,
   image: true,
+  avatar: true,
   profile: true,
   studentProfile: true,
   externalProfile: true,

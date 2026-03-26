@@ -359,6 +359,9 @@ importers:
 
   packages/application:
     dependencies:
+      '@repo/avatar-system':
+        specifier: workspace:*
+        version: link:../avatar-system
       '@repo/crypto':
         specifier: workspace:*
         version: link:../crypto

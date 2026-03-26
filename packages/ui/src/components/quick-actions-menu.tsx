@@ -15,6 +15,7 @@ export type QuickActionsMenuProps = {
   user?: {
     email?: string | null;
     image?: string | null;
+    avatar?: import('@repo/avatar-system').AvatarSelection | null;
   } | null;
   isAdmin?: boolean;
   canManageUsers?: boolean;
@@ -35,8 +36,7 @@ export default function QuickActionsMenu({
     user
   });
   const currentValue =
-    quickActionItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ??
-    quickActionItems[0]?.value;
+    quickActionItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ?? quickActionItems[0]?.value;
 
   return (
     <BottomSlot>

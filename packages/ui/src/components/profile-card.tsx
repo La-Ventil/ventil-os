@@ -19,7 +19,7 @@ export type ProfileCardProps = {
 export default function ProfileCard({ profile, avatarHref, avatarLinkLabel }: ProfileCardProps) {
   const avatarContent = (
     <div className={styles.imageWrapper}>
-      <UserAvatar user={profile} fill />
+      <UserAvatar user={profile} size={104} />
     </div>
   );
 

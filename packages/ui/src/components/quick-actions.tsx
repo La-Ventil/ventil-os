@@ -22,13 +22,14 @@ export const buildQuickActionsMenuItems = ({
   user?: {
     email?: string | null;
     image?: string | null;
+    avatar?: import('@repo/avatar-system').AvatarSelection | null;
   } | null;
 } = {}): QuickActionsItem[] => [
   {
     labelKey: 'profile',
     value: 'profile',
     href: '/hub/profile',
-    icon: <UserAvatar user={user} objectFit="contain" fill />
+    icon: <UserAvatar user={user} objectFit="contain" size={48} />
   },
   {
     labelKey: 'fabLab',

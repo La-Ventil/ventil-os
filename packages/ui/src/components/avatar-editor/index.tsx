@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
@@ -27,12 +27,16 @@ const EDITOR_CATEGORIES = getAvatarEditorCategories();
 const INITIAL_CATEGORY_ID = (EDITOR_CATEGORIES[0]?.id ?? 'face') as CategoryId;
 
 type AvatarEditorProps = {
+  initialSelection?: AvatarSelection;
   onBack?: () => void;
+  onSave?: (selection: AvatarSelection) => Promise<AvatarSelection | void>;
+  onSaved?: () => void;
 };
 
-export default function AvatarEditor({ onBack }: AvatarEditorProps) {
+export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved }: AvatarEditorProps) {
   const t = useTranslations('pages.hub.avatarSettings.editor');
-  const [selection, setSelection] = useState<AvatarSelection>(() => createInitialAvatarSelection());
+  const [isSaving, startSaving] = useTransition();
+  const [selection, setSelection] = useState<AvatarSelection>(() => initialSelection ?? createInitialAvatarSelection());
   const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>(INITIAL_CATEGORY_ID);
 
   const activeCategory = useMemo(() => getAvatarCategory(activeCategoryId), [activeCategoryId]);
@@ -188,7 +192,25 @@ export default function AvatarEditor({ onBack }: AvatarEditorProps) {
               {t('back')}
             </Button>
           )}
-          <Button variant="contained" size="large" fullWidth disabled>
+          <Button
+            variant="contained"
+            size="large"
+            fullWidth
+            disabled={!onSave || isSaving}
+            onClick={() => {
+              if (!onSave) {
+                return;
+              }
+
+              startSaving(async () => {
+                const nextSelection = await onSave(selection);
+                if (nextSelection) {
+                  setSelection(nextSelection);
+                }
+                onSaved?.();
+              });
+            }}
+          >
             {t('save')}
           </Button>
         </Stack>

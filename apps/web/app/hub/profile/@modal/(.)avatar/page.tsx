@@ -1,6 +1,16 @@
-import type { JSX } from 'react';
 import AvatarEditorModalRoute from '../../../_avatar-editor/avatar-editor-modal-route';
+import { getUserProfileFromSession } from '../../../../../lib/auth';
+import { updateAvatarAction } from '../../../../../lib/actions/users/update-avatar';
 
-export default function ProfileAvatarModalPage(): JSX.Element {
-  return <AvatarEditorModalRoute modalPath="/hub/profile/avatar" closeHref="/hub/profile" />;
+export default async function Page() {
+  const userProfile = await getUserProfileFromSession();
+
+  return (
+    <AvatarEditorModalRoute
+      initialSelection={userProfile.avatar}
+      modalPath="/hub/profile/avatar"
+      closeHref="/hub/profile"
+      onSave={updateAvatarAction}
+    />
+  );
 }

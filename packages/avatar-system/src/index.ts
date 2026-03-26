@@ -4,7 +4,8 @@ export {
   getAvatarCategories,
   getAvatarCategory,
   getAvatarColorSelectionKey,
-  getAvatarEditorCategories
+  getAvatarEditorCategories,
+  resolveAvatarSelection
 } from './avatar-config';
 export { buildAvatarClassName } from './avatar-classname';
 export { createAvatarElement } from './avatar-dom';

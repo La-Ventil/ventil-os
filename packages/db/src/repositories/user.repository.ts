@@ -227,6 +227,14 @@ export class UserRepository {
     });
   }
 
+  async updateUserAvatar(userId: string, avatar: Prisma.UserUpdateInput['avatar']) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { avatar },
+      select: { id: true }
+    });
+  }
+
   async setUserBlocked(userId: string, blocked: boolean): Promise<{ id: string; blocked: boolean }> {
     return this.prisma.user.update({
       where: { id: userId },

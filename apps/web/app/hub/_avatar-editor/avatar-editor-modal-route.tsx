@@ -7,13 +7,21 @@ import SectionTitle from '@repo/ui/section-title';
 import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 import { ThemeSection } from '@repo/ui/theme';
 import AvatarEditor from '@repo/ui/avatar-editor';
+import type { AvatarSelection } from '@repo/avatar-system';
 
 type AvatarEditorModalRouteProps = {
+  initialSelection: AvatarSelection;
   modalPath: string;
   closeHref: string;
+  onSave: (selection: AvatarSelection) => Promise<AvatarSelection | void>;
 };
 
-export default function AvatarEditorModalRoute({ modalPath, closeHref }: AvatarEditorModalRouteProps): JSX.Element {
+export default function AvatarEditorModalRoute({
+  initialSelection,
+  modalPath,
+  closeHref,
+  onSave
+}: AvatarEditorModalRouteProps): JSX.Element {
   const t = useTranslations('pages.hub.avatarSettings');
   const tCommon = useTranslations('common');
   const { open, handleClose } = useRouteModal({
@@ -31,7 +39,7 @@ export default function AvatarEditorModalRoute({ modalPath, closeHref }: AvatarE
       themeSection={ThemeSection.User}
     >
       <SectionTitle>{t('title')}</SectionTitle>
-      <AvatarEditor onBack={handleClose} />
+      <AvatarEditor initialSelection={initialSelection} onBack={handleClose} onSave={onSave} onSaved={handleClose} />
     </ModalLayout>
   );
 }
