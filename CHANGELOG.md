@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.33](https://github.com/La-Ventil/ventil-os/compare/v0.0.32...v0.0.33) (2026-04-01)
+
+
+### Bug Fixes
+
+* **uploads:** serve runtime files and partition storage by domain ([61cd8b8](https://github.com/La-Ventil/ventil-os/commit/61cd8b8d8102725c7e31edb7c5aab843afb91925))
+
 ### [0.0.32](https://github.com/La-Ventil/ventil-os/compare/v0.0.31...v0.0.32) (2026-03-26)
 
 
