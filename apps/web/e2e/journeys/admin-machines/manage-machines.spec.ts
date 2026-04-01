@@ -1,5 +1,6 @@
 import { expect, test } from '../../fixtures/test';
 import { clickQuickAction, openRowQuickActions } from '../../helpers/quick-actions';
+import { expectLocatorImageResolves } from '../../helpers/uploads';
 
 const createUniqueMachineName = (): string => `Playwright machine ${Date.now()}`;
 
@@ -41,7 +42,9 @@ test.describe('Admin machine journeys', () => {
     await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/machines$/);
-    await expect(page.getByRole('row', { name: new RegExp(machineName, 'i') })).toBeVisible();
+    const createdRow = page.getByRole('row', { name: new RegExp(machineName, 'i') });
+    await expect(createdRow).toBeVisible();
+    await expectLocatorImageResolves(page, createdRow.locator('img').first());
   });
 
   test('admin can create a machine with an open badge requirement', async ({ page, loginAs }) => {

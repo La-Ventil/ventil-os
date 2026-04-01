@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '../../fixtures/test';
 import { clickQuickAction, openRowQuickActions } from '../../helpers/quick-actions';
+import { expectLocatorImageResolves } from '../../helpers/uploads';
 
 const createUniqueOpenBadgeName = (): string => `Playwright open badge ${Date.now()}`;
 
@@ -50,7 +51,9 @@ test.describe('Admin open badge journeys', () => {
     await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
-    await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
+    const createdRow = page.getByRole('row', { name: new RegExp(badgeName, 'i') });
+    await expect(createdRow).toBeVisible();
+    await expectLocatorImageResolves(page, createdRow.locator('img').first());
   });
 
   test('admin can edit an open badge from row quick actions', async ({ page, loginAs }) => {
@@ -68,7 +71,9 @@ test.describe('Admin open badge journeys', () => {
     await page.getByRole('button', { name: /save/i }).click();
 
     await expect(page).toHaveURL(/\/hub\/admin\/open-badges$/, { timeout: 15_000 });
-    await expect(page.getByRole('row', { name: new RegExp(badgeName, 'i') })).toBeVisible();
+    const createdRow = page.getByRole('row', { name: new RegExp(badgeName, 'i') });
+    await expect(createdRow).toBeVisible();
+    await expectLocatorImageResolves(page, createdRow.locator('img').first());
 
     const row = page.getByRole('row', { name: new RegExp(badgeName, 'i') });
     const menu = await openRowQuickActions(page, row, /administration/i);

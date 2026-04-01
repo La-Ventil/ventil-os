@@ -40,7 +40,8 @@ export async function createOpenBadgeAction(
   const imageUpload = await resolveImageUpload(request.imageFile, t, {
     required: true,
     field: 'imageFile',
-    requiredMessageKey: 'validation.openBadge.imageRequired'
+    requiredMessageKey: 'validation.openBadge.imageRequired',
+    subdirectory: 'open-badges'
   });
   if (!imageUpload.ok) {
     return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);

@@ -33,7 +33,8 @@ export async function updateMachineAction(
   const responseValues: MachineUpdateRequest = { ...request, imageFile: undefined };
   const imageUpload = await resolveImageUpload(request.imageFile, t, {
     field: 'imageFile',
-    emptyValue: undefined
+    emptyValue: undefined,
+    subdirectory: 'machines'
   });
   if (!imageUpload.ok) {
     return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);

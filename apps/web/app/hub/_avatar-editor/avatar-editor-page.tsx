@@ -5,11 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { getUserProfileFromSession } from '../../../lib/auth';
 import { updateAvatarAction } from '../../../lib/actions/users/update-avatar';
 
-type AvatarEditorPageProps = {
-  backHref?: string;
-};
-
-export default async function AvatarEditorPage({ backHref }: AvatarEditorPageProps = {}): Promise<JSX.Element> {
+export default async function AvatarEditorPage(): Promise<JSX.Element> {
   const t = await getTranslations('pages.hub.avatarSettings');
   const userProfile = await getUserProfileFromSession();
 

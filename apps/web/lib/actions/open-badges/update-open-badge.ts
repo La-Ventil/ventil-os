@@ -38,7 +38,8 @@ export async function updateOpenBadgeAction(
   const responseValues: OpenBadgeUpdateRequest = { ...request, imageFile: undefined };
   const imageUpload = await resolveImageUpload(request.imageFile, t, {
     field: 'imageFile',
-    emptyValue: undefined
+    emptyValue: undefined,
+    subdirectory: 'open-badges'
   });
   if (!imageUpload.ok) {
     return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);

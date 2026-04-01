@@ -21,8 +21,8 @@ We need a clear, shared policy for:
 ## Decision
 
 We adopt a pragmatic local storage strategy for now:
-- Uploaded files are written to `apps/web/public/uploads`.
-- The database stores only the relative public path (e.g. `/uploads/<filename>`).
+- Uploaded files are written under `apps/web/uploads` relative to the web application runtime root.
+- The database stores only the relative public path (e.g. `/uploads/open-badges/<filename>`).
 - Upload validation is enforced server-side:
   - allowed MIME types: `image/png`, `image/jpeg`, `image/gif`, `image/webp`
   - max size: 5 MB
@@ -40,7 +40,7 @@ We adopt a pragmatic local storage strategy for now:
 
 ## Consequences
 
-- Uploads are public by default (served from `/public`).
-- Dev reset requires manual cleanup of `public/uploads`.
-- Production should migrate to object storage (S3/MinIO) later, without changing the DB shape.
+- Uploads are served at runtime through the `/uploads/...` route, backed by the upload root on disk.
+- Dev reset requires manual cleanup of `apps/web/uploads` (and any domain subfolders under it).
+- Domain-specific subfolders under `apps/web/uploads` are supported (for example `machines/` and `open-badges/`).
 - Security relies on strict MIME/size validation and filename randomization.

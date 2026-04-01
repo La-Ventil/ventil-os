@@ -20,6 +20,7 @@ export async function resolveImageUpload(
     emptyValue?: string | null | undefined;
     requiredMessageKey?: string;
     maxMb?: number;
+    subdirectory?: string;
   }
 ): Promise<ResolvedImageUpload> {
   const field = options?.field ?? 'imageFile';
@@ -39,7 +40,8 @@ export async function resolveImageUpload(
 
   const imageResult = await validateAndStoreImage(file, {
     maxMb: options?.maxMb ?? MAX_IMAGE_MB,
-    field
+    field,
+    subdirectory: options?.subdirectory
   });
 
   if ('error' in imageResult) {

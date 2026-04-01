@@ -32,7 +32,8 @@ export async function createMachineAction(
   const responseValues: MachineCreateRequest = { ...request, imageFile: undefined };
   const imageUpload = await resolveImageUpload(request.imageFile, t, {
     field: 'imageFile',
-    emptyValue: null
+    emptyValue: null,
+    subdirectory: 'machines'
   });
   if (!imageUpload.ok) {
     return formValidationError(responseValues, { [imageUpload.field]: [imageUpload.message] }, imageUpload.message);
