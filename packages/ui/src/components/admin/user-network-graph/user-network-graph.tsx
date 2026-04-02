@@ -64,7 +64,7 @@ const clamp = (value: number, min: number, max: number): number => Math.min(Math
 const nodeHaloRadius = (productionIndex: number): number =>
   NODE_RADIUS_PX + Math.min(MAX_PRODUCTION_HALO_PX, Math.max(0, productionIndex));
 
-const graphChargeStrength = (nodeCount: number): number => -Math.min(560, 220 + nodeCount * 8);
+const graphChargeStrength = (nodeCount: number): number => -Math.min(620, 240 + nodeCount * 9);
 
 const graphLinkStrength = (nodeCount: number): number => {
   if (nodeCount > 80) {
@@ -75,7 +75,7 @@ const graphLinkStrength = (nodeCount: number): number => {
     return 0.11;
   }
 
-  return 0.1;
+  return 0.085;
 };
 
 const graphVelocityDecay = (nodeCount: number): number => {
@@ -189,7 +189,7 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
         'link',
         forceLink<GraphNode, GraphLink>(graphLinks)
           .id((node) => node.userId)
-          .distance((link) => 130 + Math.min(120, Math.max(0, link.exchanges * 2)))
+          .distance((link) => 145 + Math.min(130, Math.max(0, link.exchanges * 2)))
           .strength(graphLinkStrength(nodeCount))
       )
       .force(
