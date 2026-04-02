@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.37](https://github.com/La-Ventil/ventil-os/compare/v0.0.36...v0.0.37) (2026-04-02)
+
+
+### Bug Fixes
+
+* **statistics:** avoid forcing network nodes to graph edges ([679d69b](https://github.com/La-Ventil/ventil-os/commit/679d69ba233cf673b2feb46066e22e7baabc8b49))
+
 ### [0.0.36](https://github.com/La-Ventil/ventil-os/compare/v0.0.35...v0.0.36) (2026-04-02)
 
 
