@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.34](https://github.com/La-Ventil/ventil-os/compare/v0.0.33...v0.0.34) (2026-04-02)
+
+
+### Bug Fixes
+
+* **statistics:** align graph edges with rendered nodes ([b566c4d](https://github.com/La-Ventil/ventil-os/commit/b566c4d0bd4955db94ef19ecbb78dc7cec7a390a))
+
 ### [0.0.33](https://github.com/La-Ventil/ventil-os/compare/v0.0.32...v0.0.33) (2026-04-01)
 
 
