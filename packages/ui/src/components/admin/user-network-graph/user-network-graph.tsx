@@ -28,7 +28,10 @@ const NODE_RADIUS_PX = 28;
 const AVATAR_DIAMETER_PX = 50;
 const BUBBLE_RADIUS_PX = 49;
 const MAX_PRODUCTION_HALO_PX = 48;
-const GRAPH_PADDING_PX = NODE_RADIUS_PX + MAX_PRODUCTION_HALO_PX + 16;
+const NODE_COLLISION_PADDING_PX = 32;
+const GRAPH_HORIZONTAL_PADDING_PX = Math.max(BUBBLE_RADIUS_PX, NODE_RADIUS_PX + MAX_PRODUCTION_HALO_PX) + 24;
+const GRAPH_TOP_PADDING_PX = GRAPH_HORIZONTAL_PADDING_PX + 12;
+const GRAPH_BOTTOM_PADDING_PX = GRAPH_HORIZONTAL_PADDING_PX;
 const MIN_GRAPH_WIDTH_PX = 360;
 const MIN_GRAPH_HEIGHT_PX = 420;
 const MIN_NODE_SPACING_PX = 56;
@@ -195,7 +198,7 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
       .force(
         'collide',
         forceCollide<GraphNode>().radius(
-          (node) => Math.max(nodeHaloRadius(node.productionIndex), BUBBLE_RADIUS_PX) + 24
+          (node) => Math.max(nodeHaloRadius(node.productionIndex), BUBBLE_RADIUS_PX) + NODE_COLLISION_PADDING_PX
         )
       )
       .force(
@@ -234,8 +237,8 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
     const roleLabel = labels.roleByKey[node.role];
     const roleVisual = userRoleVisualByRole[node.role];
     const diameter = nodeHaloRadius(node.productionIndex) * 2;
-    const x = clamp(node.x ?? size.width / 2, GRAPH_PADDING_PX, size.width - GRAPH_PADDING_PX);
-    const y = clamp(node.y ?? size.height / 2, GRAPH_PADDING_PX, size.height - GRAPH_PADDING_PX);
+    const x = clamp(node.x ?? size.width / 2, GRAPH_HORIZONTAL_PADDING_PX, size.width - GRAPH_HORIZONTAL_PADDING_PX);
+    const y = clamp(node.y ?? size.height / 2, GRAPH_TOP_PADDING_PX, size.height - GRAPH_BOTTOM_PADDING_PX);
 
     return {
       ...node,
