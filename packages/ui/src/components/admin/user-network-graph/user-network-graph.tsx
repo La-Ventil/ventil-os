@@ -243,6 +243,12 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
       diameter
     };
   });
+  const renderedNodeById = new Map(renderedNodes.map((node) => [node.userId, node]));
+  const renderedLinks = positionedLinks.map((link) => ({
+    ...link,
+    source: renderedNodeById.get(link.sourceUserId) ?? link.source,
+    target: renderedNodeById.get(link.targetUserId) ?? link.target
+  }));
 
   const activeUserId = pinnedUserId ?? hoveredUserId;
 
@@ -281,7 +287,7 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
         </p>
         {nodes.length === 0 ? <p className={styles.emptyState}>{labels.empty}</p> : null}
         <UserNetworkGraphEdgeLayer
-          edges={positionedLinks}
+          edges={renderedLinks}
           width={size.width}
           height={size.height}
           className={styles.edgeLayer}
