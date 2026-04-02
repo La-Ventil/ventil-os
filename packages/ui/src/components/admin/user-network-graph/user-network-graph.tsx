@@ -26,6 +26,7 @@ import styles from './user-network-graph.module.css';
 
 const NODE_RADIUS_PX = 28;
 const AVATAR_DIAMETER_PX = 50;
+const BUBBLE_RADIUS_PX = 49;
 const MAX_PRODUCTION_HALO_PX = 48;
 const GRAPH_PADDING_PX = NODE_RADIUS_PX + MAX_PRODUCTION_HALO_PX + 16;
 const MIN_GRAPH_WIDTH_PX = 360;
@@ -63,7 +64,7 @@ const clamp = (value: number, min: number, max: number): number => Math.min(Math
 const nodeHaloRadius = (productionIndex: number): number =>
   NODE_RADIUS_PX + Math.min(MAX_PRODUCTION_HALO_PX, Math.max(0, productionIndex));
 
-const graphChargeStrength = (nodeCount: number): number => -Math.min(420, 180 + nodeCount * 6);
+const graphChargeStrength = (nodeCount: number): number => -Math.min(560, 220 + nodeCount * 8);
 
 const graphLinkStrength = (nodeCount: number): number => {
   if (nodeCount > 80) {
@@ -74,7 +75,7 @@ const graphLinkStrength = (nodeCount: number): number => {
     return 0.11;
   }
 
-  return 0.14;
+  return 0.1;
 };
 
 const graphVelocityDecay = (nodeCount: number): number => {
@@ -188,20 +189,22 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
         'link',
         forceLink<GraphNode, GraphLink>(graphLinks)
           .id((node) => node.userId)
-          .distance((link) => 110 + Math.min(140, Math.max(0, link.exchanges * 2)))
+          .distance((link) => 130 + Math.min(120, Math.max(0, link.exchanges * 2)))
           .strength(graphLinkStrength(nodeCount))
       )
       .force(
         'collide',
-        forceCollide<GraphNode>().radius((node) => nodeHaloRadius(node.productionIndex) + 18)
+        forceCollide<GraphNode>().radius(
+          (node) => Math.max(nodeHaloRadius(node.productionIndex), BUBBLE_RADIUS_PX) + 24
+        )
       )
       .force(
         'inactiveRing',
         forceRadial<GraphNode>(
-          (node) => (node.inactive ? Math.max(80, Math.min(size.width, size.height) / 2 - 80) : 0),
+          (node) => (node.inactive ? Math.max(96, Math.min(size.width, size.height) * 0.34) : 0),
           centerX,
           centerY
-        ).strength((node) => (node.inactive ? 0.2 : 0))
+        ).strength((node) => (node.inactive ? 0.12 : 0))
       );
 
     let animationFrame: number | null = null;
