@@ -1,10 +1,9 @@
-import type { AvatarCategoryId, AvatarColorSelectionKey, AvatarSelection } from '@repo/avatar-system';
+import type { AvatarCategoryId, AvatarColorSelectionKey } from '@repo/avatar-system';
 
 export type CategoryId = AvatarCategoryId;
 
 export type AvatarOption = {
   id: string;
-  previewSelection: AvatarSelection;
   selected: boolean;
 };
 
@@ -19,3 +18,5 @@ export type AvatarColorSection = {
   selectionKey: AvatarColorSelectionKey;
   options: AvatarColorOption[];
 };
+
+export type AvatarOptionPreviewResolver = (categoryId: AvatarCategoryId, optionId: string) => string | null;

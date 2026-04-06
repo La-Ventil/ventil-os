@@ -20,7 +20,7 @@ import Section from '../section';
 import AvatarColorOptionButton from './avatar-color-option-button';
 import { getCategoryIcon } from './avatar-editor-icons';
 import styles from './avatar-editor.module.css';
-import type { AvatarColorSection, AvatarOption, CategoryId } from './avatar-editor.types';
+import type { AvatarColorSection, AvatarOption, AvatarOptionPreviewResolver, CategoryId } from './avatar-editor.types';
 import AvatarVariantOptionButton from './avatar-variant-option-button';
 
 const EDITOR_CATEGORIES = getAvatarEditorCategories();
@@ -31,9 +31,16 @@ type AvatarEditorProps = {
   onBack?: () => void;
   onSave?: (selection: AvatarSelection) => Promise<AvatarSelection | void>;
   onSaved?: () => void;
+  resolveOptionPreviewSrc?: AvatarOptionPreviewResolver;
 };
 
-export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved }: AvatarEditorProps) {
+export default function AvatarEditor({
+  initialSelection,
+  onBack,
+  onSave,
+  onSaved,
+  resolveOptionPreviewSrc
+}: AvatarEditorProps) {
   const t = useTranslations('pages.hub.avatarSettings.editor');
   const [isSaving, startSaving] = useTransition();
   const [selection, setSelection] = useState<AvatarSelection>(() => initialSelection ?? createInitialAvatarSelection());
@@ -44,8 +51,7 @@ export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved
   const options = useMemo<AvatarOption[]>(() => {
     const nextOptions = activeCategory.elements.map((option) => ({
       id: option.id,
-      selected: selection[activeCategoryId] === option.id,
-      previewSelection: { ...selection, [activeCategoryId]: option.id }
+      selected: selection[activeCategoryId] === option.id
     }));
 
     if (!activeCategory.optional) {
@@ -55,8 +61,7 @@ export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved
     return [
       {
         id: 'none',
-        selected: !selection[activeCategoryId],
-        previewSelection: { ...selection, [activeCategoryId]: undefined }
+        selected: !selection[activeCategoryId]
       },
       ...nextOptions
     ];
@@ -64,8 +69,8 @@ export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved
 
   const colorSections = useMemo<AvatarColorSection[]>(() => {
     return (activeCategory.colorGroups ?? [])
-      .map((group, index) => {
-        const selectionKey = getAvatarColorSelectionKey(activeCategory.id, group.id, index);
+      .map((group) => {
+        const selectionKey = getAvatarColorSelectionKey(activeCategory.id, group.id);
         const options = group.colors.map((color) => ({
           id: color.id,
           selected: selection[selectionKey] === color.id
@@ -162,7 +167,9 @@ export default function AvatarEditor({ initialSelection, onBack, onSave, onSaved
             {options.map((option) => (
               <AvatarVariantOptionButton
                 key={option.id}
-                previewSelection={option.previewSelection}
+                categoryId={activeCategoryId}
+                optionId={option.id}
+                resolvePreviewSrc={resolveOptionPreviewSrc}
                 selected={option.selected}
                 ariaLabel={
                   option.id === 'none'

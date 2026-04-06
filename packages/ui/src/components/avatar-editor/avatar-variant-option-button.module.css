@@ -29,3 +29,18 @@
   box-shadow: none;
   background-color: transparent;
 }
+
+.optionPreviewImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fallbackLabel {
+  color: #8b93a7;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: lowercase;
+}

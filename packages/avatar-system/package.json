@@ -6,6 +6,7 @@
     ".": "./src/index.ts",
     "./react": "./src/react.ts",
     "./config": "./src/avatar-config.ts",
+    "./editor-assets": "./src/editor-assets.ts",
     "./styles.css": "./dist/avatar.css",
     "./avatar.json": "./dist/avatar.json",
     "./images/*": "./dist/images/*"

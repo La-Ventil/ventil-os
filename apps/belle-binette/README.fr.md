@@ -1,6 +1,7 @@
-# Handoff Designer — Avatar Playground
+# Belle Binette
 
-Ce *playground* sert de base de travail pour le futur système d'avatar partagé.
+Ce *playground* consomme désormais le système d'avatar partagé.
+Le catalogue et les assets propres à l'avatar vivent maintenant dans `packages/avatar-system`.
 
 ## Objectif de cette passe
 
@@ -56,21 +57,72 @@ Cela évite de dépendre :
 Effet attendu :
 - cliquer sur `no` retire proprement la classe correspondante
 
-### 4. Des références d'assets obsolètes ont été corrigées dans l'UI du *playground*
+### 4. Des références d'assets éditeur obsolètes ont été corrigées
 
-Certaines icônes d'interface pointaient vers des fichiers qui n'existaient pas sous ces noms.
-Les références ont été réalignées sur les assets réellement présents dans `images/ui/categories/`.
+Certaines icônes d'éditeur pointaient vers des fichiers qui n'existaient pas sous ces noms.
+Les références ont été réalignées sur les assets partagés réellement présents dans `packages/avatar-system/src/images/editor/categories/`.
 
 Corrections concrètes :
-- `images/ui/categories/face-shape.svg` -> `images/ui/categories/face.svg`
-- `images/ui/categories/eyes-style.svg` -> `images/ui/categories/eyes.svg`
-- `images/ui/categories/nose-style.svg` -> `images/ui/categories/nose.svg`
-- `images/ui/categories/mouth-style.svg` -> `images/ui/categories/mouth.svg`
+- `face-shape.svg` -> `face.svg`
+- `eyes-style.svg` -> `eyes.svg`
+- `nose-style.svg` -> `nose.svg`
+- `mouth-style.svg` -> `mouth.svg`
 
-### 5. Quelques visuels de prévisualisation de coiffures ont été corrigées
+### 5. Quelques visuels de prévisualisation ont été corrigés
 
 Certains boutons de preview ne pointaient pas vers le bon visuel.
 Les mappings ont été corrigés pour coller aux vrais noms d'assets.
+
+Avant / après :
+- `face-shape-1` -> avant: `b-face-shape-1.svg`, après: `b-face-1.svg`
+- `earrings-1` -> avant: `b-earrings-1.svg`, après: `b-earring-1.svg`
+- `glasses-3` -> avant: fallback sur l'avatar complet, après: `b-glasses-3.svg`
+- `clothes-1` -> avant: fallback sur l'avatar complet, après: `b-clothes-1.svg`
+
+Chemins actuels :
+- visage : `packages/avatar-system/src/images/editor/previews/b-face-*.svg`
+- cheveux : `packages/avatar-system/src/images/editor/previews/b-hair-*.svg`
+- lunettes : `packages/avatar-system/src/images/editor/previews/b-glasses-*.svg`
+- boucles d'oreilles : `packages/avatar-system/src/images/editor/previews/b-earring-*.svg`
+
+### 6. Les assets avatar de l'éditeur ont été centralisés
+
+Le package partagé porte maintenant tous les visuels spécifiques à l'avatar :
+- les assets du *renderer*
+- les icônes de catégories de l'éditeur
+- les previews d'options de l'éditeur
+
+Structure actuelle :
+- `packages/avatar-system/src/images/renderer/...`
+- `packages/avatar-system/src/images/editor/categories/...`
+- `packages/avatar-system/src/images/editor/previews/...`
+
+Conséquence :
+- `apps/belle-binette` n'est plus la source de vérité des images d'éditeur
+- `apps/web` n'embarque plus de copie dédiée de `avatar-previews`
+- le *playground* et le hub consomment le même jeu d'assets
+
+### 7. Toutes les catégories du catalogue sont désormais visibles
+
+Le catalogue d'édition est maintenant directement piloté par `packages/avatar-system/src/avatar.json`.
+Il n'y a plus de flag `visible` séparé.
+
+Conséquence :
+- toute catégorie présente dans `avatar.json` est considérée comme exposée dans l'éditeur
+- si une catégorie ne doit pas apparaître, elle doit être retirée du catalogue ou déplacée ailleurs
+
+### 8. Les clés de couleurs ne dépendent plus de l'ordre
+
+Les clés de sélection des couleurs sont maintenant dérivées des ids, pas de la position des groupes dans le JSON.
+
+Exemples :
+- `face` + `skin` -> `face-skin-color`
+- `hair` + `hair` -> `hair-color`
+- `glasses` + `frame` -> `glasses-frame-color`
+- `glasses` + `tiles` -> `glasses-tiles-color`
+
+Conséquence :
+- réordonner les groupes de couleurs dans `avatar.json` ne change plus le contrat de persistance
 
 ## Changements concrets
 
@@ -179,19 +231,20 @@ Exemples :
 - le pluriel est plus naturel ici et s'accorde mieux avec le reste du vocabulaire du *playground*
 - une fois ce nom choisi, il faut l'utiliser partout au lieu de garder `earring` et `earrings` côte à côte
 
-#### Pourquoi `ui/previews` et pas `buttons`
+#### Pourquoi `editor/previews` et pas `buttons`
 - ces assets sont avant tout des visuels de prévisualisation affichés dans les contrôles d'options
-- `*buttons*` décrit surtout l'usage HTML actuel
-- `*previews*` décrit mieux leur rôle réel et restera plus pertinent lors de l'extraction du package
+- `*buttons*` décrit surtout un usage UI
+- `*previews*` décrit mieux leur rôle réel
 
-#### Pourquoi `ui/categories` et pas `interface`
+#### Pourquoi `editor/categories` et pas `interface`
 - `interface` est trop vague
 - ces fichiers servent précisément d'icônes de catégories/onglets dans l'éditeur
 
-#### Pourquoi `renderer/` et `ui/`
+#### Pourquoi `renderer/` et `editor/` dans le même package
 - `*renderer*/` contient les assets nécessaires à la composition de l'avatar
-- `ui/` contient les assets propres à l'interface du *playground*/éditeur
-- cette séparation préparera mieux l'extraction future vers un package partagé
+- `editor/` contient les assets propres à l'édition de l'avatar
+- les deux sont spécifiques à l'avatar, donc ils vivent maintenant dans le même package partagé
+- cela supprime les duplications entre le *playground* et le hub
 
 Quand une nouvelle option est ajoutée, il faut garder exactement les mêmes noms entre :
 - le JSON
@@ -203,8 +256,30 @@ Et pour les options facultatives :
 - utiliser une valeur vide explicite
 - ne pas compter sur des ids implicites ou bidons
 
-## Étape suivante
+## Répartition actuelle
 
-Le *playground* est maintenant suffisamment cohérent pour être découpé en :
-- un package partagé de *renderer*/*editor* d'avatar
-- une application *playground* qui consomme ce package
+La répartition actuelle est :
+- `packages/avatar-system`
+  - configuration avatar
+  - *renderer*
+  - assets du *renderer*
+  - assets d'éditeur
+- `apps/belle-binette`
+  - application *playground* qui consomme le package partagé
+
+## Build lisible
+
+Pour générer un build local lisible :
+
+```bash
+pnpm --filter belle-binette build
+```
+
+Le résultat est écrit dans :
+- `apps/belle-binette/dist/`
+
+Ce build est configuré pour rester lisible :
+- pas de hash dans les noms de fichiers
+- pas de minification
+- source maps activées
+- assets avatar rangés dans `dist/assets/images/...`

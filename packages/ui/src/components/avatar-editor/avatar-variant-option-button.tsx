@@ -1,21 +1,26 @@
 import type { MouseEventHandler } from 'react';
-import type { AvatarSelection } from '@repo/avatar-system';
-import { Avatar } from '@repo/avatar-system/react';
+import type { AvatarCategoryId } from '@repo/avatar-system';
+import type { AvatarOptionPreviewResolver } from './avatar-editor.types';
 import styles from './avatar-variant-option-button.module.css';
 
 type AvatarVariantOptionButtonProps = {
-  previewSelection: AvatarSelection;
+  categoryId: AvatarCategoryId;
+  optionId: string;
   selected: boolean;
   ariaLabel: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  resolvePreviewSrc?: AvatarOptionPreviewResolver;
 };
 
 export default function AvatarVariantOptionButton({
-  previewSelection,
+  categoryId,
+  optionId,
   selected,
   ariaLabel,
-  onClick
+  onClick,
+  resolvePreviewSrc
 }: AvatarVariantOptionButtonProps) {
+  const previewSrc = resolvePreviewSrc?.(categoryId, optionId) ?? null;
   return (
     <button
       type="button"
@@ -26,7 +31,17 @@ export default function AvatarVariantOptionButton({
       onClick={onClick}
     >
       <span className={styles.optionPreview}>
-        <Avatar selection={previewSelection} className="s2" />
+        {optionId === 'none' ? (
+          <span aria-hidden className={styles.fallbackLabel}>
+            none
+          </span>
+        ) : previewSrc ? (
+          <img src={previewSrc} alt="" aria-hidden className={styles.optionPreviewImage} />
+        ) : (
+          <span aria-hidden className={styles.fallbackLabel}>
+            missing
+          </span>
+        )}
       </span>
     </button>
   );

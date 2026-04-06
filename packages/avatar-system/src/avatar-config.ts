@@ -8,9 +8,7 @@ export function getAvatarCategories() {
 }
 
 export function getAvatarEditorCategories() {
-  return avatarConfig.categories.filter((category) => category.visible !== false) as Array<
-    (typeof avatarConfig.categories)[number] & { id: AvatarCategoryId }
-  >;
+  return avatarConfig.categories as Array<(typeof avatarConfig.categories)[number] & { id: AvatarCategoryId }>;
 }
 
 export function getAvatarCategory(categoryId: AvatarCategoryId) {
@@ -28,13 +26,28 @@ export function getAvatarCategory(categoryId: AvatarCategoryId) {
 export function getAvatarColorSelectionKey(
   categoryId: AvatarCategoryId,
   colorGroupId: string,
-  colorGroupIndex: number
 ): AvatarColorSelectionKey {
-  if (colorGroupIndex === 0) {
-    return `${categoryId}-color` as AvatarColorSelectionKey;
+  if (colorGroupId === categoryId) {
+    return `${colorGroupId}-color` as AvatarColorSelectionKey;
   }
 
   return `${categoryId}-${colorGroupId}-color` as AvatarColorSelectionKey;
+}
+
+function getLegacyAvatarColorSelectionKey(
+  categoryId: AvatarCategoryId,
+  colorGroupId: string,
+  colorGroupIndex: number
+): string {
+  if (colorGroupIndex === 0) {
+    return `${categoryId}-color`;
+  }
+
+  if (colorGroupId === categoryId) {
+    return `${colorGroupId}-color`;
+  }
+
+  return `${categoryId}-${colorGroupId}-color`;
 }
 
 export function createInitialAvatarSelection(): AvatarSelection {
@@ -47,13 +60,13 @@ export function createInitialAvatarSelection(): AvatarSelection {
       selection[categoryId] = rawCategory.elements[0].id as AvatarSelection[typeof categoryId];
     }
 
-    for (const [index, colorGroup] of (rawCategory.colorGroups ?? []).entries()) {
+    for (const colorGroup of rawCategory.colorGroups ?? []) {
       const firstColor = colorGroup.colors[0];
       if (!firstColor) {
         continue;
       }
 
-      const selectionKey = getAvatarColorSelectionKey(categoryId, colorGroup.id, index);
+      const selectionKey = getAvatarColorSelectionKey(categoryId, colorGroup.id);
       selection[selectionKey] = firstColor.id as AvatarSelection[typeof selectionKey];
     }
   }
@@ -83,9 +96,10 @@ export function resolveAvatarSelection(input?: unknown): AvatarSelection {
     }
 
     for (const [index, colorGroup] of (rawCategory.colorGroups ?? []).entries()) {
-      const selectionKey = getAvatarColorSelectionKey(categoryId, colorGroup.id, index);
+      const selectionKey = getAvatarColorSelectionKey(categoryId, colorGroup.id);
       const allowedColorIds = new Set(colorGroup.colors.map((color) => color.id));
-      const rawColorValue = candidate[selectionKey];
+      const legacySelectionKey = getLegacyAvatarColorSelectionKey(categoryId, colorGroup.id, index);
+      const rawColorValue = candidate[selectionKey] ?? candidate[legacySelectionKey];
 
       if (typeof rawColorValue === 'string' && allowedColorIds.has(rawColorValue)) {
         selection[selectionKey] = rawColorValue;

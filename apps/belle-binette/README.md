@@ -1,6 +1,7 @@
-# Avatar Playground
+# Belle Binette
 
-This playground is the current source material for the future shared avatar system.
+This playground is now a consumer of the shared avatar system.
+The avatar catalog and the avatar-specific assets now live in `packages/avatar-system`.
 
 ## Goal of this normalization pass
 
@@ -58,21 +59,72 @@ This prevents the editor from relying on accidental values such as:
 The effect is simple:
 - selecting `no` now always removes the corresponding class cleanly
 
-### 4. Stale playground UI asset references were corrected
+### 4. Stale editor asset references were corrected
 
-The playground UI referenced some interface icons that do not exist with those names.
-These references were aligned to the existing files in `images/ui/categories/`.
+Some editor icons referenced files that did not exist with those names.
+These references were aligned to the actual shared assets in `packages/avatar-system/src/images/editor/categories/`.
 
 Concrete corrections:
-- `images/ui/categories/face-shape.svg` -> `images/ui/categories/face.svg`
-- `images/ui/categories/eyes-style.svg` -> `images/ui/categories/eyes.svg`
-- `images/ui/categories/nose-style.svg` -> `images/ui/categories/nose.svg`
-- `images/ui/categories/mouth-style.svg` -> `images/ui/categories/mouth.svg`
+- `face-shape.svg` -> `face.svg`
+- `eyes-style.svg` -> `eyes.svg`
+- `nose-style.svg` -> `nose.svg`
+- `mouth-style.svg` -> `mouth.svg`
 
 ### 5. A few stale preview button mappings were corrected
 
 The preview buttons for some hair options had stale image references.
 Those mappings were corrected to match the actual asset names.
+
+Before / after:
+- `face-shape-1` -> before: `b-face-shape-1.svg`, after: `b-face-1.svg`
+- `earrings-1` -> before: `b-earrings-1.svg`, after: `b-earring-1.svg`
+- `glasses-3` -> before: full avatar fallback, after: `b-glasses-3.svg`
+- `clothes-1` -> before: full avatar fallback, after: `b-clothes-1.svg`
+
+Current paths:
+- face: `packages/avatar-system/src/images/editor/previews/b-face-*.svg`
+- hair: `packages/avatar-system/src/images/editor/previews/b-hair-*.svg`
+- glasses: `packages/avatar-system/src/images/editor/previews/b-glasses-*.svg`
+- earrings: `packages/avatar-system/src/images/editor/previews/b-earring-*.svg`
+
+### 6. Avatar-specific editor assets were centralized
+
+The shared package now owns all avatar-specific images:
+- renderer assets
+- editor category icons
+- editor option previews
+
+Current structure:
+- `packages/avatar-system/src/images/renderer/...`
+- `packages/avatar-system/src/images/editor/categories/...`
+- `packages/avatar-system/src/images/editor/previews/...`
+
+This means:
+- `apps/belle-binette` is no longer the source of truth for editor images
+- `apps/web` no longer keeps a copied `public/avatar-previews` directory
+- the playground and the hub consume the same shared asset set
+
+### 7. All catalog categories are now editor-visible
+
+The editor catalog is now driven directly by `packages/avatar-system/src/avatar.json`.
+There is no separate `visible` flag anymore.
+
+This means:
+- every category present in `avatar.json` is considered editor-visible
+- if a category should not appear, it should be removed from that catalog or moved elsewhere
+
+### 8. Color selection keys no longer depend on array order
+
+Color selection keys are now derived from ids, not from the position of color groups in the JSON.
+
+Examples:
+- `face` + `skin` -> `face-skin-color`
+- `hair` + `hair` -> `hair-color`
+- `glasses` + `frame` -> `glasses-frame-color`
+- `glasses` + `tiles` -> `glasses-tiles-color`
+
+This means:
+- reordering color groups in `avatar.json` no longer changes the persistence contract
 
 ## Concrete naming changes
 
@@ -178,19 +230,20 @@ Examples:
 - plural reads better here and fits the rest of the editor vocabulary
 - once chosen, it should be reused everywhere instead of keeping `earring` and `earrings` side by side
 
-#### Why `ui/previews` and not `buttons`
+#### Why `editor/previews` and not `buttons`
 - these assets are preview images shown inside option controls
-- `buttons` only describes the current HTML usage
-- `previews` better describes the actual role of the assets
+- `buttons` only describes a current UI usage
+- `previews` describes the asset role more accurately
 
-#### Why `ui/categories` and not `interface`
+#### Why `editor/categories` and not `interface`
 - `interface` is too vague
 - these files are specifically category/tab icons for the editor
 
-#### Why `renderer/` and `ui/`
+#### Why `renderer/` and `editor/` inside the same package
 - `renderer/` contains assets used to build the avatar itself
-- `ui/` contains assets only used by the editor/playground interface
-- this separation will make the future package extraction cleaner
+- `editor/` contains assets specific to avatar editing
+- both are avatar-specific, so they now live in the same shared package
+- this removes duplication between the playground and the hub
 
 
 If new options are added, they should follow these rules:
@@ -209,8 +262,30 @@ If new options are added, they should follow these rules:
 - no hidden stale entries
 - no orphan ids
 
-## Next extraction step
+## Current package split
 
-The normalized playground is now ready to be split into:
-- a reusable avatar renderer/editor package
-- a playground app consuming that package
+The current split is now:
+- `packages/avatar-system`
+  - avatar config
+  - avatar renderer
+  - avatar renderer assets
+  - avatar editor assets
+- `apps/belle-binette`
+  - playground app consuming the shared package
+
+## Build output
+
+To generate a readable local build:
+
+```bash
+pnpm --filter belle-binette build
+```
+
+The output is written to:
+- `apps/belle-binette/dist/`
+
+This build is intentionally configured to stay readable:
+- no filename hashes
+- no minification
+- source maps enabled
+- avatar assets kept under `dist/assets/images/...`

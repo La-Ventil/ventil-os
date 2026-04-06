@@ -10,4 +10,5 @@ export {
 export { buildAvatarClassName } from './avatar-classname';
 export { createAvatarElement } from './avatar-dom';
 export { getAvatarMarkup } from './avatar-markup';
+export { getAvatarOptionPreviewPublicPath } from './editor-preview-paths';
 export type { AvatarCategoryId, AvatarColorSelectionKey, AvatarConfig, AvatarSelection } from './avatar.types';

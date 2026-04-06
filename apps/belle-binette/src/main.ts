@@ -11,9 +11,9 @@ const selection: AvatarSelection = {
   nose: 'nose-1',
   hair: 'hair-100',
   clothes: 'clothes-1',
-  'face-color': 'skin-color-4',
+  'face-skin-color': 'skin-color-4',
   'hair-color': 'hair-color-13',
-  'glasses-color': 'glasses-color-1',
+  'glasses-frame-color': 'glasses-color-1',
   'glasses-tiles-color': 'glasses-tiles-color-1',
   'cheeks-color': 'cheeks-color-1',
   'earrings-color': 'earrings-color-1'
@@ -43,7 +43,7 @@ function updateGroupActiveState(groupId: string, activeValue: string | undefined
 
 function syncButtonStates() {
   updateGroupActiveState('face', selection.face);
-  updateGroupActiveState('skin', selection['face-color']);
+  updateGroupActiveState('skin', selection['face-skin-color']);
   updateGroupActiveState('hair', selection.hair);
   updateGroupActiveState('hair-color', selection['hair-color']);
   updateGroupActiveState('mouth', selection.mouth);
@@ -51,7 +51,7 @@ function syncButtonStates() {
   updateGroupActiveState('eyes', selection.eyes);
   updateGroupActiveState('eyebrows', selection.eyebrows);
   updateGroupActiveState('glasses', selection.glasses);
-  updateGroupActiveState('glasses-color', selection['glasses-color']);
+  updateGroupActiveState('glasses-color', selection['glasses-frame-color']);
   updateGroupActiveState('glasses-tiles-color', selection['glasses-tiles-color']);
   updateGroupActiveState('facial-hair', selection['facial-hair']);
   updateGroupActiveState('face-details', selection['face-details']);
@@ -135,13 +135,13 @@ function applyOptionSelection(type: string, value: string) {
 function applyColorSelection(groupId: string, value: string) {
   switch (groupId) {
     case 'skin':
-      selection['face-color'] = value;
+      selection['face-skin-color'] = value;
       break;
     case 'hair-color':
       selection['hair-color'] = value;
       break;
     case 'glasses-color':
-      selection['glasses-color'] = value;
+      selection['glasses-frame-color'] = value;
       break;
     case 'glasses-tiles-color':
       selection['glasses-tiles-color'] = value;

@@ -13,9 +13,9 @@ export type AvatarCategoryId =
   | 'earrings';
 
 export type AvatarColorSelectionKey =
-  | 'face-color'
+  | 'face-skin-color'
   | 'hair-color'
-  | 'glasses-color'
+  | 'glasses-frame-color'
   | 'glasses-tiles-color'
   | 'cheeks-color'
   | 'earrings-color';
@@ -33,9 +33,9 @@ export type AvatarSelection = {
   'facial-hair'?: string;
   'face-details'?: string;
   cheeks?: string;
-  'face-color': string;
+  'face-skin-color': string;
   'hair-color': string;
-  'glasses-color'?: string;
+  'glasses-frame-color'?: string;
   'glasses-tiles-color'?: string;
   'cheeks-color'?: string;
   'earrings-color'?: string;

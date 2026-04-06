@@ -1,0 +1,806 @@
+body {
+  background-color: #dfe3e2;
+  color: #5e6f65;
+  display: flex;
+  position: relative;
+  overflow-y: scroll;
+}
+.viz-group {
+  position: fixed;
+  width: 300px;
+  height: 100vh;
+  overflow-y: scroll;
+  p {
+    font-size: 10px;
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-family: sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+pre {
+  border: 1px solid aliceblue;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 6px;
+  max-width: 300px;
+}
+h1 {
+  font-size: 13px;
+  font-family: sans-serif;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+h2 {
+  font-size: 8px;
+  font-family: sans-serif;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.selector {
+  position: relative;
+  margin-left: 330px;
+  width: calc(100vw - 380px);
+  position: relative;
+  p {
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-family: sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    max-width: 600px;
+  }
+}
+.section-buttons {
+  padding: 20px 0;
+}
+.face-color-buttons,
+.hair-color-buttons,
+.cheeks-color-buttons,
+.glasses-color-buttons,
+.earrings-color-buttons,
+.tile-glasses-color-buttons,
+.option-buttons {
+  button {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      border: 1px solid rgb(161, 161, 174);
+    }
+  }
+}
+.main-tab-container,
+.sub-tab-container {
+  display: flex;
+  .main-tab:first-of-type {
+    margin-left: 0;
+  }
+}
+.main-tab {
+  width: 120px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid black;
+  background-color: white;
+  height: 50px;
+  margin-left: -1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  .icon {
+    background-color: black;
+    width: 40px;
+    height: 40px;
+  }
+  &#face-options {
+    .icon {
+      mask: url(../../packages/avatar-system/src/images/editor/categories/face.svg);
+    }
+  }
+  &#eyes-options {
+    .icon {
+      mask: url(../../packages/avatar-system/src/images/editor/categories/eyes.svg);
+    }
+  }
+  &#nose-options {
+    .icon {
+      mask: url(../../packages/avatar-system/src/images/editor/categories/nose.svg);
+    }
+  }
+  &#mouth-options {
+    .icon {
+      mask: url(../../packages/avatar-system/src/images/editor/categories/mouth.svg);
+    }
+  }
+}
+.option-buttons {
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 3px;
+  .sep {
+    display: flex;
+  }
+  button {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+    box-sizing: border-box;
+    &.none {
+      div {
+        display: none;
+      }
+    }
+    div {
+      width: 98px;
+      height: 98px;
+      mask-size: cover;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    &#facial-hair-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-1.svg);
+    }
+    &#facial-hair-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-2.svg);
+    }
+    &#facial-hair-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-3.svg);
+    }
+    &#facial-hair-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-4.svg);
+    }
+    &#facial-hair-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-5.svg);
+    }
+    &#facial-hair-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-6.svg);
+    }
+    &#facial-hair-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-7.svg);
+    }
+    &#facial-hair-8 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-8.svg);
+    }
+    &#facial-hair-9 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-9.svg);
+    }
+    &#facial-hair-10 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-10.svg);
+    }
+    &#facial-hair-11 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-11.svg);
+    }
+    &#face-details-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-1.svg);
+    }
+    &#face-details-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-2.svg);
+    }
+    &#face-details-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-3.svg);
+    }
+    &#cheeks-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-cheeks-1.svg);
+    }
+    &#cheeks-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-cheeks-2.svg);
+    }
+    &#hair-100 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-100.svg);
+    }
+    &#hair-101 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-101.svg);
+    }
+    &#hair-102 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-102.svg);
+    }
+    &#hair-103 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-103.svg);
+    }
+    &#hair-104 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-104.svg);
+    }
+    &#hair-105 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-105.svg);
+    }
+    &#hair-106 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-106.svg);
+    }
+    &#hair-107 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-107.svg);
+    }
+    &#hair-108 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-108.svg);
+    }
+    &#hair-109 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-109.svg);
+    }
+    &#hair-110 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-110.svg);
+    }
+    &#hair-111 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-111.svg);
+    }
+    &#hair-200 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-200.svg);
+    }
+    &#hair-201 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-201.svg);
+    }
+    &#hair-203 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-203.svg);
+    }
+    &#hair-204 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-204.svg);
+    }
+    &#hair-205 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-205.svg);
+    }
+    &#hair-206 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-206.svg);
+    }
+    &#hair-207 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-207.svg);
+    }
+    &#hair-208 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-208.svg);
+    }
+    &#hair-209 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-209.svg);
+    }
+    &#hair-210 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-210.svg);
+    }
+    &#hair-211 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-211.svg);
+    }
+    &#hair-212 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-212.svg);
+    }
+    &#hair-213 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-213.svg);
+    }
+    &#hair-214 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-214.svg);
+    }
+    &#hair-215 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-215.svg);
+    }
+    &#hair-216 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-216.svg);
+    }
+    &#hair-217 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-217.svg);
+    }
+    &#hair-218 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-218.svg);
+    }
+    &#hair-300 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-300.svg);
+    }
+    &#hair-301 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-301.svg);
+    }
+    &#hair-302 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-302.svg);
+    }
+    &#hair-303 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-303.svg);
+    }
+    &#hair-304 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-304.svg);
+    }
+    &#hair-400 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-400.svg);
+    }
+    &#hair-401 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-401.svg);
+    }
+    &#hair-402 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-402.svg);
+    }
+    &#hair-403 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-403.svg);
+    }
+    &#face-shape-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-1.svg);
+    }
+    &#face-shape-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-2.svg);
+    }
+    &#face-shape-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-3.svg);
+    }
+    &#face-shape-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-4.svg);
+    }
+    &#face-shape-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-5.svg);
+    }
+    &#face-shape-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-6.svg);
+    }
+    &#eyes-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-1.svg);
+    }
+    &#eyes-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-2.svg);
+    }
+    &#eyes-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-3.svg);
+    }
+    &#eyes-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-4.svg);
+    }
+    &#eyes-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-5.svg);
+    }
+    &#eyes-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-6.svg);
+    }
+    &#eyes-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-7.svg);
+    }
+    &#eyes-8 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-8.svg);
+    }
+    &#eyes-9 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-9.svg);
+    }
+    &#eyes-10 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-10.svg);
+    }
+    &#eyes-11 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-11.svg);
+    }
+    &#eyes-12 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-12.svg);
+    }
+    &#eyes-13 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-13.svg);
+    }
+    &#eyes-14 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-14.svg);
+    }
+    &#eyes-16 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-16.svg);
+    }
+    &#eyes-17 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-17.svg);
+    }
+    &#eyes-18 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-18.svg);
+    }
+    &#nose-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-1.svg);
+    }
+    &#nose-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-2.svg);
+    }
+    &#nose-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-3.svg);
+    }
+    &#nose-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-4.svg);
+    }
+    &#nose-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-5.svg);
+    }
+    &#nose-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-6.svg);
+    }
+    &#nose-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-7.svg);
+    }
+    &#nose-8 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-8.svg);
+    }
+    &#nose-9 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-9.svg);
+    }
+    &#mouth-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-1.svg);
+    }
+    &#mouth-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-2.svg);
+    }
+    &#mouth-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-3.svg);
+    }
+    &#mouth-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-4.svg);
+    }
+    &#mouth-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-5.svg);
+    }
+    &#mouth-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-6.svg);
+    }
+    &#mouth-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-7.svg);
+    }
+    &#mouth-8 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-8.svg);
+    }
+    &#mouth-9 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-9.svg);
+    }
+    &#mouth-10 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-10.svg);
+    }
+    &#mouth-11 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-11.svg);
+    }
+    &#mouth-12 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-12.svg);
+    }
+    &#mouth-13 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-13.svg);
+    }
+    &#mouth-14 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-14.svg);
+    }
+    &#mouth-15 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-15.svg);
+    }
+    &#glasses-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-1.svg);
+    }
+    &#glasses-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-2.svg);
+    }
+    &#glasses-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-3.svg);
+    }
+    &#glasses-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-4.svg);
+    }
+    &#glasses-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-5.svg);
+    }
+    &#glasses-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-6.svg);
+    }
+    &#glasses-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-7.svg);
+    }
+    &#glasses-8 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-8.svg);
+    }
+    &#glasses-9 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-9.svg);
+    }
+    &#glasses-10 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-10.svg);
+    }
+    &#glasses-11 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-11.svg);
+    }
+    &#eb1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-1.svg);
+    }
+    &#eb2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-2.svg);
+    }
+    &#eb3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-3.svg);
+    }
+    &#eb4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-4.svg);
+    }
+    &#eb5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-5.svg);
+    }
+    &#eb6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-6.svg);
+    }
+    &#eb7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-7.svg);
+    }
+    &#earrings-1 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-1.svg);
+    }
+    &#earrings-2 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-2.svg);
+    }
+    &#earrings-3 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-3.svg);
+    }
+    &#earrings-4 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-4.svg);
+    }
+    &#earrings-5 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-5.svg);
+    }
+    &#earrings-6 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-6.svg);
+    }
+    &#earrings-7 div {
+      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-7.svg);
+    }
+  }
+}
+
+.face-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#skin-color-1 {
+      background-color: var(--skin-color-1);
+    }
+    &#skin-color-2 {
+      background-color: var(--skin-color-2);
+    }
+    &#skin-color-3 {
+      background-color: var(--skin-color-3);
+    }
+    &#skin-color-4 {
+      background-color: var(--skin-color-4);
+    }
+    &#skin-color-5 {
+      background-color: var(--skin-color-5);
+    }
+    &#skin-color-6 {
+      background-color: var(--skin-color-6);
+    }
+    &#skin-color-7 {
+      background-color: var(--skin-color-7);
+    }
+    &#skin-color-8 {
+      background-color: var(--skin-color-8);
+    }
+    &#skin-color-9 {
+      background-color: var(--skin-color-9);
+    }
+    &#skin-color-10 {
+      background-color: var(--skin-color-10);
+    }
+    &#skin-color-11 {
+      background-color: var(--skin-color-11);
+    }
+    &#skin-color-12 {
+      background-color: var(--skin-color-12);
+    }
+    &#skin-color-13 {
+      background-color: var(--skin-color-13);
+    }
+    &#skin-color-14 {
+      background-color: var(--skin-color-14);
+    }
+    &#skin-color-15 {
+      background-color: var(--skin-color-15);
+    }
+    &#skin-color-16 {
+      background-color: var(--skin-color-16);
+    }
+    &#skin-color-17 {
+      background-color: var(--skin-color-17);
+    }
+    &#skin-color-18 {
+      background-color: var(--skin-color-18);
+    }
+    &#skin-color-19 {
+      background-color: var(--skin-color-19);
+    }
+  }
+}
+.hair-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#hair-color-10 {
+      background-color: var(--hair-color-10);
+    }
+    &#hair-color-11 {
+      background-color: var(--hair-color-11);
+    }
+    &#hair-color-12 {
+      background-color: var(--hair-color-12);
+    }
+    &#hair-color-13 {
+      background-color: var(--hair-color-13);
+    }
+    &#hair-color-14 {
+      background-color: var(--hair-color-14);
+    }
+    &#hair-color-20 {
+      background-color: var(--hair-color-20);
+    }
+    &#hair-color-21 {
+      background-color: var(--hair-color-21);
+    }
+    &#hair-color-22 {
+      background-color: var(--hair-color-22);
+    }
+    &#hair-color-23 {
+      background-color: var(--hair-color-23);
+    }
+    &#hair-color-24 {
+      background-color: var(--hair-color-24);
+    }
+    &#hair-color-30 {
+      background-color: var(--hair-color-30);
+    }
+    &#hair-color-31 {
+      background-color: var(--hair-color-31);
+    }
+    &#hair-color-32 {
+      background-color: var(--hair-color-32);
+    }
+    &#hair-color-33 {
+      background-color: var(--hair-color-33);
+    }
+    &#hair-color-34 {
+      background-color: var(--hair-color-34);
+    }
+    &#hair-color-40 {
+      background-color: var(--hair-color-40);
+    }
+    &#hair-color-41 {
+      background-color: var(--hair-color-41);
+    }
+    &#hair-color-42 {
+      background-color: var(--hair-color-42);
+    }
+    &#hair-color-43 {
+      background-color: var(--hair-color-43);
+    }
+    &#hair-color-44 {
+      background-color: var(--hair-color-44);
+    }
+    &#hair-color-50 {
+      background-color: var(--hair-color-50);
+    }
+    &#hair-color-51 {
+      background-color: var(--hair-color-51);
+    }
+    &#hair-color-52 {
+      background-color: var(--hair-color-52);
+    }
+    &#hair-color-53 {
+      background-color: var(--hair-color-53);
+    }
+    &#hair-color-54 {
+      background-color: var(--hair-color-54);
+    }
+    &#hair-color-60 {
+      background-color: var(--hair-color-60);
+    }
+    &#hair-color-61 {
+      background-color: var(--hair-color-61);
+    }
+    &#hair-color-62 {
+      background-color: var(--hair-color-62);
+    }
+    &#hair-color-63 {
+      background-color: var(--hair-color-63);
+    }
+    &#hair-color-64 {
+      background-color: var(--hair-color-64);
+    }
+    &#hair-color-70 {
+      background-color: var(--hair-color-70);
+    }
+    &#hair-color-71 {
+      background-color: var(--hair-color-71);
+    }
+    &#hair-color-72 {
+      background-color: var(--hair-color-72);
+    }
+    &#hair-color-73 {
+      background-color: var(--hair-color-73);
+    }
+    &#hair-color-74 {
+      background-color: var(--hair-color-74);
+    }
+  }
+}
+
+.glasses-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#glasses-color-1 {
+      background-color: var(--glasses-color-1);
+    }
+    &#glasses-color-2 {
+      background-color: var(--glasses-color-2);
+    }
+    &#glasses-color-3 {
+      background-color: var(--glasses-color-3);
+    }
+    &#glasses-color-4 {
+      background-color: var(--glasses-color-4);
+    }
+    &#glasses-color-5 {
+      background-color: var(--glasses-color-5);
+    }
+  }
+}
+.tile-glasses-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#glasses-tiles-color-1 {
+      background-color: var(--glasses-tiles-color-1);
+    }
+    &#glasses-tiles-color-2 {
+      background-color: var(--glasses-tiles-color-2);
+    }
+    &#glasses-tiles-color-3 {
+      background-color: var(--glasses-tiles-color-3);
+    }
+  }
+}
+.cheeks-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#cheeks-color-1 {
+      background-color: #775609;
+    }
+    &#cheeks-color-2 {
+      background-color: #e51e05;
+    }
+    &#cheeks-color-3 {
+      background-color: #8909df;
+    }
+    &#cheeks-color-4 {
+      background-color: #fff7d9;
+    }
+  }
+}
+.earrings-color-buttons {
+  margin-top: 10px;
+  button  {
+    width: 30px;
+    height: 30px;
+    &#earrings-color-1 {
+      background-color: #afaa9c;
+    }
+    &#earrings-color-2 {
+      background-color: #a98152;
+    }
+    &#earrings-color-3 {
+      background-color: #d39b22;
+    }
+    &#earrings-color-4 {
+      background-color: #f1c30a;
+    }
+  }
+}
+
+.emotion-group {
+  display: flex;
+  gap: 10px;
+  max-width: 300px;
+  flex-wrap: wrap;
+  #s1 {
+    width: 130px !important;
+    height: 130px !important;
+  }
+}
+.size-group {
+  display: flex;
+  gap: 10px;
+  max-width: 300px;
+  flex-wrap: wrap;
+}

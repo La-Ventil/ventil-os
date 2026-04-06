@@ -4,7 +4,6 @@
       "id": "face",
       "name": "face",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "face-shape-1",
@@ -111,7 +110,6 @@
       "id": "hair",
       "name": "hair",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "hair-100",
@@ -461,7 +459,6 @@
       "id": "nose",
       "name": "nose",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "nose-1",
@@ -505,7 +502,6 @@
       "id": "mouth",
       "name": "mouth",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "mouth-1",
@@ -573,7 +569,6 @@
       "id": "eyes",
       "name": "eyes",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "eyes-1",
@@ -649,7 +644,6 @@
       "id": "eyebrows",
       "name": "eyebrows",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "eyebrows-1",
@@ -685,7 +679,6 @@
       "id": "glasses",
       "name": "glasses",
       "optional": true,
-      "visible": true,
       "elements": [
         {
           "id": "glasses-1",
@@ -781,7 +774,6 @@
       "id": "facial-hair",
       "name": "facial hair",
       "optional": true,
-      "visible": true,
       "elements": [
         {
           "id": "facial-hair-1",
@@ -833,7 +825,6 @@
       "id": "face-details",
       "name": "face details",
       "optional": true,
-      "visible": true,
       "elements": [
         {
           "id": "face-details-1",
@@ -853,7 +844,6 @@
       "id": "cheeks",
       "name": "cheeks",
       "optional": true,
-      "visible": true,
       "elements": [
         {
           "id": "cheeks-1",
@@ -892,7 +882,6 @@
       "id": "clothes",
       "name": "clothes",
       "optional": false,
-      "visible": true,
       "elements": [
         {
           "id": "clothes-1",
@@ -908,7 +897,6 @@
       "id": "earrings",
       "name": "earrings",
       "optional": true,
-      "visible": true,
       "elements": [
         {
           "id": "earrings-1",
