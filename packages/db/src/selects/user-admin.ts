@@ -4,6 +4,7 @@ export const userAdminSelect = {
   id: true,
   email: true,
   image: true,
+  avatar: true,
   firstName: true,
   lastName: true,
   username: true,

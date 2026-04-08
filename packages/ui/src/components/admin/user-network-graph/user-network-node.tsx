@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
+import type { AvatarSelection } from '@repo/avatar-system';
 import UserNetworkGraphNodeBubble from './user-network-node-bubble';
 import UserNetworkGraphNodeTooltip from './user-network-node-tooltip';
 import UserNetworkGraphNodeShell from './user-network-node-shell';
@@ -14,6 +15,7 @@ type RoleVisual = {
 type UserNetworkGraphNodeData = {
   userId: string;
   fullName: string;
+  avatar?: AvatarSelection | null;
   avatarUrl?: string | null;
   roleLabel: string;
   roleVisual: RoleVisual;
@@ -59,6 +61,7 @@ export default function UserNetworkGraphNode({ node, avatarDiameterPx, handlers 
         roleColor={node.roleVisual.color}
       >
         <UserNetworkGraphNodeBubble
+          avatar={node.avatar ?? undefined}
           avatarUrl={node.avatarUrl ?? undefined}
           bubbleDiameterPx={node.diameter}
           avatarDiameterPx={avatarDiameterPx}

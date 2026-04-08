@@ -1,3 +1,4 @@
+import { resolveAvatarSelection } from '@repo/avatar-system';
 import { formatUserFullName } from '@repo/domain/user/user-name';
 import type { AdminStatisticsReadModel } from '@repo/db/read-models';
 import type { AdminStatisticsViewModel } from '@repo/application/admin/models/admin-statistics';
@@ -10,6 +11,7 @@ export const mapAdminStatisticsToViewModel = (statistics: AdminStatisticsReadMod
     nodes: statistics.network.nodes.map((node) => ({
       userId: node.userId,
       fullName: formatUserFullName(node),
+      avatar: node.avatar ? resolveAvatarSelection(node.avatar) : null,
       avatarUrl: node.avatarUrl,
       role: node.role,
       blocked: node.blocked,

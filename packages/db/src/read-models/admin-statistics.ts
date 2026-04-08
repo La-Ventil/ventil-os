@@ -15,6 +15,7 @@ export type AdminStatisticsNetworkNodeReadModel = {
   userId: string;
   firstName: string;
   lastName: string;
+  avatar: unknown | null;
   avatarUrl: string | null;
   role: UserRole;
   blocked: boolean;

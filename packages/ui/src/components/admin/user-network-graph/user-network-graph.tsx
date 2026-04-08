@@ -311,6 +311,7 @@ export default function UserNetworkGraph({ nodes, edges, labels }: UserNetworkGr
                 node={{
                   userId: node.userId,
                   fullName: node.fullName,
+                  avatar: node.avatar,
                   avatarUrl: node.avatarUrl,
                   roleLabel: node.roleLabel,
                   roleVisual: node.roleVisual,

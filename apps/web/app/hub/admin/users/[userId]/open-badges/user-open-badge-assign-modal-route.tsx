@@ -43,6 +43,7 @@ export default function UserOpenBadgeAssignModalRoute({
       lastName: user.lastName,
       username: user.username,
       image: user.image,
+      avatar: user.avatar,
       email: user.email,
       fullName: user.fullName,
       currentOpenBadgeLevel: null

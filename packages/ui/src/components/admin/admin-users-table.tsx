@@ -60,7 +60,7 @@ export default function AdminUsersTable({
           <TableRow key={user.id} hover>
             <TableCell>{renderActions(user)}</TableCell>
             <TableCell>
-              <UserAvatar user={{ image: user.image, email: user.email }} size={32} />
+              <UserAvatar user={user} size={32} />
             </TableCell>
             <TableCell>{user.firstName}</TableCell>
             <TableCell>{user.lastName}</TableCell>

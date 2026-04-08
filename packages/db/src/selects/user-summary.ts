@@ -6,7 +6,8 @@ export const userSummarySelect = {
   lastName: true,
   username: true,
   image: true,
-  email: true
+  email: true,
+  avatar: true
 } as const;
 
 export type UserSummaryPayload = Prisma.UserGetPayload<{

@@ -47,6 +47,7 @@ describe('viewMachineReservationForm', () => {
       firstName: 'Ada',
       lastName: 'Lovelace',
       username: 'ada',
+      avatar: null,
       image: null,
       email: 'ada@example.com',
       fullName: 'Ada Lovelace'
@@ -60,6 +61,7 @@ describe('viewMachineReservationForm', () => {
       firstName: 'Grace',
       lastName: 'Hopper',
       username: 'grace',
+      avatar: null,
       image: null,
       email: 'grace@example.com',
       fullName: 'Grace Hopper'

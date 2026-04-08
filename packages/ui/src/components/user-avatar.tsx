@@ -16,6 +16,7 @@ export type UserAvatarProps = {
   fill?: boolean;
   className?: string;
   objectFit?: 'contain' | 'cover';
+  avatarNoBody?: boolean;
 };
 
 export default function UserAvatar({
@@ -23,7 +24,8 @@ export default function UserAvatar({
   size = 24,
   fill = false,
   className,
-  objectFit = 'contain'
+  objectFit = 'contain',
+  avatarNoBody = false
 }: UserAvatarProps) {
   const t = useTranslations('pages.hub.navigation');
   const alt = t('profileAvatarAlt', { email: user?.email ?? '' });
@@ -48,7 +50,12 @@ export default function UserAvatar({
           justifyContent: 'center'
         }}
       >
-        <Avatar selection={user.avatar} className={avatarSizeClass} style={fill ? undefined : innerStyle} />
+        <Avatar
+          selection={user.avatar}
+          noBody={avatarNoBody}
+          className={avatarSizeClass}
+          style={fill ? undefined : innerStyle}
+        />
       </div>
     );
   }
