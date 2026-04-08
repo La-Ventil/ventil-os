@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.39](https://github.com/La-Ventil/ventil-os/compare/v0.0.38...v0.0.39) (2026-04-08)
+
+
+### Features
+
+* **users:** display avatars across admin and reservations ([719f040](https://github.com/La-Ventil/ventil-os/commit/719f0404846438c0b39d6febe78955c2daa1e525))
+
 ### [0.0.38](https://github.com/La-Ventil/ventil-os/compare/v0.0.37...v0.0.38) (2026-04-06)
 
 ### [0.0.37](https://github.com/La-Ventil/ventil-os/compare/v0.0.36...v0.0.37) (2026-04-02)
