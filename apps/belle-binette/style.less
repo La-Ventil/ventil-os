@@ -1,3 +1,24 @@
+@ui-letter-spacing: 0.5px;
+@ui-font-family: sans-serif;
+@color-button-size: 30px;
+
+.ui-heading(@font-size, @transform: uppercase) {
+  font-size: @font-size;
+  font-family: @ui-font-family;
+  font-weight: normal;
+  letter-spacing: @ui-letter-spacing;
+  text-transform: @transform;
+}
+
+.color-button-group() {
+  margin-top: 10px;
+
+  button {
+    width: @color-button-size;
+    height: @color-button-size;
+  }
+}
+
 body {
   background-color: #dfe3e2;
   color: #5e6f65;
@@ -11,13 +32,9 @@ body {
   height: 100vh;
   overflow-y: scroll;
   p {
-    font-size: 10px;
+    .ui-heading(10px);
     margin-top: 0;
     margin-bottom: 2px;
-    font-family: sans-serif;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
   }
 }
 pre {
@@ -28,32 +45,19 @@ pre {
   max-width: 300px;
 }
 h1 {
-  font-size: 13px;
-  font-family: sans-serif;
-  font-weight: normal;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  .ui-heading(13px);
 }
 h2 {
-  font-size: 8px;
-  font-family: sans-serif;
-  font-weight: normal;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  .ui-heading(8px);
 }
 .selector {
   position: relative;
   margin-left: 330px;
   width: calc(100vw - 380px);
-  position: relative;
   p {
-    font-size: 13px;
+    .ui-heading(13px, none);
     margin-top: 0;
     margin-bottom: 2px;
-    font-family: sans-serif;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    text-transform: none;
     max-width: 600px;
   }
 }
@@ -99,33 +103,13 @@ h2 {
     width: 40px;
     height: 40px;
   }
-  &#face-options {
-    .icon {
-      mask: url(../../packages/avatar-system/src/images/editor/categories/face.svg);
-    }
-  }
-  &#eyes-options {
-    .icon {
-      mask: url(../../packages/avatar-system/src/images/editor/categories/eyes.svg);
-    }
-  }
-  &#nose-options {
-    .icon {
-      mask: url(../../packages/avatar-system/src/images/editor/categories/nose.svg);
-    }
-  }
-  &#mouth-options {
-    .icon {
-      mask: url(../../packages/avatar-system/src/images/editor/categories/mouth.svg);
-    }
-  }
 }
 .option-buttons {
   width: 100%;
   flex-wrap: wrap;
   display: flex;
   gap: 3px;
-  .sep {
+  .option-group {
     display: flex;
   }
   button {
@@ -150,395 +134,12 @@ h2 {
       background-repeat: no-repeat;
       background-size: cover;
     }
-    &#facial-hair-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-1.svg);
-    }
-    &#facial-hair-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-2.svg);
-    }
-    &#facial-hair-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-3.svg);
-    }
-    &#facial-hair-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-4.svg);
-    }
-    &#facial-hair-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-5.svg);
-    }
-    &#facial-hair-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-6.svg);
-    }
-    &#facial-hair-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-7.svg);
-    }
-    &#facial-hair-8 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-8.svg);
-    }
-    &#facial-hair-9 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-9.svg);
-    }
-    &#facial-hair-10 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-10.svg);
-    }
-    &#facial-hair-11 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-facial-hair-11.svg);
-    }
-    &#face-details-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-1.svg);
-    }
-    &#face-details-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-2.svg);
-    }
-    &#face-details-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-details-3.svg);
-    }
-    &#cheeks-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-cheeks-1.svg);
-    }
-    &#cheeks-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-cheeks-2.svg);
-    }
-    &#hair-100 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-100.svg);
-    }
-    &#hair-101 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-101.svg);
-    }
-    &#hair-102 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-102.svg);
-    }
-    &#hair-103 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-103.svg);
-    }
-    &#hair-104 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-104.svg);
-    }
-    &#hair-105 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-105.svg);
-    }
-    &#hair-106 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-106.svg);
-    }
-    &#hair-107 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-107.svg);
-    }
-    &#hair-108 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-108.svg);
-    }
-    &#hair-109 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-109.svg);
-    }
-    &#hair-110 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-110.svg);
-    }
-    &#hair-111 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-111.svg);
-    }
-    &#hair-200 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-200.svg);
-    }
-    &#hair-201 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-201.svg);
-    }
-    &#hair-203 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-203.svg);
-    }
-    &#hair-204 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-204.svg);
-    }
-    &#hair-205 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-205.svg);
-    }
-    &#hair-206 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-206.svg);
-    }
-    &#hair-207 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-207.svg);
-    }
-    &#hair-208 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-208.svg);
-    }
-    &#hair-209 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-209.svg);
-    }
-    &#hair-210 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-210.svg);
-    }
-    &#hair-211 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-211.svg);
-    }
-    &#hair-212 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-212.svg);
-    }
-    &#hair-213 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-213.svg);
-    }
-    &#hair-214 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-214.svg);
-    }
-    &#hair-215 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-215.svg);
-    }
-    &#hair-216 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-216.svg);
-    }
-    &#hair-217 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-217.svg);
-    }
-    &#hair-218 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-218.svg);
-    }
-    &#hair-300 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-300.svg);
-    }
-    &#hair-301 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-301.svg);
-    }
-    &#hair-302 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-302.svg);
-    }
-    &#hair-303 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-303.svg);
-    }
-    &#hair-304 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-304.svg);
-    }
-    &#hair-400 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-400.svg);
-    }
-    &#hair-401 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-401.svg);
-    }
-    &#hair-402 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-402.svg);
-    }
-    &#hair-403 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-hair-403.svg);
-    }
-    &#face-shape-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-1.svg);
-    }
-    &#face-shape-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-2.svg);
-    }
-    &#face-shape-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-3.svg);
-    }
-    &#face-shape-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-4.svg);
-    }
-    &#face-shape-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-5.svg);
-    }
-    &#face-shape-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-face-6.svg);
-    }
-    &#eyes-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-1.svg);
-    }
-    &#eyes-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-2.svg);
-    }
-    &#eyes-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-3.svg);
-    }
-    &#eyes-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-4.svg);
-    }
-    &#eyes-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-5.svg);
-    }
-    &#eyes-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-6.svg);
-    }
-    &#eyes-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-7.svg);
-    }
-    &#eyes-8 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-8.svg);
-    }
-    &#eyes-9 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-9.svg);
-    }
-    &#eyes-10 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-10.svg);
-    }
-    &#eyes-11 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-11.svg);
-    }
-    &#eyes-12 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-12.svg);
-    }
-    &#eyes-13 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-13.svg);
-    }
-    &#eyes-14 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-14.svg);
-    }
-    &#eyes-16 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-16.svg);
-    }
-    &#eyes-17 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-17.svg);
-    }
-    &#eyes-18 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyes-18.svg);
-    }
-    &#nose-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-1.svg);
-    }
-    &#nose-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-2.svg);
-    }
-    &#nose-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-3.svg);
-    }
-    &#nose-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-4.svg);
-    }
-    &#nose-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-5.svg);
-    }
-    &#nose-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-6.svg);
-    }
-    &#nose-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-7.svg);
-    }
-    &#nose-8 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-8.svg);
-    }
-    &#nose-9 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-nose-9.svg);
-    }
-    &#mouth-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-1.svg);
-    }
-    &#mouth-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-2.svg);
-    }
-    &#mouth-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-3.svg);
-    }
-    &#mouth-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-4.svg);
-    }
-    &#mouth-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-5.svg);
-    }
-    &#mouth-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-6.svg);
-    }
-    &#mouth-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-7.svg);
-    }
-    &#mouth-8 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-8.svg);
-    }
-    &#mouth-9 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-9.svg);
-    }
-    &#mouth-10 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-10.svg);
-    }
-    &#mouth-11 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-11.svg);
-    }
-    &#mouth-12 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-12.svg);
-    }
-    &#mouth-13 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-13.svg);
-    }
-    &#mouth-14 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-14.svg);
-    }
-    &#mouth-15 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-mouth-15.svg);
-    }
-    &#glasses-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-1.svg);
-    }
-    &#glasses-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-2.svg);
-    }
-    &#glasses-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-3.svg);
-    }
-    &#glasses-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-4.svg);
-    }
-    &#glasses-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-5.svg);
-    }
-    &#glasses-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-6.svg);
-    }
-    &#glasses-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-7.svg);
-    }
-    &#glasses-8 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-8.svg);
-    }
-    &#glasses-9 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-9.svg);
-    }
-    &#glasses-10 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-10.svg);
-    }
-    &#glasses-11 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-glasses-11.svg);
-    }
-    &#eb1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-1.svg);
-    }
-    &#eb2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-2.svg);
-    }
-    &#eb3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-3.svg);
-    }
-    &#eb4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-4.svg);
-    }
-    &#eb5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-5.svg);
-    }
-    &#eb6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-6.svg);
-    }
-    &#eb7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-eyebrows-7.svg);
-    }
-    &#earrings-1 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-1.svg);
-    }
-    &#earrings-2 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-2.svg);
-    }
-    &#earrings-3 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-3.svg);
-    }
-    &#earrings-4 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-4.svg);
-    }
-    &#earrings-5 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-5.svg);
-    }
-    &#earrings-6 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-6.svg);
-    }
-    &#earrings-7 div {
-      background-image: url(../../packages/avatar-system/src/images/editor/previews/b-earring-7.svg);
-    }
   }
 }
 
 .face-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#skin-color-1 {
       background-color: var(--skin-color-1);
     }
@@ -599,10 +200,8 @@ h2 {
   }
 }
 .hair-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#hair-color-10 {
       background-color: var(--hair-color-10);
     }
@@ -712,10 +311,8 @@ h2 {
 }
 
 .glasses-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#glasses-color-1 {
       background-color: var(--glasses-color-1);
     }
@@ -734,10 +331,8 @@ h2 {
   }
 }
 .tile-glasses-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#glasses-tiles-color-1 {
       background-color: var(--glasses-tiles-color-1);
     }
@@ -750,40 +345,36 @@ h2 {
   }
 }
 .cheeks-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#cheeks-color-1 {
-      background-color: #775609;
+      background-color: var(--cheeks-color-1);
     }
     &#cheeks-color-2 {
-      background-color: #e51e05;
+      background-color: var(--cheeks-color-2);
     }
     &#cheeks-color-3 {
-      background-color: #8909df;
+      background-color: var(--cheeks-color-3);
     }
     &#cheeks-color-4 {
-      background-color: #fff7d9;
+      background-color: var(--cheeks-color-4);
     }
   }
 }
 .earrings-color-buttons {
-  margin-top: 10px;
-  button  {
-    width: 30px;
-    height: 30px;
+  .color-button-group();
+  button {
     &#earrings-color-1 {
-      background-color: #afaa9c;
+      background-color: var(--earrings-color-1);
     }
     &#earrings-color-2 {
-      background-color: #a98152;
+      background-color: var(--earrings-color-2);
     }
     &#earrings-color-3 {
-      background-color: #d39b22;
+      background-color: var(--earrings-color-3);
     }
     &#earrings-color-4 {
-      background-color: #f1c30a;
+      background-color: var(--earrings-color-4);
     }
   }
 }
@@ -797,10 +388,4 @@ h2 {
     width: 130px !important;
     height: 130px !important;
   }
-}
-.size-group {
-  display: flex;
-  gap: 10px;
-  max-width: 300px;
-  flex-wrap: wrap;
 }

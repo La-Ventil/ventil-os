@@ -5,5 +5,5 @@
     "moduleResolution": "Bundler",
     "types": ["vite/client"]
   },
-  "include": ["src"]
+  "include": ["script.ts"]
 }

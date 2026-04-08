@@ -9,7 +9,6 @@ export type AvatarCategoryId =
   | 'facial-hair'
   | 'face-details'
   | 'cheeks'
-  | 'clothes'
   | 'earrings';
 
 export type AvatarColorSelectionKey =
@@ -27,7 +26,6 @@ export type AvatarSelection = {
   mouth: string;
   nose: string;
   hair: string;
-  clothes: string;
   earrings?: string;
   glasses?: string;
   'facial-hair'?: string;
@@ -41,4 +39,14 @@ export type AvatarSelection = {
   'earrings-color'?: string;
 };
 
+export type AvatarSelectionDraft = Partial<AvatarSelection> & Record<string, string | undefined>;
+
 export type AvatarConfig = typeof import('./avatar.json');
+
+export type AvatarCategoryConfig = AvatarConfig['categories'][number];
+
+export type AvatarElementConfig = AvatarCategoryConfig['elements'][number];
+
+export type AvatarColorGroupConfig = NonNullable<AvatarCategoryConfig['colorGroups']>[number];
+
+export type AvatarColorConfig = AvatarColorGroupConfig['colors'][number];

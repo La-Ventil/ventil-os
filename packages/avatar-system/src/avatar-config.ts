@@ -1,7 +1,25 @@
 import rawAvatarConfig from './avatar.json';
-import type { AvatarCategoryId, AvatarColorSelectionKey, AvatarConfig, AvatarSelection } from './avatar.types';
+import type {
+  AvatarCategoryConfig,
+  AvatarCategoryId,
+  AvatarColorGroupConfig,
+  AvatarColorSelectionKey,
+  AvatarConfig,
+  AvatarSelectionDraft,
+  AvatarSelection
+} from './avatar.types';
 
 export const avatarConfig = rawAvatarConfig satisfies AvatarConfig;
+
+export async function loadAvatarConfig(url: string): Promise<AvatarConfig> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Unable to load avatar config from ${url}: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json() as Promise<AvatarConfig>;
+}
 
 export function getAvatarCategories() {
   return avatarConfig.categories;
@@ -34,6 +52,13 @@ export function getAvatarColorSelectionKey(
   return `${categoryId}-${colorGroupId}-color` as AvatarColorSelectionKey;
 }
 
+export function getAvatarCatalogColorSelectionKey(
+  category: AvatarCategoryConfig,
+  colorGroup: AvatarColorGroupConfig
+): AvatarColorSelectionKey {
+  return getAvatarColorSelectionKey(category.id as AvatarCategoryId, colorGroup.id);
+}
+
 function getLegacyAvatarColorSelectionKey(
   categoryId: AvatarCategoryId,
   colorGroupId: string,
@@ -51,9 +76,13 @@ function getLegacyAvatarColorSelectionKey(
 }
 
 export function createInitialAvatarSelection(): AvatarSelection {
-  const selection: Partial<AvatarSelection> = {};
+  return createInitialAvatarSelectionFromConfig(avatarConfig) as AvatarSelection;
+}
 
-  for (const rawCategory of avatarConfig.categories) {
+export function createInitialAvatarSelectionFromConfig(config: AvatarConfig): AvatarSelectionDraft {
+  const selection: AvatarSelectionDraft = {};
+
+  for (const rawCategory of config.categories) {
     const categoryId = rawCategory.id as AvatarCategoryId;
 
     if (!rawCategory.optional && rawCategory.elements[0]) {
@@ -71,7 +100,7 @@ export function createInitialAvatarSelection(): AvatarSelection {
     }
   }
 
-  return selection as AvatarSelection;
+  return selection;
 }
 
 export function resolveAvatarSelection(input?: unknown): AvatarSelection {

@@ -7,7 +7,7 @@
     "dev": "vite --port 4173",
     "start": "vite --port 4173",
     "build": "vite build",
-    "preview": "vite preview --port 4173",
+    "serve": "vite preview --port 4173",
     "lint": "echo \"skip lint (belle-binette)\"",
     "lint:dev": "echo \"skip lint:dev (belle-binette)\"",
     "check-types": "tsc --noEmit",

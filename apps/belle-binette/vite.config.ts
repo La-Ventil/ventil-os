@@ -1,43 +1,48 @@
+import { copyFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { defineConfig } from 'vite';
 
-function getAssetDirectory(originalFileName: string): string {
+const assetDirectories = [
+  { match: '/images/renderer/', directory: 'images/renderer' },
+  { match: '/images/editor/previews/', directory: 'images/editor/previews' },
+  { match: '/images/editor/categories/', directory: 'images/editor/categories' },
+  { match: '/font/', directory: 'font' }
+];
+
+function resolveAssetDirectory(originalFileName: string): string {
   const normalizedPath = originalFileName.split(path.sep).join('/');
-
-  if (normalizedPath.includes('/src/images/renderer/') || normalizedPath.includes('/images/renderer/')) {
-    return 'assets/images/renderer';
-  }
-
-  if (normalizedPath.includes('/src/images/editor/previews/') || normalizedPath.includes('/images/editor/previews/')) {
-    return 'assets/images/editor/previews';
-  }
-
-  if (normalizedPath.includes('/src/images/editor/categories/') || normalizedPath.includes('/images/editor/categories/')) {
-    return 'assets/images/editor/categories';
-  }
-
-  if (normalizedPath.includes('/font/')) {
-    return 'assets/font';
-  }
-
-  return 'assets';
+  return assetDirectories.find(({ match }) => normalizedPath.includes(match))?.directory ?? '';
 }
 
 export default defineConfig({
+  plugins: [
+    {
+      name: 'copy-avatar-catalog',
+      async closeBundle() {
+        const source = path.resolve(import.meta.dirname, '../../packages/avatar-system/dist/avatar.json');
+        const destinationDirectory = path.resolve(import.meta.dirname, 'dist');
+        const destination = path.join(destinationDirectory, 'avatar.json');
+
+        await mkdir(destinationDirectory, { recursive: true });
+        await copyFile(source, destination);
+      }
+    }
+  ],
   build: {
     assetsInlineLimit: 0,
     minify: false,
     cssMinify: false,
+    modulePreload: false,
     sourcemap: true,
     target: 'esnext',
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
+        entryFileNames: 'script.js',
+        chunkFileNames: '[name].js',
         assetFileNames: (assetInfo) => {
           const originalFileName = assetInfo.originalFileNames?.[0] ?? assetInfo.names?.[0] ?? assetInfo.name ?? '';
-          const assetDirectory = getAssetDirectory(originalFileName);
-          return `${assetDirectory}/[name][extname]`;
+          const assetDirectory = resolveAssetDirectory(originalFileName);
+          return assetDirectory ? `${assetDirectory}/[name][extname]` : '[name][extname]';
         }
       }
     }

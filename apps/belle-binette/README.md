@@ -1,291 +1,98 @@
 # Belle Binette
 
-This playground is now a consumer of the shared avatar system.
-The avatar catalog and the avatar-specific assets now live in `packages/avatar-system`.
+`belle-binette` is a small Vite playground for the shared avatar system.
 
-## Goal of this normalization pass
+It is intentionally simple:
 
-The goal of the changes below was **not** to change the avatar's visual direction, but there was real cleanup work on structure, naming, and asset organization.
-The goal was to make the playground internally consistent so it can be extracted into a reusable package without carrying naming drift and stale references.
+- static `index.html`
+- one `script.ts`
+- one `style.less`
+- shared avatar assets and renderer CSS from `@repo/avatar-system`
 
-## What was normalized
+## Commands
 
-### 1. Naming was aligned with the actual renderer DOM and CSS
+Run in dev:
 
-The renderer currently uses these layer names:
-- `face`
-- `hair`
-- `eyes`
-- `eyebrows`
-- `glasses`
-- `nose`
-- `mouth`
-- `face-details`
-- `facial-hair`
-- `cheeks`
-- `earrings`
-- `clothes`
+```bash
+pnpm --filter belle-binette dev
+```
 
-The JSON config was normalized to follow the same editor-facing vocabulary.
-
-Note:
-- category keys, option ids, and renderer CSS classes now all use `earrings` consistently
-
-### 2. Config keys were aligned with the actual option ids used by the playground
-
-The following ids are now treated as canonical in the playground:
-- face shapes: `face-shape-*`
-- face details: `face-details-*`
-- earrings: `earrings-*`
-
-This matches the HTML controls and the CSS classes already used by the renderer.
-
-### 3. Optional choices now clear explicitly
-
-For optional parts such as:
-- facial hair
-- glasses
-- face details
-- cheeks
-- earrings
-
-The `none` buttons now use `data-value=""`.
-
-This prevents the editor from relying on accidental values such as:
-- `null`
-- missing `id`
-- fake ids like `earrings-null`
-
-The effect is simple:
-- selecting `no` now always removes the corresponding class cleanly
-
-### 4. Stale editor asset references were corrected
-
-Some editor icons referenced files that did not exist with those names.
-These references were aligned to the actual shared assets in `packages/avatar-system/src/images/editor/categories/`.
-
-Concrete corrections:
-- `face-shape.svg` -> `face.svg`
-- `eyes-style.svg` -> `eyes.svg`
-- `nose-style.svg` -> `nose.svg`
-- `mouth-style.svg` -> `mouth.svg`
-
-### 5. A few stale preview button mappings were corrected
-
-The preview buttons for some hair options had stale image references.
-Those mappings were corrected to match the actual asset names.
-
-Before / after:
-- `face-shape-1` -> before: `b-face-shape-1.svg`, after: `b-face-1.svg`
-- `earrings-1` -> before: `b-earrings-1.svg`, after: `b-earring-1.svg`
-- `glasses-3` -> before: full avatar fallback, after: `b-glasses-3.svg`
-- `clothes-1` -> before: full avatar fallback, after: `b-clothes-1.svg`
-
-Current paths:
-- face: `packages/avatar-system/src/images/editor/previews/b-face-*.svg`
-- hair: `packages/avatar-system/src/images/editor/previews/b-hair-*.svg`
-- glasses: `packages/avatar-system/src/images/editor/previews/b-glasses-*.svg`
-- earrings: `packages/avatar-system/src/images/editor/previews/b-earring-*.svg`
-
-### 6. Avatar-specific editor assets were centralized
-
-The shared package now owns all avatar-specific images:
-- renderer assets
-- editor category icons
-- editor option previews
-
-Current structure:
-- `packages/avatar-system/src/images/renderer/...`
-- `packages/avatar-system/src/images/editor/categories/...`
-- `packages/avatar-system/src/images/editor/previews/...`
-
-This means:
-- `apps/belle-binette` is no longer the source of truth for editor images
-- `apps/web` no longer keeps a copied `public/avatar-previews` directory
-- the playground and the hub consume the same shared asset set
-
-### 7. All catalog categories are now editor-visible
-
-The editor catalog is now driven directly by `packages/avatar-system/src/avatar.json`.
-There is no separate `visible` flag anymore.
-
-This means:
-- every category present in `avatar.json` is considered editor-visible
-- if a category should not appear, it should be removed from that catalog or moved elsewhere
-
-### 8. Color selection keys no longer depend on array order
-
-Color selection keys are now derived from ids, not from the position of color groups in the JSON.
-
-Examples:
-- `face` + `skin` -> `face-skin-color`
-- `hair` + `hair` -> `hair-color`
-- `glasses` + `frame` -> `glasses-frame-color`
-- `glasses` + `tiles` -> `glasses-tiles-color`
-
-This means:
-- reordering color groups in `avatar.json` no longer changes the persistence contract
-
-## Concrete naming changes
-
-### Category/config naming
-
-Changed in `avatar.json`:
-- `facial-details` -> `face-details`
-- `earring` -> `earrings`
-- category display name for `glasses` fixed from `eyebrows` to `glasses`
-- category display name for `cheeks` fixed from `clothes` to `cheeks`
-
-### Face option ids
-
-Changed in `avatar.json`:
-- `face-1`, `face-2`, `face-3`, `face-4`
-
-to the actual ids used by the playground:
-- `face-shape-1`
-- `face-shape-2`
-- `face-shape-5`
-- `face-shape-6`
-
-### Face details option ids
-
-Changed in `avatar.json`:
-- `facial-details-*`
-
-to:
-- `face-details-*`
-
-### Earrings key naming
-
-Changed consistently across config, HTML controls, and renderer CSS:
-- `earring`
-
-to:
-- `earrings`
-
-## Options intentionally removed from the config
-
-These entries existed in the JSON but are not currently exposed consistently by the playground UI and were removed from the normalized config:
-- `hair-102`
-- `hair-202`
-- `eyes-15`
-- `earrings-8`
-- legacy `lips` color config
-
-This does **not** mean these options are forbidden forever.
-It means they are not part of the current consistent contract of the playground.
-If they should exist, they should be added back deliberately across:
-- config
-- assets
-- UI controls
-- renderer CSS
-
-### Options added back to the config because they do exist in the current playground
-
-These options existed in the UI/assets but were missing from the config and were added back:
-- `hair-210`
-- `hair-218`
-- `hair-403`
-
-## What did not change
-
-These changes were not meant to alter the avatar's visual direction, but they did affect the system's technical structure:
-- no change to the avatar style or artistic intent
-- no change to the renderer layering model
-- no redraw of the SVG assets themselves
-- naming and asset-directory cleanup
-- no editor architecture rewrite yet
-
-## Current recommended source-of-truth conventions
-
-## Naming Rule
-
-Use one canonical kebab-case name for each avatar feature, and reuse it everywhere: config keys, editor ids and `data-type` values, renderer CSS classes, and asset directories.
-
-Plain rule:
-- choose one feature name
-- keep it in kebab-case
-- do not mix singular and plural variants
-- do not keep a camelCase version alongside a kebab-case version
-- use the same name in code, markup, styles, and directories
-
-Examples:
-- `face-details` everywhere
-- `facial-hair` everywhere
-- `earrings` everywhere
-
-### Why these names
-
-#### Why `face-details` and not `facial-details`
-- `face details` is the more natural product/editor phrase
-- `facial details` sounds more technical and less idiomatic
-- the rule is to prefer the clearest natural English phrase, not forced symmetry
-
-#### Why `facial-hair` and not `face-hair`
-- `facial hair` is the established English term
-- `face hair` sounds wrong in normal English
-
-#### Why `earrings`
-- this feature is handled as a family of options
-- plural reads better here and fits the rest of the editor vocabulary
-- once chosen, it should be reused everywhere instead of keeping `earring` and `earrings` side by side
-
-#### Why `editor/previews` and not `buttons`
-- these assets are preview images shown inside option controls
-- `buttons` only describes a current UI usage
-- `previews` describes the asset role more accurately
-
-#### Why `editor/categories` and not `interface`
-- `interface` is too vague
-- these files are specifically category/tab icons for the editor
-
-#### Why `renderer/` and `editor/` inside the same package
-- `renderer/` contains assets used to build the avatar itself
-- `editor/` contains assets specific to avatar editing
-- both are avatar-specific, so they now live in the same shared package
-- this removes duplication between the playground and the hub
-
-
-If new options are added, they should follow these rules:
-
-1. The same naming must be used across:
-- JSON config
-- HTML/editor controls
-- CSS class names
-- asset directories
-
-2. Optional choices should clear with an explicit empty value
-- use `data-value=""`
-- do not rely on missing ids or placeholder ids
-
-3. The config should only describe options that are actually supported by the playground
-- no hidden stale entries
-- no orphan ids
-
-## Current package split
-
-The current split is now:
-- `packages/avatar-system`
-  - avatar config
-  - avatar renderer
-  - avatar renderer assets
-  - avatar editor assets
-- `apps/belle-binette`
-  - playground app consuming the shared package
-
-## Build output
-
-To generate a readable local build:
+Build:
 
 ```bash
 pnpm --filter belle-binette build
 ```
 
-The output is written to:
-- `apps/belle-binette/dist/`
+Serve the last build:
 
-This build is intentionally configured to stay readable:
-- no filename hashes
+```bash
+pnpm --filter belle-binette serve
+```
+
+## Files
+
+Main files:
+
+- `apps/belle-binette/index.html`
+- `apps/belle-binette/script.ts`
+- `apps/belle-binette/style.less`
+- `apps/belle-binette/vite.config.ts`
+
+Shared avatar source:
+
+- `packages/avatar-system/src/avatar.json`
+- `packages/avatar-system/src/avatar.less`
+- `packages/avatar-system/src/editor-controls.less`
+- `packages/avatar-system/src/images/renderer/...`
+- `packages/avatar-system/src/images/editor/categories/...`
+- `packages/avatar-system/src/images/editor/previews/...`
+
+## How It Works
+
+`index.html` contains the static controls and preview layout.
+
+`script.ts`:
+
+- loads `avatar.json` through the built URL exposed by `@repo/avatar-system`
+- creates the initial selection from the loaded catalog
+- binds button clicks from `data-selection-key`
+- randomizes groups marked with `data-randomizable="true"`
+- rebuilds the avatar class name with `buildAvatarClassName(...)`
+
+`style.less` contains only Belle Binette UI styles:
+
+- page layout
+- tabs
+- control grids
+- spacing and presentation
+
+Avatar rendering and editor preview mappings come from `@repo/avatar-system`:
+
+```ts
+import '@repo/avatar-system/avatar.css';
+import '@repo/avatar-system/editor-controls.css';
+import './style.less';
+```
+
+## Build Output
+
+The build output is written to:
+
+- `apps/belle-binette/dist/index.html`
+- `apps/belle-binette/dist/script.js`
+- `apps/belle-binette/dist/index.css`
+- `apps/belle-binette/dist/images/...`
+- `apps/belle-binette/dist/avatar.json`
+
+Current build choices:
+
 - no minification
+- no hashed filenames for JS
+- modern ESM output
 - source maps enabled
-- avatar assets kept under `dist/assets/images/...`
+- avatar images kept as separate files in `dist/images/...`
+
+## Notes
+
+- `belle-binette` is a consumer of `@repo/avatar-system`, not the source of truth for avatar assets.
+- The renderer and editor preview assets live in `packages/avatar-system`.

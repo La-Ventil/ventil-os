@@ -297,6 +297,11 @@
           "group": 4
         },
         {
+          "id": "hair-404",
+          "name": "hair 404",
+          "group": 4
+        },
+        {
           "id": "hair-210",
           "name": "hair 210",
           "group": 2
@@ -875,21 +880,6 @@
               "group": 1
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "clothes",
-      "name": "clothes",
-      "optional": false,
-      "elements": [
-        {
-          "id": "clothes-1",
-          "name": "clothes 1"
-        },
-        {
-          "id": "clothes-2",
-          "name": "clothes 2"
         }
       ]
     },

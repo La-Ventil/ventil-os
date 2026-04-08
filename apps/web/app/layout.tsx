@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
 import { nunito, vg5000 } from '@repo/ui/fonts';
-import '@repo/avatar-system/styles.css';
+import '@repo/avatar-system/avatar.css';
 import Providers from './providers';
 import './globals.css';
 

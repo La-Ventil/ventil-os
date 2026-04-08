@@ -9,10 +9,6 @@ export function getAvatarOptionPreviewPublicPath(
     return null;
   }
 
-  if (categoryId === 'clothes') {
-    return `${basePath}/b-${optionId}.svg`;
-  }
-
   if (categoryId === 'face') {
     const suffix = optionId.match(/^face-shape-(\d+)$/)?.[1];
     return suffix ? `${basePath}/b-face-${suffix}.svg` : null;
