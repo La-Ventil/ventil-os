@@ -6,6 +6,14 @@ type TestValues = {
   password: string;
 };
 
+type NestedTestValues = {
+  name: string;
+  levels: Array<{
+    title: string;
+    description: string;
+  }>;
+};
+
 describe('fieldErrorsFor', () => {
   it('returns all messages for one field', () => {
     const state = {
@@ -20,6 +28,16 @@ describe('fieldErrorsFor', () => {
 
   it('returns an empty array when the field has no error', () => {
     expect(fieldErrorsFor<TestValues>({ fieldErrors: {} }, 'email')).toEqual([]);
+  });
+
+  it('returns messages for nested field paths', () => {
+    const state = {
+      fieldErrors: {
+        'levels.0.title': ['Required']
+      }
+    };
+
+    expect(fieldErrorsFor<NestedTestValues>(state, 'levels.0.title')).toEqual(['Required']);
   });
 });
 
@@ -65,6 +83,18 @@ describe('fieldErrorMessage', () => {
   });
 
   it('can cap the number of returned messages', () => {
-    expect(fieldErrorMessage<TestValues>(state, 'email', { strategy: 'join', maxMessages: 2 })).toBe('Required Invalid');
+    expect(fieldErrorMessage<TestValues>(state, 'email', { strategy: 'join', maxMessages: 2 })).toBe(
+      'Required Invalid'
+    );
+  });
+
+  it('supports inline errors on nested array fields', () => {
+    const nestedState = {
+      fieldErrors: {
+        'levels.0.description': ['Required']
+      }
+    };
+
+    expect(fieldErrorMessage<NestedTestValues>(nestedState, 'levels.0.description')).toBe('Required');
   });
 });

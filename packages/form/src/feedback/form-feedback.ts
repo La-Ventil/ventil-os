@@ -1,12 +1,10 @@
-import type { FormState } from '../form-state';
+import type { FormFieldErrors, FormState } from '../form-state';
 
 /**
  * Aggregated form feedback helpers for banners, toasts, dialogs, and action responses.
  * Unlike `@repo/form/form-errors`, this layer is not field-specific: it resolves a
  * displayable success/error message from a whole FormState or action result.
  */
-export type FormFieldErrors<FormData> = FormState<FormData>['fieldErrors'] | Record<string, string[]>;
-
 export type FormErrorMessageStrategy = 'message-first' | 'first-field' | 'join-fields';
 
 export type FormFeedback = {
@@ -44,7 +42,9 @@ export function flattenFieldErrors<FormData>(
 ): string[] {
   const { deduplicate = true, maxMessages } = options ?? {};
 
-  let messages = Object.values(fieldErrors).flat().filter(Boolean);
+  let messages = Object.values(fieldErrors)
+    .flat()
+    .filter((message): message is string => Boolean(message));
 
   if (deduplicate) {
     messages = Array.from(new Set(messages));

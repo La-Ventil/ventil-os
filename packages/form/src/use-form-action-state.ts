@@ -4,11 +4,14 @@ import type { FormEventHandler } from 'react';
 import type { FormState } from './form-state';
 import type { FormAction, FormActionDispatch } from './form-action-state';
 import { formDataToRedisplayValues, formDataToValues } from './form-data';
+import type { Translate } from './field-validation-shared';
+import { fieldErrorsToMessage } from './feedback/form-feedback';
+import { zodErrorToFieldErrors } from './zod-errors';
 
 type SchemaLike = z.ZodType<Record<string, unknown>>;
 type InferSchema<Schema extends SchemaLike> = z.infer<Schema>;
 
-type Translator = (key: string, params?: Record<string, string>) => string;
+type Translator = Translate;
 
 const safeTranslate = (translate: Translator, key: string, fallback: string) => {
   try {
@@ -131,11 +134,13 @@ export function useFormActionState<Schema extends SchemaLike>({
 
     const parseResult = schema.safeParse(formData);
     if (!parseResult.success) {
-      const fieldErrors = translateFieldErrors(parseResult.error.flatten().fieldErrors);
+      const fieldErrors = translateFieldErrors(
+        zodErrorToFieldErrors(parseResult.error, translateFieldError ?? translate)
+      );
       setClientState({
         success: false,
         valid: false,
-        message: translateFormMessage('errors.invalid'),
+        message: fieldErrorsToMessage(fieldErrors) || translateFormMessage('errors.invalid'),
         fieldErrors,
         values: formDataToRedisplayValues(formData, effectiveState.values)
       });

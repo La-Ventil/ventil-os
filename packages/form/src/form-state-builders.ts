@@ -1,7 +1,6 @@
-import { createFormState, type FormState } from './form-state';
+import { createFormState, type FormFieldErrors, type FormState } from './form-state';
 
 type ExtraFields = Record<string, unknown>;
-type FormFieldErrors<FormData> = Partial<Record<keyof FormData, string[]>> | Record<string, string[]>;
 
 const normalizeFieldErrors = <FormData>(fieldErrors?: FormFieldErrors<FormData>): FormState<FormData>['fieldErrors'] =>
   (fieldErrors ?? {}) as FormState<FormData>['fieldErrors'];

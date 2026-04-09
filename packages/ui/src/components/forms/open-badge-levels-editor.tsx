@@ -45,6 +45,7 @@ export default function OpenBadgeLevelsEditor({
   const [levels, setLevels] = useState<OpenBadgeLevelDraft[]>(
     initialLevels.length ? initialLevels : [{ title: '', description: '' }]
   );
+  const collectionError = error ?? (levels.length < minLevels ? labels.minLevels : undefined);
 
   useEffect(() => {
     onLevelsChange?.(levels);
@@ -62,6 +63,12 @@ export default function OpenBadgeLevelsEditor({
 
   return (
     <Stack spacing={2}>
+      {collectionError ? (
+        <Typography variant="caption" color="error">
+          {collectionError}
+        </Typography>
+      ) : null}
+
       {levels.map((level, index) => {
         const levelNumber = index + 1;
         const titleField = `levels.${index}.title`;
@@ -114,11 +121,6 @@ export default function OpenBadgeLevelsEditor({
       >
         {labels.add}
       </AdminButton>
-      {(error || (levels.length < minLevels && labels.minLevels)) && (
-        <Typography variant="caption" color="error">
-          {error ?? labels.minLevels}
-        </Typography>
-      )}
     </Stack>
   );
 }

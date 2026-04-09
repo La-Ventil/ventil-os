@@ -1,4 +1,4 @@
-import type { FormState } from './form-state';
+import type { FormFieldPath, FormState } from './form-state';
 
 /**
  * Field-level accessors for inline form rendering.
@@ -35,17 +35,22 @@ const normalizeFieldMessages = (
   return nextMessages;
 };
 
-export const fieldErrorsFor = <TValues>(state: FieldErrorState<TValues>, field: keyof TValues | string): string[] => {
+export const fieldErrorsFor = <TValues>(
+  state: FieldErrorState<TValues>,
+  field: FormFieldPath<TValues> | keyof TValues | string
+): string[] => {
   const fieldErrors = state.fieldErrors as Record<string, string[] | undefined> | undefined;
   return normalizeFieldMessages(fieldErrors?.[String(field)] ?? []);
 };
 
-export const hasFieldError = <TValues>(state: FieldErrorState<TValues>, field: keyof TValues | string): boolean =>
-  fieldErrorsFor(state, field).length > 0;
+export const hasFieldError = <TValues>(
+  state: FieldErrorState<TValues>,
+  field: FormFieldPath<TValues> | keyof TValues | string
+): boolean => fieldErrorsFor(state, field).length > 0;
 
 export const fieldErrorMessage = <TValues>(
   state: FieldErrorState<TValues>,
-  field: keyof TValues | string,
+  field: FormFieldPath<TValues> | keyof TValues | string,
   options?: FieldErrorMessageOptions
 ): string | undefined => {
   const { strategy = 'first', separator = ' ' } = options ?? {};
@@ -66,5 +71,5 @@ export const fieldErrorMessage = <TValues>(
 
 export const createFieldError =
   <TValues extends Record<string, unknown>>(state: FieldErrorState<TValues>) =>
-  (field: keyof TValues) =>
+  (field: FormFieldPath<TValues> | keyof TValues | string) =>
     fieldErrorMessage(state, field);

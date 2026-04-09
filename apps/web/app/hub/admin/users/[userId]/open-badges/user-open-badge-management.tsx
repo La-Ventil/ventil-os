@@ -5,6 +5,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Alert from '@mui/material/Alert';
 import { resolveFormFeedback, type FormFeedback } from '@repo/form/form-feedback';
+import type { FormFieldErrors } from '@repo/form/form-state';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminButton from '@repo/ui/admin/admin-button';
 import UserOpenBadgesTable from '@repo/ui/admin/user-open-badges-table';
@@ -57,7 +58,7 @@ export default function UserOpenBadgeManagement({
   const resolvePageFeedback = <TValues,>(state: {
     success: boolean;
     message?: string;
-    fieldErrors: Partial<Record<keyof TValues, string[]>>;
+    fieldErrors: FormFieldErrors<TValues>;
   }): FormFeedback | null =>
     resolveFormFeedback(state, {
       fallbackErrorMessage: labels.feedback.genericError,

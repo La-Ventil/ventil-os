@@ -6,21 +6,19 @@ export const OPEN_BADGE_NAME_MAX_LENGTH = 35;
 export const OPEN_BADGE_DESCRIPTION_MAX_LENGTH = 100;
 export const OPEN_BADGE_LEVEL_TITLE_MAX_LENGTH = 35;
 
-export const openBadgeNameSchema = z
-  .string()
+const requiredText = (message: string) => z.string({ error: message });
+
+export const openBadgeNameSchema = requiredText('validation.openBadge.nameRequired')
   .min(1, { message: 'validation.openBadge.nameRequired' })
   .max(OPEN_BADGE_NAME_MAX_LENGTH, { message: 'validation.openBadge.nameMaxLength' });
-export const openBadgeDescriptionSchema = z
-  .string()
+export const openBadgeDescriptionSchema = requiredText('validation.openBadge.descriptionRequired')
   .min(1, { message: 'validation.openBadge.descriptionRequired' })
   .max(OPEN_BADGE_DESCRIPTION_MAX_LENGTH, { message: 'validation.openBadge.descriptionMaxLength' });
-export const openBadgeLevelTitleSchema = z
-  .string()
+export const openBadgeLevelTitleSchema = requiredText('validation.openBadge.levelTitleRequired')
   .trim()
   .min(1, { message: 'validation.openBadge.levelTitleRequired' })
   .max(OPEN_BADGE_LEVEL_TITLE_MAX_LENGTH, { message: 'validation.openBadge.levelTitleMaxLength' });
-export const openBadgeLevelDescriptionSchema = z
-  .string()
+export const openBadgeLevelDescriptionSchema = requiredText('validation.openBadge.levelDescriptionRequired')
   .trim()
   .min(1, { message: 'validation.openBadge.levelDescriptionRequired' });
 

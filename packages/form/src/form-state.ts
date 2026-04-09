@@ -1,3 +1,30 @@
+type FormPrimitive = string | number | boolean | bigint | symbol | null | undefined | Date | File | FileList | Blob;
+
+type StringKeyOf<TValues> = Extract<keyof TValues, string>;
+
+export type FormFieldPath<TValues> = TValues extends FormPrimitive
+  ? never
+  : TValues extends readonly (infer TItem)[]
+    ? TItem extends FormPrimitive
+      ? `${number}`
+      : `${number}` | `${number}.${FormFieldPath<TItem>}`
+    : {
+        [TKey in StringKeyOf<TValues>]: TValues[TKey] extends FormPrimitive
+          ? TKey
+          : TValues[TKey] extends readonly (infer TItem)[]
+            ? TItem extends FormPrimitive
+              ? TKey | `${TKey}.${number}`
+              : TKey | `${TKey}.${number}` | `${TKey}.${number}.${FormFieldPath<TItem>}`
+            : TValues[TKey] extends object
+              ? TKey | `${TKey}.${FormFieldPath<TValues[TKey]>}`
+              : TKey;
+      }[StringKeyOf<TValues>];
+
+export type FormFieldErrorKey<TValues> = FormFieldPath<TValues> | '_form';
+
+export type FormFieldErrors<TValues> = Partial<Record<FormFieldErrorKey<TValues>, string[]>> &
+  Partial<Record<string, string[]>>;
+
 /**
  * Standard shape returned by form server actions.
  * - success : résultat global (métier / persistance).
@@ -12,7 +39,7 @@ export interface FormState<FormData> {
   success: boolean;
   valid: boolean;
   message?: string;
-  fieldErrors: Partial<Record<keyof FormData, string[]>>;
+  fieldErrors: FormFieldErrors<FormData>;
   values: FormData;
   errorCode?: string;
   /** @deprecated utiliser `valid` */

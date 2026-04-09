@@ -48,9 +48,8 @@ export default function OpenBadgeForm({
 }: OpenBadgeFormProps) {
   const t = useTranslations('pages.hub.admin.openBadgeForm');
   const tRoot = useTranslations();
-  const fieldError = (field: keyof OpenBadgeCreateRequest) => fieldErrorMessage(state, field);
-  const nestedFieldErrors = state.fieldErrors as Record<string, string[] | undefined>;
-  const nestedFieldError = (fieldPath: string) => nestedFieldErrors[fieldPath]?.[0];
+  const fieldError = (field: keyof OpenBadgeCreateRequest | string) => fieldErrorMessage(state, field);
+  const nestedFieldError = (fieldPath: string) => fieldErrorMessage(state, fieldPath);
   const isEdit = Boolean(badgeId);
   const [deliveryEnabled, setDeliveryEnabled] = useFieldModel<boolean>({
     value: state.values.deliveryEnabled
@@ -138,7 +137,7 @@ export default function OpenBadgeForm({
         initialLevels={initialLevels}
         onLevelsChange={(levels) => setLevelsCount(levels.length)}
         maxLevels={5}
-        error={fieldError('levels' as keyof OpenBadgeCreateRequest)}
+        error={fieldError('levels')}
         fieldErrorFor={nestedFieldError}
         labels={{
           add: t('levels.add'),
