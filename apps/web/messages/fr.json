@@ -749,7 +749,6 @@
       "levelTitleRequired": "Veuillez renseigner le titre du niveau.",
       "levelTitleMaxLength": "Le titre du niveau ne doit pas dépasser 35 caractères.",
       "levelDescriptionRequired": "Veuillez renseigner la description du niveau.",
-      "levelDescriptionMaxLength": "La description du niveau ne doit pas dépasser 100 caractères.",
       "levelAtLeastOne": "Au moins un niveau est requis.",
       "idRequired": "Badge introuvable."
     },

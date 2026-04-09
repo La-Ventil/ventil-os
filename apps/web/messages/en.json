@@ -763,7 +763,6 @@
       "levelTitleRequired": "Please enter a level title.",
       "levelTitleMaxLength": "Level title must be at most 35 characters.",
       "levelDescriptionRequired": "Please enter a level description.",
-      "levelDescriptionMaxLength": "Level description must be at most 100 characters.",
       "levelAtLeastOne": "At least one level is required.",
       "idRequired": "Open badge not found."
     }
