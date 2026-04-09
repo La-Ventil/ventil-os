@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.40](https://github.com/La-Ventil/ventil-os/compare/v0.0.39...v0.0.40) (2026-04-09)
+
+
+### Bug Fixes
+
+* **avatar:** avoid passing server functions to client editor ([f8d019f](https://github.com/La-Ventil/ventil-os/commit/f8d019f5b0ec2f53eda03c7a79d5c0a1e9bff602))
+* **form:** support nested inline validation errors ([94f5fea](https://github.com/La-Ventil/ventil-os/commit/94f5feadac5ee7455460436b3121e0f0440a9653))
+* **open-badges:** prevent unsafe level deletion ([92d0f3d](https://github.com/La-Ventil/ventil-os/commit/92d0f3d117ea6e598d1af0e58a76d1ea825446d2))
+* **open-badges:** remove level description length limit ([b8de209](https://github.com/La-Ventil/ventil-os/commit/b8de209bdf0391fa5c94672fb95e6a93b3a016fe))
+
 ### [0.0.39](https://github.com/La-Ventil/ventil-os/compare/v0.0.38...v0.0.39) (2026-04-08)
 
 
