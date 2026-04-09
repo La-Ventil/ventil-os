@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import {
   createInitialAvatarSelection,
   getAvatarCategory,
+  getAvatarOptionPreviewPublicPath,
   getAvatarColorSelectionKey,
   getAvatarEditorCategories
 } from '@repo/avatar-system';
@@ -31,7 +32,7 @@ type AvatarEditorProps = {
   onBack?: () => void;
   onSave?: (selection: AvatarSelection) => Promise<AvatarSelection | void>;
   onSaved?: () => void;
-  resolveOptionPreviewSrc?: AvatarOptionPreviewResolver;
+  optionPreviewBasePath?: string;
 };
 
 export default function AvatarEditor({
@@ -39,7 +40,7 @@ export default function AvatarEditor({
   onBack,
   onSave,
   onSaved,
-  resolveOptionPreviewSrc
+  optionPreviewBasePath
 }: AvatarEditorProps) {
   const t = useTranslations('pages.hub.avatarSettings.editor');
   const [isSaving, startSaving] = useTransition();
@@ -94,6 +95,10 @@ export default function AvatarEditor({
       })
       .filter((section): section is AvatarColorSection => section !== null);
   }, [activeCategory, activeCategoryId, selection, t]);
+
+  const resolveOptionPreviewSrc: AvatarOptionPreviewResolver | undefined = optionPreviewBasePath
+    ? (categoryId, optionId) => getAvatarOptionPreviewPublicPath(categoryId, optionId, optionPreviewBasePath)
+    : undefined;
 
   const optionSectionTitle = t(`categories.${activeCategoryId}.options`);
 

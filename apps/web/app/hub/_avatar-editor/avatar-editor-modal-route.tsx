@@ -7,7 +7,7 @@ import SectionTitle from '@repo/ui/section-title';
 import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 import { ThemeSection } from '@repo/ui/theme';
 import AvatarEditor from '@repo/ui/avatar-editor';
-import { getAvatarOptionPreviewPublicPath, type AvatarSelection } from '@repo/avatar-system';
+import type { AvatarSelection } from '@repo/avatar-system';
 
 type AvatarEditorModalRouteProps = {
   initialSelection: AvatarSelection;
@@ -44,9 +44,7 @@ export default function AvatarEditorModalRoute({
         onBack={handleClose}
         onSave={onSave}
         onSaved={handleClose}
-        resolveOptionPreviewSrc={(categoryId, optionId) =>
-          getAvatarOptionPreviewPublicPath(categoryId, optionId, '/avatar-previews')
-        }
+        optionPreviewBasePath="/avatar-previews"
       />
     </ModalLayout>
   );
