@@ -778,7 +778,8 @@
       "success": "Open badge mis à jour.",
       "error": "Impossible de mettre à jour l'open badge.",
       "unauthorized": "Vous n'avez pas les droits pour modifier un open badge.",
-      "notFound": "Open badge introuvable."
+      "notFound": "Open badge introuvable.",
+      "levelInUse": "Impossible de supprimer un niveau déjà utilisé par une machine ou déjà attribué."
     },
     "status": {
       "attachedToMachines": "Retirez cet open badge des machines liées avant de le désactiver."

@@ -1,5 +1,6 @@
 import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
+import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';
 import type { OpenBadgeRequirementInput } from '@repo/domain/badge/open-badge-requirement';
 import { OpenBadgeRequirementRule } from '@repo/domain/badge/open-badge-requirement-rule';
@@ -503,6 +504,31 @@ export class OpenBadgeRepository {
     levels: Array<{ title: string; description: string }>;
   }): Promise<OpenBadgeReadModel> {
     const badge = await this.prisma.$transaction(async (tx) => {
+      const existingLevels = await tx.openBadgeLevel.findMany({
+        where: { openBadgeId: input.id },
+        orderBy: { level: 'asc' },
+        select: {
+          id: true,
+          level: true,
+          _count: {
+            select: {
+              requiredBy: true,
+              highestLevelFor: true,
+              levelProgressEntries: true
+            }
+          }
+        }
+      });
+      const levelsToDelete = existingLevels.filter((level) => level.level > input.levels.length);
+      const hasUsedDeletedLevel = levelsToDelete.some(
+        (level) =>
+          level._count.requiredBy > 0 || level._count.highestLevelFor > 0 || level._count.levelProgressEntries > 0
+      );
+
+      if (hasUsedDeletedLevel) {
+        throw new OpenBadgeError('openBadge.update.levelInUse');
+      }
+
       const updated = await tx.openBadge.update({
         where: { id: input.id },
         data: {
@@ -535,6 +561,16 @@ export class OpenBadgeRepository {
           })
         )
       );
+
+      if (levelsToDelete.length > 0) {
+        await tx.openBadgeLevel.deleteMany({
+          where: {
+            id: {
+              in: levelsToDelete.map((level) => level.id)
+            }
+          }
+        });
+      }
 
       return updated;
     });

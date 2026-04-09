@@ -28,7 +28,6 @@ export type OpenBadgeLevelsEditorProps = {
     title: (levelNumber: number) => string;
     description: (levelNumber: number) => string;
     remove: string;
-    chipPrefix: string;
     minLevels?: string;
   };
 };
@@ -73,7 +72,7 @@ export default function OpenBadgeLevelsEditor({
           <Stack key={`${fieldPrefix}-${index}`} spacing={1} className={styles.levelBlock}>
             <Stack direction="row" spacing={1} alignItems="center">
               <LevelChip level={levelNumber} isActive size="medium" className={styles.levelChip} />
-              {levels.length > 1 && (
+              {levels.length > minLevels && index === levels.length - 1 && (
                 <IconButton aria-label={labels.remove} onClick={() => removeLevel(index)} size="small">
                   <DeleteIcon fontSize="small" />
                 </IconButton>

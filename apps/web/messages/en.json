@@ -809,7 +809,8 @@
       "success": "Open badge updated.",
       "error": "Unable to update the open badge.",
       "unauthorized": "You are not allowed to update this open badge.",
-      "notFound": "Open badge not found."
+      "notFound": "Open badge not found.",
+      "levelInUse": "Cannot delete a level that is already used by a machine or has already been awarded."
     },
     "status": {
       "attachedToMachines": "Detach this open badge from machines before disabling it."

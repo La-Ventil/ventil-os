@@ -4,6 +4,7 @@ export type OpenBadgeErrorCode =
   | 'openBadge.assign.targetNotFound'
   | 'openBadge.assign.invalidLevelTransition'
   | 'openBadge.status.attachedToMachines'
+  | 'openBadge.update.levelInUse'
   | 'openBadge.update.notFound'
   | 'openBadge.status.notFound'
   | 'openBadge.delete.notFound'
