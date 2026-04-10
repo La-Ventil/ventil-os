@@ -12,6 +12,22 @@ Useful references:
 - Testing strategy: [`docs/contributor/testing/README.md`](./testing/README.md)
 - Accessibility process: [`docs/contributor/accessibility/README.md`](./accessibility/README.md)
 
+## Local Email Capture (Mailpit)
+
+Local development uses `Mailpit` to capture transactional emails sent by `apps/web`.
+
+- `docker compose up` starts Mailpit alongside Postgres
+- SMTP is available on `localhost:1025`
+- the Mailpit web UI is available on `http://localhost:8025`
+- use it to inspect emails triggered by local flows such as sign up, email verification, email change verification, and password reset
+
+For local SMTP defaults, see [`apps/web/.env.example`](../../apps/web/.env.example).
+
+Playwright auth helpers also read emails from Mailpit.
+
+- default base URL: `http://127.0.0.1:8025`
+- override with `MAILPIT_BASE_URL` only if Mailpit is not running on the default local address
+
 ## Contribution Scope
 
 Contributions are welcome across:

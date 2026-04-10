@@ -68,6 +68,13 @@ Base de données :
 
 - `localhost:5433`
 
+Emails de développement (`Mailpit`) :
+
+- UI web : `http://localhost:8025`
+- SMTP : `localhost:1025`
+
+Les emails transactionnels envoyés en local, par exemple pour l’inscription, la vérification d’email, le changement d’email et la réinitialisation de mot de passe, sont capturés par Mailpit.
+
 ## Structure du monorepo
 
 ```text
