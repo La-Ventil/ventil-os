@@ -1,5 +1,6 @@
 {
   "name": "@repo/form",
+  "description": "Internal form state and validation helpers for Ventil O.S.",
   "version": "0.0.0",
   "type": "module",
   "private": true,

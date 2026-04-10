@@ -7,6 +7,7 @@ This section documents product-facing source material used as references.
 Product source files live in `docs/contributor/product/`:
 
 - `docs/contributor/product/Ventil O.S. - liste des fonctionnalités - RAW DATA.csv`
+- `docs/contributor/product/form-package-positioning.md`
 - `docs/contributor/product/screens/`
 
 ## File Stability Rule

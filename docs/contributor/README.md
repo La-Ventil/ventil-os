@@ -12,6 +12,7 @@ It groups project-level material that is not part of end-user or admin help.
 - `docs/contributor/i18n/`: translation coverage reports
 - `docs/contributor/testing/`: testing strategy and conventions
 - `docs/contributor/product/`: product reference material (raw data, references, screenshots)
+  - includes `docs/contributor/product/form-package-positioning.md`
 
 ## Audience
 

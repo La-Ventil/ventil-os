@@ -50,6 +50,27 @@ Constraints / pragmatic choices:
 - The shared form package (@repo/form) owns reusable form state and hooks.
 - Pragmatic rule: Prisma entities may be treated as domain objects when needed.
 
+Shared package vs app runtime:
+- Shared packages own reusable contracts, helpers, types, and package-local source of truth.
+- Apps own runtime-specific wiring such as:
+  - routes
+  - public URLs
+  - navigation
+  - server-action orchestration
+  - runtime configuration
+- A shared package must not hardcode app-specific public routes or URL topology.
+- When a shared package needs runtime-specific values, the app must provide serializable configuration instead of callbacks tied to app internals.
+
+Stable identifiers:
+- Persisted or reloaded selections must be keyed by stable identifiers, not by UI position or array order.
+- Ordering may change for editorial or UI reasons; identifiers are the contract.
+- If a model currently depends on position, treat that as a local constraint to isolate, not as a reusable pattern.
+
+Server/Client boundary in Next.js:
+- Server Components must pass only serializable props to Client Components.
+- Do not pass raw functions across the boundary unless they are explicit server actions supported by the framework contract.
+- Prefer ids, base paths, config objects, and other serializable inputs.
+
 UI ownership:
 - `apps/web` should contain route files (`page.tsx`, `layout.tsx`, parallel-route files), server-action wiring, and thin route-specific wrappers.
 - `packages/ui` should contain reusable presentational and client components, including generic admin/list/form widgets.
@@ -67,3 +88,6 @@ Related ADRs:
 - Introduce light VO (BadgeId, BadgeLevel, UserRef, etc.) to encode invariants.
 - Update repos to return stable DTO/VO; UI mappers consume homogeneous VM.
 - Seeds must stay aligned with use-case expectations (badges/machines/admins present).
+- Shared packages stay reusable because app runtime details remain in app code.
+- Position-based persistence becomes an explicit smell during review.
+- Next.js Server/Client boundary errors should usually be solved by moving to serializable config, not by widening coupling between layers.
