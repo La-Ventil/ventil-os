@@ -43,6 +43,13 @@ pnpm --filter web test
 - `apps/docs` is a presentation layer only
 - contributor-facing documentation belongs under `docs/contributor/`
 
+Documentation priority:
+
+- Use ADRs for transversal architectural rules.
+- Use package or app `README.md` files for local contracts and conventions.
+- If documents diverge, prefer the relevant ADR first, then the relevant package/app README, then the root `README.md`.
+- The root `README.md` is an overview and setup guide, not the canonical source for package-level conventions.
+
 ## Pull Requests
 
 Before opening a pull request:
