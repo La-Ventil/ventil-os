@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.41](https://github.com/La-Ventil/ventil-os/compare/v0.0.40...v0.0.41) (2026-04-10)
+
+
+### Docs
+
+* **architecture:** capture shared package context ([fd3bea9](https://github.com/La-Ventil/ventil-os/commit/fd3bea9de8790a788253dd00f5811ceddd79f786))
+* document Mailpit local email capture ([b9c7565](https://github.com/La-Ventil/ventil-os/commit/b9c7565503b2632bf6faf487ba778dc9060a2933))
+* **readme:** reduce drift with contributor docs ([22d2eea](https://github.com/La-Ventil/ventil-os/commit/22d2eea48b25ffa300f03efdc29f34c3e84d99e9))
+
 ### [0.0.40](https://github.com/La-Ventil/ventil-os/compare/v0.0.39...v0.0.40) (2026-04-09)
 
 
