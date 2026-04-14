@@ -26,6 +26,73 @@ jobs:
       - name: Typecheck
         run: pnpm check-types
 
+  targeted-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.0
+        env:
+          POSTGRES_DB: ventilos
+          POSTGRES_USER: ventilos
+          POSTGRES_PASSWORD: ventilos
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ventilos -d ventilos"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      DATABASE_URL: postgresql://ventilos:ventilos@127.0.0.1:5432/ventilos?schema=public
+      NEXTAUTH_SECRET: ci-nextauth-secret
+      SECRET_PEPPER: ci-secret-pepper
+      SEED_PASSWORD: ChangeMe123!
+      APP_NAME: VentilOS
+      BASE_URL: http://127.0.0.1:3001
+      HOST: 127.0.0.1
+      UPLOADS_DIR: apps/web/uploads
+      UPLOADS_PUBLIC_PATH: /uploads
+      SMTP_HOST: 127.0.0.1
+      SMTP_PORT: '1025'
+      SMTP_SECURE: 'false'
+      EMAIL_FROM: no-reply@laventil.org
+      PLAYWRIGHT_PORT: '3001'
+      PLAYWRIGHT_APP_LOCALE: en
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.29.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Fetch base branch
+        run: git fetch origin "${{ github.base_ref }}" --depth=1
+      - name: Detect web smoke need
+        id: web-smoke
+        run: |
+          CHANGED_FILES="$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")"
+          if printf '%s\n' "$CHANGED_FILES" | grep -Eq '^(apps/web/|packages/application/|packages/avatar-system/|packages/crypto/|packages/db/|packages/domain/|packages/form/|packages/storage/|packages/ui/)'; then
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Prepare database client
+        if: steps.web-smoke.outputs.needed == 'true'
+        run: pnpm --filter @repo/db db:generate
+      - name: Install Playwright Chromium
+        if: steps.web-smoke.outputs.needed == 'true'
+        run: pnpm --filter web exec playwright install --with-deps chromium
+      - name: Run targeted tests
+        run: node scripts/run-targeted-tests.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+
   build:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

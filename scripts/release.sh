@@ -2,6 +2,8 @@
 set -euo pipefail
 
 readonly ORIGINAL_BRANCH="$(git branch --show-current)"
+readonly RELEASE_SOURCE_BRANCH="dev"
+readonly RELEASE_TARGET_BRANCH="main"
 
 cleanup() {
   local exit_code=$?
@@ -28,6 +30,15 @@ require_branch() {
   fi
 }
 
+require_current_branch() {
+  local branch_name=$1
+
+  if [[ "$(git branch --show-current)" != "$branch_name" ]]; then
+    echo "Release aborted: current branch must be $branch_name." >&2
+    exit 1
+  fi
+}
+
 require_fast_forward() {
   local base_ref=$1
   local head_ref=$2
@@ -50,29 +61,36 @@ require_fast_forward() {
 trap cleanup EXIT
 
 require_clean_worktree
-require_branch dev
-require_branch main
+require_branch "$RELEASE_SOURCE_BRANCH"
+require_branch "$RELEASE_TARGET_BRANCH"
+require_current_branch "$RELEASE_SOURCE_BRANCH"
 
 git fetch --tags origin
-git fetch origin dev main
+git fetch origin "$RELEASE_SOURCE_BRANCH" "$RELEASE_TARGET_BRANCH"
 
-git push origin dev main
-git fetch origin dev main
+require_fast_forward "origin/$RELEASE_TARGET_BRANCH" "$RELEASE_SOURCE_BRANCH" "$RELEASE_TARGET_BRANCH from $RELEASE_SOURCE_BRANCH"
 
-require_fast_forward origin/main origin/dev "main from origin/dev"
+pnpm test
 
-git switch main
-git merge --ff-only origin/dev
+git push origin "$RELEASE_SOURCE_BRANCH"
+git fetch origin "$RELEASE_SOURCE_BRANCH" "$RELEASE_TARGET_BRANCH"
+
+require_fast_forward "origin/$RELEASE_TARGET_BRANCH" "$RELEASE_SOURCE_BRANCH" "$RELEASE_TARGET_BRANCH from $RELEASE_SOURCE_BRANCH"
+
+git switch "$RELEASE_TARGET_BRANCH"
+git merge --ff-only "$RELEASE_SOURCE_BRANCH"
 
 pnpm i18n:report
 git add docs/contributor/i18n/translation-coverage.md
 
+pnpm build
+
 pnpm release -- --commit-all
 
-git push origin main --follow-tags
+git push origin "$RELEASE_TARGET_BRANCH" --follow-tags
 
-git switch dev
-git merge --ff-only origin/main
-git push origin dev
+git switch "$RELEASE_SOURCE_BRANCH"
+git merge --ff-only "$RELEASE_TARGET_BRANCH"
+git push origin "$RELEASE_SOURCE_BRANCH"
 
 trap - EXIT

@@ -53,6 +53,19 @@ timeout 5m pnpm lint:dev
 pnpm --filter web test
 ```
 
+## Change Gates
+
+Use the smallest gate that matches the lifecycle stage.
+
+- Pull request gate: `lint` + `check-types` + targeted tests for the changed surface
+- Git release gate: clean worktree on `dev`, then `pnpm test`, `pnpm build`, and `pnpm release:git`
+- Deploy gate: separate from git release and requires a production smoke check
+
+Terminology:
+
+- `release` means git publication (`dev` -> `main`, version bump, changelog, tag)
+- `deploy` means a real production deployment
+
 ## Documentation Rule
 
 - `docs/` is the documentation source of truth

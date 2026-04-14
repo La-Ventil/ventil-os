@@ -1,27 +1,48 @@
-# ADR-013: Release Process (Staging → Main)
+# ADR-013: Git Release Process (Dev → Main)
 
 ## Status
-Proposed
+Accepted
 
 ## Date
-2026-02-05
+2026-04-14
 
 ## Context
-We have two main branches (dev and main) and a designer working on a separate branch.
-We want a simple release flow, a clean history, and low friction for non‑technical contributors.
-We also want to generate a changelog using standard-version.
+We use a two-branch model with `dev` and `main`.
+We need a release process that stays explicit about what is a git publication versus what is a real production deployment.
+We also want a changelog generated from conventional commits with `standard-version`.
 
 ---
 
 ## Decision
-Use a staging branch to validate changes, release on main, then fast‑forward staging.
-This keeps the designer flow simple and preserves a clean, readable history.
+Use `dev` as the integration branch and `main` as the git release branch.
+
+Terminology:
+- `release` means git publication only
+- `deploy` means a real production deployment
+
+No `staging` branch is part of the release model.
 
 Release cycle:
-1. Merge or fast‑forward `staging` → `main`.
-2. Run `pnpm release` on `main` to create the release commit and changelog.
-3. Fast‑forward `staging` → `main` to realign branches.
-4. Return to `dev` for continued work.
+1. Merge feature work into `dev`.
+2. Run the PR gate on changes proposed to `dev`.
+3. Publish a git release by fast-forwarding `main` from `dev`.
+4. Generate the release commit and changelog on `main`.
+5. Push `main` and the tag.
+6. Fast-forward `dev` from `main` to keep both branches aligned.
+
+Quality gates:
+- Pull request gate:
+  - `pnpm lint:dev`
+  - `pnpm check-types`
+  - targeted tests for the changed surface
+- Git release gate:
+  - clean worktree
+  - current branch must be `dev`
+  - `pnpm test`
+  - `pnpm build`
+- Deploy gate:
+  - production deployment is separate from git publication
+  - production smoke is mandatory after deploy
 
 Changelog configuration:
 - Source of truth: `.versionrc.cjs` (standard-version).
@@ -30,20 +51,14 @@ Changelog configuration:
 - Commit body is included when present (rendered as an indented line under the entry).
 
 Commands (from repo root):
-- `git fetch origin`
-- `git checkout main`
-- `git merge --ff-only origin/staging` (or a normal merge if needed)
-- `pnpm release`
-- `git push origin main`
-- `git checkout staging`
-- `git merge --ff-only origin/main`
-- `git push origin staging`
-- `git checkout dev`
+- `pnpm release:git`
+- legacy alias: `pnpm release:prod`
 
 CI integration:
-- PRs: run lint, typecheck, tests.
-- main: deploy and publish release artifacts (if configured).
-- staging: deploy for review.
+- PRs: run lint, typecheck, and targeted tests.
+- main push: run build validation for the published git release.
+- docs changes on main may also publish GitHub Pages.
+- no production application deploy workflow is defined in this repository.
 
 Designer workflow:
 1. Create a feature branch from `dev`.
@@ -53,9 +68,10 @@ Designer workflow:
 5. If CI fails, fix and push updates to the same branch.
 
 ## Consequences
-- `main` remains the production release branch with a single release commit per cycle.
-- `staging` is always realigned after release, keeping the designer flow simple.
-- If `staging` diverges, fast‑forward will fail and a merge is required.
+- `main` remains the git release branch with a single release commit per cycle.
+- `dev` remains the only integration branch in the release model.
+- If `main` diverges from `dev`, the git release fast-forward fails and must be resolved explicitly.
+- `release` and `deploy` are no longer overloaded terms.
 - Requires standard-version installed at the repo root.
 
 ## Related ADRs
