@@ -59,12 +59,24 @@ Use the smallest gate that matches the lifecycle stage.
 
 - Pull request gate: `lint` + `check-types` + targeted tests for the changed surface
 - Git release gate: clean worktree on `dev`, then `pnpm test`, `pnpm build`, and `pnpm release:git`
-- Deploy gate: separate from git release and requires a production smoke check
+- Deploy gate: separate from git release, triggered automatically by a push on `main` via Clever Cloud, and requires a production smoke check
 
 Terminology:
 
 - `release` means git publication (`dev` -> `main`, version bump, changelog, tag)
 - `deploy` means a real production deployment
+
+Production deploy process:
+
+- `pnpm release:git` pushes the git release to `main`
+- the production Clever Cloud application is linked to this GitHub repository
+- Clever Cloud deploys automatically when the configured deployment branch receives a push
+- for this repository, the production deployment branch is `main`
+- after deployment, run the mandatory production smoke check
+
+Reference:
+
+- Clever Cloud docs: https://www.clever.cloud/developers/doc/ci-cd/github/
 
 ## Documentation Rule
 

@@ -42,6 +42,8 @@ Quality gates:
   - `pnpm build`
 - Deploy gate:
   - production deployment is separate from git publication
+  - production deployment is triggered automatically by a push on `main`
+  - the production Clever Cloud application must be connected to this GitHub repository and configured to deploy the `main` branch
   - production smoke is mandatory after deploy
 
 Changelog configuration:
@@ -52,13 +54,15 @@ Changelog configuration:
 
 Commands (from repo root):
 - `pnpm release:git`
-- legacy alias: `pnpm release:prod`
 
 CI integration:
 - PRs: run lint, typecheck, and targeted tests.
 - main push: run build validation for the published git release.
 - docs changes on main may also publish GitHub Pages.
-- no production application deploy workflow is defined in this repository.
+- production deployment is handled outside this repository by Clever Cloud's GitHub integration.
+- reference:
+  - https://www.clever.cloud/developers/doc/ci-cd/github/
+  - https://www.clever.cloud/developers/doc/quickstart/
 
 Designer workflow:
 1. Create a feature branch from `dev`.
@@ -72,6 +76,7 @@ Designer workflow:
 - `dev` remains the only integration branch in the release model.
 - If `main` diverges from `dev`, the git release fast-forward fails and must be resolved explicitly.
 - `release` and `deploy` are no longer overloaded terms.
+- Production deploy remains platform-managed by Clever Cloud after each push to `main`.
 - Requires standard-version installed at the repo root.
 
 ## Related ADRs

@@ -157,16 +157,6 @@ Commande canonique :
 pnpm release:git
 ```
 
-Alias legacy :
-
-```
-pnpm release:prod
-```
-
-Cette commande publie sur Git uniquement : fast-forward `main` depuis `dev`, version bump, changelog et tag.
-
-Le déploiement de production est un sujet séparé ; aucun workflow de déploiement applicatif prod n’est défini dans ce repo.
-
 ## Tests
 
 Voir :
