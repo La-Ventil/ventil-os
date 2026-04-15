@@ -1,8 +1,16 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import { cache } from 'react';
 import { getServerSession as getNextAuthServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { isUserBlocked, viewUserProfile } from '@repo/application/users/usecases';
 import { authOptions } from './config';
+
+/**
+ * Memoized per request — deduplicates the `isUserBlocked` DB round-trip when
+ * `getServerSession` is called multiple times in the same server render tree
+ * (e.g. page + several route handlers invoked during the same navigation).
+ */
+const cachedIsUserBlocked = cache(isUserBlocked);
 
 export async function getServerSession(
   ...args: [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']] | [NextApiRequest, NextApiResponse] | []
@@ -12,7 +20,7 @@ export async function getServerSession(
     return session;
   }
 
-  const blocked = await isUserBlocked(session.user.id);
+  const blocked = await cachedIsUserBlocked(session.user.id);
   if (blocked) {
     return null;
   }
