@@ -19,6 +19,7 @@ import {
 import { useMachineReservationsDay } from './use-machine-reservations-day';
 import MachineReservationFormFlow from './machine-reservation-form-flow';
 import { buildMachineModalHref, replaceBrowserUrl } from './machine-modal-url';
+import { useMachineReservationParticipantOptions } from './use-machine-reservation-participant-options';
 
 type UseMachineModalFlowOptions = {
   machine: MachineDetailsViewModel;
@@ -111,6 +112,11 @@ export function useMachineModalFlow({
   const selectedAt = reservationState.at;
   const selectedReservation = getSelectedReservation(reservationState);
   const scheduleDayKey = useMemo(() => formatDayKey(selectedAt, timeZone), [selectedAt, timeZone]);
+  const { participantOptions, isLoadingParticipantOptions } = useMachineReservationParticipantOptions({
+    machineId: machine.id,
+    initialParticipantOptions: reservationFormOptions.participantOptions,
+    enabled: step !== 'schedule'
+  });
 
   const syncUrl = useCallback(
     ({ tab, step, at, reservationId }: SyncUrlParams) => {
@@ -189,7 +195,7 @@ export function useMachineModalFlow({
       const nextAt = new Date(nextStartsAtIso);
       dispatch({ type: 'CLOSE_FORM', at: nextAt });
       syncUrl({ tab: 'reservations', step: 'schedule', at: nextAt });
-      await fetchReservationsForDay(formatDayKey(nextAt, timeZone));
+      await fetchReservationsForDay(formatDayKey(nextAt, timeZone), { skipCache: true });
     },
     [fetchReservationsForDay, syncUrl, timeZone]
   );
@@ -205,13 +211,14 @@ export function useMachineModalFlow({
         machineId={machine.id}
         startAt={selectedReservation?.startsAt ?? selectedAt}
         reservation={selectedReservation}
-        participantOptions={reservationFormOptions.participantOptions}
+        participantOptions={participantOptions}
+        isParticipantOptionsLoading={isLoadingParticipantOptions}
         currentUserId={viewer.userId}
         canManageReservations={viewer.canManageReservations}
         onClose={closeReservationForm}
         onSuccess={handleReservationSuccess}
         onCancelSuccess={async (reservation) => {
-          await fetchReservationsForDay(formatDayKey(reservation.startsAt, timeZone));
+          await fetchReservationsForDay(formatDayKey(reservation.startsAt, timeZone), { skipCache: true });
         }}
       />
     );
@@ -219,8 +226,9 @@ export function useMachineModalFlow({
     closeReservationForm,
     fetchReservationsForDay,
     handleReservationSuccess,
+    isLoadingParticipantOptions,
     machine.id,
-    reservationFormOptions.participantOptions,
+    participantOptions,
     selectedAt,
     selectedReservation,
     step,

@@ -13,6 +13,20 @@ type ReservationQueryPayload = {
   >;
 };
 
+/** In-memory cache scoped to the modal session: dayKey → revived reservations */
+type ReservationsByDayCache = Map<DayKey, MachineReservationViewModel[]>;
+
+export type FetchReservationsForDayOptions = {
+  /** Bypass the cache and force a network request — use after a write operation */
+  skipCache?: boolean;
+};
+
+type UseMachineReservationsDayOptions = {
+  machineId: string;
+  timeZone: string;
+  initialReservations: MachineReservationViewModel[];
+};
+
 const reviveReservation = (
   reservation: ReservationQueryPayload['reservations'][number]
 ): MachineReservationViewModel => ({
@@ -20,12 +34,6 @@ const reviveReservation = (
   startsAt: new Date(reservation.startsAt),
   endsAt: new Date(reservation.endsAt)
 });
-
-type UseMachineReservationsDayOptions = {
-  machineId: string;
-  timeZone: string;
-  initialReservations: MachineReservationViewModel[];
-};
 
 export function useMachineReservationsDay({
   machineId,
@@ -35,14 +43,21 @@ export function useMachineReservationsDay({
   const [reservations, setReservations] = useState<MachineReservationViewModel[]>(initialReservations);
   const [isLoading, setIsLoading] = useState(false);
   const latestRequest = useRef(0);
+  const reservationsByDayCache = useRef<ReservationsByDayCache>(new Map());
 
   const resetReservations = useCallback((nextReservations: MachineReservationViewModel[]) => {
     setReservations(nextReservations);
   }, []);
 
   const fetchReservationsForDay = useCallback(
-    async (dayKey: DayKey) => {
+    async (dayKey: DayKey, options?: FetchReservationsForDayOptions) => {
       if (!machineId) return;
+
+      const cachedReservations = !options?.skipCache && reservationsByDayCache.current.get(dayKey);
+      if (cachedReservations) {
+        setReservations(cachedReservations);
+        return;
+      }
 
       const requestId = latestRequest.current + 1;
       latestRequest.current = requestId;
@@ -68,7 +83,9 @@ export function useMachineReservationsDay({
           return;
         }
 
-        setReservations(payload.reservations.map(reviveReservation));
+        const revivedReservations = payload.reservations.map(reviveReservation);
+        reservationsByDayCache.current.set(dayKey, revivedReservations);
+        setReservations(revivedReservations);
       } finally {
         if (latestRequest.current === requestId) {
           setIsLoading(false);
