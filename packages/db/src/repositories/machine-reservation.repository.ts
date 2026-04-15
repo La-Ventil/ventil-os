@@ -52,6 +52,27 @@ export class MachineReservationRepository {
     };
   }
 
+  async listAvailabilityForMachineBetween(
+    machineId: string,
+    rangeStart: Date,
+    rangeEnd: Date
+  ): Promise<MachineReservationAvailabilityReadModel[]> {
+    const reservations = await this.prisma.machineReservation.findMany({
+      where: {
+        machineId,
+        status: 'confirmed',
+        startsAt: { lt: rangeEnd },
+        endsAt: { gt: rangeStart }
+      },
+      select: machineReservationAvailabilitySelect,
+      orderBy: { startsAt: 'asc' }
+    });
+
+    return reservations.map((reservation) =>
+      this.normalizeReservationAvailability(reservation as MachineReservationAvailabilityPayload)
+    );
+  }
+
   async listForMachineBetween(
     machineId: string,
     rangeStart: Date,

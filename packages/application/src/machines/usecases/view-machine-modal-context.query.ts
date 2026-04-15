@@ -1,4 +1,4 @@
-import { machineRepository } from '@repo/db';
+import { machineRepository, machineReservationRepository } from '@repo/db';
 import { Machine } from '@repo/domain/machine/machine';
 import { resolveMachineAvailability } from '@repo/domain/machine/machine-availability';
 import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
@@ -69,10 +69,18 @@ export const viewMachineModalContext: Query<[ViewMachineModalContextInput], Mach
   );
   const machineAggregate = toMachineAggregate(machine);
   const reservationsPromise = viewMachineReservationsForDayKey(input.machineId, selectedDateKey, input.timeZone);
+  const todayInterval = getDayIntervalForDayKey(todayKey, input.timeZone);
+  // When viewing a past or future day, today's reservations are only needed to
+  // compute current machine availability — use the lightweight select instead of
+  // the full creator+participants include.
   const reservationsTodayPromise =
     selectedDateKey === todayKey
       ? reservationsPromise
-      : viewMachineReservationsForDayKey(input.machineId, todayKey, input.timeZone);
+      : machineReservationRepository.listAvailabilityForMachineBetween(
+          input.machineId,
+          todayInterval.start,
+          todayInterval.end
+        );
   const reservationFormPromise =
     normalizedStep === 'schedule'
       ? Promise.resolve<MachineReservationFormView | null>(null)
