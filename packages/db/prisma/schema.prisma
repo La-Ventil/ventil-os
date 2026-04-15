@@ -340,6 +340,7 @@ model MachineReservation {
 
   @@index([machineId, startsAt])
   @@index([creatorId, startsAt])
+  @@index([status, startsAt])
 }
 
 model MachineReservationParticipant {
