@@ -10,6 +10,7 @@ export * from './check-reservation-eligibility.query';
 export * from './view-machine-reservations.query';
 export * from './view-machine-reservation.query';
 export * from './view-machine-reservation-form.query';
+export * from './view-machine-modal-context.query';
 export * from './browse-machines.query';
 export * from './browse-machines-as-admin.query';
 export * from './view-machine-details.query';

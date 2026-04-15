@@ -154,4 +154,25 @@ describe('viewMachineReservationForm', () => {
     expect(withQueryStart?.canManageReservations).toBe(true);
     expect(withNowFallback?.startAt).toEqual(now);
   });
+
+  it('can reuse a preloaded machine and skip participant options', async () => {
+    const context = await viewMachineReservationForm({
+      machineId: 'machine-id',
+      machine,
+      at: '2026-03-05T09:30:00.000Z',
+      actor: { id: 'admin-id', globalAdmin: true },
+      loadParticipantOptions: false
+    });
+
+    expect(context).toEqual({
+      machine,
+      participantOptions: [],
+      startAt: new Date('2026-03-05T09:30:00.000Z'),
+      reservation: null,
+      currentUserId: 'admin-id',
+      canManageReservations: true
+    });
+    expect(mockViewMachineDetails).not.toHaveBeenCalled();
+    expect(mockBrowseUsersForReservation).not.toHaveBeenCalled();
+  });
 });

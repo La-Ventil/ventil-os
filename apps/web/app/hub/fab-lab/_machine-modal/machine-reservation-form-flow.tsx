@@ -11,6 +11,7 @@ type MachineReservationFormFlowProps = {
   startAt: Date;
   reservation: MachineReservationViewModel | null;
   participantOptions: UserSummaryViewModel[];
+  isParticipantOptionsLoading?: boolean;
   currentUserId?: string;
   canManageReservations?: boolean;
   onClose: (nextAtIso?: string) => void;
@@ -23,6 +24,7 @@ export default function MachineReservationFormFlow({
   startAt,
   reservation,
   participantOptions,
+  isParticipantOptionsLoading = false,
   currentUserId,
   canManageReservations,
   onClose,
@@ -55,6 +57,7 @@ export default function MachineReservationFormFlow({
         reservationId={reservation?.id}
         initialParticipants={reservation?.participants.map((participant) => participant.user)}
         participantOptions={participantOptions}
+        isParticipantOptionsLoading={isParticipantOptionsLoading}
         currentUserId={currentUserId}
         onCancel={() => onClose(state.values.startsAt)}
         onCancelReservation={reservation && canCancelReservation ? handleCancelReservation : undefined}

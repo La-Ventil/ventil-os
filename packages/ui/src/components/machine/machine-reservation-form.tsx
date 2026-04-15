@@ -34,6 +34,7 @@ export type MachineReservationFormProps = {
   descriptionId?: string;
   initialParticipants?: UserSummaryViewModel[];
   participantOptions?: UserSummaryViewModel[];
+  isParticipantOptionsLoading?: boolean;
   currentUserId?: string;
   onCancel: () => void;
   onCancelReservation?: () => Promise<{ success: boolean; message: string }>;
@@ -65,6 +66,7 @@ export default function MachineReservationForm({
   descriptionId,
   initialParticipants,
   participantOptions,
+  isParticipantOptionsLoading = false,
   currentUserId,
   onCancel,
   onCancelReservation,
@@ -193,6 +195,9 @@ export default function MachineReservationForm({
         options={filteredOptions}
         value={filteredParticipants}
         onChange={handleParticipantsChange}
+        loading={isParticipantOptionsLoading}
+        loadingText={t('modal.reservationForm.participantsLoading')}
+        helperText={isParticipantOptionsLoading ? t('modal.reservationForm.participantsLoading') : undefined}
       />
 
       <FormActions className={styles.actions}>

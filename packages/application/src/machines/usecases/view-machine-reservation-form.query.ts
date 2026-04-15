@@ -18,6 +18,8 @@ export type ViewMachineReservationFormInput = {
   at?: string | null;
   actor?: ReservationActor | null;
   now?: Date;
+  machine?: MachineDetailsViewModel | null;
+  loadParticipantOptions?: boolean;
 };
 
 export type MachineReservationFormView = {
@@ -34,9 +36,9 @@ export const viewMachineReservationForm: Query<
   MachineReservationFormView | null
 > = async (input: ViewMachineReservationFormInput) => {
   const [machine, reservation, participantOptions] = await Promise.all([
-    viewMachineDetails(input.machineId),
+    input.machine ? Promise.resolve(input.machine) : viewMachineDetails(input.machineId),
     input.reservationId ? viewMachineReservation(input.reservationId) : Promise.resolve(null),
-    browseUsersForReservation()
+    input.loadParticipantOptions === false ? Promise.resolve([]) : browseUsersForReservation()
   ]);
 
   if (!machine) {

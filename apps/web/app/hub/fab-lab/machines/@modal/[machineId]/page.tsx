@@ -1,17 +1,6 @@
 import type { JSX } from 'react';
-import {
-  canManageReservations,
-  formatDayKey,
-  getDayIntervalForDayKey,
-  resolveMachineAvailability,
-  resolveIsoDateFromQuery
-} from '@repo/application';
-import {
-  checkReservationEligibility,
-  viewMachineDetails,
-  viewMachineReservationForm,
-  viewMachineReservationsForDayKey
-} from '@repo/application/machines/usecases';
+import { canManageReservations } from '@repo/application';
+import { viewMachineModalContext } from '@repo/application/machines/usecases';
 import { getTimeZone } from 'next-intl/server';
 import MachineModalRouteClient from '../../../_machine-modal/machine-modal-route.client';
 import { getServerSession } from '../../../../../../lib/auth';
@@ -49,58 +38,29 @@ export default async function MachineModalPage({
   // The server page only hydrates the initial modal context; reservation tab transitions
   // must remain client-side in `_machine-modal/use-machine-modal-flow.tsx`.
   const { at, reservationId, step, tab } = resolvedSearchParams;
-  const now = new Date();
   const currentUserId = session?.user?.id;
-  const focusedAt = resolveIsoDateFromQuery(at) ?? now;
-  const machinePromise = viewMachineDetails(machineId);
-  const canReservePromise = checkReservationEligibility(machineId, currentUserId);
-  const todayKey = formatDayKey(now, timeZone);
-  const selectedDateKey = formatDayKey(focusedAt, timeZone);
-  const reservationsPromise = viewMachineReservationsForDayKey(machineId, selectedDateKey, timeZone);
-  const reservationsTodayPromise =
-    selectedDateKey === todayKey
-      ? reservationsPromise
-      : viewMachineReservationsForDayKey(machineId, todayKey, timeZone);
-  const normalizedStep = reservationId ? 'edit' : step === 'create' ? 'create' : 'schedule';
-  const reservationFormPromise = viewMachineReservationForm({
+  const modalContext = await viewMachineModalContext({
     machineId,
-    reservationId: normalizedStep === 'edit' ? reservationId : null,
     at,
-    actor: session?.user
+    reservationId,
+    step,
+    actor: session?.user,
+    timeZone
   });
-  const [machine, reservations, reservationsToday, canReserve, reservationForm] = await Promise.all([
-    machinePromise,
-    reservationsPromise,
-    reservationsTodayPromise,
-    canReservePromise,
-    reservationFormPromise
-  ]);
 
-  if (!machine) {
+  if (!modalContext) {
     return null;
   }
 
-  const { end } = getDayIntervalForDayKey(todayKey, timeZone);
-  const availability = resolveMachineAvailability(machine.availability, reservationsToday, now, end);
-  const machineWithAvailability = { ...machine, availability };
   const canManage = canManageReservations(session?.user);
   return (
     <MachineModalRouteClient
-      machine={machineWithAvailability}
-      reservations={reservations}
-      focusedAt={reservationForm?.startAt ?? focusedAt}
-      canReserve={canReserve}
-      initialReservationState={
-        normalizedStep === 'schedule'
-          ? undefined
-          : {
-              at: reservationForm?.startAt ?? focusedAt,
-              reservation: normalizedStep === 'edit' ? (reservationForm?.reservation ?? null) : null
-            }
-      }
-      reservationFormOptions={{
-        participantOptions: reservationForm?.participantOptions ?? []
-      }}
+      machine={modalContext.machine}
+      reservations={modalContext.reservations}
+      focusedAt={modalContext.focusedAt}
+      canReserve={modalContext.canReserve}
+      initialReservationState={modalContext.initialReservationState}
+      reservationFormOptions={modalContext.reservationFormOptions}
       viewer={{
         userId: currentUserId,
         canManageReservations: canManage

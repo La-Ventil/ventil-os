@@ -19,6 +19,9 @@ export type UserAutocompleteProps<Multiple extends boolean = true> = {
   onChange: (value: Multiple extends true ? UserSummaryViewModel[] : UserSummaryViewModel | null) => void;
   multiple?: Multiple;
   disabled?: boolean;
+  loading?: boolean;
+  loadingText?: string;
+  noOptionsText?: string;
   helperText?: string;
 };
 
@@ -85,6 +88,9 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
   onChange,
   multiple,
   disabled = false,
+  loading = false,
+  loadingText,
+  noOptionsText,
   helperText
 }: UserAutocompleteProps<Multiple>): JSX.Element {
   const isMultiple = multiple ?? true;
@@ -111,6 +117,9 @@ export default function UserAutocomplete<Multiple extends boolean = true>({
       filterOptions={(availableOptions, state) => filterUserOptions(availableOptions, state.inputValue)}
       filterSelectedOptions={isMultiple}
       disabled={disabled}
+      loading={loading}
+      loadingText={loadingText}
+      noOptionsText={noOptionsText}
       renderInput={(params) => (
         <TextField {...params} label={label} placeholder={placeholder} helperText={helperText} />
       )}
