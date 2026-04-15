@@ -1,9 +1,9 @@
 import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
-import SectionTitle from '@repo/ui/section-title';
+import SectionTitle from '@repo/ui/section-title.server';
 import { viewMachineDetails } from '@repo/application/machines/usecases';
 import { browseOpenBadgeRequirementOptions } from '@repo/application/open-badges/usecases';
-import MachineEditFormClient from './machine-edit-form.client';
+import MachineEditFormClient from './_components/machine-edit-form.client';
 
 type AdminMachineEditPageProps = {
   params: Promise<{ machineId: string }>;

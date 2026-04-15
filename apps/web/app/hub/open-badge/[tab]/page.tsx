@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { browseOpenBadges, viewUserOpenBadges } from '@repo/application/open-badges/usecases';
-import OpenBadgeList from '@repo/ui/open-badge-list';
+import OpenBadgeList from '@repo/ui/open-badge-list.server';
 import { getServerSession } from '../../../../lib/auth';
 import { isOpenBadgeTab, type OpenBadgeTab } from './layout';
 
@@ -20,10 +20,7 @@ export default async function OpenBadgeTabPage({ params }: OpenBadgeTabPageProps
   const tab: OpenBadgeTab = rawTab;
   const t = await getTranslations('pages.hub.openBadges');
   const session = await getServerSession();
-  const badges =
-    tab === 'mine'
-      ? await listUserBadges(session?.user?.id)
-      : await browseOpenBadges(session?.user?.id);
+  const badges = tab === 'mine' ? await listUserBadges(session?.user?.id) : await browseOpenBadges(session?.user?.id);
 
   const emptyMessage = tab === 'mine' ? t('empty.mine') : t('empty.all');
 

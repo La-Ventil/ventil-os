@@ -5,7 +5,7 @@ import {
   canAssignOpenBadge,
   viewOpenBadge
 } from '@repo/application/open-badges/usecases';
-import OpenBadgeModalRouteClient from '../../../open-badge-modal-route.client';
+import OpenBadgeModalRouteClient from '../../../_components/open-badge-modal-route.client';
 import { isOpenBadgeTab } from '../../layout';
 import { getServerSession } from '../../../../../../lib/auth';
 

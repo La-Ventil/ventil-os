@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import SectionTitle from '@repo/ui/section-title';
+import SectionTitle from '@repo/ui/section-title.server';
 import AvatarEditor from '@repo/ui/avatar-editor';
 import { getTranslations } from 'next-intl/server';
 import { getUserProfileFromSession } from '../../../lib/auth';

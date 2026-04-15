@@ -8,7 +8,7 @@ import { createFormState } from '@repo/form/form-state';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { useTranslations } from 'next-intl';
 import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/open-badges/models/open-badge-requirement-option';
-import { createMachineAction } from '../../../../../lib/actions/machines/create-machine';
+import { createMachineAction } from '../../../../../../lib/actions/machines/create-machine';
 
 const machineCreateInitialState = createFormState<MachineCreateFormInput>({
   name: '',

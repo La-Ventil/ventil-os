@@ -3,7 +3,7 @@
 import { useTransition } from 'react';
 import { MachineAdminStatus, type MachineAdminViewModel } from '@repo/application/machines/models/machine-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
-import { setMachineStatusAction } from '../../../../lib/actions/machines/set-machine-status';
+import { setMachineStatusAction } from '../../../../../lib/actions/machines/set-machine-status';
 
 type MachineQuickActionsProps = {
   machine: MachineAdminViewModel;

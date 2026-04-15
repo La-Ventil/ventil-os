@@ -8,7 +8,7 @@ import type { OpenBadgeViewModel } from '@repo/application/open-badges/models/op
 import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/users/models/user-summary';
 import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
-import { assignOpenBadgeAction } from '../../../../lib/actions/open-badges/assign-open-badge';
+import { assignOpenBadgeAction } from '../../../../../lib/actions/open-badges/assign-open-badge';
 import { useDelayedAction } from '@repo/ui/hooks/use-delayed-action';
 import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 

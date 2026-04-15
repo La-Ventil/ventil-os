@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { isAdmin } from '@repo/application';
 import { getServerSession } from '../../../lib/auth';
+import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
 
 export default async function AdminLayout({
   children
@@ -14,5 +15,5 @@ export default async function AdminLayout({
     redirect('/hub/profile');
   }
 
-  return children;
+  return <ScopedIntlClientProvider paths={['pages.hub.navigation']}>{children}</ScopedIntlClientProvider>;
 }

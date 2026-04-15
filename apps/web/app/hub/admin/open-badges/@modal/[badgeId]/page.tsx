@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { redirect } from 'next/navigation';
 import { canManageBadges } from '@repo/application';
 import { viewOpenBadgeAssignContext } from '@repo/application/open-badges/usecases';
-import AssignOpenBadgeModalRoute from '../../assign-open-badge-modal-route';
+import AssignOpenBadgeModalRoute from '../../_components/assign-open-badge-modal-route';
 import { getServerSession } from '../../../../../../lib/auth';
 
 type AdminOpenBadgesModalPageProps = {

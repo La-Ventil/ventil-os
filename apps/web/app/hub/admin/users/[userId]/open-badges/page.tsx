@@ -1,9 +1,9 @@
 import Typography from '@mui/material/Typography';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
-import UserOpenBadgeManagement from './user-open-badge-management';
-import { getUserOpenBadgeManagementPageData } from './open-badge-management-page-data';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
+import UserOpenBadgeManagement from './_components/user-open-badge-management';
+import { getUserOpenBadgeManagementPageData } from './_lib/open-badge-management-page-data';
 
 type AdminUserOpenBadgesPageProps = {
   params: Promise<{ userId: string }>;

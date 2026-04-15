@@ -1,63 +1,21 @@
-'use client';
-import type { JSX } from 'react';
-import { useEffect } from 'react';
+import { getTranslations } from 'next-intl/server';
+import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import SignupPageClient from './_components/signup-page.client';
 
-import { useTranslations } from 'next-intl';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { useRouter } from 'next/navigation';
-import Link from '@repo/ui/link';
-import { signupFormSchema } from '@repo/application/forms';
-import SignupForm, { signupFormInitialState } from '@repo/ui/forms/signup.form';
-import { useFormActionState } from '@repo/form/use-form-action-state';
-import { registerUserAction } from '../../../lib/actions/auth/register-user';
-import styles from './page.module.css';
-
-export default function Page(): JSX.Element {
-  const router = useRouter();
-  const t = useTranslations('pages.public.signup');
-  const tCommon = useTranslations('common');
-  const tForms = useTranslations('forms');
-  const tRoot = useTranslations();
-  const formState = useFormActionState({
-    action: registerUserAction,
-    initialState: signupFormInitialState,
-    schema: signupFormSchema,
-    translate: tCommon,
-    translateFieldError: tRoot
-  });
-  const [currentState] = formState;
-  const isSuccess = Boolean(currentState?.success);
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.replace('/?notice=signup-success');
-    }
-  }, [isSuccess, router]);
+export default async function Page() {
+  const t = await getTranslations('pages.public.signup');
+  const tForms = await getTranslations('forms');
 
   return (
-    <Box p={2}>
-      <Stack>
-        <Typography className={styles.title} variant="h2">
-          {t('title')}
-        </Typography>
-        <Typography className={styles.subtitle} variant="h3">
-          {t('subtitle')}
-        </Typography>
-        <Typography variant="body1" className={styles.text}>
-          {t('intro')}
-        </Typography>
-      </Stack>
-      <SignupForm formState={formState} />
-      {isSuccess ? (
-        <Stack mt={3}>
-          <Button component={Link} href="/login" variant="outlined">
-            {tForms('actions.submitLogin')}
-          </Button>
-        </Stack>
-      ) : null}
-    </Box>
+    <ScopedIntlClientProvider
+      paths={['common', 'educationLevel', 'forms', 'pages.public.privacyPolicy', 'profileSelector', 'validation']}
+    >
+      <SignupPageClient
+        title={t('title')}
+        subtitle={t('subtitle')}
+        intro={t('intro')}
+        submitLoginLabel={tForms('actions.submitLogin')}
+      />
+    </ScopedIntlClientProvider>
   );
 }

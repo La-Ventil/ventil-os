@@ -1,9 +1,9 @@
 import Typography from '@mui/material/Typography';
 import { getTranslations } from 'next-intl/server';
-import ListEmptyState from '@repo/ui/list-empty-state';
+import ListEmptyState from '@repo/ui/list-empty-state.server';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
 import { EventIcon } from '@repo/ui/icons/event-icon';
 
 export default async function EventsPage() {

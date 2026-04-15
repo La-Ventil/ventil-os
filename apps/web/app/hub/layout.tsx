@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import QuickActionsMenu from '@repo/ui/quick-actions-menu';
 import { canManageBadges, canManageUsers, isAdmin, viewUserProfile } from '@repo/application';
 import { getServerSession } from '../../lib/auth';
+import ScopedIntlClientProvider from '../../lib/i18n/scoped-intl-client-provider';
 import styles from './layout.module.css';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,12 +33,14 @@ export default async function RootLayout({
     <>
       <main className={styles.main}>{children}</main>
       <footer>
-        <QuickActionsMenu
-          user={{ email: session.user?.email, image: session.user?.image, avatar: userProfile?.avatar ?? null }}
-          isAdmin={userIsAdmin}
-          canManageUsers={userCanManageUsers}
-          canManageBadges={userCanManageBadges}
-        />
+        <ScopedIntlClientProvider paths={['pages.hub.drawer', 'pages.hub.navigation']}>
+          <QuickActionsMenu
+            user={{ email: session.user?.email, image: session.user?.image, avatar: userProfile?.avatar ?? null }}
+            isAdmin={userIsAdmin}
+            canManageUsers={userCanManageUsers}
+            canManageBadges={userCanManageBadges}
+          />
+        </ScopedIntlClientProvider>
       </footer>
     </>
   );

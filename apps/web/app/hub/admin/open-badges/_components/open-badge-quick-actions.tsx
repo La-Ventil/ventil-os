@@ -6,8 +6,8 @@ import {
   type OpenBadgeAdminViewModel
 } from '@repo/application/open-badges/models/open-badge-admin';
 import RowQuickActionsMenu from '@repo/ui/admin/row-quick-actions-menu';
-import { setOpenBadgeStatusAction } from '../../../../lib/actions/open-badges/set-open-badge-status';
-import { removeOpenBadgeAction } from '../../../../lib/actions/open-badges/remove-open-badge';
+import { setOpenBadgeStatusAction } from '../../../../../lib/actions/open-badges/set-open-badge-status';
+import { removeOpenBadgeAction } from '../../../../../lib/actions/open-badges/remove-open-badge';
 
 type OpenBadgeQuickActionsProps = {
   badge: OpenBadgeAdminViewModel;

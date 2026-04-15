@@ -3,10 +3,10 @@ import { browseUsersAsAdmin } from '@repo/application/users/usecases';
 import Typography from '@mui/material/Typography';
 import AdminUsersTable from '@repo/ui/admin/admin-users-table';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
-import UserQuickActions from './user-quick-actions';
+import UserQuickActions from './_components/user-quick-actions';
 
 export const dynamic = 'force-dynamic';
 

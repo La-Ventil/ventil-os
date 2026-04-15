@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
-import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { nunito, vg5000 } from '@repo/ui/fonts';
 import '@repo/avatar-system/avatar.css';
 import Providers from './providers';
@@ -57,15 +57,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
-  const messages = await getMessages();
-  const timeZone = await getTimeZone();
 
   return (
     <html lang={locale} className={`${nunito.variable} ${vg5000.variable}`}>
       <body>
-        <Providers locale={locale} messages={messages} timeZone={timeZone}>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

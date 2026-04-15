@@ -7,11 +7,11 @@ import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminMachinesTable from '@repo/ui/admin/admin-machines-table';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
 import { MachineAdminStatus } from '@repo/application/machines/models/machine-admin';
-import MachineQuickActions from './machine-quick-actions';
+import MachineQuickActions from './_components/machine-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 

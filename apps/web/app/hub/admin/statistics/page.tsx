@@ -1,12 +1,12 @@
 import { getLocale, getTimeZone, getTranslations } from 'next-intl/server';
 import { viewAdminStatistics } from '@repo/application/users/usecases';
 import { adminStatIcon as AdminStatIcon } from '@repo/ui/icons/admin-stat-icon';
-import GridBackground from '@repo/ui/grid-background';
+import GridBackground from '@repo/ui/grid-background.server';
 import AdminStatisticsOverview from '@repo/ui/admin/admin-statistics-overview';
 import UserNetworkGraph from '@repo/ui/admin/user-network-graph';
-import SectionTitle from '@repo/ui/section-title';
+import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
-import { buildAdminStatisticsPageViewModel } from './build-admin-statistics-page-view-model';
+import { buildAdminStatisticsPageViewModel } from './_lib/build-admin-statistics-page-view-model';
 
 export default async function AdminStatisticsPage() {
   const locale = await getLocale();

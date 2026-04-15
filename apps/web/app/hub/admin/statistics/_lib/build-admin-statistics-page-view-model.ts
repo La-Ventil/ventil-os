@@ -2,7 +2,7 @@ import type { UserRole } from '@repo/domain/user/user-role';
 import type { AdminStatisticsOverviewGroup } from '@repo/ui/admin/admin-statistics-overview';
 import type { UserNetworkGraphProps } from '@repo/ui/admin/user-network-graph';
 import type { AdminStatisticsViewModel } from '@repo/application/admin/models/admin-statistics';
-import { formatShortDateTime } from '../../../../lib/format-date';
+import { formatShortDateTime } from '../../../../../lib/format-date';
 import { buildAdminStatisticsOverviewGroups, buildRoleLabels } from './admin-statistics-overview-groups';
 
 type TranslateValues = Record<string, string | number | Date>;

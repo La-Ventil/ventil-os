@@ -7,11 +7,11 @@ import AdminButton from '@repo/ui/admin/admin-button';
 import AdminActionsSection from '@repo/ui/admin/admin-actions-section';
 import AdminOpenBadgesTable from '@repo/ui/admin/admin-open-badges-table';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
 import { OpenBadgeAdminStatus } from '@repo/application/open-badges/models/open-badge-admin';
-import OpenBadgeQuickActions from './open-badge-quick-actions';
+import OpenBadgeQuickActions from './_components/open-badge-quick-actions';
 import { getServerSession } from '../../../../lib/auth';
 import { redirect } from 'next/navigation';
 

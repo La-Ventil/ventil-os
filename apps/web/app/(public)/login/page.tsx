@@ -8,6 +8,7 @@ import Link from '@repo/ui/link';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
 import { resolveSignInFailureMessageAction } from '../../../lib/actions/auth/resolve-sign-in-failure-message';
+import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
 
 type LoginPageProps = {
   searchParams:
@@ -42,11 +43,13 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         <Typography variant="h3">{t('subtitle')}</Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
-      <LoginForm
-        initialEmail={email ?? ''}
-        noticeMessage={noticeMessage}
-        resolveFailureMessage={resolveSignInFailureMessageAction}
-      />
+      <ScopedIntlClientProvider paths={['common', 'forms']}>
+        <LoginForm
+          initialEmail={email ?? ''}
+          noticeMessage={noticeMessage}
+          resolveFailureMessage={resolveSignInFailureMessageAction}
+        />
+      </ScopedIntlClientProvider>
       <Stack spacing={2}>
         <Link href="/forgot-password">{t('forgotPassword')}</Link>
       </Stack>

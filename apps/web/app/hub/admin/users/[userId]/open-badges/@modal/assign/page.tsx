@@ -1,5 +1,5 @@
-import UserOpenBadgeAssignModalRoute from '../../user-open-badge-assign-modal-route';
-import { getUserOpenBadgeManagementPageData } from '../../open-badge-management-page-data';
+import UserOpenBadgeAssignModalRoute from '../../_components/user-open-badge-assign-modal-route';
+import { getUserOpenBadgeManagementPageData } from '../../_lib/open-badge-management-page-data';
 
 type AdminUserOpenBadgesAssignModalPageProps = {
   params: Promise<{ userId: string }>;

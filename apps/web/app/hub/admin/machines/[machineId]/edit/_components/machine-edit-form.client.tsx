@@ -10,7 +10,7 @@ import { createFormState } from '@repo/form/form-state';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import { MachineAdminStatus } from '@repo/application/machines/models/machine-admin';
 import type { OpenBadgeRequirementOptionViewModel } from '@repo/application/open-badges/models/open-badge-requirement-option';
-import { updateMachineAction } from '../../../../../../lib/actions/machines/update-machine';
+import { updateMachineAction } from '../../../../../../../lib/actions/machines/update-machine';
 
 type MachineEditFormClientProps = {
   machine: MachineDetailsViewModel;

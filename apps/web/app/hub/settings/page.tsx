@@ -7,15 +7,15 @@ import Typography from '@mui/material/Typography';
 import Link from '@repo/ui/link';
 import MenuList, { MenuListItem } from '@repo/ui/menu-list';
 import Section from '@repo/ui/section';
-import SectionSubtitle from '@repo/ui/section-subtitle';
-import SectionTitle from '@repo/ui/section-title';
+import SectionSubtitle from '@repo/ui/section-subtitle.server';
+import SectionTitle from '@repo/ui/section-title.server';
 
 export default async function Page(): Promise<JSX.Element> {
   const tSettings = await getTranslations('pages.hub.settings');
   return (
     <>
       <SectionTitle>{tSettings('title')}</SectionTitle>
-      <Section>  
+      <Section>
         <SectionSubtitle>{tSettings('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{tSettings('intro')}</Typography>
       </Section>

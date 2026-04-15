@@ -1,23 +1,13 @@
-'use client';
-import type { JSX } from 'react';
+import { getTranslations } from 'next-intl/server';
+import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ForgotPasswordPageClient from './_components/forgot-password-page.client';
 
-import { useTranslations } from 'next-intl';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import ResetPasswordForm from '@repo/ui/forms/reset-password.form';
-import { resetPasswordAction } from '../../../lib/actions/auth/reset-password';
-
-export default function Page(): JSX.Element {
-  const t = useTranslations('pages.public.forgotPassword');
+export default async function Page() {
+  const t = await getTranslations('pages.public.forgotPassword');
 
   return (
-    <Box>
-      <Stack spacing={2}>
-        <Typography variant="h2">{t('title')}</Typography>
-        <Typography variant="body1">{t('intro')}</Typography>
-      </Stack>
-      <ResetPasswordForm handleSubmit={resetPasswordAction} />
-    </Box>
+    <ScopedIntlClientProvider paths={['common', 'forms', 'validation']}>
+      <ForgotPasswordPageClient title={t('title')} intro={t('intro')} />
+    </ScopedIntlClientProvider>
   );
 }

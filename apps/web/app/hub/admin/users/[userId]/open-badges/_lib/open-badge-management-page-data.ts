@@ -7,7 +7,7 @@ import {
   viewUserOpenBadges
 } from '@repo/application/open-badges/usecases';
 import { browseUsersAsAdmin } from '@repo/application/users/usecases';
-import { getServerSession } from '../../../../../../lib/auth';
+import { getServerSession } from '../../../../../../../lib/auth';
 
 type UserOpenBadgeManagementParams = {
   userId: string;

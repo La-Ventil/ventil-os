@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import AvatarEditorModalRoute from '../../_avatar-editor/avatar-editor-modal-route';
 import { getUserProfileFromSession } from '../../../../lib/auth';
 import { updateAvatarAction } from '../../../../lib/actions/users/update-avatar';
-import ProfilePageContent from '../profile-page-content';
+import ProfilePageContent from '../_components/profile-page-content';
 
 export default async function ProfileAvatarPage(): Promise<JSX.Element> {
   const userProfile = await getUserProfileFromSession();

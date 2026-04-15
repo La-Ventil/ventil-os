@@ -10,7 +10,7 @@ import type { UserSummaryWithOpenBadgeLevelViewModel } from '@repo/application/u
 import type { OpenBadgeAssignableUsersByBadgeIdAndLevel } from '@repo/application/open-badges/usecases';
 import AssignOpenBadgeModal from '@repo/ui/admin/assign-open-badge-modal';
 import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
-import { assignOpenBadgeAction } from '../../../../../../lib/actions/open-badges/assign-open-badge';
+import { assignOpenBadgeAction } from '../../../../../../../lib/actions/open-badges/assign-open-badge';
 
 type UserOpenBadgeAssignModalRouteProps = {
   user: UserAdminViewModel;
