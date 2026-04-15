@@ -1,7 +1,7 @@
 import { machineRepository } from '@repo/db';
 import { Machine } from '@repo/domain/machine/machine';
 import type { Query } from '../../usecase';
-import { checkReservationEligibilityForMachine } from '../reservation-eligibility';
+import { canUserReserve } from '../reservation-eligibility';
 
 type CheckReservationEligibilityArgs = [machineId: string, userId?: string | null];
 
@@ -14,7 +14,7 @@ export const checkReservationEligibility: Query<CheckReservationEligibilityArgs,
     return false;
   }
 
-  return checkReservationEligibilityForMachine(
+  return canUserReserve(
     Machine.from({
       id: machine.id,
       name: machine.name,

@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { canManageReservations } from '@repo/application';
-import { viewMachineModalContext } from '@repo/application/machines/usecases';
+import { viewMachineScheduleContext } from '@repo/application/machines/usecases';
 import { getTimeZone } from 'next-intl/server';
 import MachineModalRouteClient from '../../../_machine-modal/machine-modal-route.client';
 import { getServerSession } from '../../../../../../lib/auth';
@@ -39,7 +39,7 @@ export default async function MachineModalPage({
   // must remain client-side in `_machine-modal/use-machine-modal-flow.tsx`.
   const { at, reservationId, step, tab } = resolvedSearchParams;
   const currentUserId = session?.user?.id;
-  const modalContext = await viewMachineModalContext({
+  const modalContext = await viewMachineScheduleContext({
     machineId,
     at,
     reservationId,

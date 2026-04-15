@@ -41,7 +41,7 @@ CQRS-lite by file suffix: `*.command.ts` (write) / `*.query.ts` (read).
 
 Domain aggregates follow the namespace-object pattern:
 ```ts
-export const Machine = { assertCanReserve(...), reserve(...), ... }
+export const Machine = { assertNoConflict(...), reserve(...), ... }
 export type Machine = { ... }
 ```
 

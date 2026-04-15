@@ -4,12 +4,12 @@ import type { DateInterval } from '../date-interval';
 import type { OpenBadgeRequirement } from '../badge/open-badge-requirement';
 import {
   buildReservationEligibilityChecks,
-  isMachineReservationEligible
+  canMeetReservationRequirements
 } from './machine-reservation-eligibility';
 import {
   MachineAvailability,
   resolveMachineAvailability,
-  resolveMachineAvailabilityFromActivityStatus
+  resolveMachineBaseAvailability
 } from './machine-availability';
 import {
   MachineReservationStatus,
@@ -20,7 +20,7 @@ import {
   assertReservationInterval,
   intervalOverlapsAny,
   isReservationSlotInPast,
-  reservationWindowFor
+  reservationIntervalFor
 } from './reservation-rules';
 import { MachineReservationError } from './machine-reservation-errors';
 import { uniqueParticipantIds } from './machine-reservation-participants';
@@ -139,7 +139,7 @@ export const Machine = {
     durationMinutes: number,
     status?: MachineReservationStatus | string
   ): ReservationCandidate {
-    const interval = reservationWindowFor(startsAt, durationMinutes);
+    const interval = reservationIntervalFor(startsAt, durationMinutes);
     return {
       startsAt: interval.start,
       endsAt: interval.end,
@@ -193,11 +193,11 @@ export const Machine = {
     const checks = buildReservationEligibilityChecks(machine.badgeRequirements, userLevels);
     const rules = machine.badgeRequirements.map((requirement) => requirement.rule);
 
-    if (!isMachineReservationEligible(rules, checks)) {
+    if (!canMeetReservationRequirements(rules, checks)) {
       throw new MachineReservationError('machineReservation.badgeRequired');
     }
   },
-  assertCanReserve(
+  assertNoConflict(
     machine: Machine,
     candidate: ReservationCandidate,
     now: Date = new Date(),
@@ -238,14 +238,14 @@ export const Machine = {
     options?: { excludeReservationId?: string }
   ): boolean {
     try {
-      Machine.assertCanReserve(machine, candidate, now, options);
+      Machine.assertNoConflict(machine, candidate, now, options);
       return true;
     } catch {
       return false;
     }
   },
   reserve(machine: Machine, reservation: MachineReservationSlot, now: Date = new Date()): Machine {
-    Machine.assertCanReserve(machine, reservation, now);
+    Machine.assertNoConflict(machine, reservation, now);
     return {
       ...machine,
       reservations: [...machine.reservations, reservation]
@@ -266,7 +266,7 @@ export const Machine = {
     };
   },
   resolveAvailability(machine: Machine, now: Date, dayEnd: Date): MachineAvailability {
-    const baseAvailability = resolveMachineAvailabilityFromActivityStatus(machine.status);
+    const baseAvailability = resolveMachineBaseAvailability(machine.status);
     const reservations = machine.reservations.map((reservation) => ({
       startsAt: reservation.startsAt,
       endsAt: reservation.endsAt,

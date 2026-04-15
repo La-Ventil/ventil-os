@@ -37,5 +37,5 @@ export const resolveMachineAvailability = (
   return MachineAvailability.Available;
 };
 
-export const resolveMachineAvailabilityFromActivityStatus = (status: string): MachineAvailability =>
+export const resolveMachineBaseAvailability = (status: string): MachineAvailability =>
   isInactive(status) ? MachineAvailability.Occupied : MachineAvailability.Available;

@@ -1,6 +1,6 @@
 import { machineRepository } from '@repo/db';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
-import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
+import { resolveMachineBaseAvailability } from '@repo/domain/machine/machine-availability';
 import { mapMachineDetailsToViewModel } from '../../presenters/machine-details';
 import type { Query } from '../../usecase';
 
@@ -10,6 +10,6 @@ export const viewMachineDetails: Query<[string], MachineDetailsViewModel | null>
     return null;
   }
 
-  const availability = resolveMachineAvailabilityFromActivityStatus(machine.status);
+  const availability = resolveMachineBaseAvailability(machine.status);
   return mapMachineDetailsToViewModel(machine, availability);
 };

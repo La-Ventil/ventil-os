@@ -2,7 +2,7 @@ import { machineRepository, machineReservationRepository } from '@repo/db';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import { Machine } from '@repo/domain/machine/machine';
 import { MachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
-import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
+import { reservationIntervalFor } from '@repo/domain/machine/reservation-rules';
 import type { Command } from '../../usecase';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
 import { resolveReservationEligibilityLevels } from '../reservation-eligibility';
@@ -18,7 +18,7 @@ export type ReserveMachineInput = {
 export const reserveMachine: Command<[ReserveMachineInput], MachineReservationViewModel> = async (
   input: ReserveMachineInput
 ) => {
-  const reservationWindow = reservationWindowFor(input.startsAt, input.durationMinutes);
+  const reservationWindow = reservationIntervalFor(input.startsAt, input.durationMinutes);
   const machine = await machineRepository.getReservableMachine(
     input.machineId,
     reservationWindow.start,

@@ -3,7 +3,7 @@ import type { MachineReservationViewModel } from '@repo/application/machines/mod
 import { MachineReservation } from '@repo/domain/machine/machine-reservation';
 import { MachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 import { canCancelReservation } from '@repo/domain/machine/machine-reservation-cancellation-policy';
-import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
+import { reservationIntervalFor } from '@repo/domain/machine/reservation-rules';
 import { Machine } from '@repo/domain/machine/machine';
 import type { Command } from '../../usecase';
 import { mapMachineReservationToViewModel } from '../../presenters/machine-reservation';
@@ -37,7 +37,7 @@ export const updateReservation: Command<[UpdateReservationInput], MachineReserva
     throw new MachineReservationError('machineReservation.alreadyStarted');
   }
 
-  const reservationWindow = reservationWindowFor(input.startsAt, input.durationMinutes);
+  const reservationWindow = reservationIntervalFor(input.startsAt, input.durationMinutes);
   const machine = await machineRepository.getReservableMachine(
     reservation.machineId,
     reservationWindow.start,

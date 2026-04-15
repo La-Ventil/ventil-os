@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 import type { DateInterval } from '@repo/domain/date-interval';
-import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
+import { reservationIntervalFor } from '@repo/domain/machine/reservation-rules';
 import { getE2EPrismaClient } from './e2e-prisma';
 
 type SetLatestConfirmedReservationTimingInput = {
@@ -23,7 +23,7 @@ const reservationFixtureWindowFromOffset = (
   now: Date = new Date()
 ): DateInterval => {
   const startsAt = new Date(now.getTime() + startsAtOffsetMinutes * MINUTE_MS);
-  return reservationWindowFor(startsAt, durationMinutes);
+  return reservationIntervalFor(startsAt, durationMinutes);
 };
 
 const activeReservationFixtureWindow = (now: Date): DateInterval => reservationFixtureWindowFromOffset(-5, 15, now);
@@ -67,7 +67,7 @@ export class MachineReservationTestRepository {
     const participantIds = await Promise.all(
       (input.participantEmails ?? []).map((email) => this.requireUserIdByEmail(email))
     );
-    const window = reservationWindowFor(input.startsAt, input.durationMinutes);
+    const window = reservationIntervalFor(input.startsAt, input.durationMinutes);
 
     // Reservation journeys reuse the seeded DB across specs. Clear prior reservations
     // on the target machine so fixture setup stays deterministic and avoids overlap

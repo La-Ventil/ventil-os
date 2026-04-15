@@ -40,7 +40,7 @@ describe('Machine aggregate', () => {
       endsAt: new Date('2026-02-17T10:30:00.000Z')
     };
 
-    expect(() => Machine.assertCanReserve(machine, reservation, now)).toThrow('machineReservation.startsAtInPast');
+    expect(() => Machine.assertNoConflict(machine, reservation, now)).toThrow('machineReservation.startsAtInPast');
   });
 
   it('rejects overlapping reservations', () => {
@@ -56,7 +56,7 @@ describe('Machine aggregate', () => {
       endsAt: new Date('2026-02-17T11:30:00.000Z')
     };
 
-    expect(() => Machine.assertCanReserve(machine, reservation, existing.startsAt)).toThrow(
+    expect(() => Machine.assertNoConflict(machine, reservation, existing.startsAt)).toThrow(
       'machineReservation.overlap'
     );
   });

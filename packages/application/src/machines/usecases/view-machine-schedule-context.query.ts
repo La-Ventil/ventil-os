@@ -1,7 +1,7 @@
 import { machineRepository, machineReservationRepository } from '@repo/db';
 import { Machine } from '@repo/domain/machine/machine';
 import { resolveMachineAvailability } from '@repo/domain/machine/machine-availability';
-import { resolveMachineAvailabilityFromActivityStatus } from '@repo/domain/machine/machine-availability';
+import { resolveMachineBaseAvailability } from '@repo/domain/machine/machine-availability';
 import type { ReservationActor } from '@repo/domain/machine/machine-reservation-cancellation-policy';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
@@ -9,11 +9,11 @@ import { getDayIntervalForDayKey, formatDayKey } from '../../time/date-time';
 import { resolveIsoDateFromQuery } from '../../time/iso-date';
 import { mapMachineDetailsToViewModel } from '../../presenters/machine-details';
 import type { Query } from '../../usecase';
-import { checkReservationEligibilityForMachine } from '../reservation-eligibility';
-import { type MachineReservationFormView, viewMachineReservationForm } from './view-machine-reservation-form.query';
+import { canUserReserve } from '../reservation-eligibility';
+import { type MachineReservationFormContext, viewMachineReservationForm } from './view-machine-reservation-form.query';
 import { viewMachineReservationsForDayKey } from './view-machine-reservations.query';
 
-type ViewMachineModalContextInput = {
+type ViewMachineScheduleContextInput = {
   machineId: string;
   at?: string | null;
   reservationId?: string | null;
@@ -23,7 +23,7 @@ type ViewMachineModalContextInput = {
   now?: Date;
 };
 
-export type MachineModalContextView = {
+export type MachineScheduleContextView = {
   machine: MachineDetailsViewModel;
   reservations: MachineReservationViewModel[];
   canReserve: boolean;
@@ -33,7 +33,7 @@ export type MachineModalContextView = {
     reservation: MachineReservationViewModel | null;
   };
   reservationFormOptions: {
-    participantOptions: MachineReservationFormView['participantOptions'];
+    participantOptions: MachineReservationFormContext['participantOptions'];
   };
 };
 
@@ -49,9 +49,10 @@ const toMachineAggregate = (machine: MachineDetailsViewModel) =>
     badgeRequirements: machine.badgeRequirements
   });
 
-export const viewMachineModalContext: Query<[ViewMachineModalContextInput], MachineModalContextView | null> = async (
-  input: ViewMachineModalContextInput
-) => {
+export const viewMachineScheduleContext: Query<
+  [ViewMachineScheduleContextInput],
+  MachineScheduleContextView | null
+> = async (input: ViewMachineScheduleContextInput) => {
   const now = input.now ?? new Date();
   const focusedAt = resolveIsoDateFromQuery(input.at) ?? now;
   const todayKey = formatDayKey(now, input.timeZone);
@@ -63,10 +64,7 @@ export const viewMachineModalContext: Query<[ViewMachineModalContextInput], Mach
     return null;
   }
 
-  const machine = mapMachineDetailsToViewModel(
-    machineRecord,
-    resolveMachineAvailabilityFromActivityStatus(machineRecord.status)
-  );
+  const machine = mapMachineDetailsToViewModel(machineRecord, resolveMachineBaseAvailability(machineRecord.status));
   const machineAggregate = toMachineAggregate(machine);
   const reservationsPromise = viewMachineReservationsForDayKey(input.machineId, selectedDateKey, input.timeZone);
   const todayInterval = getDayIntervalForDayKey(todayKey, input.timeZone);
@@ -83,7 +81,7 @@ export const viewMachineModalContext: Query<[ViewMachineModalContextInput], Mach
         );
   const reservationFormPromise =
     normalizedStep === 'schedule'
-      ? Promise.resolve<MachineReservationFormView | null>(null)
+      ? Promise.resolve<MachineReservationFormContext | null>(null)
       : viewMachineReservationForm({
           machineId: input.machineId,
           reservationId: normalizedStep === 'edit' ? input.reservationId : null,
@@ -96,7 +94,7 @@ export const viewMachineModalContext: Query<[ViewMachineModalContextInput], Mach
   const [reservations, reservationsToday, canReserve, reservationForm] = await Promise.all([
     reservationsPromise,
     reservationsTodayPromise,
-    checkReservationEligibilityForMachine(machineAggregate, input.actor?.id),
+    canUserReserve(machineAggregate, input.actor?.id),
     reservationFormPromise
   ]);
 

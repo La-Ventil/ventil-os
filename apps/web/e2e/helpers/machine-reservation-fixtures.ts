@@ -1,5 +1,5 @@
 import type { DateInterval } from '@repo/domain/date-interval';
-import { reservationWindowFor } from '@repo/domain/machine/reservation-rules';
+import { reservationIntervalFor } from '@repo/domain/machine/reservation-rules';
 import { getMachineReservationTestRepository } from './machine-reservation-test-repository';
 
 type ReservationFixtureState = 'active' | 'upcoming' | 'past' | 'cancelled';
@@ -35,7 +35,7 @@ const reservationWindowFromState = (args: {
   state: ReservationFixtureState;
 }): DateInterval => {
   const startsAt = new Date(args.now.getTime() + reservationStartOffsetByState[args.state] * MINUTE_MS);
-  return reservationWindowFor(startsAt, args.durationMinutes);
+  return reservationIntervalFor(startsAt, args.durationMinutes);
 };
 
 export async function givenReservationFixture(

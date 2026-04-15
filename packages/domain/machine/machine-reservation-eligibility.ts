@@ -4,7 +4,7 @@ import type { OpenBadgeRequirementRule } from '../badge/open-badge-requirement-r
 
 type ReservationRule = OpenBadgeRequirementRule;
 
-export const isMachineReservationEligible = (
+export const canMeetReservationRequirements = (
   rules: ReservationRule[],
   checks: OpenBadgeLevelCheck[]
 ): boolean => {

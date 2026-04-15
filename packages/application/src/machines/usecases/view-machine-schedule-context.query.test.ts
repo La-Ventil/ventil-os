@@ -3,7 +3,7 @@ import { ActivityStatus } from '@repo/domain/activity-status';
 import { MachineAvailability } from '@repo/domain/machine/machine-availability';
 import { MachineReservationStatus } from '@repo/domain/machine/machine-reservation-status';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
-import { viewMachineModalContext } from './view-machine-modal-context.query';
+import { viewMachineScheduleContext } from './view-machine-schedule-context.query';
 
 const mockGetMachineDetailsById = vi.fn();
 const mockViewMachineReservationsForDayKey = vi.fn();
@@ -25,11 +25,10 @@ vi.mock('./view-machine-reservation-form.query', () => ({
 }));
 
 vi.mock('../reservation-eligibility', () => ({
-  checkReservationEligibilityForMachine: (...args: [unknown, string | undefined]) =>
-    mockCheckReservationEligibilityForMachine(...args)
+  canUserReserve: (...args: [unknown, string | undefined]) => mockCheckReservationEligibilityForMachine(...args)
 }));
 
-describe('viewMachineModalContext', () => {
+describe('viewMachineScheduleContext', () => {
   const machine = {
     id: 'machine-id',
     category: 'printer',
@@ -90,7 +89,7 @@ describe('viewMachineModalContext', () => {
   it('skips reservation form preloading for the schedule step', async () => {
     const now = new Date('2026-03-05T08:00:00.000Z');
 
-    const context = await viewMachineModalContext({
+    const context = await viewMachineScheduleContext({
       machineId: 'machine-id',
       timeZone: 'Europe/Paris',
       step: 'schedule',
@@ -107,7 +106,7 @@ describe('viewMachineModalContext', () => {
   it('preloads the form only when opening create or edit flows', async () => {
     const now = new Date('2026-03-05T08:00:00.000Z');
 
-    await viewMachineModalContext({
+    await viewMachineScheduleContext({
       machineId: 'machine-id',
       timeZone: 'Europe/Paris',
       step: 'create',

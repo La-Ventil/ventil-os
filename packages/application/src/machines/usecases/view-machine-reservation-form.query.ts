@@ -22,7 +22,7 @@ export type ViewMachineReservationFormInput = {
   loadParticipantOptions?: boolean;
 };
 
-export type MachineReservationFormView = {
+export type MachineReservationFormContext = {
   machine: MachineDetailsViewModel;
   participantOptions: UserSummaryViewModel[];
   startAt: Date;
@@ -33,7 +33,7 @@ export type MachineReservationFormView = {
 
 export const viewMachineReservationForm: Query<
   [ViewMachineReservationFormInput],
-  MachineReservationFormView | null
+  MachineReservationFormContext | null
 > = async (input: ViewMachineReservationFormInput) => {
   const [machine, reservation, participantOptions] = await Promise.all([
     input.machine ? Promise.resolve(input.machine) : viewMachineDetails(input.machineId),
