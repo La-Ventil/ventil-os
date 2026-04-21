@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { canManageUsers } from '@repo/application';
 import { updateProfile, viewUserProfileById } from '@repo/application/users/usecases';
@@ -48,6 +49,7 @@ export async function updateAdminUserProfileAction(
       profile: data.profile
     });
 
+    revalidateTag('admin-statistics', {});
     return formSuccess(values, t('user.update.success'));
   } catch (e) {
     console.error(e);

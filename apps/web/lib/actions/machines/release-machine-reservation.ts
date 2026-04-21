@@ -1,7 +1,7 @@
 'use server';
 
 import { getTranslations } from 'next-intl/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { releaseReservation } from '@repo/application/machines/usecases';
 import { isMachineReservationError } from '@repo/domain/machine/machine-reservation-errors';
 import { getServerSession } from '../../auth';
@@ -22,6 +22,7 @@ export async function releaseMachineReservationAction(reservationId: string): Pr
   try {
     await releaseReservation(reservationId, session.user);
     revalidatePath('/hub/fab-lab/machines', 'layout');
+    revalidateTag('admin-statistics', {});
     return { success: true, message: t('pages.hub.fabLab.reservations.success.release') };
   } catch (error) {
     if (isMachineReservationError(error)) {

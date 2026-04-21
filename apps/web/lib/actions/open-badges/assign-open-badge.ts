@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { assignOpenBadge } from '@repo/application/open-badges/usecases';
 import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
 import { getTranslations } from 'next-intl/server';
@@ -40,6 +40,7 @@ export async function assignOpenBadgeAction(input: AssignOpenBadgeInput): Promis
 
     revalidatePath('/hub/admin/users', 'layout');
     revalidatePath('/hub/open-badge', 'layout');
+    revalidateTag('admin-statistics', {});
 
     return formSuccess(parsed.data, t('pages.hub.admin.users.assignSuccess'));
   } catch (error) {

@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { signUp } from '@repo/application/users/usecases';
 import { SignupFormInput, signupFormSchema } from '@repo/application/forms';
@@ -45,6 +46,7 @@ export async function registerUserAction(
       });
     }
 
+    revalidateTag('admin-statistics', {});
     const { token } = result;
     await sendEmailVerification({
       email: signupFormData.email,

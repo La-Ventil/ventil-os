@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { canManageUsers } from '@repo/application';
 import { setUserBlocked } from '@repo/application/users/usecases';
 import { getServerSession } from '../../auth';
@@ -22,4 +22,5 @@ export async function setUserBlockedAction(formData: FormData): Promise<void> {
 
   await setUserBlocked({ userId, blocked: blocked === 'true' });
   revalidatePath('/hub/admin/users');
+  revalidateTag('admin-statistics', {});
 }

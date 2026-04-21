@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { removeOpenBadgeFromUser } from '@repo/application/open-badges/usecases';
 import { assignOpenBadgeFormInputSchema } from '@repo/application/forms';
@@ -42,6 +42,7 @@ export async function removeUserOpenBadgeAction(
 
     revalidatePath('/hub/admin/users', 'layout');
     revalidatePath('/hub/open-badge', 'layout');
+    revalidateTag('admin-statistics', {});
 
     return formSuccess(parsed.data, t('pages.hub.admin.users.badgeManagement.feedback.removed'));
   } catch (error) {
