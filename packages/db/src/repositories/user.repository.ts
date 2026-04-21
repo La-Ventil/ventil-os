@@ -27,6 +27,8 @@ type ExchangeEdgeAccumulator = {
   exchanges: number;
 };
 
+type ExchangeEdgeRow = { sourceUserId: string; targetUserId: string; count: number };
+
 const MAX_EDGE_WIDTH_PX = 12;
 const MACHINE_RESERVATION_STATUS_CONFIRMED = 'confirmed' as const;
 
@@ -37,9 +39,6 @@ const createRoleCountMap = (): Record<UserRole, number> => ({
   contributor: 0,
   visitor: 0
 });
-
-const toEdgeKey = (leftUserId: string, rightUserId: string): string =>
-  leftUserId < rightUserId ? `${leftUserId}:${rightUserId}` : `${rightUserId}:${leftUserId}`;
 
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
@@ -354,8 +353,8 @@ export class UserRepository {
       machineUsagesCount,
       machineCreatorUsageRows,
       machineParticipantUsageRows,
-      eventExchangeRows,
-      openBadgeExchangeRows
+      eventEdgeRows,
+      openBadgeEdgeRows
     ] = await Promise.all([
       this.prisma.user.findMany({
         orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
@@ -410,31 +409,27 @@ export class UserRepository {
           _all: true
         }
       }),
-      this.prisma.eventRegistration.findMany({
-        where: {
-          status: {
-            in: activeEventRegistrationStatuses
-          }
-        },
-        select: {
-          userId: true,
-          event: {
-            select: {
-              creatorId: true
-            }
-          }
-        }
-      }),
-      this.prisma.openBadgeLevelProgress.findMany({
-        select: {
-          awardedById: true,
-          progress: {
-            select: {
-              userId: true
-            }
-          }
-        }
-      })
+      this.prisma.$queryRaw<ExchangeEdgeRow[]>`
+        SELECT
+          LEAST(er."userId", e."creatorId")    AS "sourceUserId",
+          GREATEST(er."userId", e."creatorId") AS "targetUserId",
+          COUNT(*)::int                        AS count
+        FROM "EventRegistration" er
+        JOIN "Event" e ON e.id = er."eventId"
+        WHERE er.status IN ('registered', 'attended')
+          AND er."userId" != e."creatorId"
+        GROUP BY 1, 2
+      `,
+      this.prisma.$queryRaw<ExchangeEdgeRow[]>`
+        SELECT
+          LEAST(olp."awardedById", op."userId")    AS "sourceUserId",
+          GREATEST(olp."awardedById", op."userId") AS "targetUserId",
+          COUNT(*)::int                            AS count
+        FROM "OpenBadgeLevelProgress" olp
+        JOIN "OpenBadgeProgress" op ON op.id = olp."progressId"
+        WHERE olp."awardedById" != op."userId"
+        GROUP BY 1, 2
+      `
     ]);
 
     const machineUsagesByUser = new Map<string, number>();
@@ -447,39 +442,32 @@ export class UserRepository {
     }
 
     const edgeMap = new Map<string, ExchangeEdgeAccumulator>();
-    const addExchange = (leftUserId: string, rightUserId: string, type: 'event' | 'openBadge'): void => {
-      if (leftUserId === rightUserId) {
-        return;
-      }
 
-      const edgeKey = toEdgeKey(leftUserId, rightUserId);
-      const existingEdge = edgeMap.get(edgeKey);
-      if (!existingEdge) {
-        const sourceUserId = leftUserId < rightUserId ? leftUserId : rightUserId;
-        const targetUserId = leftUserId < rightUserId ? rightUserId : leftUserId;
-        edgeMap.set(edgeKey, {
-          sourceUserId,
-          targetUserId,
-          exchanges: 1,
-          eventExchanges: type === 'event' ? 1 : 0,
-          openBadgeExchanges: type === 'openBadge' ? 1 : 0
-        });
-        return;
-      }
-
-      existingEdge.exchanges += 1;
-      if (type === 'event') {
-        existingEdge.eventExchanges += 1;
-      } else {
-        existingEdge.openBadgeExchanges += 1;
-      }
-    };
-
-    for (const eventExchangeRow of eventExchangeRows) {
-      addExchange(eventExchangeRow.userId, eventExchangeRow.event.creatorId, 'event');
+    for (const row of eventEdgeRows) {
+      edgeMap.set(`${row.sourceUserId}:${row.targetUserId}`, {
+        sourceUserId: row.sourceUserId,
+        targetUserId: row.targetUserId,
+        eventExchanges: row.count,
+        openBadgeExchanges: 0,
+        exchanges: row.count
+      });
     }
-    for (const openBadgeExchangeRow of openBadgeExchangeRows) {
-      addExchange(openBadgeExchangeRow.awardedById, openBadgeExchangeRow.progress.userId, 'openBadge');
+
+    for (const row of openBadgeEdgeRows) {
+      const key = `${row.sourceUserId}:${row.targetUserId}`;
+      const existing = edgeMap.get(key);
+      if (existing) {
+        existing.openBadgeExchanges = row.count;
+        existing.exchanges += row.count;
+      } else {
+        edgeMap.set(key, {
+          sourceUserId: row.sourceUserId,
+          targetUserId: row.targetUserId,
+          eventExchanges: 0,
+          openBadgeExchanges: row.count,
+          exchanges: row.count
+        });
+      }
     }
 
     const exchangesByUser = new Map<string, number>();
