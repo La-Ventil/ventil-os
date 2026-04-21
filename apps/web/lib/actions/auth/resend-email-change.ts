@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { resendEmailChangeVerification } from '@repo/application/users/usecases';
 import type { FormState } from '@repo/form/form-state';
 import { getUserProfileFromSession } from '../../auth';
-import { sendEmailVerification } from '../../email';
+import { sendEmailVerification } from '@repo/application/users/account-emails';
 import { formError, formSuccess } from '@repo/form/form-state-builders';
 
 type EmptyForm = Record<string, never>;

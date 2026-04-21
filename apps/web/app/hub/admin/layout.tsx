@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { isAdmin } from '@repo/application';
 import { getServerSession } from '../../../lib/auth';
-import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 
 export default async function AdminLayout({
   children

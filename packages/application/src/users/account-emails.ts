@@ -1,14 +1,14 @@
-'use server';
-
 import { formatUserFullName } from '@repo/domain/user/user-name';
-import { sendTransactionalEmail } from './transport';
+import { sendTransactionalEmail } from '@repo/mailer';
+
+type EmailTranslator = (key: string, values?: Record<string, string>) => string;
 
 type EmailVerificationInput = {
   email: string;
   firstName: string;
   lastName: string;
   token: string;
-  t: (key: string, values?: Record<string, string>) => string;
+  t: EmailTranslator;
 };
 
 export const sendEmailVerification = async ({ email, firstName, lastName, token, t }: EmailVerificationInput) => {
@@ -35,7 +35,7 @@ type PasswordResetEmailInput = {
   firstName: string;
   lastName: string;
   token: string;
-  t: (key: string, values?: Record<string, string>) => string;
+  t: EmailTranslator;
 };
 
 export const sendPasswordResetEmail = async ({ email, firstName, lastName, token, t }: PasswordResetEmailInput) => {

@@ -7,7 +7,7 @@ import type { FormState } from '@repo/form/form-state';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getUserProfileFromSession } from '../../auth';
-import { sendEmailVerification } from '../../email';
+import { sendEmailVerification } from '@repo/application/users/account-emails';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
 import { isUserError } from '@repo/domain/user/user-errors';
 

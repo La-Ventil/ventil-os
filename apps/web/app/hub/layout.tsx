@@ -4,7 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import QuickActionsMenu from '@repo/ui/quick-actions-menu';
 import { canManageBadges, canManageUsers, isAdmin, viewUserProfile } from '@repo/application';
 import { getServerSession } from '../../lib/auth';
-import ScopedIntlClientProvider from '../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../i18n/scoped-intl-client-provider';
 import styles from './layout.module.css';
 
 export async function generateMetadata(): Promise<Metadata> {

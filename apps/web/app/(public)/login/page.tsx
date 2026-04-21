@@ -8,7 +8,7 @@ import Link from '@repo/ui/link';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
 import { resolveSignInFailureMessageAction } from '../../../lib/actions/auth/resolve-sign-in-failure-message';
-import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 
 type LoginPageProps = {
   searchParams:

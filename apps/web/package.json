@@ -32,6 +32,7 @@
     "@mui/x-date-pickers": "^8.27.0",
     "@prisma/client": "^5.22.0",
     "@repo/application": "workspace:*",
+    "@repo/avatar-system": "workspace:*",
     "@repo/crypto": "workspace:*",
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
@@ -41,11 +42,9 @@
     "next": "^16.1.6",
     "next-auth": "^4.24.13",
     "next-intl": "^4.8.2",
-    "nodemailer": "^7.0.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "zod": "^4.1.12",
-    "@repo/avatar-system": "workspace:*"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
@@ -53,7 +52,6 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "22.15.3",
-    "@types/nodemailer": "^6.4.17",
     "@types/react": "19.2.5",
     "@types/react-dom": "19.2.3",
     "dotenv": "^16.5.0",

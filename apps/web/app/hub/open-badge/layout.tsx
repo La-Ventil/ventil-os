@@ -6,7 +6,7 @@ import Section from '@repo/ui/section';
 import SectionSubtitle from '@repo/ui/section-subtitle.server';
 import SectionTitle from '@repo/ui/section-title.server';
 import { getThemeSectionClassName, ThemeSection } from '@repo/ui/theme';
-import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 
 type LayoutProps = {
   children: React.ReactNode;

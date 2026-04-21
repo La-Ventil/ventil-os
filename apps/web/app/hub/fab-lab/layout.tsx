@@ -1,6 +1,6 @@
 import React from 'react';
 import { getThemeSectionClassName, ThemeSection } from '@repo/ui/theme';
-import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 
 type LayoutProps = {
   children: React.ReactNode;

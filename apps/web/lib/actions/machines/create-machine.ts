@@ -5,7 +5,7 @@ import { machineCreateRequestSchema, type MachineCreateData, type MachineCreateR
 import { canManageMachines } from '@repo/application';
 import { addMachine } from '@repo/application/machines/usecases';
 import type { FormState } from '@repo/form/form-state';
-import { resolveImageUpload } from '../../image-upload';
+import { resolveImageUpload } from '@repo/storage/resolve-image-upload';
 import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../../auth';

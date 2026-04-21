@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import ScopedIntlClientProvider from '../../../lib/i18n/scoped-intl-client-provider';
+import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 import SignupPageClient from './_components/signup-page.client';
 
 export default async function Page() {

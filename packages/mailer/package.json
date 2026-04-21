@@ -1,0 +1,22 @@
+{
+  "name": "@repo/mailer",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "lint:staged": "echo \"skip lint:staged (mailer)\""
+  },
+  "dependencies": {
+    "nodemailer": "^7.0.7"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "22.15.3",
+    "@types/nodemailer": "^6.4.17",
+    "typescript": "5.9.3"
+  }
+}

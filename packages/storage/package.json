@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./image-upload": "./src/image-upload.ts",
+    "./resolve-image-upload": "./src/resolve-image-upload.ts",
     "./uploads": "./src/uploads.ts",
     "./*": "./src/*.ts"
   },

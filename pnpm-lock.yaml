@@ -261,7 +261,7 @@ importers:
     dependencies:
       '@auth/prisma-adapter':
         specifier: ^2.11.0
-        version: 2.11.0(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@7.0.13)
+        version: 2.11.0(@prisma/client@5.22.0(prisma@5.22.0))
       '@mui/icons-material':
         specifier: ^7.3.5
         version: 7.3.5(@mui/material@7.3.5(@emotion/react@11.14.0(@types/react@19.2.5)(react@19.2.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.5)(react@19.2.0))(@types/react@19.2.5)(react@19.2.0))(@mui/material-pigment-css@7.3.7(@emotion/react@11.14.0(@types/react@19.2.5)(react@19.2.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.5)(react@19.2.0))(@types/react@19.2.5)(react@19.2.0))(@pigment-css/react@0.0.30(@types/react@19.2.5)(react@19.2.0)(typescript@5.9.3))(@types/react@19.2.5)(react@19.2.0))(@types/react@19.2.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@types/react@19.2.5)(react@19.2.0)
@@ -310,9 +310,6 @@ importers:
       next-intl:
         specifier: ^4.8.2
         version: 4.8.2(next@16.1.6(@babel/core@7.29.0)(@playwright/test@1.55.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
-      nodemailer:
-        specifier: ^7.0.7
-        version: 7.0.13
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -338,9 +335,6 @@ importers:
       '@types/node':
         specifier: 22.15.3
         version: 22.15.3
-      '@types/nodemailer':
-        specifier: ^6.4.17
-        version: 6.4.22
       '@types/react':
         specifier: 19.2.5
         version: 19.2.5
@@ -371,6 +365,9 @@ importers:
       '@repo/domain':
         specifier: workspace:*
         version: link:../domain
+      '@repo/mailer':
+        specifier: workspace:*
+        version: link:../mailer
       '@repo/storage':
         specifier: workspace:*
         version: link:../storage
@@ -591,6 +588,25 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.15.11)(@types/node@22.15.3)(typescript@5.9.3))
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/mailer:
+    dependencies:
+      nodemailer:
+        specifier: ^7.0.7
+        version: 7.0.13
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 22.15.3
+        version: 22.15.3
+      '@types/nodemailer':
+        specifier: ^6.4.17
+        version: 6.4.22
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -7129,19 +7145,17 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
 
-  '@auth/core@0.41.0(nodemailer@7.0.13)':
+  '@auth/core@0.41.0':
     dependencies:
       '@panva/hkdf': 1.2.1
       jose: 6.1.0
       oauth4webapi: 3.8.2
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
-    optionalDependencies:
-      nodemailer: 7.0.13
 
-  '@auth/prisma-adapter@2.11.0(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@7.0.13)':
+  '@auth/prisma-adapter@2.11.0(@prisma/client@5.22.0(prisma@5.22.0))':
     dependencies:
-      '@auth/core': 0.41.0(nodemailer@7.0.13)
+      '@auth/core': 0.41.0
       '@prisma/client': 5.22.0(prisma@5.22.0)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
