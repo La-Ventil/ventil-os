@@ -1,32 +1,22 @@
-import { unstable_cache } from 'next/cache';
-import { getLocale, getTimeZone, getTranslations } from 'next-intl/server';
-import { viewAdminStatistics } from '@repo/application/users/usecases';
-
-// Statistics are expensive to compute and change infrequently — cache for 10 minutes.
-// Tag allows on-demand revalidation when users/registrations/awards are mutated.
-const getCachedAdminStatistics = unstable_cache(viewAdminStatistics, ['admin-statistics'], {
-  revalidate: 600,
-  tags: ['admin-statistics']
-});
+import { getTranslations } from 'next-intl/server';
 import { adminStatIcon as AdminStatIcon } from '@repo/ui/icons/admin-stat-icon';
 import GridBackground from '@repo/ui/grid-background.server';
 import AdminStatisticsOverview from '@repo/ui/admin/admin-statistics-overview';
-import UserNetworkGraph from '@repo/ui/admin/user-network-graph';
 import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
+import { getCachedAdminStatistics } from '../../../../lib/admin/get-cached-admin-statistics';
 import { buildAdminStatisticsPageViewModel } from './_lib/build-admin-statistics-page-view-model';
+import UserNetworkGraphLazy from './_components/user-network-graph-lazy.client';
 
 export default async function AdminStatisticsPage() {
-  const locale = await getLocale();
-  const timeZone = await getTimeZone();
-  const t = await getTranslations('pages.hub.admin.statistics');
-  const tProfile = await getTranslations('profileSelector.option');
-  const statistics = await getCachedAdminStatistics();
+  const [t, tProfile, statistics] = await Promise.all([
+    getTranslations('pages.hub.admin.statistics'),
+    getTranslations('profileSelector.option'),
+    getCachedAdminStatistics()
+  ]);
 
   const pageViewModel = buildAdminStatisticsPageViewModel({
-    statistics,
-    locale,
-    timeZone,
+    overview: statistics.overview,
     tStatistics: t,
     tProfile
   });
@@ -40,7 +30,7 @@ export default async function AdminStatisticsPage() {
       </TableSection>
 
       <TableSection>
-        <UserNetworkGraph {...pageViewModel.userNetworkGraph} />
+        <UserNetworkGraphLazy labelsWithoutDate={pageViewModel.networkGraphLabels} />
       </TableSection>
     </GridBackground>
   );
