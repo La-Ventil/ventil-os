@@ -1,0 +1,32 @@
+listen:
+  http:
+    addr: ${UPTRACE_HTTP_ADDR::14318}
+  grpc:
+    addr: ${UPTRACE_GRPC_ADDR::14317}
+
+service:
+  secret: ${UPTRACE_SERVICE_SECRET}
+
+site:
+  url: ${UPTRACE_SITE_URL:http://localhost:14318}
+
+pg:
+  addr: ${UPTRACE_PG_ADDR:uptrace_postgres:5432}
+  user: ${UPTRACE_PG_USER:uptrace}
+  password: ${UPTRACE_PG_PASSWORD:uptrace}
+  database: ${UPTRACE_PG_DATABASE:uptrace}
+  tls:
+    insecure: true
+
+ch_cluster:
+  shards:
+    - replicas:
+        - addr: ${UPTRACE_CH_ADDR:uptrace_clickhouse:9000}
+          user: ${UPTRACE_CH_USER:uptrace}
+          password: ${UPTRACE_CH_PASSWORD:uptrace}
+          database: ${UPTRACE_CH_DATABASE:uptrace}
+          max_execution_time: 15s
+
+redis_cache:
+  addrs:
+    main: ${UPTRACE_REDIS_ADDR:uptrace_redis:6379}

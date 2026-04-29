@@ -24,6 +24,7 @@ coverage
 # Build Outputs
 .next/
 .next-e2e-*/
+.next-memory-profile-*/
 out/
 build
 dist
@@ -37,6 +38,8 @@ apps/web/apps/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.memory-profiles/
+apps/web/Heap.*.heapprofile
 
 # Misc
 .DS_Store

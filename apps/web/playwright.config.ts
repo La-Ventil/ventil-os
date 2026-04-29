@@ -12,6 +12,8 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 const PORT = process.env.PLAYWRIGHT_PORT || 3001;
 const HOST = process.env.HOST || '127.0.0.1';
 const workerParallelMode = process.env.PLAYWRIGHT_WORKER_PARALLEL === '1';
+const disableDbProjects = process.env.PLAYWRIGHT_DISABLE_DB_PROJECTS === '1';
+const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL?.trim();
 const configuredWorkers = Number(process.env.PLAYWRIGHT_WORKERS || (process.env.CI ? 2 : 2));
 const headedMode = process.env.PLAYWRIGHT_HEADED === '1';
 const sharedDbSlot = process.env.PLAYWRIGHT_DB_SLOT?.trim() || 'default';
@@ -31,7 +33,7 @@ const webServerDatabaseUrl = (() => {
 })();
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
-const baseURL = `http://${HOST}:${PORT}`;
+const baseURL = externalBaseURL || `http://${HOST}:${PORT}`;
 
 const sharedProjects = [
   {
@@ -48,25 +50,27 @@ const sharedProjects = [
 
 const projects = workerParallelMode
   ? sharedProjects
-  : [
-      {
-        name: 'setup db',
-        testMatch: /global\.setup\.ts/,
-        teardown: 'cleanup db'
-      },
-      {
-        name: 'cleanup db',
-        testMatch: /global\.teardown\.ts/
-      },
-      {
-        ...sharedProjects[0],
-        dependencies: ['setup db']
-      },
-      {
-        ...sharedProjects[1],
-        dependencies: ['setup db']
-      }
-    ];
+  : disableDbProjects
+    ? sharedProjects
+    : [
+        {
+          name: 'setup db',
+          testMatch: /global\.setup\.ts/,
+          teardown: 'cleanup db'
+        },
+        {
+          name: 'cleanup db',
+          testMatch: /global\.teardown\.ts/
+        },
+        {
+          ...sharedProjects[0],
+          dependencies: ['setup db']
+        },
+        {
+          ...sharedProjects[1],
+          dependencies: ['setup db']
+        }
+      ];
 
 // Reference: https://playwright.dev/docs/test-configuration
 export default defineConfig({
@@ -90,23 +94,24 @@ export default defineConfig({
 
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
-  webServer: workerParallelMode
-    ? undefined
-    : {
-        command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
-        url: baseURL,
-        timeout: 120 * 1000,
-        /* E2E relies on schema-scoped DATABASE_URL, so reusing an arbitrary local dev server is unsafe. */
-        reuseExistingServer: false,
-        env: {
-          ...process.env,
-          ...(webServerDatabaseUrl ? { DATABASE_URL: webServerDatabaseUrl } : {}),
-          NEXT_DIST_DIR: sharedDistDir,
-          NEXTAUTH_URL: baseURL,
-          PLAYWRIGHT_DB_SLOT: sharedDbSlot,
-          APP_LOCALE: appLocale
-        }
-      },
+  webServer:
+    workerParallelMode || externalBaseURL
+      ? undefined
+      : {
+          command: `pnpm exec next dev --turbopack --port ${PORT} --hostname ${HOST}`,
+          url: baseURL,
+          timeout: 120 * 1000,
+          /* E2E relies on schema-scoped DATABASE_URL, so reusing an arbitrary local dev server is unsafe. */
+          reuseExistingServer: false,
+          env: {
+            ...process.env,
+            ...(webServerDatabaseUrl ? { DATABASE_URL: webServerDatabaseUrl } : {}),
+            NEXT_DIST_DIR: sharedDistDir,
+            NEXTAUTH_URL: baseURL,
+            PLAYWRIGHT_DB_SLOT: sharedDbSlot,
+            APP_LOCALE: appLocale
+          }
+        },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

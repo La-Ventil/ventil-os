@@ -23,5 +23,108 @@ services:
       MP_SMTP_BIND_ADDR: 0.0.0.0:1025
       MP_UI_BIND_ADDR: 0.0.0.0:8025
 
+  uptrace_clickhouse:
+    image: clickhouse/clickhouse-server:25.3.3
+    profiles: [uptrace]
+    restart: "no"
+    environment:
+      CLICKHOUSE_DB: uptrace
+      CLICKHOUSE_USER: uptrace
+      CLICKHOUSE_PASSWORD: uptrace
+    ports:
+      - 8124:8123
+      - 9001:9000
+    volumes:
+      - uptrace_clickhouse_data:/var/lib/clickhouse
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:8123/ping']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  uptrace_postgres:
+    image: postgres:15-alpine
+    profiles: [uptrace]
+    restart: "no"
+    command:
+      - sh
+      - -lc
+      - |
+        if [ ! -f "$$PGDATA/server.crt" ] || [ ! -f "$$PGDATA/server.key" ]; then
+          openssl req -new -x509 -days 3650 -nodes -text \
+            -subj "/CN=uptrace_postgres" \
+            -keyout "$$PGDATA/server.key" \
+            -out "$$PGDATA/server.crt"
+          chmod 600 "$$PGDATA/server.key"
+          chown postgres:postgres "$$PGDATA/server.key" "$$PGDATA/server.crt"
+        fi
+        exec docker-entrypoint.sh postgres -c ssl=on
+    environment:
+      POSTGRES_DB: uptrace
+      POSTGRES_USER: uptrace
+      POSTGRES_PASSWORD: uptrace
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 5434:5432
+    volumes:
+      - uptrace_postgres_data:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U uptrace -d uptrace']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  uptrace_redis:
+    image: redis:7-alpine
+    profiles: [uptrace]
+    restart: "no"
+    ports:
+      - 6380:6379
+    volumes:
+      - uptrace_redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  uptrace:
+    image: uptrace/uptrace:2.0.2
+    profiles: [uptrace]
+    restart: "no"
+    depends_on:
+      uptrace_clickhouse:
+        condition: service_healthy
+      uptrace_postgres:
+        condition: service_healthy
+      uptrace_redis:
+        condition: service_healthy
+    command: ['--config=/etc/uptrace/uptrace.yml', 'serve']
+    environment:
+      UPTRACE_PG_ADDR: uptrace_postgres:5432
+      UPTRACE_PG_USER: uptrace
+      UPTRACE_PG_PASSWORD: uptrace
+      UPTRACE_PG_DATABASE: uptrace
+      PGSSLMODE: disable
+      UPTRACE_CH_ADDR: uptrace_clickhouse:9000
+      UPTRACE_CH_USER: uptrace
+      UPTRACE_CH_PASSWORD: uptrace
+      UPTRACE_CH_DATABASE: uptrace
+      UPTRACE_REDIS_ADDR: uptrace_redis:6379
+      UPTRACE_SITE_URL: http://localhost:14318
+      UPTRACE_HTTP_ADDR: :14318
+      UPTRACE_GRPC_ADDR: :14317
+      UPTRACE_SERVICE_SECRET: local-dev-uptrace-secret-change-me
+    ports:
+      - 14318:14318
+      - 14317:14317
+    volumes:
+      - ./docker/uptrace/uptrace.yml:/etc/uptrace/uptrace.yml:ro
+      - uptrace_data:/var/lib/uptrace
+
 volumes:
   postgres_data_ventilos:
+  uptrace_clickhouse_data:
+  uptrace_postgres_data:
+  uptrace_redis_data:
+  uptrace_data:

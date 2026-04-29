@@ -4,6 +4,7 @@ import { viewMachineScheduleContext } from '@repo/application/machines/usecases'
 import { getTimeZone } from 'next-intl/server';
 import MachineModalRouteClient from '../../../_machine-modal/machine-modal-route.client';
 import { getServerSession } from '../../../../../../lib/auth';
+import { traceServerOperation } from '../../../../../../lib/observability/server-tracing';
 
 type MachineModalPageProps = {
   params: Promise<{ machineId: string }>;
@@ -39,14 +40,24 @@ export default async function MachineModalPage({
   // must remain client-side in `_machine-modal/use-machine-modal-flow.tsx`.
   const { at, reservationId, step, tab } = resolvedSearchParams;
   const currentUserId = session?.user?.id;
-  const modalContext = await viewMachineScheduleContext({
-    machineId,
-    at,
-    reservationId,
-    step,
-    actor: session?.user,
-    timeZone
-  });
+  const modalContext = await traceServerOperation(
+    'fab_lab.machine_modal.view_schedule_context',
+    {
+      'app.machine.id': machineId,
+      'app.machine.modal.step': step,
+      'app.machine.modal.tab': tab,
+      'app.user.authenticated': Boolean(session?.user)
+    },
+    () =>
+      viewMachineScheduleContext({
+        machineId,
+        at,
+        reservationId,
+        step,
+        actor: session?.user,
+        timeZone
+      })
+  );
 
   if (!modalContext) {
     return null;
