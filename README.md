@@ -112,6 +112,11 @@ Depuis la racine du repo :
 - `pnpm db:generate`
 - `pnpm db:seed`
 
+Pour le seed :
+- par défaut, `pnpm db:seed` charge les données de démo si la base est vide
+- `SEED_INCLUDE_DEMO_DATA=0` force un bootstrap minimal avec au moins un admin global
+- `SEED_ADMIN_EMAIL` et `SEED_ADMIN_PASSWORD` permettent de paramétrer ce premier admin
+
 Commandes ciblées :
 
 - `pnpm --filter web dev`

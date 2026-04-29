@@ -3,6 +3,12 @@ import { hashSecret } from '@repo/crypto';
 
 const prisma = new PrismaClient();
 const DEFAULT_PASSWORD = process.env.SEED_PASSWORD ?? 'ChangeMe123!';
+const INCLUDE_DEMO_DATA = process.env.SEED_INCLUDE_DEMO_DATA !== '0';
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL?.trim() || 'admin@ventil.local';
+const ADMIN_USERNAME = process.env.SEED_ADMIN_USERNAME?.trim() || 'admin';
+const ADMIN_FIRST_NAME = process.env.SEED_ADMIN_FIRST_NAME?.trim() || 'Admin';
+const ADMIN_LAST_NAME = process.env.SEED_ADMIN_LAST_NAME?.trim() || 'Global';
+const ADMIN_INITIAL_PASSWORD = process.env.SEED_ADMIN_PASSWORD?.trim() || DEFAULT_PASSWORD;
 
 async function hashPassword(password: string) {
   const { salt, iterations, hashedSecret } = await hashSecret(password);
@@ -272,10 +278,10 @@ async function seedUsers(defaultPassword: string) {
   const emailVerifiedAt = new Date();
   const users: SeedUser[] = [
     {
-      email: 'admin@ventil.local',
-      username: 'admin',
-      firstName: 'Admin',
-      lastName: 'Global',
+      email: ADMIN_EMAIL,
+      username: ADMIN_USERNAME,
+      firstName: ADMIN_FIRST_NAME,
+      lastName: ADMIN_LAST_NAME,
       profile: Profile.teacher,
       globalAdmin: true,
       pedagogicalAdmin: false,
@@ -349,7 +355,8 @@ async function seedUsers(defaultPassword: string) {
   ];
 
   for (const user of users) {
-    const security = await hashPassword(defaultPassword);
+    const password = user.globalAdmin ? ADMIN_INITIAL_PASSWORD : defaultPassword;
+    const security = await hashPassword(password);
     await prisma.user.upsert({
       where: { email: user.email },
       update: {
@@ -370,6 +377,54 @@ async function seedUsers(defaultPassword: string) {
       }
     });
   }
+}
+
+async function ensureAdminUser() {
+  const existingGlobalAdmin = await prisma.user.findFirst({
+    where: { globalAdmin: true },
+    select: { id: true, email: true }
+  });
+
+  if (existingGlobalAdmin) {
+    console.log(`Seed admin check: existing global admin found (${existingGlobalAdmin.email}).`);
+    return existingGlobalAdmin;
+  }
+
+  const emailVerifiedAt = new Date();
+  const security = await hashPassword(ADMIN_INITIAL_PASSWORD);
+  const admin = await prisma.user.upsert({
+    where: { email: ADMIN_EMAIL },
+    update: {
+      username: ADMIN_USERNAME,
+      firstName: ADMIN_FIRST_NAME,
+      lastName: ADMIN_LAST_NAME,
+      profile: Profile.teacher,
+      globalAdmin: true,
+      pedagogicalAdmin: false,
+      image: '/assets/avatar/admin-global.svg',
+      emailVerified: emailVerifiedAt,
+      pendingEmail: null
+    },
+    create: {
+      email: ADMIN_EMAIL,
+      username: ADMIN_USERNAME,
+      firstName: ADMIN_FIRST_NAME,
+      lastName: ADMIN_LAST_NAME,
+      profile: Profile.teacher,
+      globalAdmin: true,
+      pedagogicalAdmin: false,
+      image: '/assets/avatar/admin-global.svg',
+      emailVerified: emailVerifiedAt,
+      pendingEmail: null,
+      password: security.password,
+      salt: security.salt,
+      iterations: security.iterations
+    },
+    select: { id: true, email: true }
+  });
+
+  console.log(`Seed admin bootstrap: created or promoted ${admin.email} as global admin.`);
+  return admin;
 }
 
 async function seedMachines(creatorId: string, machines: SeedMachine[]) {
@@ -551,14 +606,21 @@ async function seedOpenBadgeAwards(userId: string, awards: SeedOpenBadgeAward[])
 async function main() {
   const existingUsers = await prisma.user.count();
   if (existingUsers > 0) {
-    console.log('Seed skipped: database already contains users.');
+    await ensureAdminUser();
+    console.log('Seed skipped: database already contains users, demo data was not loaded.');
+    return;
+  }
+
+  if (!INCLUDE_DEMO_DATA) {
+    await ensureAdminUser();
+    console.log('Seed completed: admin bootstrap only, demo data disabled.');
     return;
   }
 
   await seedUsers(DEFAULT_PASSWORD);
 
   const admin = await prisma.user.findUnique({
-    where: { email: 'admin@ventil.local' },
+    where: { email: ADMIN_EMAIL },
     select: { id: true }
   });
 
