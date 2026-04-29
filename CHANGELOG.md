@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.42](https://github.com/La-Ventil/ventil-os/compare/v0.0.41...v0.0.42) (2026-04-29)
+
+
+### Features
+
+* **web:** add memory profiling and tracing tooling ([a10f369](https://github.com/La-Ventil/ventil-os/commit/a10f3699ad3b7e7ea337bf71f778ac605fa05198))
+* **web:** lazy-load participant options in machine reservation form ([ec0dfc8](https://github.com/La-Ventil/ventil-os/commit/ec0dfc80aa313a5efa5a8eb6d8f4468be0840c4f))
+
+
+### Bug Fixes
+
+* **application:** run vitest in non-watch mode for test script ([d62157d](https://github.com/La-Ventil/ventil-os/commit/d62157d02648b02b0f6c31fd8b2ad4632d0ababf))
+* **domain:** run vitest in non-watch mode for test script ([f104421](https://github.com/La-Ventil/ventil-os/commit/f1044210a887ad52044b48291d23ae24180767b6))
+* **seed:** separate admin bootstrap from demo data ([1175f06](https://github.com/La-Ventil/ventil-os/commit/1175f06ea83a178453cd0acd57af4fdbf178234a))
+* **web:** prevent lazy participant options fetch from being silently cancelled ([8157104](https://github.com/La-Ventil/ventil-os/commit/8157104618bd11f476b909e89cf307ac457f204b))
+
+
+### Performance
+
+* **db:** add (status, startsAt) index on MachineReservation ([e1c3743](https://github.com/La-Ventil/ventil-os/commit/e1c3743a013b0d3e9f0996bb3516356d9b195a80))
+* **db:** replace unbounded findMany with aggregated SQL for exchange edges ([b0819dd](https://github.com/La-Ventil/ventil-os/commit/b0819dda44032fba98e5c28ef0f4bc174668fa19))
+* **db:** use lightweight select for today's availability in machine modal ([8fa57dd](https://github.com/La-Ventil/ventil-os/commit/8fa57dd01102ccb420496db715c5fbfd211fea6e))
+* **web:** cache admin statistics for 10 min with tag-based invalidation ([7c3b56d](https://github.com/La-Ventil/ventil-os/commit/7c3b56d53ff377a4e40327531d810e9b57d127eb))
+* **web:** cache reservations by day key in machine modal ([754c7ae](https://github.com/La-Ventil/ventil-os/commit/754c7ae38ae9e35e6a359fc64502fe32bc4a429c))
+* **web:** deduplicate isUserBlocked DB call via React.cache ([7aeef29](https://github.com/La-Ventil/ventil-os/commit/7aeef29499a490b66d30a0e16b1167ad433bf499))
+* **web:** lazy-load network graph to remove nodes/edges from RSC payload ([136ab41](https://github.com/La-Ventil/ventil-os/commit/136ab41bed61b31edde6901c33ba54f27fd6f55a))
+* **web:** reduce client surface and align app colocation ([fa1bc75](https://github.com/La-Ventil/ventil-os/commit/fa1bc75b8b9abb6fddf15d722386ed2fa1baf784))
+
 ### [0.0.41](https://github.com/La-Ventil/ventil-os/compare/v0.0.40...v0.0.41) (2026-04-10)
 
 
