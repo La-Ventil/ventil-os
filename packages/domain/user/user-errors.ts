@@ -1,4 +1,9 @@
-export type UserErrorCode = 'user.notFound';
+export type UserErrorCode =
+  | 'user.notFound'
+  | 'user.lastGlobalAdmin'
+  | 'user.cannotBlockAdmin'
+  | 'user.cannotBlockSelf'
+  | 'user.cannotChangeOwnAdminAccess';
 
 export class UserError extends Error {
   readonly code: UserErrorCode;

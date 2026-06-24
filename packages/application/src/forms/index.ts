@@ -1,3 +1,4 @@
+export * from './admin-user-edit-form-input';
 export * from './email';
 export * from './login-form-input';
 export * from './machine-create-form-input';

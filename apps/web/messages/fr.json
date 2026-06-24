@@ -331,7 +331,17 @@
         "usersEdit": {
           "title": "Modifier un utilisateur",
           "subtitle": "Information",
-          "intro": "Mettez à jour les informations du compte."
+          "intro": "Mettez à jour les informations du compte.",
+          "adminAccess": {
+            "title": "Niveau d’administration",
+            "description": "Choisissez les droits d’administration accordés à cet utilisateur.",
+            "lockedForSelf": "Vous ne pouvez pas modifier vos propres droits d’administration.",
+            "options": {
+              "none": "Aucun droit d’administration",
+              "pedagogical": "Administration pédagogique",
+              "global": "Administration globale"
+            }
+          }
         },
         "machineForm": {
           "fields": {
@@ -828,7 +838,9 @@
       "success": "Utilisateur mis à jour.",
       "error": "Impossible de mettre à jour l’utilisateur.",
       "unauthorized": "Vous n’êtes pas autorisé à modifier cet utilisateur.",
-      "notFound": "Utilisateur introuvable."
+      "notFound": "Utilisateur introuvable.",
+      "lastGlobalAdmin": "Au moins un administrateur global doit rester actif.",
+      "cannotChangeOwnAdminAccess": "Vous ne pouvez pas modifier vos propres droits d’administration."
     }
   },
   "emailSignature": "— L’équipe {appName}",

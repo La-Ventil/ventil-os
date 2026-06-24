@@ -75,6 +75,14 @@ Emails de développement (`Mailpit`) :
 
 Les emails transactionnels envoyés en local, par exemple pour l’inscription, la vérification d’email, le changement d’email et la réinitialisation de mot de passe, sont capturés par Mailpit.
 
+### Note E2E locale
+
+Voir la source de vérité :
+
+- `docs/contributor/testing/README.md`
+
+En pratique, les E2E `Playwright` attendent l’infra locale du repo (Postgres Docker sur `5433` + Mailpit).
+
 ## Structure du monorepo
 
 ```text

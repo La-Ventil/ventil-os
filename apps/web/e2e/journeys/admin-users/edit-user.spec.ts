@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/test';
+import { getAuthTestRepository } from '../../helpers/auth-test-repository';
 import { openAdminUserEditPage } from '../../helpers/admin-users';
 
 const USER_EMAIL = 'student@ventil.local';
@@ -92,5 +93,43 @@ test.describe('Admin users journeys', () => {
         await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
       }
     }
+  });
+
+  test('admin can promote and demote a user from the edit modal', async ({ page, loginAs, workerWebRuntime }) => {
+    await loginAs('globalAdmin');
+
+    const repository = getAuthTestRepository(workerWebRuntime?.dbSlot);
+    const originalFlags = await repository.getAdminFlagsByEmail(USER_EMAIL);
+
+    try {
+      await openAdminUserEditPage(page, USER_EMAIL);
+
+      await page.getByRole('radio', { name: /global admin/i }).check();
+      await page.getByRole('button', { name: /update/i }).click();
+      await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
+
+      await openAdminUserEditPage(page, USER_EMAIL);
+      await expect(page.getByRole('radio', { name: /global admin/i })).toBeChecked();
+
+      await page.getByRole('radio', { name: /no admin access/i }).check();
+      await page.getByRole('button', { name: /update/i }).click();
+      await expect(page).toHaveURL(/\/hub\/admin\/users\/?$/);
+
+      await openAdminUserEditPage(page, USER_EMAIL);
+      await expect(page.getByRole('radio', { name: /no admin access/i })).toBeChecked();
+    } finally {
+      await repository.setAdminFlagsByEmail(USER_EMAIL, originalFlags);
+    }
+  });
+
+  test('admin cannot change their own admin access from the edit modal', async ({ page, loginAs, seedUsers }) => {
+    await loginAs('globalAdmin');
+
+    await openAdminUserEditPage(page, seedUsers.globalAdmin.email);
+
+    await expect(page.getByRole('radio', { name: /no admin access/i })).toBeDisabled();
+    await expect(page.getByRole('radio', { name: /pedagogical admin/i })).toBeDisabled();
+    await expect(page.getByRole('radio', { name: /global admin/i })).toBeDisabled();
+    await expect(page.getByText(/cannot change your own admin access/i)).toBeVisible();
   });
 });

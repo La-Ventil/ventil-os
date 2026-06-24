@@ -7,6 +7,7 @@ import { setUserBlockedAction } from '../../../../../lib/actions/users/set-user-
 
 type UserQuickActionsProps = {
   user: UserAdminViewModel;
+  currentUserId: string | null;
   labels: {
     manage: string;
     edit: string;
@@ -16,8 +17,9 @@ type UserQuickActionsProps = {
   };
 };
 
-export default function UserQuickActions({ user, labels }: UserQuickActionsProps) {
+export default function UserQuickActions({ user, currentUserId, labels }: UserQuickActionsProps) {
   const [isPending, startTransition] = useTransition();
+  const cannotBlockUser = !user.blocked && (user.globalAdmin || user.pedagogicalAdmin || user.id === currentUserId);
 
   const handleToggleBlocked = () => {
     startTransition(async () => {
@@ -35,7 +37,11 @@ export default function UserQuickActions({ user, labels }: UserQuickActionsProps
       items={[
         { label: labels.openBadges, href: `/hub/admin/users/${user.id}/open-badges` },
         { label: labels.edit, href: `/hub/admin/users/${user.id}/edit` },
-        { label: user.blocked ? labels.unblock : labels.block, onClick: handleToggleBlocked }
+        {
+          label: user.blocked ? labels.unblock : labels.block,
+          onClick: handleToggleBlocked,
+          disabled: cannotBlockUser
+        }
       ]}
     />
   );

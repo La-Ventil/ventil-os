@@ -172,6 +172,33 @@ From `apps/web`:
 - `pnpm test:e2e:a11y:workers` (a11y only, worker-level parallelism)
 - `pnpm test:e2e:smoke`
 
+## Local prerequisites for Playwright
+
+Before running shared-DB Playwright locally, make sure the repo services are actually running:
+
+```bash
+docker compose up -d ventilos_postgres mailpit
+```
+
+Expected local endpoints:
+
+- PostgreSQL: `localhost:5433`
+- Mailpit SMTP: `localhost:1025`
+- Mailpit UI/API: `localhost:8025`
+
+Quick diagnostics:
+
+```bash
+pg_isready -h 127.0.0.1 -p 5433
+docker compose ps
+```
+
+Important:
+
+- `apps/web/.env` points Playwright setup/teardown to `localhost:5433`
+- if only a system PostgreSQL is running on `5432`, E2E setup fails before the first test
+- this failure can look like a Prisma or shell issue, but is usually just a missing Docker service in the current session
+
 ## Current constraints
 
 - Playwright runs with `workers: 1` by default because the suite currently uses a shared reset/seeded DB.

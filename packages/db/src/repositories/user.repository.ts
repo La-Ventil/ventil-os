@@ -226,6 +226,12 @@ export class UserRepository {
     });
   }
 
+  async countGlobalAdmins(): Promise<number> {
+    return this.prisma.user.count({
+      where: { globalAdmin: true }
+    });
+  }
+
   async updateUserAvatar(userId: string, avatar: Prisma.UserUpdateInput['avatar']) {
     return this.prisma.user.update({
       where: { id: userId },

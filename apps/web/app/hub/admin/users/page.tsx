@@ -7,10 +7,12 @@ import SectionSubtitle from '@repo/ui/section-subtitle.server';
 import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
 import UserQuickActions from './_components/user-quick-actions';
+import { getServerSession } from '../../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminUsersPage() {
+  const session = await getServerSession();
   const t = await getTranslations('pages.hub.admin.users');
   const users = await browseUsersAsAdmin();
   const labels = {
@@ -76,7 +78,9 @@ export default async function AdminUsersPage() {
           columns={labels.columns}
           adminLabelFor={adminLabelFor}
           statusLabelFor={statusLabelFor}
-          renderActions={(user) => <UserQuickActions user={user} labels={labels.actions} />}
+          renderActions={(user) => (
+            <UserQuickActions user={user} currentUserId={session?.user?.id ?? null} labels={labels.actions} />
+          )}
         />
       </TableSection>
     </>

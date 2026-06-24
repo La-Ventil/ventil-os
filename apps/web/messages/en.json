@@ -331,7 +331,17 @@
         "usersEdit": {
           "title": "Edit user",
           "subtitle": "Information",
-          "intro": "Update the account information."
+          "intro": "Update the account information.",
+          "adminAccess": {
+            "title": "Admin access level",
+            "description": "Choose the administration rights granted to this user.",
+            "lockedForSelf": "You cannot change your own admin access.",
+            "options": {
+              "none": "No admin access",
+              "pedagogical": "Pedagogical admin",
+              "global": "Global admin"
+            }
+          }
         },
         "machineForm": {
           "fields": {
@@ -828,7 +838,9 @@
       "success": "User updated.",
       "error": "Unable to update the user.",
       "unauthorized": "You are not allowed to update this user.",
-      "notFound": "User not found."
+      "notFound": "User not found.",
+      "lastGlobalAdmin": "At least one global admin must remain active.",
+      "cannotChangeOwnAdminAccess": "You cannot change your own admin access."
     }
   },
   "emailSignature": "— The {appName} team",

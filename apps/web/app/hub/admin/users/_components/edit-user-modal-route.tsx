@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import type { AdminProfileFormInput } from '@repo/application/forms';
+import type { AdminUserEditFormInput } from '@repo/application/forms';
 import type { FormAction } from '@repo/form/form-action-state';
 import type { UserProfile } from '@repo/application/users/models/user-profile';
 import AdminUserEditForm from '@repo/ui/forms/admin-user-edit.form';
@@ -17,11 +17,18 @@ import { useRouteModal } from '@repo/ui/hooks/use-route-modal';
 type EditUserModalRouteProps = {
   profile: UserProfile;
   userId: string;
+  currentUserId: string;
   closeHref: string;
-  handleSubmit: FormAction<AdminProfileFormInput>;
+  handleSubmit: FormAction<AdminUserEditFormInput>;
 };
 
-export default function EditUserModalRoute({ profile, userId, closeHref, handleSubmit }: EditUserModalRouteProps) {
+export default function EditUserModalRoute({
+  profile,
+  userId,
+  currentUserId,
+  closeHref,
+  handleSubmit
+}: EditUserModalRouteProps) {
   const t = useTranslations('pages.hub.admin.usersEdit');
   const tCommon = useTranslations('common');
   const profilePromise = useMemo(() => Promise.resolve(profile), [profile]);
@@ -56,6 +63,7 @@ export default function EditUserModalRoute({ profile, userId, closeHref, handleS
           profilePromise={profilePromise}
           handleSubmit={handleSubmit}
           userId={userId}
+          currentUserId={currentUserId}
           onSuccess={handleSuccess}
         />
       </Section>

@@ -27,6 +27,17 @@ As a rule, specs should read like user behavior plus business assertions, not li
 - Accessibility specs validate keyboard, dialog/menu behavior, and ARIA semantics.
 - Domain/application rules still belong to unit/integration tests (`Vitest` / `Jest`).
 
+## Local runtime prerequisites
+
+See the canonical contributor doc:
+
+- `docs/contributor/testing/README.md`
+
+Short version:
+
+- shared-DB Playwright expects the repo-local Postgres on `5433`
+- if `localhost:5433` is down, global setup fails before any spec runs
+
 ## Canonical locale
 
 - The canonical E2E locale is `en`.

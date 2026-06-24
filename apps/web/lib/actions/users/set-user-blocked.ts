@@ -2,6 +2,7 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { canManageUsers } from '@repo/application';
+import { isUserError } from '@repo/domain/user/user-errors';
 import { setUserBlocked } from '@repo/application/users/usecases';
 import { getServerSession } from '../../auth';
 
@@ -20,7 +21,15 @@ export async function setUserBlockedAction(formData: FormData): Promise<void> {
     return;
   }
 
-  await setUserBlocked({ userId, blocked: blocked === 'true' });
+  try {
+    await setUserBlocked({ actorUserId: session.user.id, userId, blocked: blocked === 'true' });
+  } catch (error) {
+    if (isUserError(error)) {
+      return;
+    }
+    throw error;
+  }
+
   revalidatePath('/hub/admin/users');
   revalidateTag('admin-statistics', {});
 }

@@ -27,6 +27,7 @@ export default async function AdminUsersEditModalPage({ params }: AdminUsersEdit
     <EditUserModalRoute
       profile={profile}
       userId={userId}
+      currentUserId={session.user.id}
       closeHref="/hub/admin/users"
       handleSubmit={updateAdminUserProfileAction}
     />

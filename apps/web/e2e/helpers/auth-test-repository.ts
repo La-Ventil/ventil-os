@@ -49,6 +49,26 @@ export class AuthTestRepository {
       data: { blocked }
     });
   }
+
+  async getAdminFlagsByEmail(email: string): Promise<{ globalAdmin: boolean; pedagogicalAdmin: boolean }> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { globalAdmin: true, pedagogicalAdmin: true }
+    });
+
+    if (!user) {
+      throw new Error(`User not found for email ${email}`);
+    }
+
+    return user;
+  }
+
+  async setAdminFlagsByEmail(email: string, flags: { globalAdmin: boolean; pedagogicalAdmin: boolean }): Promise<void> {
+    await this.prisma.user.update({
+      where: { email },
+      data: flags
+    });
+  }
 }
 
 const repositoriesBySlot = new Map<string, AuthTestRepository>();

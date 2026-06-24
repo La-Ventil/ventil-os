@@ -7,6 +7,7 @@ export * from './view-user-stats.query';
 export * from './validate-sign-in.query';
 export * from './sign-in.query';
 export * from './sign-up.command';
+export * from './update-admin-user-profile.command';
 export * from './update-profile.command';
 export * from './set-user-blocked.command';
 export * from './change-password.command';

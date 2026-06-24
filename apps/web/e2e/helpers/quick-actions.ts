@@ -30,3 +30,7 @@ export async function openRowQuickActions(page: Page, row: Locator, buttonLabel 
 export async function clickQuickAction(menu: Locator, actionLabel: string | RegExp): Promise<void> {
   await menu.getByRole('menuitem', { name: actionLabel }).click();
 }
+
+export async function expectQuickActionDisabled(menu: Locator, actionLabel: string | RegExp): Promise<void> {
+  await expect(menu.getByRole('menuitem', { name: actionLabel })).toBeDisabled();
+}
