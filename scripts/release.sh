@@ -63,6 +63,14 @@ require_fast_forward() {
   exit 1
 }
 
+require_release_commit_clean() {
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "Release aborted: versioning left uncommitted changes." >&2
+    git status --short >&2
+    exit 1
+  fi
+}
+
 trap cleanup EXIT
 
 # Refuse releases from a dirty or unexpected local state.
@@ -96,7 +104,8 @@ git add docs/contributor/i18n/translation-coverage.md
 pnpm build
 
 # standard-version creates the release commit, updates the changelog, and tags the version.
-pnpm release -- --commit-all
+pnpm exec standard-version --commit-all
+require_release_commit_clean
 
 # Pushing main publishes the git release and triggers the platform-managed production deploy.
 git push origin "$RELEASE_TARGET_BRANCH" --follow-tags
