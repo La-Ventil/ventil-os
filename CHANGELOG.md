@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.43](https://github.com/La-Ventil/ventil-os/compare/v0.0.42...v0.0.43) (2026-06-24)
+
+
+### Features
+
+* **admin:** secure user management flows ([f689aea](https://github.com/La-Ventil/ventil-os/commit/f689aeaa053929e568dd7b4a8f1fa7b399b1f298))
+
+
+### Docs
+
+* **i18n:** refresh translation coverage report ([67d495b](https://github.com/La-Ventil/ventil-os/commit/67d495bd9c9bbca063207645141da4911fb07dfe))
+
 ### [0.0.42](https://github.com/La-Ventil/ventil-os/compare/v0.0.41...v0.0.42) (2026-04-29)
 
 
