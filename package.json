@@ -8,6 +8,7 @@
     "commit": "cz",
     "dev": "turbo run dev --filter=web --filter=@repo/avatar-system",
     "i18n:report": "node scripts/generate-i18n-report.mjs",
+    "metrics": "node scripts/clever-metrics.mjs",
     "start": "pnpm --filter web start",
     "lint": "turbo run lint",
     "lint:dev": "turbo run lint:dev",
