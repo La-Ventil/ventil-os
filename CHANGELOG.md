@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.46](https://github.com/La-Ventil/ventil-os/compare/v0.0.45...v0.0.46) (2026-09-11)
+
+
+### Bug Fixes
+
+* **db:** one Prisma client per server process ([4082378](https://github.com/La-Ventil/ventil-os/commit/4082378cffafcc916ba8fcec9b6f7d9737629f34))
+* **web:** client bundles no longer pull server modules ([4756d87](https://github.com/La-Ventil/ventil-os/commit/4756d87501ebca5c28d957960cb405ffaa1dda89))
+
+
+### Performance
+
+* **db:** switch to Prisma's small query compiler ([13f0f0a](https://github.com/La-Ventil/ventil-os/commit/13f0f0a90f23cd8de6974af2c92303c7f5c43e2d))
+* **web:** load routes on first request instead of at boot ([95f86b3](https://github.com/La-Ventil/ventil-os/commit/95f86b31505f748e437efbb9f5dd5f764b33eb7d))
+
 ### [0.0.45](https://github.com/La-Ventil/ventil-os/compare/v0.0.44...v0.0.45) (2026-09-11)
 
 
