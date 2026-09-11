@@ -6,6 +6,11 @@ const nextConfig: import('next').NextConfig = {
   // Allow concurrent Next dev servers for Playwright parallel processes.
   distDir: process.env.NEXT_DIST_DIR || '.next',
   output: 'standalone',
+  experimental: {
+    // Load each route on its first request rather than all at boot: measured 75 → 43 MiB idle,
+    // for 10–85 ms more on a route's first hit after a restart.
+    preloadEntriesOnStart: false
+  },
   // The avatar routes read editor images at runtime through a path file tracing cannot follow.
   outputFileTracingIncludes: {
     '/avatar-*': ['../../packages/avatar-system/src/images/editor/**']
