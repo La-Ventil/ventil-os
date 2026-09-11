@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.45](https://github.com/La-Ventil/ventil-os/compare/v0.0.44...v0.0.45) (2026-09-11)
+
+
+### Features
+
+* **storage:** accept an absolute UPLOADS_DIR ([2ee2e28](https://github.com/La-Ventil/ventil-os/commit/2ee2e2809226ce838cfb1ecc2923161a2a445ee1))
+
+
+### Bug Fixes
+
+* **env:** resolve dev uploads to apps/web/uploads ([952f7a0](https://github.com/La-Ventil/ventil-os/commit/952f7a02de5dfbc46c18023172d9a54b8d35017a))
+
+
+### Performance
+
+* **web:** serve production from the Next standalone build ([8d5529f](https://github.com/La-Ventil/ventil-os/commit/8d5529fdbbc60114951a131931848e1cad6b8b63))
+
 ### [0.0.44](https://github.com/La-Ventil/ventil-os/compare/v0.0.43...v0.0.44) (2026-09-11)
 
 
