@@ -21,6 +21,9 @@ jobs:
           cache: 'pnpm'
       - name: Install
         run: pnpm install --frozen-lockfile
+      # Their dist outputs are gitignored: sms type-checks against @repo/logger, web imports avatar-system CSS.
+      - name: Build workspace packages
+        run: pnpm exec turbo run build --filter=@repo/logger --filter=@repo/avatar-system
       - name: Lint (dev)
         run: pnpm lint:dev
       - name: Typecheck
@@ -73,6 +76,8 @@ jobs:
           cache: 'pnpm'
       - name: Install
         run: pnpm install --frozen-lockfile
+      - name: Build workspace packages
+        run: pnpm exec turbo run build --filter=@repo/logger --filter=@repo/avatar-system
       - name: Fetch base branch
         run: git fetch origin "${{ github.base_ref }}" --depth=1
       - name: Detect web smoke need
