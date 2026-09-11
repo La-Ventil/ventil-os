@@ -1,7 +1,6 @@
-import fs from 'fs/promises';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { getResolvedUploadRoot } from '@repo/storage/uploads';
+import { readUpload } from '@repo/storage/uploads';
 
 const MIME_BY_EXTENSION: Record<string, string> = {
   '.png': 'image/png',
@@ -22,29 +21,17 @@ export async function GET(_: Request, context: RouteContext) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  const uploadRoot = path.resolve(getResolvedUploadRoot());
-  const resolvedPath = path.resolve(uploadRoot, ...segments);
-
-  if (resolvedPath !== uploadRoot && !resolvedPath.startsWith(`${uploadRoot}${path.sep}`)) {
+  const file = await readUpload(segments);
+  if (!file) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  try {
-    const file = await fs.readFile(resolvedPath);
-    const contentType = MIME_BY_EXTENSION[path.extname(resolvedPath).toLowerCase()] ?? 'application/octet-stream';
+  const contentType = MIME_BY_EXTENSION[path.extname(segments.join('/')).toLowerCase()] ?? 'application/octet-stream';
 
-    return new NextResponse(new Uint8Array(file), {
-      headers: {
-        'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=31536000, immutable'
-      }
-    });
-  } catch (error) {
-    const err = error as NodeJS.ErrnoException;
-    if (err.code === 'ENOENT' || err.code === 'ENOTDIR' || err.code === 'EISDIR') {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  return new NextResponse(new Uint8Array(file), {
+    headers: {
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=31536000, immutable'
     }
-
-    throw error;
-  }
+  });
 }

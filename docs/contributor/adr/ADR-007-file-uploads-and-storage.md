@@ -21,7 +21,9 @@ We need a clear, shared policy for:
 ## Decision
 
 We adopt a pragmatic local storage strategy for now:
-- Uploaded files are written under `apps/web/uploads` relative to the web application runtime root.
+- Uploaded files are written under `UPLOADS_DIR`:
+  - in development, a path relative to the process cwd (`uploads` resolves to `apps/web/uploads`);
+  - in production, an absolute path to the FS bucket mount, because the standalone server changes its cwd to the build output.
 - The database stores only the relative public path (e.g. `/uploads/open-badges/<filename>`).
 - Upload validation is enforced server-side:
   - allowed MIME types: `image/png`, `image/jpeg`, `image/gif`, `image/webp`

@@ -2,16 +2,19 @@ import fs from 'fs/promises';
 import { constants as fsConstants } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
-import { pathToFileURL } from 'url';
 import { ALLOWED_IMAGE_MIMES, MAX_IMAGE_MB, type ImageValidationResult } from './image-upload';
 
-function resolveUploadRoot({ uploadRoot, cwd }: { uploadRoot: string; cwd: string }) {
-  if (path.isAbsolute(uploadRoot)) {
-    throw new Error('UPLOADS_DIR must be a relative path (no leading "/"). Example: public/uploads');
-  }
+// Upload paths are runtime config: turbopackIgnore keeps file tracing from bundling the directory they resolve to.
+// Every filesystem access to uploads goes through these helpers so the hint lives in one place.
+const resolveUploadPath = (base: string, ...segments: string[]) =>
+  path.resolve(/* turbopackIgnore: true */ base, ...segments);
 
-  return path.join(cwd, uploadRoot);
-}
+const uploadFs = {
+  mkdir: (directory: string) => fs.mkdir(/* turbopackIgnore: true */ directory, { recursive: true }),
+  assertWritable: (directory: string) => fs.access(/* turbopackIgnore: true */ directory, fsConstants.W_OK),
+  read: (file: string) => fs.readFile(/* turbopackIgnore: true */ file),
+  write: (file: string, data: Buffer) => fs.writeFile(/* turbopackIgnore: true */ file, data)
+};
 
 function resolveUploadSubdirectory(subdirectory?: string) {
   if (!subdirectory) {
@@ -26,14 +29,18 @@ function resolveUploadSubdirectory(subdirectory?: string) {
   return normalized;
 }
 
-export function getResolvedUploadRoot(uploadRoot: string = getUploadRootSetting(), cwd: string = process.cwd()) {
-  return resolveUploadRoot({ uploadRoot, cwd });
+// Relative UPLOADS_DIR resolves from the cwd (development). Production passes the absolute bucket mount,
+// because the standalone server changes its cwd.
+function getResolvedUploadRoot(uploadRoot: string = getUploadRootSetting(), cwd: string = process.cwd()) {
+  return resolveUploadPath(cwd, uploadRoot);
 }
 
 export function getUploadRootSetting() {
   const envUploadRoot = process.env.UPLOADS_DIR;
   if (!envUploadRoot) {
-    throw new Error('UPLOADS_DIR is required. Use a relative path like "public/uploads".');
+    throw new Error(
+      'UPLOADS_DIR is required: a path relative to the process cwd (e.g. "uploads") or an absolute path.'
+    );
   }
 
   return envUploadRoot;
@@ -44,15 +51,36 @@ export function getUploadsPublicPath() {
   return publicPath.startsWith('/') ? publicPath : `/${publicPath}`;
 }
 
+/** Returns the uploaded file under the upload root, or null when it is missing or outside the root. */
+export async function readUpload(segments: string[]): Promise<Buffer | null> {
+  const uploadRoot = getResolvedUploadRoot();
+  const file = resolveUploadPath(uploadRoot, ...segments);
+
+  if (file !== uploadRoot && !file.startsWith(`${uploadRoot}${path.sep}`)) {
+    return null;
+  }
+
+  try {
+    return await uploadFs.read(file);
+  } catch (error) {
+    const { code } = error as NodeJS.ErrnoException;
+    if (code === 'ENOENT' || code === 'ENOTDIR' || code === 'EISDIR') {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
 async function ensureUploadRoot(uploadRoot: string) {
   try {
-    await fs.mkdir(uploadRoot, { recursive: true });
+    await uploadFs.mkdir(uploadRoot);
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
     if (err.code !== 'EACCES') {
       throw err;
     }
-    await fs.access(uploadRoot, fsConstants.W_OK);
+    await uploadFs.assertWritable(uploadRoot);
   }
 }
 
@@ -74,7 +102,7 @@ export async function validateAndStoreImage(
   const publicPath = options?.publicPath ?? getUploadsPublicPath();
   const field = options?.field;
   const subdirectory = resolveUploadSubdirectory(options?.subdirectory);
-  const targetDirectory = subdirectory ? path.join(uploadRoot, subdirectory) : uploadRoot;
+  const targetDirectory = subdirectory ? resolveUploadPath(uploadRoot, subdirectory) : uploadRoot;
 
   if (!(file instanceof File) || file.size === 0) {
     return { error: 'imageRequired', field };
@@ -93,9 +121,7 @@ export async function validateAndStoreImage(
   await ensureUploadRoot(targetDirectory);
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const uploadRootUrl = pathToFileURL(`${targetDirectory}${path.sep}`);
-  const fileUrl = new URL(filename, uploadRootUrl);
-  await fs.writeFile(fileUrl, buffer);
+  await uploadFs.write(resolveUploadPath(targetDirectory, filename), buffer);
 
   return {
     url: subdirectory ? path.posix.join(publicPath, subdirectory, filename) : path.posix.join(publicPath, filename)
