@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.44](https://github.com/La-Ventil/ventil-os/compare/v0.0.43...v0.0.44) (2026-09-11)
+
+
+### Bug Fixes
+
+* **release:** include staged docs in release commit ([41aa766](https://github.com/La-Ventil/ventil-os/commit/41aa7661e6f798deb3b9b5e70c6d997c46741b0d))
+
+
+### Docs
+
+* **env:** keep uploads on the FS bucket across deploys ([ccb6b6c](https://github.com/La-Ventil/ventil-os/commit/ccb6b6c5da3a8fc0daa72f206dd95b0f98733922))
+
 ### [0.0.43](https://github.com/La-Ventil/ventil-os/compare/v0.0.42...v0.0.43) (2026-06-24)
 
 
