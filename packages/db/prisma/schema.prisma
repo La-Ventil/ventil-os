@@ -11,6 +11,8 @@ generator client {
   // Runtime code that jest loads imports enums from generated/prisma/enums, which is free of import.meta.
   moduleFormat        = "esm"
   importFileExtension = ""
+  // Half the size of the default "fast" query compiler: ~50 MiB less peak memory on the standalone server.
+  compilerBuild       = "small"
 }
 
 datasource db {
