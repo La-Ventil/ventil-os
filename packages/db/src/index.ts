@@ -1,4 +1,11 @@
-import { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile } from '@prisma/client';
+import {
+  createPrismaClient,
+  Profile,
+  ConsentType,
+  StudentProfile,
+  ExternalProfile,
+  type PrismaClient
+} from './prisma-client';
 import { EventRepository } from './repositories/event.repository';
 import { MessageRepository } from './repositories/message.repository';
 import { MachineRepository } from './repositories/machine.repository';
@@ -9,7 +16,7 @@ import { VerificationTokenRepository } from './repositories/verification-token.r
 
 const globalForPrisma = globalThis as unknown as { prismaClient: PrismaClient };
 
-export const prismaClient = globalForPrisma.prismaClient || new PrismaClient();
+export const prismaClient = globalForPrisma.prismaClient || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prismaClient = prismaClient;
 
@@ -26,4 +33,4 @@ export const machineReservationRepository = new MachineReservationRepository(pri
 export const openBadgeRepository = new OpenBadgeRepository(prismaClient);
 export const verificationTokenRepository = new VerificationTokenRepository(prismaClient);
 
-export { PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile };
+export { type PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile };

@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@repo/db/client';
 import { getE2EPrismaClient } from './e2e-prisma';
 
 const MAILPIT_BASE_URL = process.env.MAILPIT_BASE_URL ?? 'http://127.0.0.1:8025';

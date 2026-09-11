@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
+import type { Prisma, PrismaClient, ActivityStatus as PrismaActivityStatus } from '../generated/prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { OpenBadgeError } from '@repo/domain/badge/open-badge-errors';
 import { OpenBadgeLevel } from '@repo/domain/badge/open-badge-level';

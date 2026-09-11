@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient } from '@prisma/client';
+import type { Prisma, PrismaClient } from '@repo/db/client';
 import type { DateInterval } from '@repo/domain/date-interval';
 import { reservationIntervalFor } from '@repo/domain/machine/reservation-rules';
 import { getE2EPrismaClient } from './e2e-prisma';

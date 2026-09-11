@@ -1,4 +1,4 @@
-import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '@prisma/client';
+import type { PrismaClient, ActivityStatus as PrismaActivityStatus } from '../generated/prisma/client';
 import { toActivityStatus, type ActivityStatus } from '@repo/domain/activity-status';
 import { OpenBadgeRequirement } from '@repo/domain/badge/open-badge-requirement';
 import { Machine, MachineReservationSlot } from '@repo/domain/machine/machine';

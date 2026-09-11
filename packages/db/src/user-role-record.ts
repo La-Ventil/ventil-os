@@ -1,4 +1,4 @@
-import { ExternalProfile, Profile, StudentProfile } from '@prisma/client';
+import { ExternalProfile, Profile, StudentProfile } from './generated/prisma/enums';
 import { UserRole } from '@repo/domain/user/user-role';
 
 export type UserProfileRecord = {

@@ -1,4 +1,5 @@
-import { RegistrationStatus, type Prisma, type PrismaClient } from '@prisma/client';
+import type { Prisma, PrismaClient } from '../generated/prisma/client';
+import { RegistrationStatus } from '../generated/prisma/enums';
 import { parseEducationLevel } from '@repo/domain/user/education-level';
 import { Email } from '@repo/domain/user/email';
 import { deriveUserRole, type UserRole } from '@repo/domain/user/user-role';

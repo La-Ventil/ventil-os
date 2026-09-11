@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient, type PrismaClient } from '@repo/db/client';
 import { resolveE2EDatabaseTarget } from './e2e-db';
 
 const prismaClientsBySlot = new Map<string, PrismaClient>();
@@ -11,15 +11,8 @@ export function getE2EPrismaClient(dbSlot?: string): PrismaClient {
     return cachedClient;
   }
 
-  const client = new PrismaClient({
-    datasources: {
-      db: {
-        url: target.url
-      }
-    }
-  });
+  const client = createPrismaClient(target.url);
 
   prismaClientsBySlot.set(target.slot, client);
   return client;
 }
-

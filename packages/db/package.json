@@ -2,28 +2,26 @@
   "name": "@repo/db",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist",
+    "build": "prisma generate && tsc",
+    "clean": "rm -rf dist src/generated",
     "dev": "tsc -w",
     "lint": "eslint \"src/**/*.ts*\" --max-warnings 0",
     "lint:dev": "eslint \"src/**/*.ts*\"",
-    "check-types": "tsc --noEmit",
+    "check-types": "prisma generate && tsc --noEmit",
     "test": "jest",
     "db:migrate": "prisma migrate dev --name init",
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:reset": "prisma migrate reset --force",
+    "db:push": "prisma db push",
+    "db:reset": "prisma migrate reset --force && prisma db seed",
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   },
   "jest": {
     "preset": "@repo/jest-presets/node"
@@ -36,17 +34,19 @@
     "@types/node": "22.15.3",
     "eslint": "^9.36.0",
     "jest": "^29.7.0",
-    "prisma": "^5.16.1",
+    "prisma": "^7.10.0",
     "tsx": "^4.20.5",
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "@repo/crypto": "workspace:*",
     "@repo/domain": "workspace:*"
   },
   "exports": {
     ".": "./src/index.ts",
+    "./client": "./src/prisma-client.ts",
     "./read-models": "./src/read-models/index.ts",
     "./selects": "./src/selects/index.ts"
   }
