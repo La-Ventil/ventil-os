@@ -28,7 +28,7 @@ export const assertMemoryProfileAccess = (request: Request): Response | null => 
 
 export const resolveMemoryProfileOutputDir = (): string => {
   const outputDir = process.env.MEMORY_PROFILE_OUTPUT_DIR?.trim() || '.memory-profiles/runtime';
-  const resolved = path.resolve(process.cwd(), outputDir);
+  const resolved = path.resolve(/* turbopackIgnore: true */ process.cwd(), outputDir);
   mkdirSync(resolved, { recursive: true });
   return resolved;
 };
