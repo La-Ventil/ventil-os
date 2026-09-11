@@ -1,7 +1,7 @@
-import { PrismaClient, Profile, StudentProfile, ExternalProfile } from '@prisma/client';
 import { hashSecret } from '@repo/crypto';
+import { createPrismaClient, Profile, StudentProfile, ExternalProfile } from '../src/prisma-client';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const DEFAULT_PASSWORD = process.env.SEED_PASSWORD ?? 'ChangeMe123!';
 const INCLUDE_DEMO_DATA = process.env.SEED_INCLUDE_DEMO_DATA !== '0';
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL?.trim() || 'admin@ventil.local';

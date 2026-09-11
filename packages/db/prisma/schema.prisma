@@ -5,12 +5,16 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  // ESM like the other workspace packages, with extensionless imports as in the rest of the source.
+  // Runtime code that jest loads imports enums from generated/prisma/enums, which is free of import.meta.
+  moduleFormat        = "esm"
+  importFileExtension = ""
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Message {

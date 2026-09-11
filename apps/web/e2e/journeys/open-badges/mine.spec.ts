@@ -1,4 +1,4 @@
-import { ActivityStatus as PrismaActivityStatus } from '@prisma/client';
+import { ActivityStatus as PrismaActivityStatus } from '@repo/db/client';
 import { expect, test } from '../../fixtures/test';
 import { getOpenBadgeTestRepository } from '../../helpers/open-badge-test-repository';
 

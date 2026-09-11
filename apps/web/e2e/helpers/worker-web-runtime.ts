@@ -49,8 +49,7 @@ const execSqlWithEnv = (sql: string, env: NodeJS.ProcessEnv): void => {
 };
 
 const resetWorkerSchema = (env: NodeJS.ProcessEnv): void => {
-  // Avoid repeated Prisma client generation in worker mode; generate once outside tests.
-  execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force --skip-generate --skip-seed', env);
+  execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force', env);
 };
 
 const seedWorkerSchema = (env: NodeJS.ProcessEnv): void => {

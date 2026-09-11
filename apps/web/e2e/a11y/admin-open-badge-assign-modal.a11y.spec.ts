@@ -1,4 +1,4 @@
-import { ActivityStatus as PrismaActivityStatus } from '@prisma/client';
+import { ActivityStatus as PrismaActivityStatus } from '@repo/db/client';
 import { test, expect } from '../fixtures/test';
 import { expectNoSeriousA11yViolations } from '../helpers/a11y';
 import { closeDialogWithEscape, expectDialog } from '../helpers/dialogs';

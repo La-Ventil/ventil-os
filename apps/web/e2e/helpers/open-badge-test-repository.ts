@@ -1,4 +1,4 @@
-import { ActivityStatus as PrismaActivityStatus, type PrismaClient } from '@prisma/client';
+import { ActivityStatus as PrismaActivityStatus, type PrismaClient } from '@repo/db/client';
 import { getE2EPrismaClient } from './e2e-prisma';
 
 export class OpenBadgeTestRepository {

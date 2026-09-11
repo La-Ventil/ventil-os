@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '../generated/prisma/client';
 import type { MessageReadModel } from '../read-models/message';
 
 export class MessageRepository {

@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '../generated/prisma/client';
 import type { VerificationTokenReadModel } from '../read-models/verification-token';
 import { verificationTokenSelect } from '../selects/verification-token';
 

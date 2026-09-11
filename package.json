@@ -21,7 +21,7 @@
     "release:git": "./scripts/release.sh",
     "db:generate": "pnpm --filter @repo/db db:generate",
     "db:deploy": "pnpm --filter @repo/db exec prisma migrate deploy",
-    "db:reset": "pnpm --filter @repo/db exec prisma migrate reset --force",
+    "db:reset": "pnpm --filter @repo/db db:reset",
     "db:seed": "pnpm --filter @repo/db exec prisma migrate deploy && pnpm --filter @repo/db db:generate && pnpm --filter @repo/db exec prisma db seed",
     "test": "turbo run test",
     "test:e2e": "pnpm --filter web test:e2e",

@@ -33,7 +33,7 @@ export const resetSharedE2EDatabase = (): void => {
     DATABASE_URL: target.url
   };
 
-  execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force --skip-generate --skip-seed', env);
+  execWithEnv('pnpm --filter @repo/db exec prisma migrate reset --force', env);
   execWithEnv('pnpm --filter @repo/db exec prisma db seed', env);
 };
 
