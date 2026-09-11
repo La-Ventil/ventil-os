@@ -7,13 +7,31 @@ const DIALOG_CLOSE_TIMEOUT_MS = 1_000;
 const getNamedDialogLocator = (page: Page, name?: string | RegExp): Locator =>
   (name ? page.getByRole('dialog', { name }) : page.getByRole('dialog')).last();
 
+// A route modal navigates first and renders its `loading.tsx` shell, so the URL matches while the named
+// dialog does not exist yet. In production a route is also compiled on its first request, which is why
+// the dialog needs the same budget as the URL rather than the 5 s default.
+const ROUTE_MODAL_TIMEOUT_MS = 15_000;
+
 const getVisibleDialogs = (page: Page): Locator => page.locator('[role="dialog"]:visible');
 
 const getVisibleDialogCount = async (page: Page): Promise<number> => getVisibleDialogs(page).count();
 
-export async function expectDialog(page: Page, name?: string | RegExp): Promise<Locator> {
+// ModalLoadingShell is the only dialog content marked busy.
+const getLoadingDialogs = (page: Page): Locator => page.locator('[role="dialog"] [aria-busy="true"]');
+
+type ExpectDialogOptions = {
+  timeout?: number;
+};
+
+export async function expectDialog(
+  page: Page,
+  name?: string | RegExp,
+  { timeout = ROUTE_MODAL_TIMEOUT_MS }: ExpectDialogOptions = {}
+): Promise<Locator> {
+  await expect(getLoadingDialogs(page)).toHaveCount(0, { timeout });
+
   const dialog = getNamedDialogLocator(page, name);
-  await expect(dialog).toBeVisible();
+  await expect(dialog).toBeVisible({ timeout });
   return dialog;
 }
 
@@ -32,7 +50,7 @@ export async function openRouteModalFromTrigger({
 }: OpenRouteModalArgs): Promise<Locator> {
   await expect(trigger).toBeVisible();
   await trigger.click();
-  await expect(page).toHaveURL(expectedUrl, { timeout: 15_000 });
+  await expect(page).toHaveURL(expectedUrl, { timeout: ROUTE_MODAL_TIMEOUT_MS });
   return expectDialog(page, dialogName);
 }
 

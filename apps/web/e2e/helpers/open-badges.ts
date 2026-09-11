@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { openRouteModalFromTrigger } from './dialogs';
+import { expectDialog, openRouteModalFromTrigger } from './dialogs';
 
 export async function openAdminOpenBadgeAssignModalById(page: Page, badgeId: string): Promise<void> {
   const href = `/hub/admin/open-badges/${badgeId}`;
@@ -7,7 +7,7 @@ export async function openAdminOpenBadgeAssignModalById(page: Page, badgeId: str
   await expect(page).toHaveURL(new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), {
     timeout: 30_000
   });
-  await expect(page.getByRole('dialog').last()).toBeVisible({ timeout: 30_000 });
+  await expectDialog(page);
 }
 
 export async function openAdminOpenBadgeAssignModal(
