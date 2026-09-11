@@ -52,7 +52,7 @@ jobs:
       APP_NAME: VentilOS
       BASE_URL: http://127.0.0.1:3001
       HOST: 127.0.0.1
-      UPLOADS_DIR: apps/web/uploads
+      UPLOADS_DIR: uploads
       UPLOADS_PUBLIC_PATH: /uploads
       SMTP_HOST: 127.0.0.1
       SMTP_PORT: '1025'
