@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { formatDayKey, type DayKey } from '@repo/application';
+import { formatDayKey, type DayKey } from '@repo/application/time/date-time';
 import type { MachineDetailsViewModel } from '@repo/application/machines/models/machine-details';
 import type { MachineReservationViewModel } from '@repo/application/machines/models/machine-reservation';
 import type { UserSummaryViewModel } from '@repo/application/users/models/user-summary';
