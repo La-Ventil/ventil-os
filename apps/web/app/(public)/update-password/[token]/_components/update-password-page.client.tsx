@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/navigation';
 import Link from '@repo/ui/link';
 import PasswordField from '@repo/ui/forms/password-field';
-import { signInAndRedirect } from '../../../../../lib/auth';
+import { signInAndRedirect } from '../../../../../lib/auth/client';
 import { updatePasswordAction, type UpdatePasswordActionState } from '../../../../../lib/actions/auth/update-password';
 
 type UpdatePasswordPageClientProps = {
