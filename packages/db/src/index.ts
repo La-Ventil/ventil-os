@@ -16,9 +16,9 @@ import { VerificationTokenRepository } from './repositories/verification-token.r
 
 const globalForPrisma = globalThis as unknown as { prismaClient: PrismaClient };
 
-export const prismaClient = globalForPrisma.prismaClient || createPrismaClient();
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prismaClient = prismaClient;
+// Cached on globalThis in every environment: Next bundles this module into several server chunks, and each
+// copy would otherwise open its own pool and load its own query compiler. In dev it also survives hot reloads.
+export const prismaClient = (globalForPrisma.prismaClient ??= createPrismaClient());
 
 export * from './read-models';
 export * from './selects';
