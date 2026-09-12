@@ -10,7 +10,7 @@ const getNamedDialogLocator = (page: Page, name?: string | RegExp): Locator =>
 // A route modal navigates first and renders its `loading.tsx` shell, so the URL matches while the named
 // dialog does not exist yet. In production a route is also compiled on its first request, which is why
 // the dialog needs the same budget as the URL rather than the 5 s default.
-const ROUTE_MODAL_TIMEOUT_MS = 15_000;
+export const ROUTE_MODAL_TIMEOUT_MS = 15_000;
 
 const getVisibleDialogs = (page: Page): Locator => page.locator('[role="dialog"]:visible');
 

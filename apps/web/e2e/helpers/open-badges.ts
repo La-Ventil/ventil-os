@@ -1,11 +1,11 @@
 import { expect, type Page } from '@playwright/test';
-import { expectDialog, openRouteModalFromTrigger } from './dialogs';
+import { expectDialog, openRouteModalFromTrigger, ROUTE_MODAL_TIMEOUT_MS } from './dialogs';
 
 export async function openAdminOpenBadgeAssignModalById(page: Page, badgeId: string): Promise<void> {
   const href = `/hub/admin/open-badges/${badgeId}`;
   await page.goto(href);
   await expect(page).toHaveURL(new RegExp(`${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), {
-    timeout: 30_000
+    timeout: ROUTE_MODAL_TIMEOUT_MS
   });
   await expectDialog(page);
 }
