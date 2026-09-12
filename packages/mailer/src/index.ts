@@ -54,7 +54,7 @@ const resolveSmtpConfig = () => {
   };
 };
 
-let transporter: nodemailer.Transporter | null = null;
+let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
 
 const getTransporter = () => {
   if (!transporter) {

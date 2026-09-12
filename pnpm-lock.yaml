@@ -604,8 +604,8 @@ importers:
   packages/mailer:
     dependencies:
       nodemailer:
-        specifier: ^7.0.13
-        version: 7.0.13
+        specifier: ^10.0.9
+        version: 10.0.9
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
@@ -613,9 +613,6 @@ importers:
       '@types/node':
         specifier: 22.20.2
         version: 22.20.2
-      '@types/nodemailer':
-        specifier: ^6.4.24
-        version: 6.4.24
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -3174,9 +3171,6 @@ packages:
 
   '@types/node@22.20.2':
     resolution: {integrity: sha512-xlvWf4Vs9n1PEVYwP1n4vvG07M6y8WgvJ2t0vbrWTmijsIHp1cS+uJ2kMIRdY3nHZK0nCYKrPeD171+SzF4/zw==}
-
-  '@types/nodemailer@6.4.24':
-    resolution: {integrity: sha512-Ww4u0rT9wQNXh4JiQaIwx3QWdcOFXzOjQA2zc+jtFYNmQiT4mIUqcDin51bDFdkzKubFnQCZNK7FIHlPKQ/q9w==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -6000,6 +5994,10 @@ packages:
   node-releases@2.0.55:
     resolution: {integrity: sha512-mIrE/Cw9y+9Au6dS5vDKDhQza9YvG6w+ZrS6X+ZzA7yFW/soAeaups4Qzn1bL6g5FVy8WtP79+0j82oPIbqRjQ==}
     engines: {node: '>=18'}
+
+  nodemailer@10.0.9:
+    resolution: {integrity: sha512-BF0qcyplCwp+jMk6HCjFykBz/YhhZSsxrARhOldLwFWH+8kGjQsd2WIMIZhqEuyXRoGFi0ONbDeWDMDoL8MhLw==}
+    engines: {node: '>=20.0.0'}
 
   nodemailer@7.0.13:
     resolution: {integrity: sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==}
@@ -9774,10 +9772,6 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/nodemailer@6.4.24':
-    dependencies:
-      '@types/node': 22.20.2
-
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/parse-json@4.0.2': {}
@@ -13345,7 +13339,10 @@ snapshots:
 
   node-releases@2.0.55: {}
 
-  nodemailer@7.0.13: {}
+  nodemailer@10.0.9: {}
+
+  nodemailer@7.0.13:
+    optional: true
 
   nodemon@3.1.14:
     dependencies:
