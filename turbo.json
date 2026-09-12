@@ -30,6 +30,7 @@
     "EMAIL_FROM",
     "HOST",
     "CI",
+    "COMMIT_ID",
     "PORT",
     "PLAYWRIGHT_PORT",
     "NEXT_DIST_DIR",

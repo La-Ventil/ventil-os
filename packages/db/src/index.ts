@@ -34,3 +34,10 @@ export const openBadgeRepository = new OpenBadgeRepository(prismaClient);
 export const verificationTokenRepository = new VerificationTokenRepository(prismaClient);
 
 export { type PrismaClient, Profile, ConsentType, StudentProfile, ExternalProfile };
+
+/** Round-trip to the database, for readiness probes. Returns the latency in milliseconds. */
+export async function pingDatabase(): Promise<number> {
+  const startedAt = performance.now();
+  await prismaClient.$queryRaw`SELECT 1`;
+  return Math.round(performance.now() - startedAt);
+}
