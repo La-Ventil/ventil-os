@@ -29,17 +29,17 @@
     "lint:staged": "pnpm exec lint-staged -c .lintstagedrc.cjs --relative --cwd ."
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "zod": "^4.1.12",
-    "zod-form-data": "3.0.1"
+    "react": "^19.3.0",
+    "zod": "^4.6.2",
+    "zod-form-data": "3.0.3"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "22.15.3",
-    "@types/react": "19.2.5",
-    "eslint": "^9.36.0",
+    "@types/node": "22.20.2",
+    "@types/react": "19.3.0",
+    "eslint": "^9.39.5",
     "typescript": "5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.7"
   }
 }

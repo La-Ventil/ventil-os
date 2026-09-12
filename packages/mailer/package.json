@@ -11,12 +11,12 @@
     "lint:staged": "echo \"skip lint:staged (mailer)\""
   },
   "dependencies": {
-    "nodemailer": "^7.0.7"
+    "nodemailer": "^7.0.13"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "22.15.3",
-    "@types/nodemailer": "^6.4.17",
+    "@types/node": "22.20.2",
+    "@types/nodemailer": "^6.4.24",
     "typescript": "5.9.3"
   }
 }

@@ -43,22 +43,22 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@repo/avatar-system": "workspace:*",
     "@repo/crypto": "workspace:*",
     "@repo/db": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/mailer": "workspace:*",
     "@repo/storage": "workspace:*",
-    "dayjs": "^1.11.19",
-    "zod": "^4.1.12",
-    "zod-form-data": "^3.0.1",
-    "@repo/avatar-system": "workspace:*"
+    "dayjs": "^1.11.23",
+    "zod": "^4.6.2",
+    "zod-form-data": "^3.0.3"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "22.15.3",
-    "eslint": "^9.36.0",
+    "@types/node": "22.20.2",
+    "eslint": "^9.39.5",
     "typescript": "5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.7"
   }
 }

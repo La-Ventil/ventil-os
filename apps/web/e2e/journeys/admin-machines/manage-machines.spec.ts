@@ -56,7 +56,7 @@ test.describe('Admin machine journeys', () => {
     await page.locator('input[name="name"]').fill(machineName);
     await page.locator('input[name="description"]').fill('Created with an open badge requirement.');
 
-    await page.getByRole('checkbox', { name: /require an open badge/i }).click();
+    await page.getByRole('switch', { name: /require an open badge/i }).click();
 
     const badgeAutocomplete = page.getByRole('combobox', { name: /^open badge$/i });
     await badgeAutocomplete.fill('Impression 3D');
