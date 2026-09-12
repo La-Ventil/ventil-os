@@ -29,6 +29,9 @@ export async function submitReservationFromModalRoute(
   // Must stay under the 30 s test budget: with the full budget the loop never reaches its own deadline,
   // so the timeout below is unreachable and the test dies on whatever call is in flight instead.
   const SUBMISSION_TIMEOUT_MS = 15_000;
+  // Each probe must be bounded too: Playwright has no default action timeout here, so a single auto-waiting
+  // call could outlive the deadline check above and let the test budget expire inside the loop.
+  const PROBE_TIMEOUT_MS = 1_000;
   const deadline = Date.now() + SUBMISSION_TIMEOUT_MS;
   let submissionState = 'pending';
 
@@ -56,21 +59,34 @@ export async function submitReservationFromModalRoute(
 
     const alert = reservationDialog.getByRole('alert').last();
     if (await alert.isVisible().catch(() => false)) {
-      submissionState = `alert:${(await alert.textContent())?.trim() ?? ''}`;
+      const text = await alert.textContent({ timeout: PROBE_TIMEOUT_MS }).catch(() => '');
+      submissionState = `alert:${text?.trim() ?? ''}`;
       break;
     }
 
+    // The state element is unmounted by the re-render that follows the action, so read the three attributes in
+    // one evaluation: reading them one by one raced the unmount and threw mid-loop. A disappearance just means
+    // there is nothing to report yet, hence the guard.
     const debugState = page.getByTestId('machine-reservation-state');
-    if ((await debugState.count()) > 0) {
-      const success = await debugState.getAttribute('data-success');
-      const valid = await debugState.getAttribute('data-valid');
-      const message = await debugState.getAttribute('data-message');
-      if (success === 'true') {
-        submissionState = `success:${message ?? ''}`;
+    const state = await debugState
+      .evaluate(
+        (node) => ({
+          success: node.getAttribute('data-success'),
+          valid: node.getAttribute('data-valid'),
+          message: node.getAttribute('data-message')
+        }),
+        undefined,
+        { timeout: PROBE_TIMEOUT_MS }
+      )
+      .catch(() => null);
+
+    if (state) {
+      if (state.success === 'true') {
+        submissionState = `success:${state.message ?? ''}`;
         break;
       }
-      if (valid === 'false') {
-        submissionState = `invalid:${message ?? ''}`;
+      if (state.valid === 'false') {
+        submissionState = `invalid:${state.message ?? ''}`;
         break;
       }
     }
@@ -80,15 +96,19 @@ export async function submitReservationFromModalRoute(
 
   if (submissionState === 'pending') {
     // Report what the loop was still seeing, otherwise the next timeout is as opaque as this one was.
-    const debugState = page.getByTestId('machine-reservation-state');
-    const debugStateCount = await debugState.count();
-    const debugAttributes = debugStateCount
-      ? {
-          success: await debugState.getAttribute('data-success'),
-          valid: await debugState.getAttribute('data-valid'),
-          message: await debugState.getAttribute('data-message')
-        }
-      : null;
+    // Same guarded single read as in the loop: at this point the state element has usually just unmounted.
+    const debugAttributes = await page
+      .getByTestId('machine-reservation-state')
+      .evaluate(
+        (node) => ({
+          success: node.getAttribute('data-success'),
+          valid: node.getAttribute('data-valid'),
+          message: node.getAttribute('data-message')
+        }),
+        undefined,
+        { timeout: PROBE_TIMEOUT_MS }
+      )
+      .catch(() => null);
 
     throw new Error(
       `Reservation submission timed out after ${SUBMISSION_TIMEOUT_MS} ms ` +
