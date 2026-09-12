@@ -43,12 +43,14 @@ services:
       retries: 20
 
   uptrace_postgres:
-    image: postgres:15-alpine
+    # Not alpine: the entrypoint below generates a self-signed certificate with openssl, absent from that image.
+    image: postgres:15
     profiles: [uptrace]
     restart: "no"
     command:
+      # Not a login shell: it would reset PATH and hide the PostgreSQL binaries of the image.
       - sh
-      - -lc
+      - -c
       - |
         if [ ! -f "$$PGDATA/server.crt" ] || [ ! -f "$$PGDATA/server.key" ]; then
           openssl req -new -x509 -days 3650 -nodes -text \
