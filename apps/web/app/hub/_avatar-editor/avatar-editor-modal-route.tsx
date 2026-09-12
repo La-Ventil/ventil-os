@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import { useId, type JSX } from 'react';
 import { useTranslations } from 'next-intl';
 import ModalLayout from '@repo/ui/modal-layout';
 import SectionTitle from '@repo/ui/section-title';
@@ -24,6 +24,7 @@ export default function AvatarEditorModalRoute({
 }: AvatarEditorModalRouteProps): JSX.Element {
   const t = useTranslations('pages.hub.avatarSettings');
   const tCommon = useTranslations('common');
+  const titleId = useId();
   const { open, handleClose } = useRouteModal({
     modalPath,
     closeHref
@@ -34,11 +35,12 @@ export default function AvatarEditorModalRoute({
       open={open}
       onClose={handleClose}
       closeLabel={tCommon('actions.back')}
+      ariaLabelledBy={titleId}
       fullWidth
       maxWidth="sm"
       themeSection={ThemeSection.User}
     >
-      <SectionTitle>{t('title')}</SectionTitle>
+      <SectionTitle id={titleId}>{t('title')}</SectionTitle>
       <AvatarEditor
         initialSelection={initialSelection}
         onBack={handleClose}

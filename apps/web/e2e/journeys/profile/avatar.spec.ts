@@ -3,7 +3,7 @@ import { closeDialogWithEscape, expectDialog, openRouteModalFromTrigger } from '
 
 // The avatar editor is the only modal reached through an intercepting route, so its deep link is what
 // distinguishes it: /hub/profile/avatar must render the profile behind the dialog, not replace it.
-// The dialog carries no accessible name today, hence the unnamed locators.
+const AVATAR_DIALOG = /change avatar/i;
 const AVATAR_URL = /\/hub\/profile\/avatar$/;
 const PROFILE_URL = /\/hub\/profile$/;
 
@@ -17,10 +17,10 @@ test.describe('Profile avatar journeys', () => {
     const dialog = await openRouteModalFromTrigger({
       page,
       trigger: getAvatarLink(page),
+      dialogName: AVATAR_DIALOG,
       expectedUrl: AVATAR_URL
     });
 
-    await expect(dialog.getByText(/change avatar/i).first()).toBeVisible();
     await expect(dialog.getByRole('button', { name: /save/i })).toBeVisible();
     // The open dialog hides the rest of the app from the accessibility tree, so check the DOM directly.
     await expect(page.locator('a[href="/hub/profile/avatar"]')).toHaveCount(1);
@@ -30,9 +30,7 @@ test.describe('Profile avatar journeys', () => {
     await loginAs('student');
     await page.goto('/hub/profile/avatar');
 
-    const dialog = await expectDialog(page);
-
-    await expect(dialog.getByText(/change avatar/i).first()).toBeVisible();
+    await expectDialog(page, AVATAR_DIALOG);
     // The open dialog hides the rest of the app from the accessibility tree, so check the DOM directly.
     await expect(page.locator('a[href="/hub/profile/avatar"]')).toHaveCount(1);
   });
@@ -41,11 +39,20 @@ test.describe('Profile avatar journeys', () => {
     await loginAs('student');
     await page.goto('/hub/profile');
 
-    await openRouteModalFromTrigger({ page, trigger: getAvatarLink(page), expectedUrl: AVATAR_URL });
+    await openRouteModalFromTrigger({
+      page,
+      trigger: getAvatarLink(page),
+      dialogName: AVATAR_DIALOG,
+      expectedUrl: AVATAR_URL
+    });
     await closeDialogWithEscape(page);
     await expect(page).toHaveURL(PROFILE_URL);
 
-    await openRouteModalFromTrigger({ page, trigger: getAvatarLink(page), expectedUrl: AVATAR_URL });
-    await expect((await expectDialog(page)).getByText(/change avatar/i).first()).toBeVisible();
+    await openRouteModalFromTrigger({
+      page,
+      trigger: getAvatarLink(page),
+      dialogName: AVATAR_DIALOG,
+      expectedUrl: AVATAR_URL
+    });
   });
 });
