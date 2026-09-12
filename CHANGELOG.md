@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.47](https://github.com/La-Ventil/ventil-os/compare/v0.0.46...v0.0.47) (2026-09-12)
+
+
+### Features
+
+* **web:** report database readiness on a dedicated endpoint ([52a88b3](https://github.com/La-Ventil/ventil-os/commit/52a88b35eb8b9e6b9f62d51b21bdc6c1e2327d6f))
+
+
+### Bug Fixes
+
+* **a11y:** name the avatar editor dialog ([15b8935](https://github.com/La-Ventil/ventil-os/commit/15b89359a2db150655544a2ad03282aa54202bf8))
+* **dev:** make the uptrace postgres service start, and match the prod hook ([c0909d1](https://github.com/La-Ventil/ventil-os/commit/c0909d1835578b3c46fe5d31790eea321a76a0f0))
+
 ### [0.0.46](https://github.com/La-Ventil/ventil-os/compare/v0.0.45...v0.0.46) (2026-09-11)
 
 
