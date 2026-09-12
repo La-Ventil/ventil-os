@@ -26,7 +26,10 @@ export async function submitReservationFromModalRoute(
   await expect(reservationDialog).toBeVisible();
   await reservationDialog.getByRole('button', { name: /reserve/i }).click();
 
-  const deadline = Date.now() + 30_000;
+  // Must stay under the 30 s test budget: with the full budget the loop never reaches its own deadline,
+  // so the timeout below is unreachable and the test dies on whatever call is in flight instead.
+  const SUBMISSION_TIMEOUT_MS = 15_000;
+  const deadline = Date.now() + SUBMISSION_TIMEOUT_MS;
   let submissionState = 'pending';
 
   while (Date.now() < deadline) {
@@ -76,7 +79,22 @@ export async function submitReservationFromModalRoute(
   }
 
   if (submissionState === 'pending') {
-    throw new Error('Reservation submission timed out');
+    // Report what the loop was still seeing, otherwise the next timeout is as opaque as this one was.
+    const debugState = page.getByTestId('machine-reservation-state');
+    const debugStateCount = await debugState.count();
+    const debugAttributes = debugStateCount
+      ? {
+          success: await debugState.getAttribute('data-success'),
+          valid: await debugState.getAttribute('data-valid'),
+          message: await debugState.getAttribute('data-message')
+        }
+      : null;
+
+    throw new Error(
+      `Reservation submission timed out after ${SUBMISSION_TIMEOUT_MS} ms ` +
+        `(url=${page.url()}, reservationDialogs=${await reservationDialog.count()}, ` +
+        `debugState=${JSON.stringify(debugAttributes)})`
+    );
   }
 
   if (submissionState.startsWith('alert:') || submissionState.startsWith('invalid:') || submissionState === 'closed') {
