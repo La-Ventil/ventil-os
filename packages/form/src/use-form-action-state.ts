@@ -1,4 +1,4 @@
-import { startTransition, useActionState, useState } from 'react';
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import type { FormEventHandler } from 'react';
 import type { FormState } from './form-state';
@@ -25,6 +25,33 @@ const safeTranslate = (translate: Translator, key: string, fallback: string) => 
 const preferNamespaceFallback = (translate: Translator, key: string, fallbackKey: string) => {
   const fallback = safeTranslate(translate, fallbackKey, key);
   return fallback === key ? key : fallback;
+};
+
+/** Field error keys are dotted (`levels.0.title`); control names use brackets (`levels[0].title`). */
+export const fieldErrorKeyToControlName = (key: string) => key.replace(/\.(\d+)(?=\.|$)/g, '[$1]');
+
+/**
+ * Moves the focus to the first control the form rejected, in document order.
+ * Without it the error summary sits at the top of the page while the submit button is at the bottom,
+ * so the feedback lands off-screen.
+ */
+const focusFirstInvalidControl = (form: HTMLFormElement, fieldErrors: Record<string, string[] | undefined>) => {
+  const invalidNames = new Set(
+    Object.entries(fieldErrors)
+      .filter(([, messages]) => messages && messages.length > 0)
+      .map(([key]) => fieldErrorKeyToControlName(key))
+  );
+
+  if (invalidNames.size === 0) return;
+
+  const control = Array.from(form.elements).find((element): element is HTMLElement => {
+    if (!(element instanceof HTMLElement)) return false;
+    const name = (element as HTMLElement & { name?: string }).name;
+    if (!name || !invalidNames.has(name)) return false;
+    return !(element as HTMLElement & { disabled?: boolean }).disabled;
+  });
+
+  control?.focus();
 };
 
 /**
@@ -73,8 +100,22 @@ export function useFormActionState<Schema extends SchemaLike>({
   );
   const [clientState, setClientState] = useState<FormState<Values> | null>(null);
   const [lastFormData, setLastFormData] = useState<FormData | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const lastFocusedStateRef = useRef<FormState<Values> | null>(null);
 
   const effectiveState = clientState ?? state;
+
+  // Runs once per submit outcome, whether it was rejected by the client parse or by the server action.
+  useEffect(() => {
+    if (isPending) return;
+    if (lastFocusedStateRef.current === effectiveState) return;
+    lastFocusedStateRef.current = effectiveState;
+
+    const form = formRef.current;
+    if (!form || effectiveState.success) return;
+
+    focusFirstInvalidControl(form, (effectiveState.fieldErrors ?? {}) as Record<string, string[] | undefined>);
+  }, [effectiveState, isPending]);
   const toValues = (formData: FormData) => formDataToValues(formData, schema) as Values;
   const toValuesOrRedisplay = (formData: FormData, fallbackValues: Values): Values => {
     try {
@@ -129,6 +170,7 @@ export function useFormActionState<Schema extends SchemaLike>({
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+    formRef.current = form;
     const formData = new FormData(form);
     setLastFormData(formData);
 
