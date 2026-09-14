@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.48](https://github.com/La-Ventil/ventil-os/compare/v0.0.47...v0.0.48) (2026-09-14)
+
+
+### Features
+
+* **admin:** validate open badge levels as you type ([b50d775](https://github.com/La-Ventil/ventil-os/commit/b50d7756211d53eb95a1978fa80ff87f7fc62ef3))
+* **auth:** recover a stranded account without disclosing who exists ([81979c1](https://github.com/La-Ventil/ventil-os/commit/81979c1965725e4733d46596827b33b8d8869201))
+* **form:** keep pristine fields silent and drop stale submit errors ([acfe6e3](https://github.com/La-Ventil/ventil-os/commit/acfe6e3b4ab431faf6c0b51206dd8f237d40cdf8))
+* **form:** move focus to the first invalid control on submit ([75e08fb](https://github.com/La-Ventil/ventil-os/commit/75e08fb7f8393d2baf54c47296ce8e440f81b213))
+
+
+### Docs
+
+* **ops:** gather the Clever Cloud knowledge in one document ([31e57d3](https://github.com/La-Ventil/ventil-os/commit/31e57d371012d2b3a817d160040b99df643cf5c3))
+
+
+### Performance
+
+* **ui:** close route modals without waiting for the parent route ([f6733ec](https://github.com/La-Ventil/ventil-os/commit/f6733ec811cd7919f522b8c4eda8ccd5e0f35e99))
+
 ### [0.0.47](https://github.com/La-Ventil/ventil-os/compare/v0.0.46...v0.0.47) (2026-09-12)
 
 
