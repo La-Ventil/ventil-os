@@ -139,6 +139,7 @@ export default function OpenBadgeForm({
         maxLevels={5}
         error={fieldError('levels')}
         fieldErrorFor={nestedFieldError}
+        translateError={(key) => tRoot(key)}
         labels={{
           add: t('levels.add'),
           title: (levelNumber) => t('fields.levelTitle', { index: levelNumber }),

@@ -2,19 +2,12 @@
 
 import { useEffect, useId, useState } from 'react';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import AdminButton from '../admin/admin-button';
-import LevelChip from '../level-chip';
-import styles from './open-badge-levels-editor.module.css';
+import OpenBadgeLevelRow from './open-badge-level-row';
+import type { OpenBadgeLevelDraft } from './open-badge-level-row';
 
-export type OpenBadgeLevelDraft = {
-  title: string;
-  description: string;
-};
+export type { OpenBadgeLevelDraft };
 
 export type OpenBadgeLevelsEditorProps = {
   initialLevels?: OpenBadgeLevelDraft[];
@@ -23,6 +16,7 @@ export type OpenBadgeLevelsEditorProps = {
   error?: string | undefined;
   fieldErrorFor?: (fieldPath: string) => string | undefined;
   onLevelsChange?: (levels: OpenBadgeLevelDraft[]) => void;
+  translateError?: (key: string) => string;
   labels: {
     add: string;
     title: (levelNumber: number) => string;
@@ -39,6 +33,7 @@ export default function OpenBadgeLevelsEditor({
   error,
   fieldErrorFor,
   onLevelsChange,
+  translateError,
   labels
 }: OpenBadgeLevelsEditorProps) {
   const fieldPrefix = useId();
@@ -71,44 +66,21 @@ export default function OpenBadgeLevelsEditor({
 
       {levels.map((level, index) => {
         const levelNumber = index + 1;
-        const titleField = `levels.${index}.title`;
-        const descriptionField = `levels.${index}.description`;
-        const titleError = fieldErrorFor?.(titleField);
-        const descriptionError = fieldErrorFor?.(descriptionField);
         return (
-          <Stack key={`${fieldPrefix}-${index}`} spacing={1} className={styles.levelBlock}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <LevelChip level={levelNumber} isActive size="medium" className={styles.levelChip} />
-              {levels.length > minLevels && index === levels.length - 1 && (
-                <IconButton aria-label={labels.remove} onClick={() => removeLevel(index)} size="small">
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              )}
-            </Stack>
-            <Stack spacing={1}>
-              <TextField
-                name={`levels[${index}].title`}
-                label={labels.title(levelNumber)}
-                required
-                fullWidth
-                defaultValue={level.title}
-                error={Boolean(titleError)}
-                helperText={titleError}
-              />
-              <TextField
-                name={`levels[${index}].description`}
-                label={labels.description(levelNumber)}
-                required
-                fullWidth
-                multiline
-                minRows={3}
-                defaultValue={level.description}
-                error={Boolean(descriptionError)}
-                helperText={descriptionError}
-              />
-            </Stack>
-            {index < levels.length - 1 && <Divider />}
-          </Stack>
+          <OpenBadgeLevelRow
+            key={`${fieldPrefix}-${index}`}
+            index={index}
+            level={level}
+            titleLabel={labels.title(levelNumber)}
+            descriptionLabel={labels.description(levelNumber)}
+            removeLabel={labels.remove}
+            canRemove={levels.length > minLevels && index === levels.length - 1}
+            onRemove={() => removeLevel(index)}
+            showDivider={index < levels.length - 1}
+            titleServerError={fieldErrorFor?.(`levels.${index}.title`)}
+            descriptionServerError={fieldErrorFor?.(`levels.${index}.description`)}
+            translateError={translateError}
+          />
         );
       })}
 
