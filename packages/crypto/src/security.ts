@@ -26,6 +26,20 @@ export function hashToken(token: string): string {
   return crypto.createHash('sha256').update(token).digest('hex');
 }
 
+/**
+ * Same work as `verifySecret`, against a hash nobody can match.
+ *
+ * Deriving a key is the expensive half of signing in, so skipping it when the address is unknown
+ * makes the refusal measurably faster — enough to tell a stranger that an account exists here.
+ * Callers spend this instead, and get the same `false`.
+ */
+export async function verifyAgainstNoSecret(secret: string): Promise<boolean> {
+  const iterations = 600000;
+  const keylen = 128;
+  await verifySecret(secret, Buffer.alloc(keylen).toString('base64'), 'no-such-account', iterations);
+  return false;
+}
+
 export async function verifySecret(
   secret: string,
   savedHash: string,

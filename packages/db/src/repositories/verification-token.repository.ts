@@ -19,6 +19,14 @@ export class VerificationTokenRepository {
     });
   }
 
+  /** The active token for an address, if any: `replaceToken` keeps at most one per identifier. */
+  async findByIdentifier(identifier: string): Promise<VerificationTokenReadModel | null> {
+    return this.prisma.verificationToken.findFirst({
+      where: { identifier },
+      select: verificationTokenSelect
+    });
+  }
+
   async findByIdentifierAndToken(identifier: string, token: string): Promise<VerificationTokenReadModel | null> {
     return this.prisma.verificationToken.findUnique({
       where: {

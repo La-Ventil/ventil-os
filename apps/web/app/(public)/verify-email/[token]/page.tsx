@@ -3,9 +3,12 @@
 import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import { verifyEmail } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../../lib/auth';
 import AutoRedirect from '@repo/ui/auto-redirect';
+import ResendVerification from '@repo/ui/forms/resend-verification';
+import { resendEmailVerificationAction } from '../../../../lib/actions/auth/resend-email-verification';
 
 type VerifyEmailPageProps = {
   params: Promise<{
@@ -33,17 +36,11 @@ export default async function Page({ params, searchParams }: VerifyEmailPageProp
   if (result.ok) {
     const session = await getServerSession();
     const redirectTo =
-      session?.user?.email === email
-        ? '/hub/profile'
-        : `/login?email=${encodeURIComponent(email)}&reason=verified`;
+      session?.user?.email === email ? '/hub/profile' : `/login?email=${encodeURIComponent(email)}&reason=verified`;
     return (
       <>
         <Alert severity="success">{t('success')}</Alert>
-        <AutoRedirect
-          redirectLabel={t('continue')}
-          redirectingLabel={t('redirecting')}
-          redirectTo={redirectTo}
-        />
+        <AutoRedirect redirectLabel={t('continue')} redirectingLabel={t('redirecting')} redirectTo={redirectTo} />
       </>
     );
   }
@@ -59,5 +56,18 @@ export default async function Page({ params, searchParams }: VerifyEmailPageProp
     }
   })();
 
-  return <Alert severity={result.ok ? 'success' : 'error'}>{message}</Alert>;
+  return (
+    <Stack spacing={2}>
+      <Alert severity="error">{message}</Alert>
+      <ResendVerification
+        email={email}
+        onResend={resendEmailVerificationAction}
+        labels={{
+          cta: t('resendCta'),
+          sent: t('resendSent'),
+          error: t('resendError')
+        }}
+      />
+    </Stack>
+  );
 }

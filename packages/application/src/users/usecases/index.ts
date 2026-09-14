@@ -18,4 +18,5 @@ export * from './request-email-change.command';
 export * from './resend-email-change-verification.command';
 export * from './cancel-email-change.command';
 export * from './verify-email.command';
+export * from './resend-email-verification.command';
 export * from './update-avatar.command';

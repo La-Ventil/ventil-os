@@ -7,7 +7,7 @@ import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
-import { resolveSignInFailureMessageAction } from '../../../lib/actions/auth/resolve-sign-in-failure-message';
+import { resendEmailVerificationAction } from '../../../lib/actions/auth/resend-email-verification';
 import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
 
 type LoginPageProps = {
@@ -31,6 +31,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
     }
   }
   const t = await getTranslations('pages.public.login');
+  const tVerify = await getTranslations('pages.public.verifyEmail');
   const resolvedSearchParams = await Promise.resolve(searchParams);
   const email = resolvedSearchParams?.email;
   const reason = resolvedSearchParams?.reason;
@@ -47,7 +48,12 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         <LoginForm
           initialEmail={email ?? ''}
           noticeMessage={noticeMessage}
-          resolveFailureMessage={resolveSignInFailureMessageAction}
+          onResendVerification={resendEmailVerificationAction}
+          resendVerificationLabels={{
+            cta: tVerify('resendCta'),
+            sent: tVerify('resendSent'),
+            error: tVerify('resendError')
+          }}
         />
       </ScopedIntlClientProvider>
       <Stack spacing={2}>

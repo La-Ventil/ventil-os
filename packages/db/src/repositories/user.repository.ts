@@ -564,8 +564,17 @@ export class UserRepository {
       },
       select: {
         id: true,
-        email: true
+        email: true,
+        emailVerified: true
       }
+    });
+  }
+
+  /** For flows that have already proved the address belongs to whoever is acting. */
+  async markEmailVerified(userId: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { emailVerified: new Date() }
     });
   }
 

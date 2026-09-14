@@ -42,7 +42,10 @@
         "continue": "Continuer",
         "expired": "Ce lien de vérification a expiré.",
         "invalid": "Ce lien de vérification est invalide.",
-        "notFound": "Aucun compte ne correspond à cet email."
+        "notFound": "Aucun compte ne correspond à cet email.",
+        "resendCta": "M'envoyer un nouveau lien",
+        "resendSent": "Si cette adresse attend d'être confirmée, un nouveau lien vient de partir. S'il s'agissait d'un changement d'adresse sur un compte existant, connectez-vous et redemandez-le depuis votre profil.",
+        "resendError": "Le lien n'a pas pu être envoyé. Réessayez dans un instant."
       },
       "signup": {
         "title": "Inscription",
@@ -893,9 +896,7 @@
     },
     "messages": {
       "signInSuccess": "Connexion réussie.",
-      "signInFailed": "Identifiants invalides.",
-      "signInBlocked": "Votre compte a été bloqué. Vous ne pouvez pas accéder à Ventil O.S.",
-      "signInUnverified": "Veuillez vérifier votre adresse email avant de vous connecter.",
+      "signInFailed": "Connexion impossible. Vérifiez votre adresse et votre mot de passe. Si votre adresse n'a jamais été confirmée, demandez un nouveau lien ci-dessous.",
       "profileUpdated": "Votre profil a été mis à jour.",
       "emailVerificationSent": "Un email de vérification a été envoyé.",
       "emailChangePending": "Un changement d’email est en attente pour {email}.",

@@ -42,7 +42,10 @@
         "continue": "Continue",
         "expired": "This verification link has expired.",
         "invalid": "This verification link is invalid.",
-        "notFound": "No account matches this email."
+        "notFound": "No account matches this email.",
+        "resendCta": "Send me a new link",
+        "resendSent": "If this address is waiting to be confirmed, a new link is on its way. If you were changing the address of an existing account, sign in and ask again from your profile.",
+        "resendError": "The link could not be sent. Please try again in a moment."
       },
       "signup": {
         "title": "Sign up",
@@ -893,9 +896,7 @@
     },
     "messages": {
       "signInSuccess": "Signed in successfully.",
-      "signInFailed": "Sign-in failed.",
-      "signInBlocked": "Your account has been blocked. You cannot access Ventil O.S.",
-      "signInUnverified": "Please verify your email address before signing in.",
+      "signInFailed": "Sign-in failed. Check your address and password. If your address was never confirmed, ask for a new link below.",
       "profileUpdated": "Your profile has been updated.",
       "emailVerificationSent": "A verification email has been sent.",
       "emailChangePending": "An email change is pending for {email}.",

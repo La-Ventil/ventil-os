@@ -11,19 +11,36 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Link from '../link';
 import PasswordField from './password-field';
+import ResendVerification, { type ResendVerificationLabels } from './resend-verification';
 
 export type LoginFormProps = {
   initialEmail?: string;
   noticeMessage?: string;
-  resolveFailureMessage?: (email: string, password: string) => Promise<string | null>;
+  onResendVerification?: (email: string) => Promise<{ ok: boolean }>;
+  resendVerificationLabels?: ResendVerificationLabels;
 };
 
-export default function LoginForm({ initialEmail = '', noticeMessage, resolveFailureMessage }: LoginFormProps) {
+/**
+ * Every rejection says the same thing, whatever the reason. Telling a stranger that an address is
+ * blocked, or merely unconfirmed, tells them the account exists — and the offer to send a new
+ * confirmation link is shown to everyone for the same reason.
+ */
+export default function LoginForm({
+  initialEmail = '',
+  noticeMessage,
+  onResendVerification,
+  resendVerificationLabels
+}: LoginFormProps) {
   const t = useTranslations('forms');
   const tCommon = useTranslations('common');
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
-  const [formState, setFormState] = useState<{ message: string; success?: boolean }>({
+  const [formState, setFormState] = useState<{
+    message: string;
+    success?: boolean;
+    /** The address the attempt was made with: the field may be edited before the button is used. */
+    rejectedEmail?: string;
+  }>({
     message: ''
   });
   const router = useRouter();
@@ -43,19 +60,10 @@ export default function LoginForm({ initialEmail = '', noticeMessage, resolveFai
       });
       router.push('/hub/profile');
     } else {
-      let message = t('messages.signInFailed');
-
-      if (resolveFailureMessage) {
-        try {
-          message = (await resolveFailureMessage(email, password)) ?? message;
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
       setFormState({
-        message,
-        success: false
+        message: t('messages.signInFailed'),
+        success: false,
+        rejectedEmail: email
       });
     }
   }
@@ -65,6 +73,14 @@ export default function LoginForm({ initialEmail = '', noticeMessage, resolveFai
       <Stack spacing={2}>
         {noticeMessage && <Alert severity="info">{noticeMessage}</Alert>}
         {formState?.message && <Alert severity={formState?.success ? 'success' : 'error'}>{formState?.message}</Alert>}
+        {formState?.rejectedEmail && onResendVerification && resendVerificationLabels ? (
+          <ResendVerification
+            key={formState.rejectedEmail}
+            email={formState.rejectedEmail}
+            onResend={onResendVerification}
+            labels={resendVerificationLabels}
+          />
+        ) : null}
         <TextField
           name={'email'}
           value={email}

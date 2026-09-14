@@ -32,12 +32,16 @@ export async function resetPasswordAction(
       return formSuccess({ email }, okMessage);
     }
 
-    await sendPasswordResetEmail({
+    // Not awaited: waiting for the provider would make a known address answer measurably slower
+    // than an unknown one, which is exactly what the uniform notice above refuses to say.
+    void sendPasswordResetEmail({
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
       token: resetToken,
       t
+    }).catch((error) => {
+      console.error('Password reset email could not be sent', error);
     });
 
     return formSuccess({ email }, okMessage);
