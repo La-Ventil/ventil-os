@@ -57,9 +57,13 @@ export function useFieldLiveValidation<TValue = unknown>({
 
   const resolveServerError = (serverError?: string) => serverError ?? serverErrorFromState;
   const fieldFeedback = (serverError?: string): FieldValidationFeedback =>
-    createFieldFeedback(errors, () => resolveServerError(serverError));
+    createFieldFeedback(errors, () => resolveServerError(serverError), { dirty: fieldState.dirty });
 
-  const inputProps = createFieldInputProps<TValue>(fieldState.value, fieldState.setValue, fieldState.markTouched);
+  const inputProps = createFieldInputProps<TValue>(
+    fieldState.value,
+    fieldState.setValue,
+    fieldState.markTouchedIfDirty
+  );
 
   return {
     value: fieldState.value,

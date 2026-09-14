@@ -69,11 +69,11 @@ export function useFormFieldCrossValidation<
 
   const errors = isFieldError();
   const fieldFeedback = (serverError?: string): FieldValidationFeedback =>
-    createFieldFeedback(errors, () => resolveServerError(serverError));
+    createFieldFeedback(errors, () => resolveServerError(serverError), { dirty: fieldState.dirty });
   const inputProps = createFieldInputProps<TValues[TField]>(
     fieldState.value,
     fieldState.setValue,
-    fieldState.markTouched
+    fieldState.markTouchedIfDirty
   );
 
   return {

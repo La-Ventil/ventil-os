@@ -25,9 +25,12 @@ export const resolveFieldInputValue = <TValue>(event: FieldValidationInputEvent)
 
 export const createFieldFeedback = (
   errors: string[],
-  resolveServerError: () => string | undefined
+  resolveServerError: () => string | undefined,
+  options?: { dirty?: boolean }
 ): FieldValidationFeedback => {
-  const resolvedServerError = resolveServerError();
+  // A submit error describes the value that was submitted: as soon as the user edits the field,
+  // only live validation may speak, otherwise a corrected field keeps showing the stale message.
+  const resolvedServerError = options?.dirty ? undefined : resolveServerError();
   const helperText = errors.length > 0 ? errors.join(' ') : resolvedServerError;
 
   return {
