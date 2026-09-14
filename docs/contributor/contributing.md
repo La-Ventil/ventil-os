@@ -69,14 +69,11 @@ Terminology:
 Production deploy process:
 
 - `pnpm release:git` pushes the git release to `main`
-- the production Clever Cloud application is linked to this GitHub repository
-- Clever Cloud deploys automatically when the configured deployment branch receives a push
-- for this repository, the production deployment branch is `main`
-- after deployment, run the mandatory production smoke check
+- Clever Cloud deploys `main` automatically through its GitHub integration
+- after deployment, run the mandatory production smoke check (`/api/smoke`)
 
-Reference:
-
-- Clever Cloud docs: https://www.clever.cloud/developers/doc/ci-cd/github/
+Everything else about the platform — applications, scaling, environment variables, manual
+deployments and known failure modes — is in [`clever-cloud.md`](./clever-cloud.md).
 
 ## Documentation Rule
 
