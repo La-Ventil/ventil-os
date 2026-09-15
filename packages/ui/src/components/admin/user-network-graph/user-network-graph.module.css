@@ -7,7 +7,9 @@
 .graph {
   position: relative;
   width: 100%;
-  min-height: 660px;
+  /* Stopgap until the force settings are tuned: the D3 simulation takes its height from this box
+     (ResizeObserver), and 660px crushed the layout into a corner. */
+  min-height: 3000px;
   border: none;
   border-radius: 0;
   overflow: hidden;
