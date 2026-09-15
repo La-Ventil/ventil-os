@@ -2,7 +2,10 @@ import type { OpenBadgeReadModel } from '@repo/db/read-models';
 import { ActivityStatus } from '@repo/domain/activity-status';
 import type { OpenBadgeEditViewModel } from '@repo/application/open-badges/models/open-badge-edit';
 
-export const mapOpenBadgeToEditViewModel = (badge: OpenBadgeReadModel): OpenBadgeEditViewModel => ({
+export const mapOpenBadgeToEditViewModel = (
+  badge: OpenBadgeReadModel,
+  trainerThresholdLevel: number | null
+): OpenBadgeEditViewModel => ({
   id: badge.id,
   name: badge.name,
   description: badge.description ?? '',
@@ -11,5 +14,6 @@ export const mapOpenBadgeToEditViewModel = (badge: OpenBadgeReadModel): OpenBadg
     title: level.title,
     description: level.description
   })),
-  activationEnabled: badge.status === ActivityStatus.Active
+  activationEnabled: badge.status === ActivityStatus.Active,
+  trainerThresholdLevel
 });

@@ -833,6 +833,9 @@
       "awarderNotFound": "Assigning user was not found.",
       "targetNotFound": "Target user was not found.",
       "invalidLevelTransition": "Open badge levels must move one step at a time."
+    },
+    "delivery": {
+      "invalidLevel": "The delivery level must be one of the badge's levels."
     }
   },
   "user": {

@@ -802,6 +802,9 @@
       "awarderNotFound": "L'utilisateur attribuant le badge est introuvable.",
       "targetNotFound": "L'utilisateur ciblé est introuvable.",
       "invalidLevelTransition": "Les niveaux d’un open badge doivent évoluer un par un."
+    },
+    "delivery": {
+      "invalidLevel": "Le niveau de délivrance doit correspondre à l'un des niveaux du badge."
     }
   },
   "resetPassword": {

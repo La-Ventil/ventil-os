@@ -3,7 +3,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { openBadgeUpdateRequestSchema, type OpenBadgeUpdateRequest } from '@repo/application/forms';
+import {
+  openBadgeUpdateRequestSchema,
+  trainerThresholdToDelivery,
+  type OpenBadgeUpdateRequest
+} from '@repo/application/forms';
 import OpenBadgeForm from '@repo/ui/forms/open-badge.form';
 import { useFormActionState } from '@repo/form/use-form-action-state';
 import { createFormState } from '@repo/form/form-state';
@@ -25,8 +29,8 @@ export default function OpenBadgeEditFormClient({ badge }: OpenBadgeEditFormClie
     description: badge.description,
     imageFile: undefined,
     levels: badge.levels.length ? badge.levels : [{ title: '', description: '' }],
-    deliveryEnabled: false,
-    deliveryLevel: '',
+    // Opened from what is stored: a hard-coded "off" here meant every save wiped the threshold.
+    ...trainerThresholdToDelivery(badge.trainerThresholdLevel),
     activationEnabled: badge.activationEnabled
   });
 

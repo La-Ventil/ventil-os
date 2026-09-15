@@ -2,6 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import {
+  deliveryToTrainerThreshold,
   openBadgeUpdateRequestSchema,
   type OpenBadgeUpdateRequest,
   type OpenBadgeCreateData
@@ -62,7 +63,10 @@ export async function updateOpenBadgeAction(
       description: values.description,
       imageUrl: imageUpload.imageUrl,
       levels: values.levels,
-      activationEnabled: values.activationEnabled
+      activationEnabled: values.activationEnabled,
+      // The delivery section used to be dropped right here: the choice looked saved, and was gone on
+      // the next visit.
+      trainerThresholdLevel: deliveryToTrainerThreshold(values)
     });
 
     return formSuccess(responseValues, t('openBadge.update.success'));

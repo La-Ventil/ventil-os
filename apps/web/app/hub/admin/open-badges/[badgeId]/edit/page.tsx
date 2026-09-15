@@ -33,7 +33,8 @@ export default async function AdminOpenBadgeEditPage({ params }: AdminOpenBadgeE
             title: level.title,
             description: level.description ?? ''
           })),
-          activationEnabled: badge.activationEnabled
+          activationEnabled: badge.activationEnabled,
+          trainerThresholdLevel: badge.trainerThresholdLevel
         }}
       />
     </>

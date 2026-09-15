@@ -2,6 +2,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import {
+  deliveryToTrainerThreshold,
   openBadgeCreateRequestSchema,
   type OpenBadgeCreateRequest,
   type OpenBadgeCreateData
@@ -14,6 +15,7 @@ import { zodErrorToFieldErrors } from '@repo/form/zod-errors';
 import { fieldErrorsToMessage } from '@repo/form/form-feedback';
 import { getServerSession } from '../../auth';
 import { formError, formSuccess, formValidationError } from '@repo/form/form-state-builders';
+import { withOpenBadgeFormError } from './open-badge-action-errors';
 
 export async function createOpenBadgeAction(
   previousState: FormState<OpenBadgeCreateRequest>,
@@ -59,13 +61,19 @@ export async function createOpenBadgeAction(
 
   try {
     await addOpenBadge({
-      ...values,
+      name: values.name,
+      description: values.description,
+      imageUrl: values.imageUrl,
+      levels: values.levels,
+      activationEnabled: values.activationEnabled,
+      // The delivery section used to be dropped right here, so no created badge ever had a threshold.
+      trainerThresholdLevel: deliveryToTrainerThreshold(values),
       creatorId: userId
     });
 
     return formSuccess(responseValues, t('openBadge.create.success'));
   } catch (err) {
     console.error(err);
-    return formError(responseValues ?? previousState.values, { message: t('openBadge.create.error') });
+    return withOpenBadgeFormError(responseValues ?? previousState.values, err, t, 'openBadge.create.error');
   }
 }

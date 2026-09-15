@@ -471,25 +471,48 @@ export class OpenBadgeRepository {
     status: ActivityStatus;
     creatorId: string;
     levels: Array<{ title: string; description: string }>;
+    /** Lowest level from which holders may deliver the badge; `null` or absent leaves it to admins. */
+    trainerThresholdLevel?: number | null;
   }): Promise<OpenBadgeReadModel> {
-    const badge = await this.prisma.openBadge.create({
-      data: {
-        name: input.name,
-        type: input.type,
-        category: input.category,
-        description: input.description ?? null,
-        coverImage: input.coverImage ?? null,
-        status: input.status as PrismaActivityStatus,
-        creatorId: input.creatorId,
-        levels: {
-          create: input.levels.map((level, idx) => ({
-            level: idx + 1,
-            title: level.title,
-            description: level.description ?? null
-          }))
+    const badge = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.openBadge.create({
+        data: {
+          name: input.name,
+          type: input.type,
+          category: input.category,
+          description: input.description ?? null,
+          coverImage: input.coverImage ?? null,
+          status: input.status as PrismaActivityStatus,
+          creatorId: input.creatorId,
+          levels: {
+            create: input.levels.map((level, idx) => ({
+              level: idx + 1,
+              title: level.title,
+              description: level.description ?? null
+            }))
+          }
+        },
+        include: openBadgeInclude
+      });
+
+      // The threshold points at a level row, which only exists once the badge has been created.
+      if (input.trainerThresholdLevel != null) {
+        const thresholdLevel = await tx.openBadgeLevel.findUnique({
+          where: { openBadgeId_level: { openBadgeId: created.id, level: input.trainerThresholdLevel } },
+          select: { id: true }
+        });
+
+        if (!thresholdLevel) {
+          throw new OpenBadgeError('openBadge.delivery.invalidLevel');
         }
-      },
-      include: openBadgeInclude
+
+        await tx.openBadge.update({
+          where: { id: created.id },
+          data: { trainerThresholdLevelId: thresholdLevel.id }
+        });
+      }
+
+      return created;
     });
 
     return this.normalizeOpenBadge(badge as OpenBadgePayload);
@@ -502,6 +525,8 @@ export class OpenBadgeRepository {
     coverImage?: string | null;
     status: ActivityStatus;
     levels: Array<{ title: string; description: string }>;
+    /** Absent leaves the stored threshold untouched; `null` clears it. */
+    trainerThresholdLevel?: number | null;
   }): Promise<OpenBadgeReadModel> {
     const badge = await this.prisma.$transaction(async (tx) => {
       const existingLevels = await tx.openBadgeLevel.findMany({
@@ -569,6 +594,30 @@ export class OpenBadgeRepository {
               in: levelsToDelete.map((level) => level.id)
             }
           }
+        });
+      }
+
+      // Written last, once the levels are in their final state: the threshold points at a level row,
+      // and a row removed above must not be left referenced.
+      if (input.trainerThresholdLevel !== undefined) {
+        let trainerThresholdLevelId: string | null = null;
+
+        if (input.trainerThresholdLevel !== null) {
+          const thresholdLevel = await tx.openBadgeLevel.findUnique({
+            where: { openBadgeId_level: { openBadgeId: input.id, level: input.trainerThresholdLevel } },
+            select: { id: true }
+          });
+
+          if (!thresholdLevel) {
+            throw new OpenBadgeError('openBadge.delivery.invalidLevel');
+          }
+
+          trainerThresholdLevelId = thresholdLevel.id;
+        }
+
+        await tx.openBadge.update({
+          where: { id: input.id },
+          data: { trainerThresholdLevelId }
         });
       }
 

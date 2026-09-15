@@ -8,7 +8,8 @@ export type OpenBadgeErrorCode =
   | 'openBadge.update.notFound'
   | 'openBadge.status.notFound'
   | 'openBadge.delete.notFound'
-  | 'openBadge.delete.alreadyAssigned';
+  | 'openBadge.delete.alreadyAssigned'
+  | 'openBadge.delivery.invalidLevel';
 
 export class OpenBadgeError extends Error {
   readonly code: OpenBadgeErrorCode;

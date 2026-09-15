@@ -5,6 +5,7 @@ export * from './machine-create-form-input';
 export * from './machine-update-form-input';
 export * from './name';
 export * from './open-badge-create-form-input';
+export * from './open-badge-delivery';
 export * from './password';
 export * from './profile-education';
 export * from './profile-form-input';

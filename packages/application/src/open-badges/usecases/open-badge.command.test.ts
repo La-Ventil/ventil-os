@@ -153,7 +153,8 @@ describe('open-badge command invariants', () => {
       name: 'Badge mis a jour',
       description: 'Description',
       levels: [{ title: 'Niveau 1', description: 'Description 1' }],
-      activationEnabled: true
+      activationEnabled: true,
+      trainerThresholdLevel: null
     });
 
     expect(mockUpdateOpenBadge).toHaveBeenCalledWith({
@@ -162,7 +163,8 @@ describe('open-badge command invariants', () => {
       description: 'Description',
       coverImage: '/badge.png',
       levels: [{ title: 'Niveau 1', description: 'Description 1' }],
-      status: ActivityStatus.Active
+      status: ActivityStatus.Active,
+      trainerThresholdLevel: null
     });
   });
 
@@ -175,8 +177,41 @@ describe('open-badge command invariants', () => {
         name: 'Badge mis a jour',
         description: 'Description',
         levels: [{ title: 'Niveau 1', description: 'Description 1' }],
-        activationEnabled: true
+        activationEnabled: true,
+        trainerThresholdLevel: null
       })
     ).rejects.toEqual(expect.objectContaining({ code: 'openBadge.update.levelInUse' }));
+  });
+
+  // The delivery setting on the edit form was never written anywhere: every badge edited through the
+  // interface kept whatever threshold the seed gave it, or none, so its holders could never deliver it.
+  it('persists the level from which holders may deliver the badge', async () => {
+    await updateOpenBadge({
+      id: 'badge-id',
+      name: 'Badge mis a jour',
+      description: 'Description',
+      levels: [
+        { title: 'Niveau 1', description: 'Description 1' },
+        { title: 'Niveau 2', description: 'Description 2' }
+      ],
+      activationEnabled: true,
+      trainerThresholdLevel: 2
+    });
+
+    expect(mockUpdateOpenBadge).toHaveBeenCalledWith(expect.objectContaining({ trainerThresholdLevel: 2 }));
+  });
+
+  it('refuses a delivery threshold above the levels the badge keeps', async () => {
+    await expect(
+      updateOpenBadge({
+        id: 'badge-id',
+        name: 'Badge mis a jour',
+        description: 'Description',
+        levels: [{ title: 'Niveau 1', description: 'Description 1' }],
+        activationEnabled: true,
+        trainerThresholdLevel: 2
+      })
+    ).rejects.toEqual(expect.objectContaining({ code: 'openBadge.delivery.invalidLevel' }));
+    expect(mockUpdateOpenBadge).not.toHaveBeenCalled();
   });
 });
