@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.50](https://github.com/La-Ventil/ventil-os/compare/v0.0.49...v0.0.50) (2026-09-15)
+
+
+### Bug Fixes
+
+* **admin:** give the network graph room to spread ([9403bc6](https://github.com/La-Ventil/ventil-os/commit/9403bc6e03e5987da4b51f6e5b89dc7f71f911db))
+
 ### [0.0.49](https://github.com/La-Ventil/ventil-os/compare/v0.0.48...v0.0.49) (2026-09-15)
 
 
