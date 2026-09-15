@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.49](https://github.com/La-Ventil/ventil-os/compare/v0.0.48...v0.0.49) (2026-09-15)
+
+
+### Bug Fixes
+
+* **admin:** persist who may deliver an open badge ([7c587d7](https://github.com/La-Ventil/ventil-os/commit/7c587d7ea7da172726451d9f9f3dc3583f7262e3))
+
 ### [0.0.48](https://github.com/La-Ventil/ventil-os/compare/v0.0.47...v0.0.48) (2026-09-14)
 
 
