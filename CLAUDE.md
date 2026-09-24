@@ -58,13 +58,15 @@ Domain policies use `assert*` (throws) or `can*` (returns boolean) naming.
 
 ## Agent rules (ADR-005)
 
-- **Never commit** unless explicitly asked
 - **Never run `pnpm install`** — provide the command, let the user run it
 - **Never run DB migration commands** — provide them for the user
 - Run **targeted typecheck** for affected packages only (`pnpm --filter @repo/domain check-types`)
 - Full typecheck (`turbo run check-types`) only when explicitly asked or pre-commit
 - Run **lint-staged** after file modifications
-- Work on `dev` branch or a feature branch
+- **`dev` is the default branch here** (not `main`, which only receives releases per
+  ADR-013). Commit and push without asking: one branch per task, verified, fast-forwarded
+  into `dev`, then deleted locally and on the remote. No pull request — Johan is solo;
+  open one only if he asks.
 
 ## Testing
 
