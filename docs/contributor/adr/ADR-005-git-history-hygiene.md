@@ -1,7 +1,7 @@
 # ADR-005: Git History Hygiene
 
 ## Status
-Accepted
+Accepted — amended 2026-09-24 (see Amendment)
 
 ## Date
 2026-02-03
@@ -22,7 +22,7 @@ We will prefer operations that preserve file history and keep commits focused an
 - Avoid mixing unrelated changes in one commit.
 - Keep commit messages aligned with `ADR-004-conventional-commits`.
 - Write meaningful commit messages (clear intent and scope) because they feed the changelog.
-- The agent must not commit unless explicitly asked.
+- ~~The agent must not commit unless explicitly asked.~~ Amended 2026-09-24, see below.
 - When DB commands are needed, the agent must provide the exact command to run (relative to the project root) and must not execute it automatically.
 - When new dependencies are introduced, the agent must provide the `pnpm install` command to run (relative to the project root).
 - The agent must never run `pnpm install` (or any install command) and must ask the user to run it.
@@ -50,3 +50,15 @@ We will prefer operations that preserve file history and keep commits focused an
 
 - History stays readable and traceable.
 - Reviewers can reason about changes faster.
+
+---
+
+## Amendment (2026-09-24)
+
+The agent commits and pushes without being asked, like on Johan's other repositories:
+one branch per task, verified, fast-forwarded into `dev` (the default branch here),
+then deleted locally and on the remote, with no pull request.
+
+Why: Johan is the only developer. Asking before each commit, and opening a PR with
+nobody to review it, only added round-trips. The other agent rules above still hold
+(no `pnpm install`, no DB commands, targeted typecheck, lint-staged).
