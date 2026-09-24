@@ -232,6 +232,49 @@ Important:
 - Example:
   - `PLAYWRIGHT_WORKER_PARALLEL=1 PLAYWRIGHT_WORKERS=2 PLAYWRIGHT_DB_SLOT=workers pnpm --filter web test:e2e:journeys:workers`
 
+## `migrate reset` and AI agents
+
+Both setups reset their schema with `prisma migrate reset --force`.
+Since Prisma 7, the CLI refuses that command when it detects an AI agent (Claude Code included),
+even for a command the human types into the agent's session.
+It only runs with `PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION` set to the exact text of a consent message
+the human wrote in the current conversation; consent from an earlier conversation does not carry over.
+So an agent asks for fresh consent before any e2e run.
+Replacing the reset with `DROP SCHEMA` + `migrate deploy` in the e2e setup has not been decided.
+
+## Route modals under e2e
+
+Route modals (ADR-010) are built the same way in every family: a `@modal` parallel slot with
+`@modal/<segment>/page.tsx`, a `default.tsx` (and sometimes `[...catchAll]`) returning `null`, a `loading.tsx`
+rendering `ModalLoadingShell`, and a layout rendering `{children}{modal}`.
+The standalone `[id]/page.tsx` is `export { default } from '../page';`, which is deliberate: the list page
+renders and the slot supplies the modal.
+Only the profile avatar uses a true intercepting route, `@modal/(.)avatar`.
+
+What makes modal specs flaky, and the helper conventions that follow from it:
+
+- A route modal navigates first and renders `loading.tsx`, an open dialog **without** the expected accessible
+  name. A URL assertion therefore passes before the named dialog exists: `expectDialog` waits for loading
+  dialogs to disappear, with the same timeout as the URL (`ROUTE_MODAL_TIMEOUT_MS`).
+- Playwright sets no action timeout by default, so a probe inside a polling loop needs its own, or a single
+  call outlives the loop's deadline.
+- An element the next re-render unmounts (`machine-reservation-state`) must be read in one call, not attribute
+  by attribute.
+- A modal passes `ariaLabelledBy={titleId}` to `ModalLayout`: without it the dialog has no accessible name,
+  and specs cannot find it by role.
+
+**Refuted, do not redo:** a missing dialog with the list rendered under the detail URL looks like the slot
+falling back to `default.tsx` for lack of `(.)` interception.
+It is not. Deep links and clicks from the list both open the dialog without interception, repeatedly; the
+failure only appeared after state accumulated during a full run, never in isolation, and it stopped with
+Next 16.3.
+Measure modal flakiness with repeated **full-suite** runs, read the Playwright trace before theorising, and do
+not restructure the slots without a probe of the current behaviour first.
+
+One local failure family is not a modal bug: a standalone build bakes `APP_LOCALE` into prerendered public
+pages, so a French build run against the English journeys fails signup and forgot-password on every run.
+Build with `APP_LOCALE=en`.
+
 ## Related ADRs
 
 - `docs/contributor/adr/ADR-011-lint-typecheck-test-policy.md`

@@ -53,6 +53,10 @@ timeout 5m pnpm lint:dev
 pnpm --filter web test
 ```
 
+A client component must not import a barrel that reaches `@repo/db` (the `@repo/application` root, `lib/auth`):
+the Prisma 7 driver adapter pulls in `pg`, and the Turbopack build fails with
+"Can't resolve 'dns'" (or `net`, `tls`). Import the specific module instead.
+
 ## Change Gates
 
 Use the smallest gate that matches the lifecycle stage.
