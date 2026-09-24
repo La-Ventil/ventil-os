@@ -386,7 +386,7 @@ async function ensureAdminUser() {
   });
 
   if (existingGlobalAdmin) {
-    console.log(`Seed admin check: existing global admin found (${existingGlobalAdmin.email}).`);
+    console.log(`Seed admin check: existing global admin found (user ${existingGlobalAdmin.id}).`);
     return existingGlobalAdmin;
   }
 
@@ -423,7 +423,7 @@ async function ensureAdminUser() {
     select: { id: true, email: true }
   });
 
-  console.log(`Seed admin bootstrap: created or promoted ${admin.email} as global admin.`);
+  console.log(`Seed admin bootstrap: created or promoted user ${admin.id} as global admin.`);
   return admin;
 }
 
