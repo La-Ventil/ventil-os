@@ -28,27 +28,15 @@ Stack principale :
 
 ## Configuration
 
-Créer un fichier `.env` dans `apps/web` :
+Copier les exemples, qui contiennent déjà les valeurs pour la base Docker locale :
 
-```env
-NEXT_TELEMETRY_DISABLED=1
-NEXTAUTH_SECRET=usedToEncryptTheNextAuthJwt
-SECRET_PEPPER=ThisIsTheVentilOSSecretPepperToSpiceThingsUpALittleBit
-DATABASE_URL="postgresql://ventilos:ventilos@localhost:5433/ventilos?schema=public"
-BREVO_API_KEY=xkeysib-xxx
-APP_NAME=VentilOS
-BASE_URL=http://localhost:3000
-UPLOADS_DIR=uploads
-UPLOADS_PUBLIC_PATH=/uploads
-PORT=3000
+```bash
+cp apps/web/.env.example apps/web/.env
+cp packages/db/.env.example packages/db/.env
 ```
 
-Créer un fichier `.env` dans `packages/db/` :
-
-```env
-DATABASE_URL="postgresql://ventilos:ventilos@localhost:5433/ventilos?schema=public"
-SECRET_PEPPER=ThisIsTheVentilOSSecretPepperToSpiceThingsUpALittleBit
-```
+`SECRET_PEPPER` doit être identique dans les deux fichiers.
+Les variables `SEED_*` se règlent dans `packages/db/.env`.
 
 ## Démarrage rapide
 
