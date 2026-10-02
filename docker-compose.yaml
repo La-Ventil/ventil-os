@@ -4,7 +4,7 @@ services:
   ventilos_postgres:
     image: postgres:18.0
     volumes:
-      - postgres_data_ventilos:/var/lib/postgresql/data
+      - postgres_data_ventilos:/var/lib/postgresql
     environment:
       POSTGRES_DB: ventilos
       POSTGRES_USER: ventilos
