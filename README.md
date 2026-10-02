@@ -22,7 +22,7 @@ Stack principale :
 
 ## Prérequis
 
-- Node.js `>= 20.19.0`
+- Node.js `24` (voir `engines` dans `package.json`)
 - PNPM
 - Docker
 
@@ -54,11 +54,14 @@ SECRET_PEPPER=ThisIsTheVentilOSSecretPepperToSpiceThingsUpALittleBit
 
 ```bash
 pnpm install
-docker compose up
-pnpm db:deploy
-pnpm db:generate
+docker compose up -d
+pnpm db:seed
 pnpm --filter web dev
 ```
+
+`pnpm db:seed` applique les migrations, génère le client Prisma puis charge les données de démo.
+On se connecte ensuite avec l'admin `admin@ventil.local`, mot de passe `ChangeMe123!`, sauf si `SEED_ADMIN_*` est défini (voir [Commandes utiles](#commandes-utiles)).
+Pour repartir d'une base vide : `pnpm db:reset`, qui efface toutes les données locales.
 
 Application :
 
