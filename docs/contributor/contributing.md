@@ -57,6 +57,28 @@ A client component must not import a barrel that reaches `@repo/db` (the `@repo/
 the Prisma 7 driver adapter pulls in `pg`, and the Turbopack build fails with
 "Can't resolve 'dns'" (or `net`, `tls`). Import the specific module instead.
 
+## Common Pitfalls
+
+**Postgres won't start: "in 18+, these Docker images are configured to store database data
+in a format…"** The volume holds data from the old mount on `/var/lib/postgresql/data`;
+Postgres 18 expects one mount on `/var/lib/postgresql`. Pull, then recreate the local
+volume (this drops the local database) and run migrate and seed again:
+
+```bash
+docker compose down
+docker volume ls | grep postgres_data_ventilos   # find its name
+docker volume rm <volume_name>
+docker compose up -d
+```
+
+**`check-types` fails on `.next/types/validator.ts` with "Cannot find module
+'../../app/…/page.js'".** The generated route types still list routes that were renamed
+or removed. `pnpm --filter web check-types` regenerates them; to fix a checkout by hand:
+
+```bash
+pnpm --filter web exec next typegen   # or: rm -rf apps/web/.next/types
+```
+
 ## Change Gates
 
 Use the smallest gate that matches the lifecycle stage.
