@@ -22,7 +22,8 @@ Format:
 Rules:
 - Use a short, imperative description in the subject line.
 - Keep the subject line under 72 characters when possible.
-- Use optional body/footer to add context.
+- Use optional body/footer to add context: only what the diff cannot say. Most commits need
+  no body; commitlint refuses one over four lines of prose (`DENSE_BODY=1` to override).
 - Mark breaking changes with `!` in the type or with a `BREAKING CHANGE:` footer.
 - Use `pnpm commit` (commitizen) to generate compliant messages when unsure.
 
