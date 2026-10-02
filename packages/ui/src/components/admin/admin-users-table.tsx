@@ -42,8 +42,8 @@ export default function AdminUsersTable({
         <TableRow>
           <TableCell>{columns.actions}</TableCell>
           <TableCell>{columns.avatar}</TableCell>
-          <TableCell>{columns.firstName}</TableCell>
           <TableCell>{columns.lastName}</TableCell>
+          <TableCell>{columns.firstName}</TableCell>
           <TableCell>{columns.username}</TableCell>
           <TableCell>{columns.email}</TableCell>
           <TableCell>{columns.profile}</TableCell>
@@ -60,10 +60,10 @@ export default function AdminUsersTable({
           <TableRow key={user.id} hover>
             <TableCell>{renderActions(user)}</TableCell>
             <TableCell>
-              <UserAvatar user={user} size={32} />
+              <UserAvatar user={user} size={50} />
             </TableCell>
-            <TableCell>{user.firstName}</TableCell>
             <TableCell>{user.lastName}</TableCell>
+            <TableCell>{user.firstName}</TableCell>
             <TableCell title={user.username}>
               {user.username.includes('#') ? user.username.split('#')[0] : user.username}
             </TableCell>

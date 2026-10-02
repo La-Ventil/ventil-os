@@ -1,3 +1,8 @@
 .main {
   padding-bottom: calc(56px + env(safe-area-inset-bottom));
 }
+.cardContainer {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}

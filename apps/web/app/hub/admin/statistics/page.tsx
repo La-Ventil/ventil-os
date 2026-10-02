@@ -4,6 +4,7 @@ import GridBackground from '@repo/ui/grid-background.server';
 import AdminStatisticsOverview from '@repo/ui/admin/admin-statistics-overview';
 import SectionTitle from '@repo/ui/section-title.server';
 import TableSection from '@repo/ui/table-section';
+import { getThemeSectionClassName, ThemeSection } from '@repo/ui/theme';
 import { getCachedAdminStatistics } from '../../../../lib/admin/get-cached-admin-statistics';
 import { buildAdminStatisticsPageViewModel } from './_lib/build-admin-statistics-page-view-model';
 import UserNetworkGraphLazy from './_components/user-network-graph-lazy.client';
@@ -22,16 +23,18 @@ export default async function AdminStatisticsPage() {
   });
 
   return (
-    <GridBackground component="section" spacing={2}>
-      <SectionTitle icon={<AdminStatIcon color="secondary" />}>{t('title')}</SectionTitle>
+    <div className={getThemeSectionClassName(ThemeSection.User)}>
+      <GridBackground component="section" spacing={2}>
+        <SectionTitle icon={<AdminStatIcon color="secondary" />}>{t('title')}</SectionTitle>
 
-      <TableSection>
-        <AdminStatisticsOverview groups={pageViewModel.overviewGroups} />
-      </TableSection>
+        <TableSection>
+          <AdminStatisticsOverview groups={pageViewModel.overviewGroups} />
+        </TableSection>
 
-      <TableSection>
-        <UserNetworkGraphLazy labelsWithoutDate={pageViewModel.networkGraphLabels} />
-      </TableSection>
-    </GridBackground>
+        <TableSection>
+          <UserNetworkGraphLazy labelsWithoutDate={pageViewModel.networkGraphLabels} />
+        </TableSection>
+      </GridBackground>
+    </div>
   );
 }
