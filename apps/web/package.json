@@ -10,7 +10,7 @@
     "start:standalone": "node scripts/start-standalone.mjs",
     "lint": "eslint . --max-warnings 0",
     "lint:dev": "eslint .",
-    "check-types": "tsc --noEmit",
+    "check-types": "next typegen && tsc --noEmit",
     "test:e2e": "playwright test --project journeys-chromium",
     "test:e2e:journeys": "playwright test --project journeys-chromium",
     "test:e2e:a11y": "playwright test --project a11y-chromium",
