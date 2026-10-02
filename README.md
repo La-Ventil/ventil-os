@@ -124,6 +124,7 @@ Pour le seed :
 - par défaut, `pnpm db:seed` charge les données de démo si la base est vide
 - `SEED_INCLUDE_DEMO_DATA=0` force un bootstrap minimal avec au moins un admin global
 - `SEED_ADMIN_EMAIL` et `SEED_ADMIN_PASSWORD` permettent de paramétrer ce premier admin
+- ces variables se placent dans `packages/db/.env` : le seed ne lit pas `apps/web/.env`
 
 Commandes ciblées :
 
