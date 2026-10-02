@@ -24,8 +24,8 @@
         "ctaSignin": "Connexion"
       },
       "forgotPassword": {
-        "title": "J'ai oublié mon mot de passe",
-        "intro": "Renseigner l'email utilisé lors de l'inscription."
+        "title": "Mot de passe oublié",
+        "intro": "Renseigner l'email utilisé lors de l'inscription :"
       },
       "updatePassword": {
         "title": "Mettre à jour mon mot de passe",
@@ -55,7 +55,8 @@
       "login": {
         "title": "Connexion",
         "subtitle": "Connexion",
-        "intro": "Connexion",
+        "intro": "Vous avez déjà créé un compte sur l'application Ventil-OS ? Veuillez vous connecter avec vos identifiants :",
+        "introForgotPassword": "Vous avec oublié votre mot de passe ou besoin de réinitialiser votre premier code de connexion ?",
         "forgotPassword": "J'ai oublié mon mot de passe.",
         "emailVerifiedNotice": "Votre email a été confirmé. Merci de vous reconnecter."
       },
@@ -68,7 +69,7 @@
         },
         "hosting": {
           "title": "Hébergement",
-          "content": "À compléter (hébergeur, adresse, contact)."
+          "content": "Clever Cloud (hébergeur, adresse, contact)."
         },
         "contact": {
           "title": "Contact",
@@ -77,22 +78,26 @@
       },
       "privacyPolicy": {
         "title": "Politique de confidentialité",
-        "intro": "Cette page décrit comment vos données sont collectées et utilisées.",
+        "intro": "Ventil OS est une initiative pédagogique portée par l'association La-Ventil au sein du Lycée Louis-Aragon Picasso de Givors. Le responsable du traitement des données est Fabien Tora, enseignant et président de l'association La-Ventil. Cette page décrit comment vos données sont collectées et utilisées dans le cadre de Ventil OS.",
         "dataCollected": {
           "title": "Données collectées",
-          "content": "Compte utilisateur, informations de profil, réservations, badges."
+          "content": "Le prénom, nom, niveau scolaire (si étudiant) et adresse e-mail de l'utilisateur sont collectés à des fins d'identification et d'accès à La-Ventil. Des informations sur l'utilisation des services sont collectés : réservations effectuées sur les machines, open badges obtenus et émis, machines utilisées, dernière date de connexion à l'application."
         },
         "purposes": {
           "title": "Finalités",
-          "content": "Gestion des comptes, réservations, badges et communications."
+          "content": "Les données de l'utilisateur sont utilisées pour son identification pour l'accès à La-Ventil et Ventil OS, les statistiques d'utilisation, l'agenda de réservation et la communication. L'utilisateur accepte de recevoir des e-mails pour le tenir au courant des informations liées à La-Ventil et au bon fonctionnement de son compte."
         },
         "retention": {
-          "title": "Durée de conservation",
-          "content": "Les données sont conservées tant que le compte est actif."
+          "title": "Stockage et durée de conservation",
+          "content": "Les données de l'utilisateur sont stockées en France par notre partenaire d'hébergement Clever Cloud. Les données sont conservées tant que le compte est actif."
+        },
+        "cookie": {
+          "title": "Suivi d’audience et vie privée",
+          "content": "Ce site n'utilise aucun outil de suivi d'audience et ne comporte pas de cookie."
         },
         "rights": {
           "title": "Vos droits",
-          "content": "Vous pouvez demander l’accès, la rectification ou la suppression de vos données."
+          "content": "Vous pouvez demander l’accès, la rectification ou la suppression de vos données. Pour les exercer, contactez l'administrateur général par message électronique : fabien.tora@ac-lyon.fr ou par voie postale à l’adresse suivante : La VENTIL 12 Chem. de la Côté À Cailloux 69700 Givors FRANCE.  Puisque ce sont des droits personnels, nous ne traiterons votre demande que si nous sommes en mesure de vous identifier. Dans le cas où nous ne parvenons pas à vous identifier, nous pouvons être amenés à vous demander une preuve de votre identité. Nous nous engageons à vous répondre dans un délai raisonnable qui ne saurait dépasser 1 mois à compter de la réception de votre demande. "
         }
       }
     },
@@ -887,7 +892,7 @@
     "actions": {
       "showPassword": "Afficher le mot de passe",
       "hidePassword": "Masquer le mot de passe",
-      "submitResetPassword": "Envoyer le lien de réinitialisation.",
+      "submitResetPassword": "Envoyer le lien",
       "submitUpdatePassword": "Changer mon mot de passe",
       "resendEmailVerification": "Renvoyer le lien",
       "cancelEmailChange": "Annuler le changement",

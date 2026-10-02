@@ -68,7 +68,7 @@ export const theme = extendTheme({
       palette: {
         primary: {
           main: '#212636',
-          light: '#317BF4',
+          light: '#1A6DF4',
           contrastText: '#FFFFFF'
         },
         error: {

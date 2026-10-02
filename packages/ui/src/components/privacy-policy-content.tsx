@@ -10,7 +10,7 @@ type PrivacyPolicyContentProps = {
 
 export default function PrivacyPolicyContent({ t, titleId, introId }: PrivacyPolicyContentProps) {
   return (
-    <Box>
+    <Box sx={{ m: 2 }}>
       <Stack spacing={2}>
         <Typography variant="h2" id={titleId}>
           {t('title')}
@@ -22,16 +22,19 @@ export default function PrivacyPolicyContent({ t, titleId, introId }: PrivacyPol
 
       <Stack spacing={1.5} mt={3}>
         <Typography variant="h3">{t('dataCollected.title')}</Typography>
-        <Typography variant="body2">{t('dataCollected.content')}</Typography>
+        <Typography variant="body1">{t('dataCollected.content')}</Typography>
 
         <Typography variant="h3">{t('purposes.title')}</Typography>
-        <Typography variant="body2">{t('purposes.content')}</Typography>
+        <Typography variant="body1">{t('purposes.content')}</Typography>
 
         <Typography variant="h3">{t('retention.title')}</Typography>
-        <Typography variant="body2">{t('retention.content')}</Typography>
+        <Typography variant="body1">{t('retention.content')}</Typography>
+
+        <Typography variant="h3">{t('cookie.title')}</Typography>
+        <Typography variant="body1">{t('cookie.content')}</Typography>
 
         <Typography variant="h3">{t('rights.title')}</Typography>
-        <Typography variant="body2">{t('rights.content')}</Typography>
+        <Typography variant="body1">{t('rights.content')}</Typography>
       </Stack>
     </Box>
   );

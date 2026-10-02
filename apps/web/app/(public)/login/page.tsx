@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
 import Link from '@repo/ui/link';
+import styles from '../page.module.css';
 import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
 import { resendEmailVerificationAction } from '../../../lib/actions/auth/resend-email-verification';
@@ -38,27 +39,33 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const noticeMessage = reason === 'verified' ? t('emailVerifiedNotice') : undefined;
 
   return (
-    <Box>
-      <Stack spacing={2}>
-        <Typography variant="h2">{t('title')}</Typography>
-        <Typography variant="h3">{t('subtitle')}</Typography>
-        <Typography variant="body1">{t('intro')}</Typography>
-      </Stack>
-      <ScopedIntlClientProvider paths={['common', 'forms']}>
-        <LoginForm
-          initialEmail={email ?? ''}
-          noticeMessage={noticeMessage}
-          onResendVerification={resendEmailVerificationAction}
-          resendVerificationLabels={{
-            cta: tVerify('resendCta'),
-            sent: tVerify('resendSent'),
-            error: tVerify('resendError')
-          }}
-        />
-      </ScopedIntlClientProvider>
-      <Stack spacing={2}>
-        <Link href="/forgot-password">{t('forgotPassword')}</Link>
-      </Stack>
+    <Box className={styles.connexionContainer}>
+      <Box className={styles.infoContainer}>
+        <Stack sx={{ mb: 2 }}>
+          <Typography variant="h2" sx={{ mb: 1 }} className={styles.infoTitle}>
+            {t('title')}
+          </Typography>
+          <Typography variant="body1">{t('intro')}</Typography>
+        </Stack>
+        <ScopedIntlClientProvider paths={['common', 'forms']}>
+          <LoginForm
+            initialEmail={email ?? ''}
+            noticeMessage={noticeMessage}
+            onResendVerification={resendEmailVerificationAction}
+            resendVerificationLabels={{
+              cta: tVerify('resendCta'),
+              sent: tVerify('resendSent'),
+              error: tVerify('resendError')
+            }}
+          />
+        </ScopedIntlClientProvider>
+        <Stack sx={{ mt: 2 }}>
+          <Typography variant="body1">{t('introForgotPassword')}</Typography>
+          <Typography variant="body1" className={styles.forgotLink}>
+            <Link href="/forgot-password">{t('forgotPassword')}</Link>
+          </Typography>
+        </Stack>
+      </Box>
     </Box>
   );
 };

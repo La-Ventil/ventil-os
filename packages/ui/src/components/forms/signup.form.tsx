@@ -148,6 +148,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
               required
               control={
                 <Checkbox
+                  size="small"
                   name="terms"
                   defaultChecked={state.values.terms === 'on'}
                   key={state.values.terms === 'on' ? 'terms-on' : 'terms-off'}

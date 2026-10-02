@@ -4,7 +4,7 @@ services:
   ventilos_postgres:
     image: postgres:18.0
     volumes:
-      - postgres_data_ventilos:/var/lib/postgresql/data
+      - postgres_data_ventilos:/var/lib/postgresql
     environment:
       POSTGRES_DB: ventilos
       POSTGRES_USER: ventilos
@@ -17,8 +17,8 @@ services:
     container_name: mailpit
     restart: unless-stopped
     ports:
-      - "1025:1025"   # SMTP
-      - "8025:8025"   # UI web
+      - '1025:1025' # SMTP
+      - '8025:8025' # UI web
     environment:
       MP_SMTP_BIND_ADDR: 0.0.0.0:1025
       MP_UI_BIND_ADDR: 0.0.0.0:8025
@@ -26,7 +26,7 @@ services:
   uptrace_clickhouse:
     image: clickhouse/clickhouse-server:25.3.3
     profiles: [uptrace]
-    restart: "no"
+    restart: 'no'
     environment:
       CLICKHOUSE_DB: uptrace
       CLICKHOUSE_USER: uptrace
@@ -46,7 +46,7 @@ services:
     # Not alpine: the entrypoint below generates a self-signed certificate with openssl, absent from that image.
     image: postgres:15
     profiles: [uptrace]
-    restart: "no"
+    restart: 'no'
     command:
       # Not a login shell: it would reset PATH and hide the PostgreSQL binaries of the image.
       - sh
@@ -79,7 +79,7 @@ services:
   uptrace_redis:
     image: redis:7-alpine
     profiles: [uptrace]
-    restart: "no"
+    restart: 'no'
     ports:
       - 6380:6379
     volumes:
@@ -93,7 +93,7 @@ services:
   uptrace:
     image: uptrace/uptrace:2.0.2
     profiles: [uptrace]
-    restart: "no"
+    restart: 'no'
     depends_on:
       uptrace_clickhouse:
         condition: service_healthy

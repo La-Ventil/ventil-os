@@ -40,9 +40,9 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
   const email = useEmailValidation('email');
 
   return (
-    <Form action={action} onSubmit={handleSubmitForm}>
+    <Form sx={{ mt: 2 }} action={action} onSubmit={handleSubmitForm}>
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
-      <Stack spacing={2}>
+      <Stack>
         <TextField
           name={'email'}
           label={t('fields.email')}
@@ -52,7 +52,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
         />
       </Stack>
       <FormActions>
-        <Button variant="outlined" color="secondary" component={Link} href="/login">
+        <Button variant="outlined" color="primary" component={Link} href="/login">
           {tCommon('actions.back')}
         </Button>
         <Button variant="contained" type="submit" disabled={isPending}>

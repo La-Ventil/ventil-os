@@ -101,9 +101,9 @@ export default function LoginForm({
           required
         />
       </Stack>
-      <Grid container spacing={2}>
+      <Grid container sx={{ mt: 2, justifyContent: 'flex-end', gap: 1 }}>
         <Grid>
-          <Button variant="outlined" color="secondary" component={Link} href="/">
+          <Button variant="outlined" color="primary" component={Link} href="/">
             {tCommon('actions.back')}
           </Button>
         </Grid>

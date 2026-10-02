@@ -28,6 +28,8 @@ export default function PasswordField({
     <InputAdornment position="end">
       {InputProps?.endAdornment}
       <IconButton
+        sx={{ width: 50, height: 50 }}
+        color="primary"
         type="button"
         onClick={() => setShowPassword((current) => !current)}
         onMouseDown={(event) => event.preventDefault()}
