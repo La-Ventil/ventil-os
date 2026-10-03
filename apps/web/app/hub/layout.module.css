@@ -5,4 +5,56 @@
   justify-content: center;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  position: relative;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  overflow: hidden;
+  &:before {
+    --gradientSize: 500px;
+    content: '';
+    background: #e3efff;
+    background: radial-gradient(circle, rgb(210, 227, 251) 0%, rgba(251, 251, 252, 1) 60%);
+    width: var(--gradientSize);
+    height: var(--gradientSize);
+    position: absolute;
+    z-index: 1;
+    -webkit-animation: before 5s ease infinite;
+    -moz-animation: before 5s ease infinite;
+    animation: before 5s ease infinite;
+  }
+  &:after {
+    --gradientSize: 500px;
+    content: '';
+    border: 1px solid #317bf4;
+    border-radius: 100%;
+    width: var(--gradientSize);
+    height: var(--gradientSize);
+    position: absolute;
+    z-index: 1;
+    -webkit-animation: after 2.5s ease infinite;
+    -moz-animation: after 2.5s ease infinite;
+    animation: after 2.5s ease infinite;
+  }
+}
+@keyframes before {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes after {
+  0% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
 }

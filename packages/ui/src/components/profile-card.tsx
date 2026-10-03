@@ -42,7 +42,7 @@ export default function ProfileCard({ profile, avatarHref, avatarLinkLabel }: Pr
           <Typography className={styles.secondaryText} variant="subtitle1" component="div">
             {profile.username}
           </Typography>
-          <Chip className={styles.profile} label={profile.profile} />
+          <Chip className={styles.chipProfile} label={profile.profile} />
         </CardContent>
       </div>
     </Card>

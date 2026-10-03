@@ -44,7 +44,7 @@ export default function AdminUsersTable({
           <TableCell>{columns.avatar}</TableCell>
           <TableCell>{columns.lastName}</TableCell>
           <TableCell>{columns.firstName}</TableCell>
-          <TableCell>{columns.username}</TableCell>
+          {/* <TableCell>{columns.username}</TableCell> */}
           <TableCell>{columns.email}</TableCell>
           <TableCell>{columns.profile}</TableCell>
           <TableCell>{columns.admin}</TableCell>
@@ -64,9 +64,9 @@ export default function AdminUsersTable({
             </TableCell>
             <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.firstName}</TableCell>
-            <TableCell title={user.username}>
+            {/* <TableCell title={user.username}>
               {user.username.includes('#') ? user.username.split('#')[0] : user.username}
-            </TableCell>
+            </TableCell> */}
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.profile}</TableCell>
             <TableCell>{adminLabelFor(user)}</TableCell>
