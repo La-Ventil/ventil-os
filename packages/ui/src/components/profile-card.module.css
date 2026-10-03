@@ -11,15 +11,29 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
 .topCard {
   display: flex;
 }
 .logoGroup {
   display: flex;
   align-items: center;
-  height: 19px;
+  min-height: 19px;
   font-family: var(--font-vg5000), Arial, sans-serif;
   font-size: 1.9rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.logoContainer {
+  display: flex;
+  align-items: center;
 }
 .logo svg {
   margin-top: -2px;
@@ -32,7 +46,6 @@
   color: var(--mui-palette-text-primary);
   letter-spacing: 1px;
   font-size: 0.9rem;
-  padding-left: 10px;
   text-transform: uppercase;
 }
 
@@ -43,6 +56,9 @@
   background-color: var(--mui-palette-background-paper);
   border-radius: 15px;
   border: 1px solid #ececec;
+}
+.media:hover {
+  box-shadow: 0 10px 30px #69738929;
 }
 
 .column {
@@ -78,6 +94,7 @@
   display: flex;
   gap: 5px;
   margin-top: 10px;
+  flex-wrap: wrap-reverse;
 }
 .chipProfile {
   font-size: 0.9rem;

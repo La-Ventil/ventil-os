@@ -1,5 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,11 +19,14 @@ export type StatsListProps = {
 
 function StatsListItem({ icon, label, count }: Omit<StatsListEntry, 'id'>) {
   return (
-    <ListItem>
-      <ListItemAvatar>
-        <Avatar>{icon}</Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={label} secondary={count.toLocaleString()} />
+    <ListItem className={styles.listItem}>
+      <Typography variant="h3">{label}</Typography>
+      <div className={styles.statGroup}>
+        <div>{icon}</div>
+        <Typography variant="body1" className={styles.statNumber}>
+          {count.toLocaleString()}
+        </Typography>
+      </div>
     </ListItem>
   );
 }

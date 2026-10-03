@@ -52,12 +52,14 @@ export default function ProfileCardServer({ profile, avatarHref, avatarLinkLabel
         </div>
       </div>
       <div className={styles.logoGroup}>
-        <div className={styles.logo}>
-          <svg aria-hidden="true" viewBox="0 0 50 75" xmlns="http://www.w3.org/2000/svg">
-            <polygon fill="#317bf4" points="0 0 0 75 10.1 75 10 49 25 64 40 49 39.9 75 50 75 50 0 0 0"></polygon>
-          </svg>
+        <div className={styles.logoContainer}>
+          <div className={styles.logo}>
+            <svg aria-hidden="true" viewBox="0 0 50 75" xmlns="http://www.w3.org/2000/svg">
+              <polygon fill="#317bf4" points="0 0 0 75 10.1 75 10 49 25 64 40 49 39.9 75 50 75 50 0 0 0"></polygon>
+            </svg>
+          </div>
+          <div className={styles.logoTitle}>La-Ventil</div>
         </div>
-        <div className={styles.logoTitle}>La-Ventil</div>
         <div className={styles.logoID}>ID {profile.id}</div>
       </div>
     </Card>
