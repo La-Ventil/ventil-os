@@ -5,7 +5,6 @@ import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { BurgerIcon } from './icons/burger-icon';
-import UserAvatar from './user-avatar';
 
 export type QuickActionsItem = {
   value: string;
@@ -25,12 +24,6 @@ export const buildQuickActionsMenuItems = ({
     avatar?: import('@repo/avatar-system').AvatarSelection | null;
   } | null;
 } = {}): QuickActionsItem[] => [
-  {
-    labelKey: 'profile',
-    value: 'profile',
-    href: '/hub/profile',
-    icon: <UserAvatar user={user} objectFit="contain" size={48} />
-  },
   {
     labelKey: 'fabLab',
     value: 'fab-lab',

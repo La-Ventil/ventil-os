@@ -10,6 +10,7 @@ import { buildQuickActionsMenuItems } from './quick-actions';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
 import styles from './quick-actions-menu.module.css';
+import UserAvatar from './user-avatar';
 
 export type QuickActionsMenuProps = {
   user?: {
@@ -40,9 +41,15 @@ export default function QuickActionsMenu({
 
   return (
     <BottomSlot>
+      <div className={styles.avatarPosition}>
+        <Link href={'/hub/profile'}>
+          <UserAvatar user={user} size={100} />
+        </Link>
+      </div>
       <MuiBottomNavigation className={styles.root} value={currentValue} showLabels={false}>
         {quickActionItems.map((item) => (
           <BottomNavigationAction
+            className={styles.buttons}
             key={item.value}
             component={item.href ? Link : 'button'}
             aria-label={t(item.labelKey)}

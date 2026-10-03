@@ -1,2 +1,11 @@
 .root {
+  margin-left: 100px;
+}
+.buttons {
+  padding: 0;
+  min-width: 56px;
+}
+.avatarPosition {
+  position: absolute;
+  bottom: 0;
 }
