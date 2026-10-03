@@ -2,7 +2,9 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import clsx from 'clsx';
 import Link from 'next/link';
 import type {
   OpenBadgeLevelViewModel as DomainOpenBadgeLevel,
@@ -11,7 +13,6 @@ import type {
 import CardHeader from '../card-header.server';
 import { OpenBadgeIcon } from '../icons/open-badge-icon';
 import LevelChip from '../level-chip';
-import MarkdownContent from '../markdown-content.server';
 import styles from './open-badge-card.module.css';
 
 export type OpenBadgeLevel = DomainOpenBadgeLevel;
@@ -24,7 +25,7 @@ export type OpenBadgeCardServerProps = {
 
 export default function OpenBadgeCardServer({ badge, href }: OpenBadgeCardServerProps) {
   const content = (
-    <Card className={styles.card}>
+    <Card className={clsx(styles.card, styles.cardInteractive)}>
       <CardHeader
         icon={<OpenBadgeIcon color="secondary" />}
         overline={badge.type}
@@ -47,7 +48,9 @@ export default function OpenBadgeCardServer({ badge, href }: OpenBadgeCardServer
                 />
               ))}
             </div>
-            <MarkdownContent content={badge.description} className={styles.description} />
+            <Typography variant="body2" color="text.primary" className={styles.cardDescription}>
+              {badge.description}
+            </Typography>
           </Stack>
         </Box>
       </CardContent>
