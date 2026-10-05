@@ -13,7 +13,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminUsersPage() {
   const session = await getServerSession();
-  const t = await getTranslations('pages.hub.admin.users');
+  const [t, tRole] = await Promise.all([
+    getTranslations('pages.hub.admin.users'),
+    getTranslations('profileSelector.option')
+  ]);
   const users = await browseUsersAsAdmin();
   const labels = {
     title: t('title'),
@@ -51,6 +54,7 @@ export default async function AdminUsersPage() {
     }
   };
 
+  const profileLabelFor = (user: (typeof users)[number]) => tRole(`${user.profile}.label`);
   const adminLabelFor = (user: (typeof users)[number]) => {
     if (user.globalAdmin) {
       return labels.adminStatus.global;
@@ -75,6 +79,7 @@ export default async function AdminUsersPage() {
         <AdminUsersTable
           users={users}
           columns={labels.columns}
+          profileLabelFor={profileLabelFor}
           adminLabelFor={adminLabelFor}
           statusLabelFor={statusLabelFor}
           renderActions={(user) => (

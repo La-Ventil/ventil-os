@@ -23,6 +23,7 @@ type AdminUsersTableProps = {
     openBadgesEarned: string;
     openBadgesAssigned: string;
   };
+  profileLabelFor: (user: UserAdminViewModel) => string;
   adminLabelFor: (user: UserAdminViewModel) => string;
   statusLabelFor: (user: UserAdminViewModel) => string;
   renderActions: (user: UserAdminViewModel) => ReactNode;
@@ -31,6 +32,7 @@ type AdminUsersTableProps = {
 export default function AdminUsersTable({
   users,
   columns,
+  profileLabelFor,
   adminLabelFor,
   statusLabelFor,
   renderActions
@@ -63,7 +65,7 @@ export default function AdminUsersTable({
             <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.firstName}</TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell>{user.profile}</TableCell>
+            <TableCell>{profileLabelFor(user)}</TableCell>
             <TableCell>{adminLabelFor(user)}</TableCell>
             <TableCell>{statusLabelFor(user)}</TableCell>
             <TableCell>{user.stats.machinesCount}</TableCell>

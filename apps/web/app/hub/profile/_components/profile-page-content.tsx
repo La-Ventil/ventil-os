@@ -20,9 +20,10 @@ type ProfilePageContentProps = {
 
 export default async function ProfilePageContent({ profile }: ProfilePageContentProps): Promise<JSX.Element> {
   const statsCounts = await viewUserStats(profile.id);
-  const [t, tNavigation] = await Promise.all([
+  const [t, tNavigation, tRole] = await Promise.all([
     getTranslations('pages.hub.profile'),
-    getTranslations('pages.hub.navigation')
+    getTranslations('pages.hub.navigation'),
+    getTranslations('profileSelector.option')
   ]);
   const stats: StatsListEntry[] = [
     { id: 'events', icon: <EventIcon />, label: t('stats.events'), count: statsCounts.eventsCount },
@@ -49,6 +50,7 @@ export default async function ProfilePageContent({ profile }: ProfilePageContent
           avatarHref="/hub/profile/avatar"
           avatarLinkLabel={t('actions.editAvatar')}
           avatarAlt={tNavigation('profileAvatarAlt', { email: profile.email })}
+          profileLabel={tRole(`${profile.profile}.label`)}
         />
       </Section>
       <Section>

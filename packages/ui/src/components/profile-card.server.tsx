@@ -14,9 +14,16 @@ export type ProfileCardServerProps = {
   avatarHref?: string;
   avatarLinkLabel?: string;
   avatarAlt: string;
+  profileLabel: string;
 };
 
-export default function ProfileCardServer({ profile, avatarHref, avatarLinkLabel, avatarAlt }: ProfileCardServerProps) {
+export default function ProfileCardServer({
+  profile,
+  avatarHref,
+  avatarLinkLabel,
+  avatarAlt,
+  profileLabel
+}: ProfileCardServerProps) {
   const avatarContent = (
     <div className={styles.imageWrapper}>
       <UserAvatar user={profile} alt={avatarAlt} size={120} />
@@ -43,7 +50,7 @@ export default function ProfileCardServer({ profile, avatarHref, avatarLinkLabel
             <Typography className={styles.secondaryText} variant="subtitle1" component="div">
               {profile.username}
             </Typography>
-            <Chip className={styles.chipProfile} label={profile.profile} />
+            <Chip className={styles.chipProfile} label={profileLabel} />
           </CardContent>
         </div>
       </div>
