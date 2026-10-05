@@ -236,11 +236,10 @@ Important:
 
 Both setups reset their schema with `prisma migrate reset --force`.
 Since Prisma 7, the CLI refuses that command when it detects an AI agent (Claude Code included),
-even for a command the human types into the agent's session.
-It only runs with `PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION` set to the exact text of a consent message
-the human wrote in the current conversation; consent from an earlier conversation does not carry over.
-So an agent asks for fresh consent before any e2e run.
-Replacing the reset with `DROP SCHEMA` + `migrate deploy` in the e2e setup has not been decided.
+unless `PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION` holds a consent message written by the human.
+To let an agent run e2e locally, set that variable in `apps/web/.env.development.local`:
+Playwright loads the same env files as `next dev`, while `packages/db` does not read it,
+so a reset of the development database stays guarded.
 
 ## Route modals under e2e
 
