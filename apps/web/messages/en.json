@@ -68,7 +68,7 @@
         },
         "hosting": {
           "title": "Hosting",
-          "content": "To be completed (host, address, contact)."
+          "content": "Clever Cloud (host, address, contact)."
         },
         "contact": {
           "title": "Contact",
@@ -77,22 +77,26 @@
       },
       "privacyPolicy": {
         "title": "Privacy policy",
-        "intro": "This page explains how your data is collected and used.",
+        "intro": "Ventil OS is an educational initiative run by the La-Ventil association at the Lycée Louis-Aragon Picasso in Givors. The data controller is Fabien Tora, teacher and president of the La-Ventil association. This page explains how your data is collected and used within Ventil OS.",
         "dataCollected": {
           "title": "Data collected",
-          "content": "User account, profile information, reservations, badges."
+          "content": "The user's first name, last name, school level (for students) and email address are collected for identification and access to La-Ventil. Information about the use of the services is collected: reservations made on the machines, open badges earned and issued, machines used, last sign-in date to the application."
         },
         "purposes": {
           "title": "Purposes",
-          "content": "Account management, reservations, badges and communications."
+          "content": "User data is used for identification when accessing La-Ventil and Ventil OS, usage statistics, the reservation calendar and communication. The user agrees to receive emails keeping them informed about La-Ventil and the proper functioning of their account."
         },
         "retention": {
-          "title": "Retention",
-          "content": "Data is kept for as long as the account remains active."
+          "title": "Storage and retention",
+          "content": "User data is stored in France by our hosting partner Clever Cloud. Data is kept for as long as the account remains active."
+        },
+        "cookie": {
+          "title": "Audience tracking and privacy",
+          "content": "This site uses no audience tracking tool and sets no cookie."
         },
         "rights": {
           "title": "Your rights",
-          "content": "You can request access, correction or deletion of your data."
+          "content": "You can request access, correction or deletion of your data. To exercise these rights, contact the general administrator by email: fabien.tora@ac-lyon.fr or by post at the following address: La VENTIL 12 Chem. de la Côté À Cailloux 69700 Givors FRANCE. Since these are personal rights, we will only process your request if we can identify you. If we cannot identify you, we may ask you for proof of identity. We commit to replying within a reasonable time, no later than one month from receipt of your request."
         }
       }
     },
@@ -590,21 +594,23 @@
         "title": "Support",
         "subtitle": "Information",
         "intro": "Help us improve the La-Ventil app!",
-        "contact": "Found a bug? Send an email to loic.marleix@gmail.com",
+        "contact": "Found a bug? Want a new feature? Send an email to the designer in charge of the project:",
+        "contactEmail": "loic.marleix@gmail.com",
         "repository": {
           "title": "Open source",
-          "text": "This project is open source. Find the code on GitHub:"
+          "text": "This project is developed within the French national education system and intends to become open source shortly. We are currently choosing the appropriate open source licence. You can find the code on GitHub:",
+          "credits": "Ventil O.S. is developed by Johan Dufour and Loïc Marleix on behalf of the La-Ventil association."
         },
-        "illustrationPlaceholder": "Illustration in progress",
         "session": {
           "title": "Session information"
         },
         "guidelines": {
           "title": "Include several details in your message:",
           "items": {
-            "subject": "use the subject Ventil O.S. - bug",
-            "details": "describe the issue as precisely as possible. Which section of the app? Which button?",
-            "device": "include your phone model and the browser you used to access Ventil O.S."
+            "subject": "use the subject Ventil O.S. - bug or feature request",
+            "details": "For a bug: describe the issue as precisely as possible. Which section of the app? Which button?",
+            "device": "For a bug: include your phone model and the browser you used to access Ventil O.S.",
+            "feature": "For a feature: describe your need and what it brings to the project. The request will be recorded and visible on GitHub. It will be handled once a new development budget is allocated."
           }
         }
       },

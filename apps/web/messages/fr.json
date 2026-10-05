@@ -68,7 +68,7 @@
         },
         "hosting": {
           "title": "Hébergement",
-          "content": "À compléter (hébergeur, adresse, contact)."
+          "content": "Clever Cloud (hébergeur, adresse, contact)."
         },
         "contact": {
           "title": "Contact",
@@ -77,22 +77,26 @@
       },
       "privacyPolicy": {
         "title": "Politique de confidentialité",
-        "intro": "Cette page décrit comment vos données sont collectées et utilisées.",
+        "intro": "Ventil OS est une initiative pédagogique portée par l'association La-Ventil au sein du Lycée Louis-Aragon Picasso de Givors. Le responsable du traitement des données est Fabien Tora, enseignant et président de l'association La-Ventil. Cette page décrit comment vos données sont collectées et utilisées dans le cadre de Ventil OS.",
         "dataCollected": {
           "title": "Données collectées",
-          "content": "Compte utilisateur, informations de profil, réservations, badges."
+          "content": "Le prénom, nom, niveau scolaire (si étudiant) et adresse e-mail de l'utilisateur sont collectés à des fins d'identification et d'accès à La-Ventil. Des informations sur l'utilisation des services sont collectés : réservations effectuées sur les machines, open badges obtenus et émis, machines utilisées, dernière date de connexion à l'application."
         },
         "purposes": {
           "title": "Finalités",
-          "content": "Gestion des comptes, réservations, badges et communications."
+          "content": "Les données de l'utilisateur sont utilisées pour son identification pour l'accès à La-Ventil et Ventil OS, les statistiques d'utilisation, l'agenda de réservation et la communication. L'utilisateur accepte de recevoir des e-mails pour le tenir au courant des informations liées à La-Ventil et au bon fonctionnement de son compte."
         },
         "retention": {
-          "title": "Durée de conservation",
-          "content": "Les données sont conservées tant que le compte est actif."
+          "title": "Stockage et durée de conservation",
+          "content": "Les données de l'utilisateur sont stockées en France par notre partenaire d'hébergement Clever Cloud. Les données sont conservées tant que le compte est actif."
+        },
+        "cookie": {
+          "title": "Suivi d’audience et vie privée",
+          "content": "Ce site n'utilise aucun outil de suivi d'audience et ne comporte pas de cookie."
         },
         "rights": {
           "title": "Vos droits",
-          "content": "Vous pouvez demander l’accès, la rectification ou la suppression de vos données."
+          "content": "Vous pouvez demander l’accès, la rectification ou la suppression de vos données. Pour les exercer, contactez l'administrateur général par message électronique : fabien.tora@ac-lyon.fr ou par voie postale à l’adresse suivante : La VENTIL 12 Chem. de la Côté À Cailloux 69700 Givors FRANCE. Puisque ce sont des droits personnels, nous ne traiterons votre demande que si nous sommes en mesure de vous identifier. Dans le cas où nous ne parvenons pas à vous identifier, nous pouvons être amenés à vous demander une preuve de votre identité. Nous nous engageons à vous répondre dans un délai raisonnable qui ne saurait dépasser 1 mois à compter de la réception de votre demande."
         }
       }
     },
@@ -590,21 +594,23 @@
         "title": "Support",
         "subtitle": "Information",
         "intro": "Aidez-nous à améliorer l'application de La-Ventil !",
-        "contact": "Vous avez détecté un bug ? Envoyez un email à loic.marleix@gmail.com",
+        "contact": "Vous avez détecté un bug ? Vous souhaitez une nouvelle fonctionnalité ? Envoyez un email au designer en charge du projet :",
+        "contactEmail": "loic.marleix@gmail.com",
         "repository": {
           "title": "Open source",
-          "text": "Le projet est open source. Retrouvez le code sur GitHub :"
+          "text": "Ce projet est développé dans le cadre de l'Éducation nationale et a la volonté à court terme d'être open source. Nous sommes actuellement en cours de sélection de la licence open source adéquate. Vous pouvez retrouver le code sur GitHub :",
+          "credits": "Ventil O.S. est développé par Johan Dufour et Loïc Marleix pour le compte de l'association La-Ventil."
         },
-        "illustrationPlaceholder": "Illustration en cours",
         "session": {
           "title": "Informations de session"
         },
         "guidelines": {
           "title": "Notez plusieurs éléments dans votre message :",
           "items": {
-            "subject": "notez dans l'intitulé Ventil O.S. - bug",
-            "details": "détaillez le problème le plus possible. Quelle section de l'application ? Quel bouton ?",
-            "device": "notez le modèle de mobile et le navigateur que vous utilisez pour consulter Ventil O.S."
+            "subject": "notez dans l'intitulé Ventil O.S. - bug ou demande de fonctionnalité",
+            "details": "Pour un bug : détaillez le problème le plus possible. Quelle section de l'application ? Quel bouton ?",
+            "device": "Pour un bug : notez le modèle de mobile et le navigateur que vous utilisez pour consulter Ventil O.S.",
+            "feature": "Pour une fonctionnalité : décrivez votre besoin et son apport au projet. Cette demande sera enregistrée et visible sur GitHub. Elle sera traitée une fois un nouveau budget de développement alloué."
           }
         }
       },
