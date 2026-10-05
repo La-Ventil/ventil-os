@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.51](https://github.com/La-Ventil/ventil-os/compare/v0.0.50...v0.0.51) (2026-10-05)
+
+
+### Features
+
+* **admin:** list users by last name, without the username column ([63315b3](https://github.com/La-Ventil/ventil-os/commit/63315b349d1726d62f26d529de9de679792bceb7))
+* **ui:** open the profile from an avatar beside the bottom navigation ([5924e0b](https://github.com/La-Ventil/ventil-os/commit/5924e0be60a29049c6ef312166f41e57f2d7d78f))
+* **web:** present the profile as a member card ([f913f9e](https://github.com/La-Ventil/ventil-os/commit/f913f9eb892ced540bab3836cf137124b3689d33))
+* **web:** restyle the sign-in, sign-up and forgot-password pages ([8a39c83](https://github.com/La-Ventil/ventil-os/commit/8a39c83187fc7c6c1f8cffd87ee2897101e65281))
+* **web:** rework the support page and the privacy policy ([6bf2dc4](https://github.com/La-Ventil/ventil-os/commit/6bf2dc4af355e3d7515242242c5f595c522e1abd))
+
+
+### Bug Fixes
+
+* **db:** the seed logs the admin's id, not their email ([2dce4da](https://github.com/La-Ventil/ventil-os/commit/2dce4da2d97b452aa5285d0970ea9fe1464ca332))
+* **docker:** mount the postgres volume at /var/lib/postgresql ([437beac](https://github.com/La-Ventil/ventil-os/commit/437beac47b2570f91448740dcf2593c4a6d03755))
+* **e2e:** pick the env files by NODE_ENV, as Next does ([51873c5](https://github.com/La-Ventil/ventil-os/commit/51873c57cbf92025b6d7641286b132201367f9c7))
+* **web:** name Clever Cloud as host in the legal notice ([3d4061b](https://github.com/La-Ventil/ventil-os/commit/3d4061bf0d82c6b19c10e490ef15d360d7b2ae14))
+* **web:** regenerate route types before typechecking ([8172afc](https://github.com/La-Ventil/ventil-os/commit/8172afc6a17f1aa9059c385ddec2e9b7f0e594d4))
+
+
+### Styles
+
+* **ui:** refresh cards, the reservation grid and the palette ([6b8d3d7](https://github.com/La-Ventil/ventil-os/commit/6b8d3d77ac16a10bbda55c1aadeb4a77619b5527))
+
+
+### Docs
+
+* **adr-005:** amend — agents commit and integrate into dev without asking ([56da625](https://github.com/La-Ventil/ventil-os/commit/56da6258bf55d607a3c5cc50af19db490ae9ac95))
+* **claude:** agents commit on their own and integrate into dev without a PR ([cedf3c6](https://github.com/La-Ventil/ventil-os/commit/cedf3c63ada71dd4458a11bfbe4b806ba61dbbf1))
+* **contributing:** common pitfalls for postgres 18 and stale route types ([c9d0871](https://github.com/La-Ventil/ventil-os/commit/c9d087133471de77db1a80dd8bb5b772cff8804e))
+* **e2e:** let an agent run e2e through a local consent variable ([3748c03](https://github.com/La-Ventil/ventil-os/commit/3748c035d4d3fd7d83d49b4d90b2eb5cbb40c508))
+* **env:** document seed variables in packages/db/.env.example ([f8c3211](https://github.com/La-Ventil/ventil-os/commit/f8c3211f753448154f07bed348d9aaf77d841e36))
+* **env:** list the seed variables the production deploy reads ([259be67](https://github.com/La-Ventil/ventil-os/commit/259be679e6d3a6fe94f6792d89bdf2a8447f2a1d))
+* **env:** local setup copies the examples instead of a README excerpt ([fb1af71](https://github.com/La-Ventil/ventil-os/commit/fb1af71f14dfdd218854ad850234fefb235d7ead))
+* **readme:** getting started seeds the database and names the login ([2c58884](https://github.com/La-Ventil/ventil-os/commit/2c58884fa58fc7840e7b9fd991cc6262df5e02f5))
+* **testing:** route-modal flakes and the migrate-reset consent guard ([947c61f](https://github.com/La-Ventil/ventil-os/commit/947c61f18ed206810e392ebcab434e061e544648))
+
 ### [0.0.50](https://github.com/La-Ventil/ventil-os/compare/v0.0.49...v0.0.50) (2026-09-15)
 
 
