@@ -1,11 +1,9 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { EventIcon } from './icons/event-icon';
 import { MachineIcon } from './icons/machine-icon';
 import { OpenBadgeIcon } from './icons/open-badge-icon';
 import { BurgerIcon } from './icons/burger-icon';
-import UserAvatar from './user-avatar';
 
 export type QuickActionsItem = {
   value: string;
@@ -16,21 +14,7 @@ export type QuickActionsItem = {
   action?: 'drawer';
 };
 
-export const buildQuickActionsMenuItems = ({
-  user
-}: {
-  user?: {
-    email?: string | null;
-    image?: string | null;
-    avatar?: import('@repo/avatar-system').AvatarSelection | null;
-  } | null;
-} = {}): QuickActionsItem[] => [
-  {
-    labelKey: 'profile',
-    value: 'profile',
-    href: '/hub/profile',
-    icon: <UserAvatar user={user} objectFit="contain" size={48} />
-  },
+export const buildQuickActionsMenuItems = (): QuickActionsItem[] => [
   {
     labelKey: 'fabLab',
     value: 'fab-lab',
@@ -42,12 +26,6 @@ export const buildQuickActionsMenuItems = ({
     value: 'open-badges',
     href: '/hub/open-badge',
     icon: <OpenBadgeIcon />
-  },
-  {
-    labelKey: 'events',
-    value: 'events',
-    href: '/hub/events',
-    icon: <EventIcon />
   },
   {
     labelKey: 'settings',

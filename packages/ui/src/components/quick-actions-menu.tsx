@@ -9,6 +9,7 @@ import BottomSlot from './bottom-slot';
 import { buildQuickActionsMenuItems } from './quick-actions';
 import Link from './link';
 import DrawerMenu from './drawer-menu';
+import UserAvatar from './user-avatar';
 import styles from './quick-actions-menu.module.css';
 
 export type QuickActionsMenuProps = {
@@ -32,17 +33,21 @@ export default function QuickActionsMenu({
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  const quickActionItems = buildQuickActionsMenuItems({
-    user
-  });
-  const currentValue =
-    quickActionItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ?? quickActionItems[0]?.value;
+  const quickActionItems = buildQuickActionsMenuItems();
+  // `false` leaves every action unselected, e.g. on the profile reached through the avatar.
+  const currentValue = quickActionItems.find((item) => item.href && pathname?.startsWith(item.href))?.value ?? false;
 
   return (
     <BottomSlot>
+      <div className={styles.avatarPosition}>
+        <Link href="/hub/profile" aria-label={t('profile')}>
+          <UserAvatar user={user} size={100} />
+        </Link>
+      </div>
       <MuiBottomNavigation className={styles.root} value={currentValue} showLabels={false}>
         {quickActionItems.map((item) => (
           <BottomNavigationAction
+            className={styles.buttons}
             key={item.value}
             component={item.href ? Link : 'button'}
             aria-label={t(item.labelKey)}
