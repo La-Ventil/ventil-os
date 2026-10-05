@@ -6,8 +6,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/* The files `next dev` loads, highest priority first: dotenv never overrides a variable already set. */
-for (const file of ['.env.development.local', '.env.local', '.env.development', '.env']) {
+/* The files `next dev` loads, highest priority first: dotenv never overrides a variable already set.
+   Like Next, NODE_ENV=test switches to the .env.test files and skips .env.local. */
+const envMode = process.env.NODE_ENV === 'test' ? 'test' : 'development';
+const envFiles = [`.env.${envMode}.local`, ...(envMode === 'test' ? [] : ['.env.local']), `.env.${envMode}`, '.env'];
+for (const file of envFiles) {
   dotenv.config({ path: path.resolve(__dirname, file) });
 }
 
