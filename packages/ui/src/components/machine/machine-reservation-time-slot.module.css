@@ -6,12 +6,19 @@
 }
 
 .timeLabel {
-  color: var(--mui-palette-text-secondary);
+  color: var(--mui-palette-primary-main);
+  font-size: 1.4rem;
+}
+.timeLabelPast {
+  color: var(--mui-palette-secondary-main);
 }
 
 .slotCell {
+  /* Tints of the section's secondary colour. */
+  --slot-free: color-mix(in srgb, var(--mui-palette-secondary-light) 30%, var(--mui-palette-background-paper));
+  --slot-stripe: var(--mui-palette-secondary-main);
   height: var(--slot-height);
-  background: var(--mui-palette-grey-100);
+  background: var(--slot-free);
   border-radius: 12px;
   border: none;
   padding: 0;
@@ -20,11 +27,23 @@
 }
 
 .slotCellAvailable:hover {
-  background: var(--mui-palette-grey-200);
+  background: var(--mui-palette-background-paper);
+  border: 1px solid var(--slot-free);
 }
 
 .slotCellPast {
-  background: var(--mui-palette-grey-300);
+  background-image: linear-gradient(
+    134deg,
+    var(--mui-palette-background-paper) 42.31%,
+    var(--slot-stripe) 42.31%,
+    var(--slot-stripe) 50%,
+    var(--mui-palette-background-paper) 50%,
+    var(--mui-palette-background-paper) 92.31%,
+    var(--slot-stripe) 92.31%,
+    var(--slot-stripe) 100%
+  );
+  background-size: 13px 13.46px;
+  opacity: 0.3;
 }
 
 .slotCellBooked {

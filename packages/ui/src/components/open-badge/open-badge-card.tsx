@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
+import clsx from 'clsx';
 import type {
   OpenBadgeViewModel,
   OpenBadgeLevelViewModel as DomainOpenBadgeLevel
@@ -24,7 +25,7 @@ export type OpenBadgeCardProps = {
 
 export default function OpenBadgeCard({ badge, href }: OpenBadgeCardProps) {
   const content = (
-    <Card className={styles.card}>
+    <Card className={clsx(styles.card, href && styles.cardInteractive)}>
       <CardHeader
         icon={<OpenBadgeIcon color="secondary" />}
         overline={badge.type}

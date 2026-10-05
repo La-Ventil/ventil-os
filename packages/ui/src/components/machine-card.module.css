@@ -13,7 +13,7 @@
 
 .cardInteractive:hover {
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .cardInteractive:focus-visible {
@@ -33,9 +33,9 @@
 }
 
 .details {
-  flex: 1;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .illustration {
@@ -58,4 +58,10 @@
   &:last-child {
     padding-bottom: 5px;
   }
+}
+
+.description {
+  font-size: 1.4rem;
+  margin-top: 0.6rem;
+  padding-right: 20px;
 }

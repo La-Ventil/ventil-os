@@ -1,6 +1,5 @@
 .modalIllustration {
   border-radius: 16px;
-  background: var(--mui-palette-grey-100);
   display: flex;
   align-items: center;
   justify-content: center;

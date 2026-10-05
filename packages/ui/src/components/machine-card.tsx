@@ -61,10 +61,10 @@ export default function MachineCard({ machine, href, onClick, t }: MachineCardPr
           {machine.imageUrl ? <img src={machine.imageUrl} alt={machine.name} /> : 'Illustration en cours'}
         </CardMedia>
         <div className={styles.details}>
-          <Typography variant="body2" color="text.primary">
+          <StatusIndicator tone={availabilityTone[machine.availability]} label={t(`status.${machine.availability}`)} />
+          <Typography variant="body2" color="text.primary" className={styles.description}>
             {machine.description}
           </Typography>
-          <StatusIndicator tone={availabilityTone[machine.availability]} label={t(`status.${machine.availability}`)} />
         </div>
       </CardContent>
     </Card>

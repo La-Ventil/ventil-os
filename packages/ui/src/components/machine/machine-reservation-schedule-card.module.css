@@ -2,13 +2,13 @@
   grid-column: 1 / -1;
   align-self: stretch;
   background: var(--mui-palette-common-white);
-  border: 1px solid var(--mui-palette-grey-200);
   border-radius: 12px;
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: var(--mui-shadows-1);
+  box-shadow: 0 3px 7px #6b7e9345;
+  border: 1px solid var(--mui-palette-secondary-light);
 }
 
 .clickable {
@@ -44,5 +44,6 @@
 }
 
 .reservationTime {
-  color: var(--mui-palette-text-secondary);
+  color: var(--mui-palette-secondary-main);
+  font-size: 1.1rem;
 }

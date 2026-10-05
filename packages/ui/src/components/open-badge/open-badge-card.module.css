@@ -7,7 +7,7 @@
 
 .cardInteractive:hover {
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .cardInteractive:focus-visible {
@@ -30,6 +30,7 @@
 }
 
 .levelRow {
+  margin-top: 0.6rem;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -86,7 +87,9 @@
 }
 
 .description {
-  color: var(--mui-palette-primary-main);
-  font-size: 1.2rem;
+  color: var(--mui-palette-text-primary);
+  font-size: 1.4rem;
   letter-spacing: 0.5px;
+  margin-top: 0.6rem;
+  padding-right: 20px;
 }

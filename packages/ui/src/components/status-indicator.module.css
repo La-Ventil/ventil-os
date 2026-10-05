@@ -9,7 +9,8 @@
 
 .root :global(.MuiChip-label) {
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
+  font-size: 1.1rem;
 }
 
 .root :global(.MuiChip-icon) {
@@ -17,15 +18,15 @@
 }
 
 .success {
-  background: var(--mui-palette-success-main);
+  background: var(--mui-palette-success-light);
 }
 
 .warning {
-  background: var(--mui-palette-warning-main);
+  background: var(--mui-palette-warning-light);
 }
 
 .error {
-  background: var(--mui-palette-error-main);
+  background: var(--mui-palette-error-light);
 }
 
 .info {
@@ -37,7 +38,7 @@
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
 }

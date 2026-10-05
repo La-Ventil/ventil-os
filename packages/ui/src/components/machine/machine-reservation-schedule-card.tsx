@@ -47,7 +47,7 @@ const MachineReservationScheduleCard = ({
       <div className={styles.reservationHeader}>
         <div className={styles.avatarStack}>
           {visibleUsers.map((user) => (
-            <UserAvatar key={user.id} user={user} size={24} />
+            <UserAvatar key={user.id} avatarNoBody user={user} size={44} />
           ))}
           {extraUsers > 0 ? <span className={styles.avatarOverflow}>+{extraUsers}</span> : null}
         </div>

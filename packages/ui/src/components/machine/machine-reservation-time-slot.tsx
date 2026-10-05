@@ -27,7 +27,7 @@ export default function MachineReservationTimeSlot({
 
   return (
     <div className={styles.slotRow}>
-      <Typography variant="caption" className={styles.timeLabel}>
+      <Typography variant="caption" className={clsx(styles.timeLabel, isPast && styles.timeLabelPast)}>
         {label}
       </Typography>
       <button

@@ -18,9 +18,9 @@ export const getThemeSectionClassName = (section: ThemeSection) => `${themeSecti
 
 export const sectionPalettes: Record<ThemeSection, PaletteColor> = {
   [ThemeSection.FabLab]: {
-    light: '#CFD5E9',
-    main: '#9DA5BF',
-    dark: '#747FA4',
+    light: '#9DA5BF',
+    main: '#55669E',
+    dark: '#414f78',
     contrastText: '#FFFFFF'
   },
   [ThemeSection.OpenBadge]: {
@@ -68,7 +68,7 @@ export const theme = extendTheme({
       palette: {
         primary: {
           main: '#212636',
-          light: '#317BF4',
+          light: '#1A6DF4',
           contrastText: '#FFFFFF'
         },
         error: {

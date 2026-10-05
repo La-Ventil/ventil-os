@@ -14,7 +14,9 @@ body {
   margin: 0;
   background: var(--mui-palette-background-default);
   color: var(--mui-palette-text-primary);
-  line-height: 1.5;
+  /* The theme's body1, inherited by text outside a Typography (Markdown, lists). */
+  font: var(--mui-font-body1);
+  letter-spacing: 0.5px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -41,7 +43,7 @@ a {
 
 .MuiCard-root {
   border-radius: 10px;
-  box-shadow: 0px 1px 15px #69738971;
+  box-shadow: 0 6px 17px #69738929;
 }
 
 .MuiCardContent-root {
