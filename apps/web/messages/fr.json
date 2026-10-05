@@ -268,7 +268,6 @@
             "avatar": "avatar",
             "firstName": "prénom",
             "lastName": "nom",
-            "username": "pseudo",
             "email": "email",
             "profile": "profil",
             "admin": "administrateur",

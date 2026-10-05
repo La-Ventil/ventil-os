@@ -30,7 +30,7 @@ export default function UserNetworkGraphNodeBubble({
       <span className={styles.halo} style={{ width: bubbleDiameterPx, height: bubbleDiameterPx }} aria-hidden />
       <span className={`${styles.bubble} ${showFocusRing ? styles.focused : ''}`} aria-hidden>
         <span className={styles.avatar}>
-          <UserAvatar user={{ image: avatarUrl, avatar }} size={avatarDiameterPx} objectFit="cover" avatarNoBody />
+          <UserAvatar user={{ image: avatarUrl, avatar }} size={avatarDiameterPx} objectFit="cover" />
         </span>
         <span className={styles.roleBadge} style={{ color: roleBadgeColor }} aria-hidden>
           <RoleBadgeIcon fontSize="inherit" />

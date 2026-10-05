@@ -57,7 +57,7 @@ test.describe('Admin open badges journeys', () => {
 
     const blockMenu = await openRowQuickActions(page, studentRow, /manage/i);
     await clickQuickAction(blockMenu, /block/i);
-    await expect(studentRow.getByRole('cell').nth(8)).toHaveText(/blocked/i, { timeout: 10_000 });
+    await expect(studentRow.getByRole('cell').nth(7)).toHaveText(/blocked/i, { timeout: 10_000 });
 
     await openAdminOpenBadgeAssignModal(page, /Impression 3D Bambu Lab/i);
 
@@ -71,7 +71,7 @@ test.describe('Admin open badges journeys', () => {
     const blockedRow = refreshedTable.getByRole('row').filter({ hasText: seedUsers.student.email }).first();
     const unblockMenu = await openRowQuickActions(page, blockedRow, /manage/i);
     await clickQuickAction(unblockMenu, /unblock/i);
-    await expect(blockedRow.getByRole('cell').nth(8)).toHaveText(/active/i, { timeout: 10_000 });
+    await expect(blockedRow.getByRole('cell').nth(7)).toHaveText(/active/i, { timeout: 10_000 });
   });
 
   test('non-admin users cannot open assign modal directly', async ({ page, loginAs }) => {

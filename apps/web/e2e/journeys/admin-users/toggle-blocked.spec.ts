@@ -10,7 +10,7 @@ test.describe('Admin users journeys', () => {
     await expect(table).toBeVisible();
 
     const row = table.getByRole('row').filter({ hasText: 'student@ventil.local' }).first();
-    const statusCell = row.getByRole('cell').nth(8);
+    const statusCell = row.getByRole('cell').nth(7);
 
     await expect(row).toBeVisible();
     await expect(statusCell).toHaveText(/active/i);

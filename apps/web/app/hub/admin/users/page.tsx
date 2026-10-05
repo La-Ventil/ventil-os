@@ -24,7 +24,6 @@ export default async function AdminUsersPage() {
       avatar: t('columns.avatar'),
       firstName: t('columns.firstName'),
       lastName: t('columns.lastName'),
-      username: t('columns.username'),
       email: t('columns.email'),
       profile: t('columns.profile'),
       admin: t('columns.admin'),
