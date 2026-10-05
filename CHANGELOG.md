@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.52](https://github.com/La-Ventil/ventil-os/compare/v0.0.51...v0.0.52) (2026-10-05)
+
+
+### Bug Fixes
+
+* **web:** add the missing user search placeholder to the assign modal ([a8057c7](https://github.com/La-Ventil/ventil-os/commit/a8057c710e66df8e1838254eb4ce1193327be57a))
+* **web:** show the translated role on the profile card and users table ([cb7ab6d](https://github.com/La-Ventil/ventil-os/commit/cb7ab6d02af07bc85c4da5b842490a2bfd8fdf2f))
+
 ### [0.0.51](https://github.com/La-Ventil/ventil-os/compare/v0.0.50...v0.0.51) (2026-10-05)
 
 

@@ -11,7 +11,7 @@ This report compares each locale catalog against the reference locale without ru
 
 ## en
 
-Coverage: 100.0% (616/616)
+Coverage: 100.0% (617/617)
 
 ### Missing keys
 
@@ -23,7 +23,7 @@ Coverage: 100.0% (616/616)
 
 ## fr
 
-Coverage: 100.0% (616/616)
+Coverage: 100.0% (617/617)
 
 ### Missing keys
 
