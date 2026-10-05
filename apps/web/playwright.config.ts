@@ -6,7 +6,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+/* The files `next dev` loads, highest priority first: dotenv never overrides a variable already set. */
+for (const file of ['.env.development.local', '.env.local', '.env.development', '.env']) {
+  dotenv.config({ path: path.resolve(__dirname, file) });
+}
 
 /* Keep E2E on a dedicated port so it does not collide with a local dev server on :3000. */
 const PORT = process.env.PLAYWRIGHT_PORT || 3001;
