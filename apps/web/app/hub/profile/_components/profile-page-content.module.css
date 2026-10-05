@@ -1,0 +1,62 @@
+.cardStage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block: 100px;
+  overflow: hidden;
+}
+
+/* A breathing halo and a ripple behind the profile card. */
+.cardStage::before,
+.cardStage::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  width: 500px;
+  height: 500px;
+}
+
+.cardStage::before {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--mui-palette-primary-light) 20%, var(--mui-palette-background-default)) 0%,
+    var(--mui-palette-background-default) 60%
+  );
+  animation: breathe 5s ease infinite;
+}
+
+.cardStage::after {
+  border: 1px solid var(--mui-palette-primary-light);
+  border-radius: 50%;
+  animation: ripple 2.5s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardStage::before,
+  .cardStage::after {
+    animation: none;
+  }
+
+  .cardStage::after {
+    display: none;
+  }
+}
+
+@keyframes breathe {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}

@@ -12,6 +12,7 @@ import SectionSubtitle from '@repo/ui/section-subtitle.server';
 import StatsList, { StatsListEntry } from '@repo/ui/stats-list';
 import type { UserProfile } from '@repo/application/users/models/user-profile';
 import { viewUserStats } from '@repo/application/users/usecases';
+import styles from './profile-page-content.module.css';
 
 type ProfilePageContentProps = {
   profile: UserProfile;
@@ -42,12 +43,14 @@ export default async function ProfilePageContent({ profile }: ProfilePageContent
         <SectionSubtitle>{t('subtitle')}</SectionSubtitle>
         <Typography variant="body1">{t('intro')}</Typography>
       </Section>
-      <ProfileCard
-        profile={profile}
-        avatarHref="/hub/profile/avatar"
-        avatarLinkLabel={t('actions.editAvatar')}
-        avatarAlt={tNavigation('profileAvatarAlt', { email: profile.email })}
-      />
+      <Section className={styles.cardStage}>
+        <ProfileCard
+          profile={profile}
+          avatarHref="/hub/profile/avatar"
+          avatarLinkLabel={t('actions.editAvatar')}
+          avatarAlt={tNavigation('profileAvatarAlt', { email: profile.email })}
+        />
+      </Section>
       <Section>
         <StatsList stats={stats} />
       </Section>

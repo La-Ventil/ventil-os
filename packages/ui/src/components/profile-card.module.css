@@ -1,23 +1,51 @@
 .card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: min(400px, 100%);
+  max-width: 500px;
+  min-height: 200px;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px #69738929;
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.topCard {
   display: flex;
 }
 
 .media {
-  width: 104px;
-  height: 104px;
-  flex: 0 0 104px;
+  width: 120px;
+  height: 120px;
+  flex: 0 0 120px;
   background-color: var(--mui-palette-background-paper);
+  border: 1px solid var(--mui-palette-divider);
   border-radius: 15px;
-  box-shadow: 0 1px 10px #c5cdde25;
+}
+
+.media:hover {
+  box-shadow: 0 10px 30px #69738929;
 }
 
 .column {
   display: flex;
   flex-direction: column;
+  padding: 20px 0 0 20px;
 }
 
 .content {
   flex: 1 0 auto;
+  /* Beats MUI's .MuiCardContent-root:last-child bottom padding, whatever the stylesheet order. */
+  padding-bottom: 0 !important;
 }
 
 .imageWrapper {
@@ -29,7 +57,7 @@
 }
 
 .secondaryText {
-  color: var(--mui-palette-text-secondary);
+  color: var(--mui-palette-secondary-main);
 }
 
 .avatarLink {
@@ -37,4 +65,43 @@
   width: 100%;
   height: 100%;
   color: inherit;
+}
+
+.chipProfile {
+  height: 3rem;
+  margin-top: 10px;
+  border: 1px solid var(--mui-palette-divider);
+  border-radius: 1.2rem;
+  background-color: transparent;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-height: 19px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-vg5000), Arial, sans-serif;
+  font-size: 1.9rem;
+}
+
+.logo {
+  width: 11px;
+  height: 17px;
+  margin-top: -2px;
+  margin-right: 5px;
+}
+
+.id {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
