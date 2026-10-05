@@ -558,6 +558,7 @@
           "badgeLabel": "Open badge",
           "levelLabel": "Assigned level",
           "userLabel": "User",
+          "userSearchPlaceholder": "Search a user",
           "cancel": "Back",
           "confirm": "Assign",
           "illustrationPlaceholder": "Illustration in progress",
