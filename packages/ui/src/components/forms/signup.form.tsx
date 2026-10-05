@@ -148,6 +148,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
               required
               control={
                 <Checkbox
+                  size="small"
                   name="terms"
                   defaultChecked={state.values.terms === 'on'}
                   key={state.values.terms === 'on' ? 'terms-on' : 'terms-off'}
@@ -160,7 +161,7 @@ export default function SignupForm({ formState }: SignupFormProps) {
             {fieldError('terms') ? <FormHelperText>{fieldError('terms')}</FormHelperText> : null}
           </FormControl>
         </Stack>
-        <FormActions justifyContent="flex-end">
+        <FormActions>
           <Button variant="outlined" color="primary" component={Link} href="/">
             {tCommon('actions.back')}
           </Button>

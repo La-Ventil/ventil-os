@@ -24,8 +24,8 @@
         "ctaSignin": "Sign in"
       },
       "forgotPassword": {
-        "title": "I forgot my password",
-        "intro": "Enter the email you used to sign up."
+        "title": "Forgot password",
+        "intro": "Enter the email you used to sign up:"
       },
       "updatePassword": {
         "title": "Update my password",
@@ -54,8 +54,8 @@
       },
       "login": {
         "title": "Sign in",
-        "subtitle": "Sign in",
-        "intro": "Sign in",
+        "intro": "Already have a Ventil-OS account? Sign in with your credentials:",
+        "introForgotPassword": "Forgot your password, or need to reset your first sign-in code?",
         "forgotPassword": "I forgot my password.",
         "emailVerifiedNotice": "Your email has been confirmed. Please sign in again."
       },

@@ -6,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField, { type TextFieldProps } from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import styles from './password-field.module.css';
 
 export type PasswordFieldProps = Omit<TextFieldProps, 'type'> & {
   autoShowPassword?: boolean;
@@ -28,6 +29,8 @@ export default function PasswordField({
     <InputAdornment position="end">
       {InputProps?.endAdornment}
       <IconButton
+        className={styles.toggle}
+        color="primary"
         type="button"
         onClick={() => setShowPassword((current) => !current)}
         onMouseDown={(event) => event.preventDefault()}

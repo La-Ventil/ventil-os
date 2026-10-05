@@ -24,8 +24,8 @@
         "ctaSignin": "Connexion"
       },
       "forgotPassword": {
-        "title": "J'ai oublié mon mot de passe",
-        "intro": "Renseigner l'email utilisé lors de l'inscription."
+        "title": "Mot de passe oublié",
+        "intro": "Renseigner l'email utilisé lors de l'inscription :"
       },
       "updatePassword": {
         "title": "Mettre à jour mon mot de passe",
@@ -54,8 +54,8 @@
       },
       "login": {
         "title": "Connexion",
-        "subtitle": "Connexion",
-        "intro": "Connexion",
+        "intro": "Vous avez déjà créé un compte sur l'application Ventil-OS ? Veuillez vous connecter avec vos identifiants :",
+        "introForgotPassword": "Vous avez oublié votre mot de passe ou besoin de réinitialiser votre premier code de connexion ?",
         "forgotPassword": "J'ai oublié mon mot de passe.",
         "emailVerifiedNotice": "Votre email a été confirmé. Merci de vous reconnecter."
       },
@@ -887,7 +887,7 @@
     "actions": {
       "showPassword": "Afficher le mot de passe",
       "hidePassword": "Masquer le mot de passe",
-      "submitResetPassword": "Envoyer le lien de réinitialisation.",
+      "submitResetPassword": "Envoyer le lien",
       "submitUpdatePassword": "Changer mon mot de passe",
       "resendEmailVerification": "Renvoyer le lien",
       "cancelEmailChange": "Annuler le changement",

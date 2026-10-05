@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import LoginForm from '@repo/ui/forms/login.form';
@@ -9,6 +8,8 @@ import { viewUserProfile } from '@repo/application/users/usecases';
 import { getServerSession } from '../../../lib/auth';
 import { resendEmailVerificationAction } from '../../../lib/actions/auth/resend-email-verification';
 import ScopedIntlClientProvider from '../../../i18n/scoped-intl-client-provider';
+import AuthPanel, { authPanelTitleClassName } from '../_components/auth-panel';
+import styles from './page.module.css';
 
 type LoginPageProps = {
   searchParams:
@@ -38,10 +39,11 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const noticeMessage = reason === 'verified' ? t('emailVerifiedNotice') : undefined;
 
   return (
-    <Box>
-      <Stack spacing={2}>
-        <Typography variant="h2">{t('title')}</Typography>
-        <Typography variant="h3">{t('subtitle')}</Typography>
+    <AuthPanel>
+      <Stack sx={{ mb: 2 }}>
+        <Typography variant="h2" sx={{ mb: 1 }} className={authPanelTitleClassName}>
+          {t('title')}
+        </Typography>
         <Typography variant="body1">{t('intro')}</Typography>
       </Stack>
       <ScopedIntlClientProvider paths={['common', 'forms']}>
@@ -56,10 +58,13 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
           }}
         />
       </ScopedIntlClientProvider>
-      <Stack spacing={2}>
-        <Link href="/forgot-password">{t('forgotPassword')}</Link>
+      <Stack sx={{ mt: 2 }}>
+        <Typography variant="body1">{t('introForgotPassword')}</Typography>
+        <Typography variant="body1" className={styles.forgotLink}>
+          <Link href="/forgot-password">{t('forgotPassword')}</Link>
+        </Typography>
       </Stack>
-    </Box>
+    </AuthPanel>
   );
 };
 

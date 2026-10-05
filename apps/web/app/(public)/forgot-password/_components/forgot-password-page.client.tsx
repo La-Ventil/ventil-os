@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ResetPasswordForm from '@repo/ui/forms/reset-password.form';
 import { resetPasswordAction } from '../../../../lib/actions/auth/reset-password';
+import { authPanelTitleClassName } from '../../_components/auth-panel';
 
 type ForgotPasswordPageClientProps = {
   title: string;
@@ -16,7 +17,9 @@ export default function ForgotPasswordPageClient({ title, intro }: ForgotPasswor
   return (
     <Box>
       <Stack spacing={2}>
-        <Typography variant="h2">{title}</Typography>
+        <Typography variant="h2" className={authPanelTitleClassName}>
+          {title}
+        </Typography>
         <Typography variant="body1">{intro}</Typography>
       </Stack>
       <ResetPasswordForm handleSubmit={resetPasswordAction} />

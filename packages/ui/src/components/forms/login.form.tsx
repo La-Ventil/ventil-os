@@ -6,9 +6,9 @@ import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import FormActions from '../form-actions';
 import Link from '../link';
 import PasswordField from './password-field';
 import ResendVerification, { type ResendVerificationLabels } from './resend-verification';
@@ -101,18 +101,14 @@ export default function LoginForm({
           required
         />
       </Stack>
-      <Grid container spacing={2}>
-        <Grid>
-          <Button variant="outlined" color="secondary" component={Link} href="/">
-            {tCommon('actions.back')}
-          </Button>
-        </Grid>
-        <Grid>
-          <Button variant="contained" type="submit">
-            {t('actions.submitLogin')}
-          </Button>
-        </Grid>
-      </Grid>
+      <FormActions>
+        <Button variant="outlined" color="primary" component={Link} href="/">
+          {tCommon('actions.back')}
+        </Button>
+        <Button variant="contained" type="submit">
+          {t('actions.submitLogin')}
+        </Button>
+      </FormActions>
     </form>
   );
 }

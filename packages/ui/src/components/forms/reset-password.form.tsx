@@ -12,6 +12,7 @@ import Form from './form';
 import FormActions from '../form-actions';
 import FormAlert from './form-alert';
 import Link from '../link';
+import styles from './reset-password.form.module.css';
 import type { FormAction } from '@repo/form/form-action-state';
 
 export interface ResetPasswordFormProps {
@@ -40,9 +41,9 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
   const email = useEmailValidation('email');
 
   return (
-    <Form action={action} onSubmit={handleSubmitForm}>
+    <Form className={styles.root} action={action} onSubmit={handleSubmitForm}>
       <FormAlert state={state} isPending={isPending} onRetry={handleRetry} />
-      <Stack spacing={2}>
+      <Stack>
         <TextField
           name={'email'}
           label={t('fields.email')}
@@ -52,7 +53,7 @@ export default function ResetPasswordForm({ handleSubmit }: ResetPasswordFormPro
         />
       </Stack>
       <FormActions>
-        <Button variant="outlined" color="secondary" component={Link} href="/login">
+        <Button variant="outlined" color="primary" component={Link} href="/login">
           {tCommon('actions.back')}
         </Button>
         <Button variant="contained" type="submit" disabled={isPending}>

@@ -8,7 +8,6 @@ export default function FormActions({
   component = 'div',
   direction = 'row',
   spacing = 2,
-  justifyContent = 'center',
   className,
   ...props
 }: FormActionsProps) {
@@ -17,7 +16,6 @@ export default function FormActions({
       component={component}
       direction={direction}
       spacing={spacing}
-      justifyContent={justifyContent}
       className={clsx(styles.root, className)}
       {...props}
     />

@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 58px);
+  padding-block: 40px;
+}
+
+.panel {
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 20px;
+  background-color: var(--mui-palette-background-paper);
+  box-shadow: 0 0 30px #98acb142;
+}
+
+.title {
+  font-size: 2.75rem;
+}
